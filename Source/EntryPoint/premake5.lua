@@ -1,0 +1,71 @@
+project "NextEntry"
+   kind "WindowedApp"
+   language "C++"
+   cppdialect    "C++20"
+    staticruntime "off"
+    floatingpoint "fast"
+
+
+   targetdir (outputdir .. "%{prj.name}/")
+   objdir    (objectdir .. "%{prj.name}/")
+
+
+   files { "**.h", "**.hpp", "**.cpp" }
+
+      -- Specify library directories based on the build configuration and StaticLib's location
+
+   
+      -- Link against the StaticLib project
+      links { "BehemothCore", "NextAPI", "Sandbox", "freeglut" }
+
+      includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI"}
+ 
+    filter "architecture:Win32"
+        libdirs {"%{wks.location}/Source/NextAPI/glut/lib/", 
+        outputdir .. "BehemothCore/",
+        outputdir .. "NextAPI/",
+        outputdir .. "Sandbox/"
+        }
+
+        glutLoc = "%{wks.location}/Source"
+        outputLoc = outputdir .. "%{prj.name}/"
+         postbuildcommands 
+         {
+            "{COPY} \"%{wks.location}/Source/NextAPI/glut/bin/*.dll\" \"" .. outputdir .. "%{prj.name}/\""
+         }
+
+    filter "architecture:x64"
+        libdirs {"%{wks.location}/Source/NextAPI/glut/lib/x64/",
+        outputdir .. "BehemothCore/",
+        outputdir .. "NextAPI/",
+        outputdir .. "Sandbox/" 
+        }
+
+        postbuildcommands 
+        {
+         "{COPY} \"%{wks.location}/Source/NextAPI/glut/bin/x64/*.dll\" \"" .. outputdir .. "%{prj.name}/\""
+        }
+
+   
+        filter "system:windows"
+        systemversion "latest"
+        defines {}
+     
+     -- Specify library directories based on the build configuration
+     filter "configurations:Debug"
+        libdirs {"Build/Debug"}
+        defines { "DEBUG" }
+        symbols "On"
+  
+     filter "configurations:Release"
+        libdirs {"Build/Release"}
+        defines { "RELEASE" }
+        optimize "On"
+        symbols "On"
+  
+     filter "configurations:Dist"
+       libdirs {"Build/Dist"}
+        defines {"DIST"}
+        runtime "Release"
+        optimize "On"
+        symbols "Off"
