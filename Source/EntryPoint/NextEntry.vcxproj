@@ -89,8 +89,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>BehemothCore.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Debug\windows\BehemothCore;..\..\Build\bin\Debug\windows\NextAPI;..\..\Build\bin\Debug\windows\Sandbox;Build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Debug\windows\Engine;..\..\Build\bin\Debug\windows\NextAPI;..\..\Build\bin\Debug\windows\Sandbox;Build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll"\ (xcopy /Q /E /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Debug\windows\$(ProjectName)\" &gt; nul) ELSE (xcopy /Q /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Debug\windows\$(ProjectName)\" &gt; nul)</Command>
@@ -117,8 +117,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>BehemothCore.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Release\windows\BehemothCore;..\..\Build\bin\Release\windows\NextAPI;..\..\Build\bin\Release\windows\Sandbox;Build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Release\windows\Engine;..\..\Build\bin\Release\windows\NextAPI;..\..\Build\bin\Release\windows\Sandbox;Build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll"\ (xcopy /Q /E /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Release\windows\$(ProjectName)\" &gt; nul) ELSE (xcopy /Q /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Release\windows\$(ProjectName)\" &gt; nul)</Command>
@@ -145,14 +145,20 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>BehemothCore.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Dist\windows\BehemothCore;..\..\Build\bin\Dist\windows\NextAPI;..\..\Build\bin\Dist\windows\Sandbox;Build\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Dist\windows\Engine;..\..\Build\bin\Dist\windows\NextAPI;..\..\Build\bin\Dist\windows\Sandbox;Build\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll"\ (xcopy /Q /E /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Dist\windows\$(ProjectName)\" &gt; nul) ELSE (xcopy /Q /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Dist\windows\$(ProjectName)\" &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EntryPoint.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
+      <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\NextAPI\NextAPI.vcxproj">
       <Project>{3E5F536C-AA3E-D207-B356-5DDE1FB53869}</Project>
     </ProjectReference>

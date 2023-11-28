@@ -15,7 +15,7 @@ project "Sandbox"
       libdirs (outputdir .. "Engine/")
    
       -- Link against the StaticLib project
-      links { "BehemothCore" }
+      links { "Engine" }
 
       includedirs { "%{wks.location}/Source/Engine/BehemothCore" }
    

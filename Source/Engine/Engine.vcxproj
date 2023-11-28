@@ -147,6 +147,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BehemothCore\Application\GameLoop.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\NextAPI\NextAPI.vcxproj">
       <Project>{3E5F536C-AA3E-D207-B356-5DDE1FB53869}</Project>
     </ProjectReference>

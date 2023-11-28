@@ -1,10 +1,12 @@
-﻿Build started 2023-11-24 2:59:21 PM.
+﻿Build started 2023-11-24 3:37:18 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" on node 2 (Build target(s)).
-     1>PrepareForBuild:
-         Creating directory "..\..\Build\bin\Debug\windows\Engine\".
-         Creating directory "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\".
-       InitializeBuildStatus:
+     1>InitializeBuildStatus:
          Creating "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Lib:
+         All outputs are up-to-date.
+         Engine.vcxproj -> C:\Work\Engine\Next2024\Build\bin\Debug\windows\Engine\Engine.lib
        FinalizeBuildStatus:
          Deleting file "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild".
          Touching "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\Engine.lastbuildstate".
@@ -14,4 +16,4 @@ Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.10
+Time Elapsed 00:00:00.16

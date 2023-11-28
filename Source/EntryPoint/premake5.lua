@@ -16,13 +16,13 @@ project "NextEntry"
 
    
       -- Link against the StaticLib project
-      links { "BehemothCore", "NextAPI", "Sandbox", "freeglut" }
+      links { "Engine", "NextAPI", "Sandbox", "freeglut" }
 
       includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI"}
  
     filter "architecture:Win32"
         libdirs {"%{wks.location}/Source/NextAPI/glut/lib/", 
-        outputdir .. "BehemothCore/",
+        outputdir .. "Engine/",
         outputdir .. "NextAPI/",
         outputdir .. "Sandbox/"
         }
@@ -36,7 +36,7 @@ project "NextEntry"
 
     filter "architecture:x64"
         libdirs {"%{wks.location}/Source/NextAPI/glut/lib/x64/",
-        outputdir .. "BehemothCore/",
+        outputdir .. "Engine/",
         outputdir .. "NextAPI/",
         outputdir .. "Sandbox/" 
         }

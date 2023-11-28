@@ -24,16 +24,18 @@ project "BehemothTests"
       -- Specify library directories based on the build configuration and StaticLib's location
    
       -- Link against the StaticLib project
-      links { "BehemothCore", "freeglut" }
+      links { "Engine", "freeglut" }
 
       filter "architecture:Win32"
-      libdirs {
-          "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "BehemothCore/"
+      libdirs 
+      {
+          "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "Engine/"
       }
 
   filter "architecture:x64"
-      libdirs {
-          "%{wks.location}/Source/NextAPI/glut/lib/x64/", outputdir .. "BehemothCore/"
+      libdirs 
+      {
+          "%{wks.location}/Source/NextAPI/glut/lib/x64/", outputdir .. "Engine/"
       }
 
       includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/" }
