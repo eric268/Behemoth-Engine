@@ -1,11 +1,110 @@
-﻿Build started 2023-11-24 3:37:18 PM.
+﻿Build started 2023-11-28 9:46:19 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Creating "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         All outputs are up-to-date.
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /IBehemothCore /I..\NextAPI\App /ZI /JMC /nologo /W3 /WX- /diagnostics:column /Od /D DEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Debug\windows\Engine\\" /Fd"..\..\Build\bin\Debug\windows\Engine\Engine.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt BehemothCore\Application\GameLoop.cpp
+         GameLoop.cpp
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+                 with
+                 [
+                     _Ty=uint16_t
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(60): message : while compiling class template member function 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)'
+                 with
+                 [
+                     T=ECS::PhysicsComponent,
+                     Component=ECS::PhysicsComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(84): message : see reference to function template instantiation 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)' being compiled
+                 with
+                 [
+                     T=ECS::PhysicsComponent,
+                     Component=ECS::PhysicsComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(30): message : see reference to class template instantiation 'ECS::SparseSet<T>' being compiled
+                 with
+                 [
+                     T=ECS::PhysicsComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(80): message : see reference to class template instantiation 'ECS::ComponentPool<T>' being compiled
+                 with
+                 [
+                     T=ECS::PhysicsComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(43): message : see reference to function template instantiation 'void ECS::Registry::AddComponent<ECS::PhysicsComponent,>(ECS::Entity)' being compiled
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(85,1): warning C4267: 'argument': conversion from 'size_t' to 'const uint16_t', possible loss of data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(73): message : while compiling class template member function 'Component *ECS::SparseSet<Component>::GetComponent(const ECS::Entity &)'
+                 with
+                 [
+                     Component=ECS::PhysicsComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(205): message : see reference to function template instantiation 'Component *ECS::SparseSet<Component>::GetComponent(const ECS::Entity &)' being compiled
+                 with
+                 [
+                     Component=ECS::PhysicsComponent
+                 ]
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(44,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(33): message : while compiling class template member function 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)'
+                 with
+                 [
+                     T=ECS::PhysicsComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(81): message : see reference to function template instantiation 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)' being compiled
+                 with
+                 [
+                     T=ECS::PhysicsComponent
+                 ]
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(129,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+                 with
+                 [
+                     _Ty=uint16_t
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(182): message : see reference to function template instantiation 'void ECS::SparseSet<T>::Sort<ECS::Registry::SortSets::<lambda_1>>(Compare)' being compiled
+                 with
+                 [
+                     T=ECS::HealthComponent,
+                     Compare=ECS::Registry::SortSets::<lambda_1>
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(181): message : see reference to function template instantiation 'void ECS::SparseSet<T>::Sort<ECS::Registry::SortSets::<lambda_1>>(Compare)' being compiled
+                 with
+                 [
+                     T=ECS::HealthComponent,
+                     Compare=ECS::Registry::SortSets::<lambda_1>
+                 ]
+       C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\include\type_traits(1432): message : see reference to function template instantiation 'void ECS::Registry::SortSets::<lambda_2>::operator ()<std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>>,std::shared_ptr<ECS::ComponentPool<T>>,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>>>(std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>> &,std::shared_ptr<ECS::ComponentPool<T>> &,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>> &,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>> &) const' being compiled
+                 with
+                 [
+                     T=ECS::RenderComponent
+                 ]
+       C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\include\tuple(980): message : see reference to function template instantiation 'void std::_Apply_impl<_Ty,T&,0,1,2,3>(_Callable &&,_Tuple,std::integer_sequence<size_t,0,1,2,3>)' being compiled
+                 with
+                 [
+                     _Ty=ECS::Registry::SortSets::<lambda_2>,
+                     T=std::tuple<std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::RenderComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>>>,
+                     _Callable=ECS::Registry::SortSets::<lambda_2>,
+                     _Tuple=std::tuple<std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::RenderComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>>> &
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(182): message : see reference to function template instantiation 'void std::apply<ECS::Registry::SortSets::<lambda_2>,T&>(_Callable &&,_Tuple)' being compiled
+                 with
+                 [
+                     T=std::tuple<std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::RenderComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>>>,
+                     _Callable=ECS::Registry::SortSets::<lambda_2>,
+                     _Tuple=std::tuple<std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::RenderComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>>> &
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(97): message : see reference to function template instantiation 'void ECS::Registry::SortSets<std::tuple<std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>>,std::shared_ptr<ECS::ComponentPool<T>>,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>>>>(std::tuple<std::shared_ptr<ECS::ComponentPool<ECS::HealthComponent>>,std::shared_ptr<ECS::ComponentPool<T>>,std::shared_ptr<ECS::ComponentPool<ECS::MovementComponent>>,std::shared_ptr<ECS::ComponentPool<ECS::PhysicsComponent>>> &)' being compiled
+                 with
+                 [
+                     T=ECS::RenderComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(45): message : see reference to function template instantiation 'std::vector<std::tuple<ECS::HealthComponent *,ECS::RenderComponent *,ECS::MovementComponent *,ECS::PhysicsComponent *>,std::allocator<std::tuple<ECS::HealthComponent *,ECS::RenderComponent *,ECS::MovementComponent *,ECS::PhysicsComponent *>>> ECS::Registry::Group<ECS::HealthComponent,ECS::RenderComponent,ECS::MovementComponent,ECS::PhysicsComponent>(void)' being compiled
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
        Lib:
-         All outputs are up-to-date.
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\Lib.exe /OUT:"..\..\Build\bin\Debug\windows\Engine\Engine.lib" freeglut.lib /LIBPATH:..\NextAPI\glut\lib\x64 /LIBPATH:..\..\Build\bin\Debug\windows\NextAPI /LIBPATH:Build\Debug /NOLOGO /MACHINE:X64 ..\..\Build\obj\Debug\windows\Engine\GameLoop.obj
+         ..\..\Build\obj\Debug\windows\Engine\Matrix.obj
+         ..\..\Build\obj\Debug\windows\Engine\Vector.obj
+         ..\..\Build\obj\Debug\windows\Engine\Log.obj
+         ..\..\Build\obj\Debug\windows\Engine\Primitives.obj
          Engine.vcxproj -> C:\Work\Engine\Next2024\Build\bin\Debug\windows\Engine\Engine.lib
        FinalizeBuildStatus:
          Deleting file "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild".
@@ -13,7 +112,16 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
      1>Done Building Project "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" (Build target(s)).
 
 Build succeeded.
-    0 Warning(s)
+
+       "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" (Build target) (1) ->
+       (ClCompile target) -> 
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(85,1): warning C4267: 'argument': conversion from 'size_t' to 'const uint16_t', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(44,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(129,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
+
+    5 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.16
+Time Elapsed 00:00:01.27

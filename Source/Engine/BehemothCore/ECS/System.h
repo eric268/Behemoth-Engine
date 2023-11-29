@@ -1,5 +1,8 @@
 #pragma once
-class System
-{
-};
 
+namespace ECS
+{
+	class System
+	{
+	};
+}

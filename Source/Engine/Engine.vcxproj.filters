@@ -4,10 +4,75 @@
     <Filter Include="Application">
       <UniqueIdentifier>{fce0b7fb-523b-45af-bbca-47d4b7dc6deb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{76211f30-4169-47d9-832b-bd778d38285a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{c15b31eb-8aec-4e6f-ba36-f484eb78623f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{59b727ad-defb-4eac-a057-403ccff51b6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{0e048c89-a829-4d96-9472-a6eddb403537}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Math\Matrix.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Math\Vector.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Render\Primitives.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Misc\Log.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BehemothCore\ECS\ComponentPool.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\Components.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\Entity.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\Generator.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\Registry.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\SparseSet.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\System.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\ECSCore.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Math\Matrix.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Math\Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Math\MathCore.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Misc\Log.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Render\Primitives.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

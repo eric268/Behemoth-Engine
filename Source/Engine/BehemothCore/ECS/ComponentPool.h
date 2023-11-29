@@ -4,39 +4,41 @@
 #include "SparseSet.h"
 #include "Entity.h"
 
-class IComponentPool
+namespace ECS
 {
-public:
-	virtual ~IComponentPool() = default;
-
- 	virtual std::size_t size()
- 	{
- 		return std::size_t{};
- 	}
-
-	virtual std::vector<Entity>& GetEntities()
+	class IComponentPool
 	{
-		std::vector<Entity> data;
-		return data;
-	}
- 
-};
+	public:
+		virtual ~IComponentPool() = default;
 
-template<typename T>
-class ComponentPool : public IComponentPool, public SparseSet<T>
-{
-public:
-	ComponentPool() = default;
+		virtual std::size_t size()
+		{
+			return std::size_t{};
+		}
 
-    std::size_t size() override 
-    {
-    	return SparseSet<T>::size();
-    }
+		virtual std::vector<Entity>& GetEntities()
+		{
+			std::vector<Entity> data;
+			return data;
+		}
 
-	virtual std::vector<Entity>& GetEntities()
+		int typeID;
+	};
+
+	template<typename T>
+	class ComponentPool : public IComponentPool, public SparseSet<T>
 	{
-		return SparseSet<T>::dense;
-	}
+	public:
+		ComponentPool() = default;
 
+		std::size_t size() override
+		{
+			return SparseSet<T>::size();
+		}
 
-};
+		virtual std::vector<Entity>& GetEntities()
+		{
+			return SparseSet<T>::dense;
+		}
+	};
+}

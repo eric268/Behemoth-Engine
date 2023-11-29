@@ -2,71 +2,43 @@
 
 #include "Generator.h"
 
-
-class Components
+namespace ECS
 {
-public:
-	Components() = default;
-	virtual ~Components() {}
-	using type = Components;
-};
-
-class RenderComponent : public Components 
-{
-public:
-	RenderComponent() : typeID(Generator::Value<RenderComponent>())
+	class Components
 	{
+	public:
+		Components() = default;
+		virtual ~Components() {}
+	};
 
-	}
-	~RenderComponent() override {};
-
-	using type = RenderComponent;
-
-	int GetTypeID()
+	class RenderComponent : public Components
 	{
-		return typeID;
-	}
+	public:
+		RenderComponent() {}
+		~RenderComponent() override {};
+	};
 
-private:
-	int typeID;
-};
-
-class HealthComponent : public Components
-{
-public:
-	HealthComponent(int health) : currentHealth{ health }, typeID(Generator::Value<HealthComponent>())
+	class HealthComponent : public Components
 	{
+	public:
+		HealthComponent(int health) : currentHealth(health) {}
+		~HealthComponent() override {};
 
-	}
-	~HealthComponent() override {};
+		int currentHealth;
+	};
 
-	using type = HealthComponent;
-
-	int currentHealth;
-
-	int GetTypeID()
+	class MovementComponent : public Components
 	{
-		return typeID;
-	}
+	public:
+		MovementComponent() {}
+		~MovementComponent() override {};
+	};
 
-private:
-	int typeID;
-};
-
-class MovementComponent : public Components
-{
-public:
-	MovementComponent() : typeID(Generator::Value<MovementComponent>())
+	class PhysicsComponent : public Components 
 	{
+	public:
+		PhysicsComponent() {}
+		~PhysicsComponent() override {};
+	};
 
-	}
-	~MovementComponent() override {};
-
-	int GetTypeID()
-	{
-		return typeID;
-	}
-
-private:
-	int typeID;
-};
+}

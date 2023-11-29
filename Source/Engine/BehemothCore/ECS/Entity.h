@@ -3,51 +3,55 @@
 // stl
 #include <string>
 
-class Entity
+namespace ECS
 {
-public:
-
-	inline std::uint32_t GetID() const
+	class Entity
 	{
-		return ID;
-	}
+	public:
 
-	inline std::uint16_t GetIdentifier() const 
-	{
-		return ID & 0x000FFFFF;
-	}
+		inline std::uint32_t GetID() const
+		{
+			return ID;
+		}
 
-	inline void IncrementVersion()
-	{
-		std::uint16_t version = (ID >> 16) + 1;
-		ID = (version << 16) | (ID & 0x0000FFFF);
-	}
+		inline std::uint16_t GetIdentifier() const
+		{
+			return ID & 0x0000FFFF;
+		}
 
-	std::uint16_t GetVersion() const
-	{
-		return ID >> 16;
-	}
+		inline void IncrementVersion()
+		{
+			std::uint16_t version = (ID >> 16) + 1;
+			ID = (version << 16) | (ID & 0x0000FFFF);
+		}
 
-	const std::string GetName() const {
-		return name;
-	}
+		std::uint16_t GetVersion() const
+		{
+			return ID >> 16;
+		}
 
-private:
-	friend class Registry;
+		const std::string GetName() const {
+			return name;
+		}
 
-	Entity(std::string name) : name(name), ID(0) {}
+	private:
+		friend class Registry;
 
-	// Only want to be able to use this in Registry class to point to next recycled entity ID
-	inline void SetIdentifier(const std::uint16_t newIdentifier)
-	{
-		ID = (ID & 0xFFFF0000) | newIdentifier;
-	}
+		Entity(std::string name) : name(name), ID(0) {}
 
-	inline void SetID(const std::uint32_t newID)
-	{
-		ID = newID;
-	}
+		// Only want to be able to use this in Registry class to point to next recycled entity ID
+		inline void SetIdentifier(const std::uint16_t newIdentifier)
+		{
+			ID = (ID & 0xFFFF0000) | newIdentifier;
+		}
 
-	std::uint32_t ID;
-	std::string name;
-};
+		inline void SetID(const std::uint32_t newID)
+		{
+			ID = newID;
+		}
+
+		std::uint32_t ID;
+		std::string name;
+	};
+
+}

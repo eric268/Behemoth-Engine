@@ -1,7 +1,7 @@
-﻿Build started 2023-11-24 3:39:14 PM.
+﻿Build started 2023-11-28 9:46:20 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\EntryPoint\NextEntry.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
-         Touching "..\..\Build\obj\Debug\windows\NextEntry\NextEntry.tlog\unsuccessfulbuild".
+         Creating "..\..\Build\obj\Debug\windows\NextEntry\NextEntry.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          All outputs are up-to-date.
        Link:

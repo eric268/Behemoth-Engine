@@ -18,7 +18,21 @@ int APIENTRY wWinMain(
 	_In_ LPWSTR lpCmdLine,
 	_In_ int nShowCmd)
 {
+	AllocConsole();
+
+	FILE* fDummy;
+	freopen_s(&fDummy, "CONIN$", "r", stdin);
+	freopen_s(&fDummy, "CONOUT$", "w", stdout);
+	freopen_s(&fDummy, "CONOUT$", "w", stderr);
+
 	int result = NextAPI_wWinMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
+
+	// Cleanup
+	fclose(stdin);
+	fclose(stdout);
+	fclose(stderr);
+
+	FreeConsole();
 
 	return 0;
 }
