@@ -1,44 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Application">
-      <UniqueIdentifier>{fce0b7fb-523b-45af-bbca-47d4b7dc6deb}</UniqueIdentifier>
+      <UniqueIdentifier>{D9DE78AF-4594-F1A4-CE88-EB7B3A3DE8A8}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS">
-      <UniqueIdentifier>{76211f30-4169-47d9-832b-bd778d38285a}</UniqueIdentifier>
+      <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
-      <UniqueIdentifier>{c15b31eb-8aec-4e6f-ba36-f484eb78623f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Render">
-      <UniqueIdentifier>{59b727ad-defb-4eac-a057-403ccff51b6b}</UniqueIdentifier>
+      <UniqueIdentifier>{AFF4887C-9B2B-8A0D-4418-7010302E060F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Misc">
-      <UniqueIdentifier>{0e048c89-a829-4d96-9472-a6eddb403537}</UniqueIdentifier>
+      <UniqueIdentifier>{9116897C-7D4D-8A0D-263A-70101250060F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{C5BB87CE-B15D-B2A4-9A18-C6F8865939F5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{4D25640E-B939-8CBF-82BB-2F1FEE8E88F0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
+    <ClInclude Include="BehemothCore\Application\ResourceManager.h">
       <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Math\Matrix.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Math\Vector.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Render\Primitives.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Misc\Log.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
+    </ClInclude>
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Components.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\ECSCore.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Entity.h">
@@ -56,8 +48,8 @@
     <ClInclude Include="BehemothCore\ECS\System.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\ECS\ECSCore.h">
-      <Filter>ECS</Filter>
+    <ClInclude Include="BehemothCore\Math\MathCore.h">
+      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Math\Matrix.h">
       <Filter>Math</Filter>
@@ -65,14 +57,52 @@
     <ClInclude Include="BehemothCore\Math\Vector.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Math\MathCore.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="BehemothCore\Misc\Log.h">
       <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Render\Mesh.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Render\MeshLoader.h">
+      <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Render\Primitives.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\World\Scene.h">
+      <Filter>World</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Application\ResourceManager.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\ECS\System.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Math\Matrix.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Math\Vector.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Misc\Log.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Render\MeshLoader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Render\Primitives.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\World\Scene.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Render\Mesh.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

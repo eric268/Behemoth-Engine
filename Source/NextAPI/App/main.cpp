@@ -14,6 +14,8 @@
 #include "SimpleSound.h"
 #include "SimpleController.h"
 
+#include "App/main.h"
+
 //---------------------------------------------------------------------------------
 // Initial setup globals.
 //---------------------------------------------------------------------------------
@@ -185,8 +187,6 @@ int APIENTRY NextAPI_wWinMain(_In_ HINSTANCE hInstance, 	_In_opt_ HINSTANCE hPre
 	glutDisplayFunc(Display);       // Register callback handler for window re-paint event	
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	InitGL();                       // Our own OpenGL initialization
-
-
 
 	// Init sounds system.
 	CSimpleSound::GetInstance().Initialize(MAIN_WINDOW_HANDLE);

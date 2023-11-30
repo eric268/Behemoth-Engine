@@ -15,7 +15,7 @@ language "C++"
       -- Link against the StaticLib project
       links { "NextAPI", "freeglut" }
 
-      includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/App/" }
+      includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/App/", "%{wks.location}/Assets/" }
      filter "architecture:Win32"
          libdirs 
          {

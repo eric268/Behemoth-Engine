@@ -14,7 +14,15 @@ namespace BehemothEngine
 		Primitives();
 		Primitives(const char*);
 
-		std::vector<Math::Vector3> verticies;
+		std::vector<Math::Vector3> GetVerticies();
+		const void PrintVerticies() const;
+
+		inline void Draw()
+		{
+			sprite->SetPosition(100, 400);
+			SetSpriteVerticies();
+			sprite->Draw();
+		}
 
 		inline void SetVerticies(const std::vector<Math::Vector3>& v)
 		{
@@ -22,13 +30,11 @@ namespace BehemothEngine
 			SetSpriteVerticies();
 		}
 
-		std::vector<Math::Vector3> GetVerticies();
-		const void PrintVerticies() const;
-
-		CSimpleSprite* sprite;
+		std::vector<Math::Vector3> verticies;
 
 	private:
 		void SetSpriteVerticies();
+		CSimpleSprite* sprite;
 	};
 }
 

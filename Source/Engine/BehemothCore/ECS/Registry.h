@@ -105,7 +105,7 @@ namespace ECS
 		template<IsComponent... T>
 		std::vector<std::tuple<T*...>> Get()
 		{
-			auto componentSets = std::make_tuple((std::ref(GetSparseSet<T>())) ...);
+			auto componentSets = std::make_tuple((GetComponent<T>()) ...);
 			std::vector<std::tuple<T* ...>> group = GetSets<T...>(componentSets);
 
 			return group;
