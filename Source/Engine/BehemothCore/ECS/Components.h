@@ -53,23 +53,38 @@ namespace ECS
 	class CameraComponent : public Components 
 	{
 	public:
-		CameraComponent() : 
+		CameraComponent(bool main = false) : 
 			viewMatrix(Math::Matrix4x4::Identity()), 
-			FOV(0.0f),
+			perspectiveMatrix(Math::Matrix4x4::Identity()),
+			FOV(90.0f),
 			nearClippingPlane(0.1f), 
 			farClippingPlane(1000.0f), 
 			windowWidth(0.0f), 
 			windowHeight(0.0f),
-			isMain(false) {}
+			isMain(main) {}
 		~CameraComponent() = default;
 
 		Math::Matrix4x4 viewMatrix;
+		Math::Matrix4x4 perspectiveMatrix;
 		float FOV;
 		float nearClippingPlane;
 		float farClippingPlane;
 		float windowWidth;
 		float windowHeight;
 		bool isMain;
+	};
+
+	class TransformComponent : public Components
+	{
+	public:
+		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()) {}
+		Math::Matrix4x4 transformMatrix;
+	};
+
+	class MeshInitalizeComponent : public Components
+	{
+	public:
+		MeshInitalizeComponent() = default;
 	};
 
 }

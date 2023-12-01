@@ -17,24 +17,18 @@ namespace BehemothEngine
 		std::vector<Math::Vector3> GetVerticies();
 		const void PrintVerticies() const;
 
-		inline void Draw()
-		{
-			sprite->SetPosition(100, 400);
-			SetSpriteVerticies();
-			sprite->Draw();
-		}
+		void Draw();
 
-		inline void SetVerticies(const std::vector<Math::Vector3>& v)
-		{
-			verticies = v;
-			SetSpriteVerticies();
-		}
+		Math::Vector3 verticies[3];
 
-		std::vector<Math::Vector3> verticies;
+		void SetSpriteVerticies(Math::Vector4 vert[3]);
+		void SetPrimitiveVerticies(Math::Vector3 vert[3]);
 
 	private:
-		void SetSpriteVerticies();
 		CSimpleSprite* sprite;
+		Math::Vector3 color;
+
+		void RandomizeColor();
 	};
 }
 

@@ -161,7 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test\pch.cpp" />
-    <ClCompile Include="Test\test.cpp" />
+    <ClCompile Include="Test\MathLibraryTest.cpp" />
+    <ClCompile Include="Test\PhysicsLibraryTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

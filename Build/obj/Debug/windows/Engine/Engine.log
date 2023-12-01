@@ -1,41 +1,32 @@
-﻿Build started 2023-11-29 9:00:33 PM.
+﻿Build started 2023-11-30 11:20:12 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Creating "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /IBehemothCore /I..\NextAPI\App /I..\..\Assets /ZI /JMC /nologo /W3 /WX- /diagnostics:column /Od /D DEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Debug\windows\Engine\\" /Fd"..\..\Build\bin\Debug\windows\Engine\Engine.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt BehemothCore\Application\GameLoop.cpp BehemothCore\ECS\System.cpp
-         GameLoop.cpp
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /IBehemothCore /I..\NextAPI\App /I..\..\Assets /ZI /JMC /nologo /W3 /WX- /diagnostics:column /Od /D DEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Debug\windows\Engine\\" /Fd"..\..\Build\bin\Debug\windows\Engine\Engine.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt BehemothCore\ECS\System.cpp
+         System.cpp
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(91,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(111,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(112,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(114,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(114,24): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(44,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(33): message : while compiling class template member function 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)'
                  with
                  [
-                     _Ty=uint16_t
+                     T=ECS::MeshInitalizeComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(60): message : while compiling class template member function 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)'
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(93): message : see reference to function template instantiation 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)' being compiled
                  with
                  [
-                     T=ECS::MeshComponent,
-                     Component=ECS::MeshComponent
-                 ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(84): message : see reference to function template instantiation 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)' being compiled
-                 with
-                 [
-                     T=ECS::MeshComponent,
-                     Component=ECS::MeshComponent
+                     T=ECS::MeshInitalizeComponent
                  ]
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(30): message : see reference to class template instantiation 'ECS::SparseSet<T>' being compiled
                  with
                  [
-                     T=ECS::MeshComponent
+                     T=ECS::MeshInitalizeComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(80): message : see reference to class template instantiation 'ECS::ComponentPool<T>' being compiled
-                 with
-                 [
-                     T=ECS::MeshComponent
-                 ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(29): message : see reference to function template instantiation 'void ECS::Registry::AddComponent<ECS::MeshComponent,const char(&)[16]>(ECS::Entity,const char (&)[16])' being compiled
-         System.cpp
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(54,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(55,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(71): message : see reference to class template instantiation 'ECS::ComponentPool<ECS::MeshInitalizeComponent>' being compiled
      1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(85,1): warning C4267: 'argument': conversion from 'size_t' to 'const uint16_t', possible loss of data
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(73): message : while compiling class template member function 'Component *ECS::SparseSet<Component>::GetComponent(const ECS::Entity &)'
                  with
@@ -54,20 +45,7 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
                  ]
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(123): message : see reference to class template instantiation 'ECS::ComponentPool<ECS::CameraComponent>' being compiled
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(107): message : see reference to function template instantiation 'std::shared_ptr<ECS::ComponentPool<ECS::CameraComponent>> ECS::Registry::GetComponent<ECS::CameraComponent>(void)' being compiled
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(42): message : see reference to function template instantiation 'std::vector<std::tuple<ECS::CameraComponent *>,std::allocator<std::tuple<ECS::CameraComponent *>>> ECS::Registry::Get<ECS::CameraComponent>(void)' being compiled
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(44,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(33): message : while compiling class template member function 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)'
-                 with
-                 [
-                     T=ECS::CameraComponent
-                 ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(81): message : see reference to function template instantiation 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)' being compiled
-                 with
-                 [
-                     T=ECS::CameraComponent
-                 ]
-         Generating Code...
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(20): message : see reference to function template instantiation 'std::vector<std::tuple<ECS::CameraComponent *>,std::allocator<std::tuple<ECS::CameraComponent *>>> ECS::Registry::Get<ECS::CameraComponent>(void)' being compiled
      1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\Lib.exe /OUT:"..\..\Build\bin\Debug\windows\Engine\Engine.lib" freeglut.lib /LIBPATH:..\NextAPI\glut\lib\x64 /LIBPATH:..\..\Build\bin\Debug\windows\NextAPI /LIBPATH:Build\Debug /NOLOGO /MACHINE:X64 ..\..\Build\obj\Debug\windows\Engine\GameLoop.obj
@@ -75,6 +53,7 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
          ..\..\Build\obj\Debug\windows\Engine\System.obj
          ..\..\Build\obj\Debug\windows\Engine\Matrix.obj
          ..\..\Build\obj\Debug\windows\Engine\Vector.obj
+         ..\..\Build\obj\Debug\windows\Engine\CameraHelper.obj
          ..\..\Build\obj\Debug\windows\Engine\Log.obj
          ..\..\Build\obj\Debug\windows\Engine\Mesh.obj
          ..\..\Build\obj\Debug\windows\Engine\MeshLoader.obj
@@ -90,15 +69,16 @@ Build succeeded.
 
        "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" (Build target) (1) ->
        (ClCompile target) -> 
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(54,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(55,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(85,1): warning C4267: 'argument': conversion from 'size_t' to 'const uint16_t', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(91,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(111,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(112,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(114,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(114,24): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(44,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(85,1): warning C4267: 'argument': conversion from 'size_t' to 'const uint16_t', possible loss of data
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
 
-    7 Warning(s)
+    8 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:02.08
+Time Elapsed 00:00:01.33

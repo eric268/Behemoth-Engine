@@ -14,7 +14,10 @@
     <ClCompile Include="Test\pch.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="Test\test.cpp">
+    <ClCompile Include="Test\MathLibraryTest.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\PhysicsLibraryTests.cpp">
       <Filter>Test</Filter>
     </ClCompile>
   </ItemGroup>

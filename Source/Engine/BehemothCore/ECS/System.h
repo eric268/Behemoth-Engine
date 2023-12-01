@@ -17,12 +17,15 @@ namespace ECS
 		RenderSystem() = default;
 
 		virtual void Run(Registry& registry) override;
+	private:
+
+		void RenderObject();
 	};
 
-	class ModelLoadingSystem : public System
+	class ModelInitalizeSystem : public System
 	{
 	public:
-		ModelLoadingSystem() = default;
+		ModelInitalizeSystem() = default;
 
 		virtual void Run(Registry& registry) override;
 	};
@@ -33,6 +36,6 @@ namespace ECS
 		CameraSystem() = default;
 		virtual void Run(Registry& registry) override;
 
-		void UpdateViewMatrix(CameraComponent& component);
+		void UpdatePerspectiveMatrix(CameraComponent& component);
 	};
 }

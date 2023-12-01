@@ -72,6 +72,9 @@
     <ClInclude Include="BehemothCore\World\Scene.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Misc\CameraHelper.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Render\Mesh.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp">
+      <Filter>Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,18 +19,21 @@
 BehemothEngine::Primitives* p;
 ECS::Registry registry;
 ECS::RenderSystem renderSystem;
-ECS::ModelLoadingSystem loadingSystem;
+ECS::ModelInitalizeSystem loadingSystem;
 ECS::CameraSystem cameraSystem;
 
 void Init()
 {
-	ECS::Entity e1 = registry.CreateEntity("Entity 1");
+	ECS::Entity e1 = registry.CreateEntity("Cube 1");
+	ECS::Entity e2 = registry.CreateEntity("Main Camera");
 
 	registry.AddComponent<ECS::MeshComponent>(e1, "Models/cube.obj");
+	registry.AddComponent<ECS::TransformComponent>(e1);
+	registry.AddComponent<ECS::MeshInitalizeComponent>(e1);
 
-	loadingSystem.Run(registry);
+	registry.AddComponent<ECS::CameraComponent>(e2, true);
 
-	//BehemothEngine::ResourceManager::GetInstance().LoadMesh("Models/cube.obj");
+	
 }
 
 //------------------------------------------------------------------------
@@ -40,6 +43,7 @@ void Init()
 void Update(float deltaTime)
 {
 	cameraSystem.Run(registry);
+	loadingSystem.Run(registry);
 }
 
 //------------------------------------------------------------------------
