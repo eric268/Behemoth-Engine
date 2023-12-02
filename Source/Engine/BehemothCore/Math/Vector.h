@@ -21,7 +21,7 @@ namespace Math
 	class Vector3
 	{
 	public:
-		Vector3() = default;
+		Vector3();
 		Vector3(const float x, const float y, const float z);
 
 		float x;
@@ -31,10 +31,34 @@ namespace Math
 		static Vector3 Forward();
 		static Vector3 Right();
 		static Vector3 Up();
+		static Vector3 Zero();
 
 		Vector3& operator= (const Vector3& vec);
 		Vector3  operator* (const Vector3& vec) const;
 		Vector3  operator- (const Vector3& vec)const ;
+		Vector3  operator*= (const Vector3 vec) const;
+
+		template<typename T>
+		Vector3 operator* (const T scalar) const
+		{
+			return Vector3(x * scalar, y * scalar, z * scalar);
+		}
+		template<typename T>
+		Vector3 operator*= (const T scalar) const
+		{
+			return Vector3(x * scalar, y * scalar, z * scalar);
+		}
+
+		template<typename T>
+		Vector3 operator* (const T scalar)
+		{
+			return Vector3(x * scalar, y * scalar, z * scalar);
+		}
+		template<typename T>
+		Vector3 operator*= (const T scalar)
+		{
+			return Vector3(x * scalar, y * scalar, z * scalar);
+		}
 
 		static float Angle(const Vector3& v1, const Vector3& v2);
 		static float SquaredMagnitude(const Vector3& v1);
@@ -43,6 +67,7 @@ namespace Math
 		static float Dot(const Vector3& v1, const Vector3& v2);
 		static Vector3 Normalize(const Vector3& v1);
 		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
+		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);
 
 	private:
 
@@ -63,9 +88,26 @@ namespace Math
 
 		static bool Equals(const Vector4& vec1, const Vector4& vec2, float epsilon = 1e-2);
 
-		Vector4 operator* (const float val) const;
 		Vector4 operator* (const Matrix4x4& m) const;
-		Vector4 operator/ (const float val) const;
+
+		template<typename T>
+		Vector4 operator* (const T scalar) const
+		{
+			return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
+		}
+
+		template<typename T>
+		Vector4 operator*=(const T scalar) const
+		{
+			return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
+		}
+
+		template<typename T>
+		Vector4 operator/ (const T scalar) const
+		{
+			assert(scalar != 0);
+			return Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
+		}
 
 	private:
 

@@ -41,6 +41,28 @@ namespace ECS
 	public:
 		MovementComponent() {}
 		~MovementComponent() override {};
+
+		Math::Vector3 location;
+	};
+
+	class RotationComponent : public Components 
+	{
+	public:
+
+		enum Axis
+		{
+			X_AXIS,
+			Y_AXIS,
+			Z_AXIS
+		};
+
+		RotationComponent() : axis(X_AXIS), speed(1.0f) {}
+		RotationComponent(Axis a, float s) : axis(a), speed(s) {}
+		RotationComponent(int a, float s) : axis(static_cast<Axis>(a)), speed(s) {}
+
+		Axis axis;
+		float speed;
+
 	};
 
 	class PhysicsComponent : public Components 

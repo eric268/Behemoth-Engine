@@ -57,6 +57,9 @@
     <ClInclude Include="BehemothCore\Math\Vector.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Misc\CameraHelper.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Misc\Log.h">
       <Filter>Misc</Filter>
     </ClInclude>
@@ -71,9 +74,6 @@
     </ClInclude>
     <ClInclude Include="BehemothCore\World\Scene.h">
       <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Misc\CameraHelper.h">
-      <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +92,14 @@
     <ClCompile Include="BehemothCore\Math\Vector.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Misc\Log.cpp">
       <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Render\Mesh.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Render\MeshLoader.cpp">
       <Filter>Render</Filter>
@@ -103,12 +109,6 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\World\Scene.cpp">
       <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Render\Mesh.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp">
-      <Filter>Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

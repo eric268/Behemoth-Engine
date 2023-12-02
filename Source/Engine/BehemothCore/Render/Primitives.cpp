@@ -35,11 +35,19 @@ namespace BehemothEngine
 		sprite->Draw();
 	}
 
-	void Primitives::SetPrimitiveVerticies(Math::Vector3 vert[3])
+	void Primitives::DrawWireMesh()
+	{
+		App::DrawLine(sprite->GetVertexX(0) + 400.0f, sprite->GetVertexY(0) + 400.0f, sprite->GetVertexX(1) + 400.0f, sprite->GetVertexY(1) + 400.0f);
+		App::DrawLine(sprite->GetVertexX(1) + 400.0f, sprite->GetVertexY(1) + 400.0f, sprite->GetVertexX(2) + 400.0f, sprite->GetVertexY(2) + 400.0f);
+		App::DrawLine(sprite->GetVertexX(2) + 400.0f, sprite->GetVertexY(2) + 400.0f, sprite->GetVertexX(0) + 400.0f, sprite->GetVertexY(0) + 400.0f);
+	}
+
+	void Primitives::SetPrimitiveVerticies(Math::Vector3 vert[3], Math::Vector3 normal[3])
 	{
 		for (int i = 0; i < 3; i++)
 		{
 			verticies[i] = vert[i];
+			normals[i] = normal[i];
 		}
 	}
 
@@ -53,12 +61,15 @@ namespace BehemothEngine
 
 		for (int i = 0; i < 3; i++)
 		{
-			sprite->SetVertex(i, vert[i].x, vert[i].y);
+			sprite->SetVertex(i, vert[i].x * WORLD_SCALE, vert[i].y * WORLD_SCALE);
 		}
+
 		// Set the 4th vertex to the first vertex position since CSimpleSprite takes 4 verticies
-		sprite->SetVertex(3, vert[0].x, vert[0].y);
+		sprite->SetVertex(3, vert[0].x * WORLD_SCALE, vert[0].y * WORLD_SCALE);
 
 		sprite->SetColor(color.x , color.y, color.z);
+
+		
 	}
 
 	std::vector<Math::Vector3> Primitives::GetVerticies()

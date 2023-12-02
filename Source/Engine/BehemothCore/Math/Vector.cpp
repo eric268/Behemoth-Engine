@@ -18,6 +18,7 @@ namespace Math
 	// --------------------   Vector 3   ---------------------------
 	// -------------------------------------------------------------
 	// -------------------------------------------------------------
+	Vector3::Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 
 	Vector3::Vector3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
 
@@ -42,15 +43,25 @@ namespace Math
 		return vec;
 	}
 
+	Vector3 Vector3::Zero()
+	{
+		return Vector3{};
+	}
+
 	Vector3& Vector3::operator= (const Vector3& vec)
 	{
-		this->x = vec.x;
-		this->y = vec.y;
-		this->z = vec.z;
+		x = vec.x;
+		y = vec.y;
+		z = vec.z;
 		return *this;
 	}
 
 	Vector3 Vector3::operator* (const Vector3& vec) const
+	{
+		return Vector3 (x * vec.x, y * vec.y, z * vec.z);
+	}
+
+	Vector3 Vector3::operator*= (const Vector3 vec) const
 	{
 		Vector3 v;
 		v.x = x * vec.x;
@@ -97,6 +108,10 @@ namespace Math
 	Vector3 Vector3::Normalize(const Vector3& vec)
 	{
 		const float mag = Magnitude(vec);
+
+		if (mag == 0)
+			return Vector3::Zero();
+
 		return Vector3(vec.x / mag, vec.y / mag, vec.z / mag);
 	}
 
@@ -117,6 +132,12 @@ namespace Math
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	}
 
+	bool Vector3::Equals(const Vector3& v1, const Vector3& v2, const float epsilon)
+	{
+		return  std::abs(v1.x - v2.x) <= epsilon &&
+				std::abs(v1.y - v2.y) <= epsilon &&
+				std::abs(v1.z - v2.z) <= epsilon;
+	}
 
 
 	// -------------------------------------------------------------
@@ -128,16 +149,6 @@ namespace Math
 	Vector4::Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 	Vector4::Vector4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
 
-	Vector4 Vector4::operator* (const float val) const
-	{
-		Vector4 v;
-		v.x = x * val;
-		v.y = y * val;
-		v.z = z * val;
-		v.w = w * val;
-		return v;
-	}
-
 	Vector4 Vector4::operator* (const Matrix4x4& m) const
 	{
 		Vector4 result;
@@ -148,18 +159,6 @@ namespace Math
 		result.w = x * m.data[0][3] + y * m.data[1][3] + z * m.data[2][3] + w * m.data[3][3];
 
 		return result;
-	}
-
-	Vector4 Vector4::operator/ (const float val) const
-	{
-		Vector4 vec;
-
-		vec.x = x / val;
-		vec.y = y / val;
-		vec.z = z / val;
-		vec.w = w / val;
-
-		return vec;
 	}
 
 	bool Vector4::Equals(const Vector4& vec1, const Vector4& vec2, float epsilon)

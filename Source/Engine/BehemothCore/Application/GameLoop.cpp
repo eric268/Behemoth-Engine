@@ -21,6 +21,7 @@ ECS::Registry registry;
 ECS::RenderSystem renderSystem;
 ECS::ModelInitalizeSystem loadingSystem;
 ECS::CameraSystem cameraSystem;
+ECS::RotationSystem rotationSystem;
 
 void Init()
 {
@@ -30,6 +31,8 @@ void Init()
 	registry.AddComponent<ECS::MeshComponent>(e1, "Models/cube.obj");
 	registry.AddComponent<ECS::TransformComponent>(e1);
 	registry.AddComponent<ECS::MeshInitalizeComponent>(e1);
+
+	registry.AddComponent<ECS::RotationComponent>(e1, 1, 20.0f);
 
 	registry.AddComponent<ECS::CameraComponent>(e2, true);
 
@@ -44,6 +47,7 @@ void Update(float deltaTime)
 {
 	cameraSystem.Run(registry);
 	loadingSystem.Run(registry);
+	rotationSystem.Run(registry);
 }
 
 //------------------------------------------------------------------------

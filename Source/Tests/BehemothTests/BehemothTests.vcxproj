@@ -160,9 +160,9 @@
     <ClInclude Include="Test\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test\pch.cpp" />
     <ClCompile Include="Test\MathLibraryTest.cpp" />
     <ClCompile Include="Test\PhysicsLibraryTests.cpp" />
+    <ClCompile Include="Test\pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -49,3 +49,14 @@ TEST(M4x4_Mul_M4x4, Math)
 
 	EXPECT_TRUE(Math::Matrix4x4::Equals(result, ans));
 }
+
+TEST(CrossProd, Math)
+{
+	Math::Vector3 vec1(10.12f, -99.76, 0.13);
+	Math::Vector3 vec2(-1.45, 20.25, -102.12);
+
+	Math::Vector3 result = Math::Vector3::Cross(vec1, vec2);
+	Math::Vector3 ans(10184.8587, 1033.2659, 60.278);
+
+	EXPECT_TRUE(Math::Vector3::Equals(result, ans));
+}

@@ -35,7 +35,7 @@ namespace ECS
 			LOG_ERROR("Main camera not found");
 			return;
 		}
-
+		int counter = 0;
 		for (const auto& [meshComp, transformComp] : components)
 		{
 			std::size_t size = meshComp->mesh.meshPrimitives.size();
@@ -47,18 +47,38 @@ namespace ECS
 				{
 					vertex[j] = Math::Vector4(meshComp->mesh.meshPrimitives[i].verticies[j], 1.0f);
 
-					vertex[j] = vertex[j] * transformComp->transformMatrix;
-					vertex[j] = vertex[j] * mainCamera->viewMatrix;
+ 					vertex[j] = vertex[j] * transformComp->transformMatrix;
+ 					vertex[j] = vertex[j] * mainCamera->viewMatrix;
 					vertex[j] = vertex[j] * mainCamera->perspectiveMatrix;
-					vertex[j] = vertex[j] / vertex[j].w;
+  
+  					vertex[j] = vertex[j] / vertex[j].w;
+				}
 
-					vertex[j] = vertex[j] * 100.0f;
+				Math::Vector3 temp[3];
+				for (int k = 0; k < 3; k++)
+				{
+					temp[k] = Math::Vector3(vertex[k].x, vertex[k].y, vertex[k].z) * WORLD_SCALE;
+				}
+
+				if (ClipBackFace(Math::Vector3(mainCamera->viewMatrix[3][0], mainCamera->viewMatrix[3][1], mainCamera->viewMatrix[3][2]),
+					temp))
+				{
+					continue;
 				}
 
 				meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(vertex);
+				meshComp->mesh.meshPrimitives[i].DrawWireMesh();
 				meshComp->mesh.meshPrimitives[i].Draw();
 			}
 		}
+	}
+
+	bool RenderSystem::ClipBackFace(const Math::Vector3& cameraLocation, const Math::Vector3 primitiveVerts[3])
+	{
+		const Math::Vector3 normal = Math::Vector3::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]);
+		const Math::Vector3 cam = cameraLocation - primitiveVerts[0];
+		float result = (Math::Vector3::Dot(normal, cam));
+		return result <= 0;
 	}
 
 	void ModelInitalizeSystem::Run(Registry& registry)
@@ -112,7 +132,7 @@ namespace ECS
 		component.windowHeight = rect.bottom - rect.top;
 
 		const float fovScale = 1.0f / (std::tan(DEGREE_TO_RAD(component.FOV) * 0.5f));
-		const float aspectRatio = component.windowWidth / component.windowHeight;
+		const float aspectRatio = component.windowHeight / component.windowWidth;
 		const float farPlane = component.farClippingPlane;
 		const float nearPlane = component.nearClippingPlane;
 
@@ -120,10 +140,30 @@ namespace ECS
 
 		component.perspectiveMatrix[0][0] = fovScale * aspectRatio;
 		component.perspectiveMatrix[1][1] = fovScale;
-		component.perspectiveMatrix[2][2] = farPlane / (farPlane - nearPlane);
-		component.perspectiveMatrix[3][2] = -farPlane * nearPlane / (farPlane - nearPlane);
-		component.perspectiveMatrix[2][3] = 1.0f;
+		component.perspectiveMatrix[2][2] = farPlane/ (farPlane - nearPlane);
+		component.perspectiveMatrix[2][3] = (-farPlane * nearPlane) / (farPlane - nearPlane);
+		component.perspectiveMatrix[3][2] = 1.0f;
+		component.perspectiveMatrix[3][3] = 0.0f;
 
-		component.viewMatrix = CameraHelper::LookAt(Math::Vector3(0, 0, 50), Math::Vector3(0, 0, 0), Math::Vector3(0, 1.0, 0));
+		component.viewMatrix = CameraHelper::LookAt(Math::Vector3(-5, -3, 10), Math::Vector3(0, 0, 0), Math::Vector3(0, 1, 0));
+	}
+
+	void RotationSystem::Run(Registry& registry)
+	{
+		auto components = registry.Get<RotationComponent, TransformComponent>();
+
+		for (const auto& [rotationComp, transformComp] : components)
+		{
+			Math::Matrix4x4 m = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed * 0.001f);
+			auto m2 = transformComp->transformMatrix * m;
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					transformComp->transformMatrix[i][j] = m2[i][j];
+				}
+			}
+		}
 	}
 }

@@ -33,12 +33,24 @@ namespace Math
 	class Matrix3x3 : public Matrix
 	{
 	public:
-		Matrix3x3() : Matrix(3) {}
+		Matrix3x3();
 		~Matrix3x3() = default;
 
 		static Matrix3x3 Identity();
 
 		float data[3][3];
+
+		float* operator[](int row)
+		{
+			assert(row < 3 && row >= 0);
+			return data[row];
+		}
+		const float* operator[](int row) const
+		{
+			assert(row < 3 && row >= 0);
+			return data[row];
+		}
+
 	private:
 	};
 
@@ -52,10 +64,13 @@ namespace Math
 		static Matrix4x4 Zero();
 		static Matrix4x4 Identity();
 		static bool Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon = 1e-2);
+		static Matrix4x4 GetRotationMatrix(const int axis, const float theta);
 
 		float data[4][4];
 
+		// Matrix4x4& operator= (const Matrix4x4& m);
 		Matrix4x4 operator*(const Matrix4x4& m) const;
+		Matrix4x4 operator*=(const Matrix4x4& m) const;
 
 		float* operator[](int row)
 		{

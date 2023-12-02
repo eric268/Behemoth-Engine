@@ -2,6 +2,7 @@
 
 #include "Math/MathCore.h"
 #include "SimpleSprite.h"
+#include "app.h"
 // stl
 #include <vector>
 #include <string>
@@ -18,11 +19,13 @@ namespace BehemothEngine
 		const void PrintVerticies() const;
 
 		void Draw();
+		void DrawWireMesh();
 
 		Math::Vector3 verticies[3];
+		Math::Vector3 normals[3];
 
 		void SetSpriteVerticies(Math::Vector4 vert[3]);
-		void SetPrimitiveVerticies(Math::Vector3 vert[3]);
+		void SetPrimitiveVerticies(Math::Vector3 vert[3], Math::Vector3 normal[3]);
 
 	private:
 		CSimpleSprite* sprite;
