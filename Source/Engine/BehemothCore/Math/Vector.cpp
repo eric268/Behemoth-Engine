@@ -22,7 +22,7 @@ namespace Math
 
 	Vector3::Vector3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
 
-	Vector4::Vector4(Vector3 vec, float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
+	Vector3::Vector3(Vector4 vec) : x(vec.x), y(vec.y), z(vec.z) {}
 
 	Vector3 Vector3::Forward()
 	{
@@ -139,6 +139,15 @@ namespace Math
 				std::abs(v1.z - v2.z) <= epsilon;
 	}
 
+	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix)
+	{
+		Vector4 v = Vector4(vec, 1.0f) * rotationMatrix;
+		vec.x = v.x;
+		vec.y = v.y;
+		vec.z = v.z;
+		return vec;
+	}
+
 
 	// -------------------------------------------------------------
 	// -------------------------------------------------------------
@@ -148,6 +157,7 @@ namespace Math
 
 	Vector4::Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 	Vector4::Vector4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
+	Vector4::Vector4(Vector3 vec, float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
 
 	Vector4 Vector4::operator* (const Matrix4x4& m) const
 	{
@@ -161,12 +171,28 @@ namespace Math
 		return result;
 	}
 
+	Vector4 Vector4::operator-(const Vector4 vec) const
+	{
+		return Vector4(x - vec.x, y - vec.y, z - vec.z, w - vec.w);
+	}
+
 	bool Vector4::Equals(const Vector4& vec1, const Vector4& vec2, float epsilon)
 	{
 		return std::abs(vec1.x - vec2.x) <= epsilon &&
 			   std::abs(vec1.y - vec2.y) <= epsilon &&
 			   std::abs(vec1.z - vec2.z) <= epsilon &&
 			   std::abs(vec1.w - vec2.w) <= epsilon;
+	}
+	
+	Vector4 Vector4::Cross(const Vector4& v1, const Vector4& v2, const float wVal)
+	{
+		return Vector4
+		(
+			v1.y * v2.z - v1.z * v2.y,
+			v1.z * v2.x - v1.x * v2.z,
+			v1.x * v2.y - v1.y * v2.x,
+			wVal
+		);
 	}
 }
 

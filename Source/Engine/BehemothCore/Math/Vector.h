@@ -4,6 +4,10 @@
 
 namespace Math
 {
+	class Vector2;
+	class Vector3;
+	class Vector4;
+
 	class Vector2
 	{
 	public:
@@ -23,6 +27,7 @@ namespace Math
 	public:
 		Vector3();
 		Vector3(const float x, const float y, const float z);
+		explicit Vector3(Vector4 vec);
 
 		float x;
 		float y;
@@ -69,6 +74,8 @@ namespace Math
 		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
 		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);
 
+		static Vector3& RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix);
+
 	private:
 
 	};
@@ -87,6 +94,7 @@ namespace Math
 		float w;
 
 		static bool Equals(const Vector4& vec1, const Vector4& vec2, float epsilon = 1e-2);
+		static Vector4 Cross(const Vector4& v1, const Vector4& v2, const float wVal = 1.0f);
 
 		Vector4 operator* (const Matrix4x4& m) const;
 
@@ -108,6 +116,8 @@ namespace Math
 			assert(scalar != 0);
 			return Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
 		}
+
+		Vector4 operator-(const Vector4 vec) const;
 
 	private:
 

@@ -36,25 +36,25 @@ namespace ECS
 			if (identifier >= maxSize || sparse[identifier] == NULL_ENTITY)
 				return;
 
-			// Currently do this assert because all components should be removed when an entity is destroyed so if this is not the case there is a bug
-			// assert(entity.GetVersion() == dense[sparse[identifier]].GetVersion());
-
-
 			std::uint16_t denseIndex = sparse[identifier];
 			int lastPos = dense.size() - 1;
 
-			std::swap(dense[denseIndex], dense[lastPos]);
-			sparse[lastPos] = denseIndex;
+			// No need to swap if component to be removed is already the last component in the dense array
+			if (denseIndex != lastPos)
+			{
+				std::swap(dense[denseIndex], dense[lastPos]);
+				std::swap(components[denseIndex], components[lastPos]);
+
+				Entity swappedEntity = dense[denseIndex];
+				sparse[swappedEntity.GetIdentifier()] = denseIndex;
+			}
+
 			dense.pop_back();
-
-			std::swap(components[denseIndex], components[lastPos]);
-
 			components.pop_back();
 
-			sparse[identifier] = -1;
+			sparse[identifier] = NULL_ENTITY;
 			index--;
 		}
-
 
 		void AddComponent(const Entity& entity, const Component& component)
 		{

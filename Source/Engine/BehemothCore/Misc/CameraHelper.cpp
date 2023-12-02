@@ -1,6 +1,7 @@
 #include "CameraHelper.h"
 #include "Math/Vector.h"
-
+#include "ECS/Components.h"
+#include "Log.h"
 using namespace Math;
 
 Math::Matrix4x4 CameraHelper::LookAt(const Math::Vector3& eye, const Math::Vector3& target, const Math::Vector3& up)
@@ -20,7 +21,12 @@ Math::Matrix4x4 CameraHelper::LookAt(const Math::Vector3& eye, const Math::Vecto
 	return viewMatrix;
 }
 
-Math::Vector3 CameraHelper::GetCameraLocation(const ECS::CameraComponent& component)
+Math::Vector3 CameraHelper::GetPosition(const ECS::CameraComponent* component)
 {
-	return Vector3(component.viewMatrix[3][0], component.viewMatrix[3][1], component.viewMatrix[3][2]);
+	if (!component)
+	{
+		LOG_ERROR("Null camera component found");
+		return Vector3{};
+	}
+	return Vector3(component->viewMatrix[3][0], component->viewMatrix[3][1], component->viewMatrix[3][2]);
 }

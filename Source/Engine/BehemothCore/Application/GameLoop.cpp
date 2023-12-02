@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 
 #include "ECS/System.h"
+#include "Misc/CameraHelper.h"
 //stl
 #include <iostream>
 
@@ -22,21 +23,34 @@ ECS::RenderSystem renderSystem;
 ECS::ModelInitalizeSystem loadingSystem;
 ECS::CameraSystem cameraSystem;
 ECS::RotationSystem rotationSystem;
+ECS::MovementSystem movementSystem;
 
 void Init()
 {
-	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	ECS::Entity e2 = registry.CreateEntity("Main Camera");
+	ECS::Entity e0 = registry.CreateEntity("Main Camera");
+	registry.AddComponent<ECS::CameraComponent>(e0, true);
 
+
+	ECS::Entity e1 = registry.CreateEntity("Cube 1");
 	registry.AddComponent<ECS::MeshComponent>(e1, "Models/cube.obj");
 	registry.AddComponent<ECS::TransformComponent>(e1);
 	registry.AddComponent<ECS::MeshInitalizeComponent>(e1);
+	registry.AddComponent<ECS::RotationComponent>(e1, 0, 2.0f);
+	registry.AddComponent<ECS::MovementComponent>(e1, Math::Vector3(-5, 0,0));
 
-	registry.AddComponent<ECS::RotationComponent>(e1, 1, 20.0f);
+	ECS::Entity e2 = registry.CreateEntity("Cube 2");
+	registry.AddComponent<ECS::MeshComponent>(e2, "Models/cube.obj");
+	registry.AddComponent<ECS::TransformComponent>(e2);
+	registry.AddComponent<ECS::MeshInitalizeComponent>(e2);
+	registry.AddComponent<ECS::RotationComponent>(e2, 1, 2.0f);
+	registry.AddComponent<ECS::MovementComponent>(e2, Math::Vector3(0, 0, 0));
 
-	registry.AddComponent<ECS::CameraComponent>(e2, true);
-
-	
+	ECS::Entity e3 = registry.CreateEntity("Cube 3");
+	registry.AddComponent<ECS::MeshComponent>(e3, "Models/cube.obj");
+	registry.AddComponent<ECS::TransformComponent>(e3);
+	registry.AddComponent<ECS::MeshInitalizeComponent>(e3);
+	registry.AddComponent<ECS::RotationComponent>(e3, 2, 2.0f);
+	registry.AddComponent<ECS::MovementComponent>(e3, Math::Vector3(5, 0, 0));
 }
 
 //------------------------------------------------------------------------
@@ -48,6 +62,7 @@ void Update(float deltaTime)
 	cameraSystem.Run(registry);
 	loadingSystem.Run(registry);
 	rotationSystem.Run(registry);
+	movementSystem.Run(registry);
 }
 
 //------------------------------------------------------------------------

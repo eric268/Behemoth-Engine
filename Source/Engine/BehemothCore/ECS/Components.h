@@ -39,7 +39,8 @@ namespace ECS
 	class MovementComponent : public Components
 	{
 	public:
-		MovementComponent() {}
+		MovementComponent() : location(Math::Vector3{}) {}
+		MovementComponent(Math::Vector3 vec) : location(vec) {}
 		~MovementComponent() override {};
 
 		Math::Vector3 location;
@@ -76,14 +77,15 @@ namespace ECS
 	{
 	public:
 		CameraComponent(bool main = false) : 
-			viewMatrix(Math::Matrix4x4::Identity()), 
+			viewMatrix(Math::Matrix4x4::Identity()),
 			perspectiveMatrix(Math::Matrix4x4::Identity()),
 			FOV(90.0f),
-			nearClippingPlane(0.1f), 
-			farClippingPlane(1000.0f), 
-			windowWidth(0.0f), 
+			nearClippingPlane(0.1f),
+			farClippingPlane(1000.0f),
+			windowWidth(0.0f),
 			windowHeight(0.0f),
 			isMain(main) {}
+
 		~CameraComponent() = default;
 
 		Math::Matrix4x4 viewMatrix;
@@ -101,6 +103,7 @@ namespace ECS
 	public:
 		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()) {}
 		Math::Matrix4x4 transformMatrix;
+		Math::Vector3 position;
 	};
 
 	class MeshInitalizeComponent : public Components
