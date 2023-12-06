@@ -1,9 +1,9 @@
-﻿Build started 2023-12-02 4:24:55 PM.
+﻿Build started 2023-12-05 7:00:11 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
-         Creating "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+         Touching "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild".
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /IBehemothCore /I..\NextAPI\App /I..\..\Assets /ZI /JMC /nologo /W3 /WX- /diagnostics:column /Od /D WORLD_SCALE=100 /D DEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Debug\windows\Engine\\" /Fd"..\..\Build\bin\Debug\windows\Engine\Engine.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt BehemothCore\Application\GameLoop.cpp BehemothCore\ECS\System.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /IBehemothCore /I..\NextAPI\App /I"{wks.location\Resources\Models\}" /ZI /JMC /nologo /W3 /WX- /diagnostics:column /Od /D WORLD_SCALE=100 /D DEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Debug\windows\Engine\\" /Fd"..\..\Build\bin\Debug\windows\Engine\Engine.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt BehemothCore\Application\GameLoop.cpp BehemothCore\ECS\System.cpp BehemothCore\Misc\CameraHelper.cpp BehemothCore\Render\MeshLoader.cpp
          GameLoop.cpp
      1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(9): message : see previous definition of 'PI'
@@ -15,40 +15,40 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(60): message : while compiling class template member function 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)'
                  with
                  [
-                     T=ECS::MovementComponent,
-                     Component=ECS::MovementComponent
+                     T=ECS::RotationComponent,
+                     Component=ECS::RotationComponent
                  ]
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(84): message : see reference to function template instantiation 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)' being compiled
                  with
                  [
-                     T=ECS::MovementComponent,
-                     Component=ECS::MovementComponent
+                     T=ECS::RotationComponent,
+                     Component=ECS::RotationComponent
                  ]
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(30): message : see reference to class template instantiation 'ECS::SparseSet<T>' being compiled
                  with
                  [
-                     T=ECS::MovementComponent
+                     T=ECS::RotationComponent
                  ]
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(80): message : see reference to class template instantiation 'ECS::ComponentPool<T>' being compiled
                  with
                  [
-                     T=ECS::MovementComponent
+                     T=ECS::RotationComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(39): message : see reference to function template instantiation 'void ECS::Registry::AddComponent<ECS::MovementComponent,Math::Vector3>(ECS::Entity,Math::Vector3 &&)' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(43): message : see reference to function template instantiation 'void ECS::Registry::AddComponent<ECS::RotationComponent,int,float>(ECS::Entity,int &&,float &&)' being compiled
          System.cpp
      1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(9): message : see previous definition of 'PI'
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(111,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(131,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(132,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(202,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(125,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(145,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(146,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(217,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
      1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(40,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(33): message : while compiling class template member function 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)'
                  with
                  [
                      T=ECS::MovementComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(204): message : see reference to function template instantiation 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(219): message : see reference to function template instantiation 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)' being compiled
                  with
                  [
                      T=ECS::MovementComponent
@@ -58,7 +58,7 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
                  [
                      T=ECS::MovementComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(191): message : see reference to class template instantiation 'ECS::ComponentPool<ECS::MovementComponent>' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(205): message : see reference to class template instantiation 'ECS::ComponentPool<ECS::MovementComponent>' being compiled
      1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(85,1): warning C4267: 'argument': conversion from 'size_t' to 'const uint16_t', possible loss of data
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(73): message : while compiling class template member function 'Component *ECS::SparseSet<Component>::GetComponent(const ECS::Entity &)'
                  with
@@ -77,7 +77,13 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
                  ]
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(123): message : see reference to class template instantiation 'ECS::ComponentPool<ECS::RotationComponent>' being compiled
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(107): message : see reference to function template instantiation 'std::shared_ptr<ECS::ComponentPool<ECS::RotationComponent>> ECS::Registry::GetComponent<ECS::RotationComponent>(void)' being compiled
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(153): message : see reference to function template instantiation 'std::vector<std::tuple<ECS::RotationComponent *,ECS::TransformComponent *,ECS::MeshComponent *>,std::allocator<std::tuple<ECS::RotationComponent *,ECS::TransformComponent *,ECS::MeshComponent *>>> ECS::Registry::Get<ECS::RotationComponent,ECS::TransformComponent,ECS::MeshComponent>(void)' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(167): message : see reference to function template instantiation 'std::vector<std::tuple<ECS::RotationComponent *,ECS::TransformComponent *,ECS::MeshComponent *>,std::allocator<std::tuple<ECS::RotationComponent *,ECS::TransformComponent *,ECS::MeshComponent *>>> ECS::Registry::Get<ECS::RotationComponent,ECS::TransformComponent,ECS::MeshComponent>(void)' being compiled
+         CameraHelper.cpp
+     1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(9): message : see previous definition of 'PI'
+         MeshLoader.cpp
+     1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(9): message : see previous definition of 'PI'
          Generating Code...
      1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
      1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
@@ -106,16 +112,18 @@ Build succeeded.
          C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
          C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(111,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(131,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(132,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(202,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(125,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(145,38): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(146,40): warning C4244: '=': conversion from 'LONG' to 'float', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\System.cpp(217,3): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(40,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(85,1): warning C4267: 'argument': conversion from 'size_t' to 'const uint16_t', possible loss of data
+         C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+         C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
 
-    11 Warning(s)
+    13 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:02.23
+Time Elapsed 00:00:04.31

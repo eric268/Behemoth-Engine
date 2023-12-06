@@ -171,6 +171,12 @@ namespace Math
 		return result;
 	}
 
+	Vector4 Vector4::operator*= (const Matrix4x4& m)
+	{
+		*this = *this * m;
+		return *this;
+	}
+
 	Vector4 Vector4::operator-(const Vector4 vec) const
 	{
 		return Vector4(x - vec.x, y - vec.y, z - vec.z, w - vec.w);

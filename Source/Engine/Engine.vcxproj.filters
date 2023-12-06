@@ -21,6 +21,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BehemothCore\Application\MeshMetaData.h">
+      <Filter>Application</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Application\ResourceManager.h">
       <Filter>Application</Filter>
     </ClInclude>

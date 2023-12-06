@@ -24,9 +24,9 @@ namespace BehemothEngine
 	class Mesh
 	{
 	public:
-		Mesh() = default;
-		Mesh(const std::string& path);
-		std::string filePath;
+		Mesh(const std::string& modelPath, const std::string& texturePath);
+		std::string modelFileName;
+		std::string textureFileName;
 		std::vector<Primitives> meshPrimitives;
 		void GeneratePrimitives(const std::vector<VertexData>& data);
 	};

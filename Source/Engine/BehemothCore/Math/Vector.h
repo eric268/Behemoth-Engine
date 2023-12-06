@@ -65,6 +65,15 @@ namespace Math
 			return Vector3(x * scalar, y * scalar, z * scalar);
 		}
 
+		template<typename T>
+		Vector3& operator+=(const T scalar)
+		{
+			x += scalar.x;
+			y += scalar.y;
+			z += scalar.z;
+			return *this;
+		}
+
 		static float Angle(const Vector3& v1, const Vector3& v2);
 		static float SquaredMagnitude(const Vector3& v1);
 		static float Magnitude(const Vector3& v1);
@@ -97,6 +106,7 @@ namespace Math
 		static Vector4 Cross(const Vector4& v1, const Vector4& v2, const float wVal = 1.0f);
 
 		Vector4 operator* (const Matrix4x4& m) const;
+		Vector4 operator*= (const Matrix4x4& m);
 
 		template<typename T>
 		Vector4 operator* (const T scalar) const

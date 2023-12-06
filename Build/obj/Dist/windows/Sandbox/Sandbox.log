@@ -1,0 +1,23 @@
+﻿Build started 2023-12-05 2:00:56 PM.
+Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Sandbox\Sandbox.vcxproj" on node 2 (Build target(s)).
+     1>PrepareForBuild:
+         Creating directory "..\..\Build\bin\Dist\windows\Sandbox\".
+         Creating directory "..\..\Build\obj\Dist\windows\Sandbox\Sandbox.tlog\".
+       InitializeBuildStatus:
+         Creating "..\..\Build\obj\Dist\windows\Sandbox\Sandbox.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /I..\Engine\BehemothCore /nologo /W3 /WX- /diagnostics:column /Ox /Oi /D DIST /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Dist\windows\Sandbox\\" /Fd"..\..\Build\bin\Dist\windows\Sandbox\Sandbox.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt main.cpp
+         main.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\Lib.exe /OUT:"..\..\Build\bin\Dist\windows\Sandbox\Sandbox.lib" /LIBPATH:..\..\Build\bin\Dist\windows\Engine /LIBPATH:Build\Dist /NOLOGO /MACHINE:X64 ..\..\Build\obj\Dist\windows\Sandbox\main.obj
+         Sandbox.vcxproj -> C:\Work\Engine\Next2024\Build\bin\Dist\windows\Sandbox\Sandbox.lib
+       FinalizeBuildStatus:
+         Deleting file "..\..\Build\obj\Dist\windows\Sandbox\Sandbox.tlog\unsuccessfulbuild".
+         Touching "..\..\Build\obj\Dist\windows\Sandbox\Sandbox.tlog\Sandbox.lastbuildstate".
+     1>Done Building Project "C:\Work\Engine\Next2024\Source\Sandbox\Sandbox.vcxproj" (Build target(s)).
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.50

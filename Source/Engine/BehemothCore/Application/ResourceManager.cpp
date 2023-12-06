@@ -28,7 +28,7 @@ namespace BehemothEngine
 		MeshLoader meshLoader{};
 		meshContainer[id] = MeshData();
 
-		bool result = meshLoader.LoadModel("../../Assets/" + filePath, meshContainer[id].meshData);
+		bool result = meshLoader.LoadModel("Models/" + filePath, meshContainer[id].meshData);
 		if (!result)
 		{
 			meshContainer.erase(id);

@@ -8,12 +8,12 @@
 
 namespace BehemothEngine
 {
-	bool MeshLoader::LoadModel(const std::string& filepath, std::vector<VertexData>& meshContainer)
+	bool MeshLoader::LoadModel(const std::string& modelPath, std::vector<VertexData>& meshContainer)
 	{
-		std::ifstream file(filepath, std::ios::in);
+		std::ifstream file(modelPath, std::ios::in);
 		if (!file.is_open())
 		{
-			LOG_ERROR(filepath + " not found");
+			LOG_ERROR(modelPath + " not found");
 			return false;
 		}
 

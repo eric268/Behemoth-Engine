@@ -20,7 +20,7 @@ namespace ECS
 		virtual void Run(Registry& registry) override;
 	private:
 
-		bool ClipBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[3]);
+		bool CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[3]);
 	};
 
 	class ModelInitalizeSystem : public System
@@ -37,7 +37,7 @@ namespace ECS
 		CameraSystem() = default;
 		virtual void Run(Registry& registry) override;
 
-		void UpdatePerspectiveMatrix(CameraComponent& component);
+		void UpdatePerspectiveMatrix(CameraComponent& component, const Math::Vector3& position);
 	};
 
 	class RotationSystem : public System

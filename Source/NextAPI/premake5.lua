@@ -16,7 +16,7 @@ project "NextAPI"
       -- Link against the StaticLib project
       links { "freeglut", "dxguid", "dsound"}
 
-      includedirs {"%{prj.location}/", ".", "./glut", "%{wks.location}/Source/NextAPI" }
+      includedirs {"%{prj.location}/", ".", "./glut", "%{wks.location}/Source/NextAPI/", "{wks.location/Resources/Textures/}" }
 
    filter "system:windows"
       systemversion "latest"

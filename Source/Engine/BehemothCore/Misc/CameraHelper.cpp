@@ -20,13 +20,3 @@ Math::Matrix4x4 CameraHelper::LookAt(const Math::Vector3& eye, const Math::Vecto
 
 	return viewMatrix;
 }
-
-Math::Vector3 CameraHelper::GetPosition(const ECS::CameraComponent* component)
-{
-	if (!component)
-	{
-		LOG_ERROR("Null camera component found");
-		return Vector3{};
-	}
-	return Vector3(component->viewMatrix[3][0], component->viewMatrix[3][1], component->viewMatrix[3][2]);
-}

@@ -20,7 +20,7 @@ language "C++"
           "WORLD_SCALE=100"
       }
 
-      includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/App/", "%{wks.location}/Assets/" }
+      includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/App/" }
      filter "architecture:Win32"
          libdirs 
          {

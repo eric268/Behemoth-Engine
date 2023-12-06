@@ -10,6 +10,8 @@
 
 #include <Windows.h>
 #include "main.h"
+#include <algorithm>
+#include <execution>
 
 using namespace BehemothEngine;
 namespace ECS
@@ -17,26 +19,27 @@ namespace ECS
 	void RenderSystem::Run(Registry& registry)
 	{
 		auto components = registry.Get<MeshComponent, TransformComponent>();
-		auto cameraComponents = registry.Get<CameraComponent>();
+		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
 
 		CameraComponent* mainCamera = nullptr;
+		TransformComponent* mainCameraTransform = nullptr;
 
-		for (const auto& [cameraComp] : cameraComponents)
+		for (const auto& [cameraComp, transformComp] : cameraComponents)
 		{
 			if (cameraComp->isMain)
 			{
 				mainCamera = cameraComp;
+				mainCameraTransform = transformComp;
 				break;
 			}
 		}
 
-		if (!mainCamera)
+		if (!mainCamera || !mainCameraTransform)
 		{
 			LOG_ERROR("Main camera not found");
 			return;
 		}
 
-		int counter = 0;
 		for (const auto& [meshComp, transformComp] : components)
 		{
 			if (!meshComp || !transformComp)
@@ -46,34 +49,45 @@ namespace ECS
 			}
 
 			// ** Order of multiplication matters here **
-			auto combinedMatrix = transformComp->transformMatrix * mainCamera->viewMatrix * mainCamera->perspectiveMatrix;
+			auto combinedMatrix = transformComp->transformMatrix;
+			Math::Matrix4x4 viewProjMatrix = mainCamera->viewMatrix * mainCamera->perspectiveMatrix;
+
 
 			std::size_t size = meshComp->mesh.meshPrimitives.size();
 			for (int i = 0; i < size; i++)
 			{
 				Math::Vector4 vertex[3];
 
-				// potentially unroll this loop to reduce loop overhead / optimize 
-				for (int j = 0; j < 3; j++)
-				{
-					vertex[j] = Math::Vector4(meshComp->mesh.meshPrimitives[i].verticies[j], 1.0f);
-					vertex[j] = vertex[j] * combinedMatrix;
-  					vertex[j] = vertex[j] / vertex[j].w;
-				}
+				// originally was a for loop but after profiling unrolling the loop lead to a 2.5x increase in CPU time
+				vertex[0] = Math::Vector4(meshComp->mesh.meshPrimitives[i].verticies[0], 1.0f);
+ 				vertex[0] = vertex[0] * transformComp->transformMatrix;
+ 				vertex[0] = vertex[0] * viewProjMatrix;
+ 
+ 				vertex[1] = Math::Vector4(meshComp->mesh.meshPrimitives[i].verticies[1], 1.0f);
+ 				vertex[1] = vertex[1] * transformComp->transformMatrix;
+ 				vertex[1] = vertex[1] * viewProjMatrix;
+ 
+ 				vertex[2] = Math::Vector4(meshComp->mesh.meshPrimitives[i].verticies[2], 1.0f);
+ 				vertex[2] = vertex[2] * transformComp->transformMatrix;
+ 				vertex[2] = vertex[2] * viewProjMatrix;
 
-				if (ClipBackFace(CameraHelper::GetPosition(mainCamera),vertex))
+				vertex[0] = vertex[0] / vertex[0].w;
+				vertex[1] = vertex[1] / vertex[1].w;
+				vertex[2] = vertex[2] / vertex[2].w;
+
+				if (CullBackFace(mainCameraTransform->position, vertex))
 				{
 					continue;
 				}
 
-				meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(vertex);
+				meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(vertex, meshComp->mesh.meshPrimitives[i].uv);
 				// meshComp->mesh.meshPrimitives[i].DrawWireMesh();
 				meshComp->mesh.meshPrimitives[i].Draw();
 			}
 		}
 	}
 
-	bool RenderSystem::ClipBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[3])
+	bool RenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[3])
 	{
 
 		const Math::Vector3 normal = Math::Vector3(Math::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
@@ -94,7 +108,7 @@ namespace ECS
 		auto components = registry.Get<MeshComponent>();
 		for (const auto& [ meshComp] : components)
 		{
-			const MeshData* data = ResourceManager::GetInstance().GetMesh(meshComp->filepath);
+			const MeshData* data = ResourceManager::GetInstance().GetMesh(meshComp->modelFileName);
 
 			if (data)
 			{
@@ -116,15 +130,15 @@ namespace ECS
 
 	void CameraSystem::Run(Registry& registry)
 	{
-		auto components = registry.Get<CameraComponent>();
+		auto components = registry.Get<CameraComponent, TransformComponent>();
 
-		for (auto& [comp] : components)
+		for (auto& [cameraComp, transformComp] : components)
 		{
-			UpdatePerspectiveMatrix(*comp);
+			UpdatePerspectiveMatrix(*cameraComp, transformComp->position);
 		}
 	}
 
-	void CameraSystem::UpdatePerspectiveMatrix(CameraComponent& component)
+	void CameraSystem::UpdatePerspectiveMatrix(CameraComponent& component, const Math::Vector3& position)
 	{
 		RECT rect;
 		GetClientRect(MAIN_WINDOW_HANDLE, &rect);
@@ -145,7 +159,7 @@ namespace ECS
 		component.perspectiveMatrix[3][2] = 1.0f;
 		component.perspectiveMatrix[3][3] = 0.0f;
 
-		component.viewMatrix = CameraHelper::LookAt(Math::Vector3(0, 0, 10), Math::Vector3(0, 0, 0), Math::Vector3(0, 1, 0));
+		component.viewMatrix = CameraHelper::LookAt(position, Math::Vector3(0, 0, 0), Math::Vector3(0, 1, 0));
 	}
 
 	void RotationSystem::Run(Registry& registry)
@@ -194,6 +208,7 @@ namespace ECS
 		auto components = registry.Get<MovementComponent, TransformComponent>();
 		for (const auto& [movementComp, transformComp] : components)
 		{
+			transformComp->position += movementComp->location;
 			transformComp->transformMatrix[3][0] += movementComp->location.x * WORLD_SCALE;
 			transformComp->transformMatrix[3][1] += movementComp->location.y * WORLD_SCALE;
 			transformComp->transformMatrix[3][2] += movementComp->location.z * WORLD_SCALE;

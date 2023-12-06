@@ -10,6 +10,7 @@
 #include "Misc/CameraHelper.h"
 //stl
 #include <iostream>
+#include <filesystem>
 
 //------------------------------------------------------------------------
 
@@ -27,30 +28,35 @@ ECS::MovementSystem movementSystem;
 
 void Init()
 {
+	std::cout << std::filesystem::current_path();
+
 	ECS::Entity e0 = registry.CreateEntity("Main Camera");
 	registry.AddComponent<ECS::CameraComponent>(e0, true);
+	registry.AddComponent<ECS::TransformComponent>(e0);
+	registry.AddComponent<ECS::MovementComponent>(e0, Math::Vector3(0, 0, 10));
 
 
 	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	registry.AddComponent<ECS::MeshComponent>(e1, "Models/cube.obj");
+	registry.AddComponent<ECS::MeshComponent>(e1, "cube.obj", "brick.png");
 	registry.AddComponent<ECS::TransformComponent>(e1);
 	registry.AddComponent<ECS::MeshInitalizeComponent>(e1);
-	registry.AddComponent<ECS::RotationComponent>(e1, 0, 2.0f);
-	registry.AddComponent<ECS::MovementComponent>(e1, Math::Vector3(-5, 0,0));
+	registry.AddComponent<ECS::RotationComponent>(e1, 1, 2.0f);
+	registry.AddComponent<ECS::MovementComponent>(e1, Math::Vector3(0, 0, 0));
 
-	ECS::Entity e2 = registry.CreateEntity("Cube 2");
-	registry.AddComponent<ECS::MeshComponent>(e2, "Models/cube.obj");
+	ECS::Entity e2 = registry.CreateEntity("Debug Sphere");
+	registry.AddComponent<ECS::MeshComponent>(e2, "sphere.obj", "rock.png");
 	registry.AddComponent<ECS::TransformComponent>(e2);
 	registry.AddComponent<ECS::MeshInitalizeComponent>(e2);
 	registry.AddComponent<ECS::RotationComponent>(e2, 1, 2.0f);
-	registry.AddComponent<ECS::MovementComponent>(e2, Math::Vector3(0, 0, 0));
+	registry.AddComponent<ECS::MovementComponent>(e2, Math::Vector3(-3, 0, 0));
 
-	ECS::Entity e3 = registry.CreateEntity("Cube 3");
-	registry.AddComponent<ECS::MeshComponent>(e3, "Models/cube.obj");
-	registry.AddComponent<ECS::TransformComponent>(e3);
-	registry.AddComponent<ECS::MeshInitalizeComponent>(e3);
-	registry.AddComponent<ECS::RotationComponent>(e3, 2, 2.0f);
-	registry.AddComponent<ECS::MovementComponent>(e3, Math::Vector3(5, 0, 0));
+// 
+// 	ECS::Entity e3 = registry.CreateEntity("Debug Icosphere");
+// 	registry.AddComponent<ECS::MeshComponent>(e3, "Models/icosphere.obj");
+// 	registry.AddComponent<ECS::TransformComponent>(e3);
+// 	registry.AddComponent<ECS::MeshInitalizeComponent>(e3);
+// 	registry.AddComponent<ECS::RotationComponent>(e3, 2, 2.0f);
+// 	registry.AddComponent<ECS::MovementComponent>(e3, Math::Vector3(3, 0, 0));
 }
 
 //------------------------------------------------------------------------
@@ -59,10 +65,15 @@ void Init()
 //------------------------------------------------------------------------
 void Update(float deltaTime)
 {
-	cameraSystem.Run(registry);
 	loadingSystem.Run(registry);
-	rotationSystem.Run(registry);
 	movementSystem.Run(registry);
+	cameraSystem.Run(registry);
+	rotationSystem.Run(registry);
+
+#ifdef DEBUG
+	std::cout << "Debugging\n";
+#endif // DEBUG
+
 }
 
 //------------------------------------------------------------------------

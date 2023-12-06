@@ -41,6 +41,15 @@ public:
         }
     }
 
+    inline void SetUV(std::size_t i, float x, float y)
+    {
+        if (i <= 3)
+        {
+            m_uvcoords[i * 2] = x;
+            m_uvcoords[i * 2 + 1] = y;
+        }
+    }
+
     inline float GetVertexX(std::size_t i)
     {
         return (i <= 3) ? m_points[i * 2] : 0.0f;
@@ -51,7 +60,15 @@ public:
         return (i <= 3) ? m_points[i * 2 + 1] : 0.0f;
     }
 
+	inline float GetUVX(std::size_t i)
+	{
+		return (i <= 3) ? m_uvcoords[i * 2] : 0.0f;
+	}
 
+	inline float GetUVY(std::size_t i)
+	{
+		return (i <= 3) ? m_uvcoords[i * 2 + 1] : 0.0f;
+	}
 
     // Note: speed must be > 0, frames must have size >= 1, id must be unique among animations
     void CreateAnimation( unsigned int id, float speed, const std::vector<int> &frames)

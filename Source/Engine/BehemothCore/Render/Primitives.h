@@ -23,9 +23,10 @@ namespace BehemothEngine
 
 		Math::Vector3 verticies[3];
 		Math::Vector3 normals[3];
+		Math::Vector2 uv[3];
 
-		void SetSpriteVerticies(Math::Vector4 vert[3]);
-		void SetPrimitiveVerticies(Math::Vector3 vert[3], Math::Vector3 normal[3]);
+		void SetSpriteVerticies(Math::Vector4 vert[3], Math::Vector2 uv[3]);
+		void SetPrimitiveVerticies(Math::Vector3 vert[3], Math::Vector3 normal[3], Math::Vector2 uv[3]);
 
 	private:
 		CSimpleSprite* sprite;
