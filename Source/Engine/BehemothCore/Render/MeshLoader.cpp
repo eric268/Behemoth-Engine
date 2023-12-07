@@ -6,9 +6,9 @@
 #include <algorithm>
 
 
-namespace BehemothEngine
+namespace Behemoth
 {
-	bool MeshLoader::LoadModel(const std::string& modelPath, std::vector<VertexData>& meshContainer)
+	bool MeshLoader::LoadModel(const std::string& modelPath, std::vector<VertexData>& tData, std::vector<VertexData>& qData)
 	{
 		std::ifstream file(modelPath, std::ios::in);
 		if (!file.is_open())
@@ -17,7 +17,8 @@ namespace BehemothEngine
 			return false;
 		}
 
-		meshContainer.clear();
+		tData.clear();
+		qData.clear();
 		std::string line;
 
 		while (std::getline(file, line))
@@ -51,45 +52,22 @@ namespace BehemothEngine
 				std::string vertexData;
 				while (iss >> vertexData) 
 				{
-					int vIndex = 0;
+					int vertexIndex = 0;
 					int uvIndex = 0;
-					int nIndex = 0;
-					ParseFaceData(vertexData, vIndex, uvIndex, nIndex);
-					vertexIndices.push_back(vIndex);
+					int normalIndex = 0;
+					ParseFaceData(vertexData, vertexIndex, uvIndex, normalIndex);
+					vertexIndices.push_back(vertexIndex);
 					uvIndices.push_back(uvIndex);
-					normalIndices.push_back(nIndex);
+					normalIndices.push_back(normalIndex);
 				}
 
-				// Handle triangular faces
-				if (vertexIndices.size() == 3) 
+				for (int i = 0; i < vertexIndices.size(); ++i)
 				{
-					for (int i = 0; i < 3; ++i) 
-					{
-						VertexData vData{};
-						vData.vertex = vertexPositions[vertexIndices[i] - 1];
-						vData.normal = vertexNormals[normalIndices[i] - 1];
-						vData.uv = vertexUVs[uvIndices[i] - 1];
-						meshContainer.push_back(vData);
-					}
-				}
-				// Handle quadrilateral faces by triangulating
-				else if (vertexIndices.size() == 4) 
-				{
-					int quadIndices[6] = { 0, 1, 2, 2, 3, 0 }; // Indices to form two triangles from a quad
-					for (int i = 0; i < 6; ++i) 
-					{
-						int idx = quadIndices[i];
-						VertexData vData{};
-						vData.vertex = vertexPositions[vertexIndices[idx] - 1];
-						vData.normal = vertexNormals[normalIndices[idx] - 1];
-						vData.uv = vertexUVs[uvIndices[idx] - 1];
-						meshContainer.push_back(vData);
-					}
-				}
-				else
-				{
-					LOG_ERROR("Unable to handle number of verticies per face");
-					return false;
+					VertexData vData{};
+					vData.vertex = vertexPositions[vertexIndices[i] - 1];
+					vData.normal = vertexNormals[normalIndices[i] - 1];
+					vData.uv = vertexUVs[uvIndices[i] - 1];
+					vertexIndices.size() == 3 ? tData.push_back(vData) : qData.push_back(vData);
 				}
 			}
 		}

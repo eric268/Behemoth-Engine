@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace BehemothEngine
+namespace Behemoth
 {
 	struct VertexData
 	{
@@ -18,7 +18,8 @@ namespace BehemothEngine
 
 	struct MeshData
 	{
-		std::vector<VertexData> meshData;
+		std::vector<VertexData> triangleData;
+		std::vector<VertexData> quadData;
 	};
 
 	class Mesh
@@ -28,6 +29,9 @@ namespace BehemothEngine
 		std::string modelFileName;
 		std::string textureFileName;
 		std::vector<Primitives> meshPrimitives;
-		void GeneratePrimitives(const std::vector<VertexData>& data);
+		void GenerateMesh(const std::vector<VertexData>& triangleData, const std::vector<VertexData>& quadData);
+
+	private:
+		void GeneratePrimitives(const std::vector<VertexData>& data, PrimitiveType type, std::size_t offset);
 	};
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "Components.h"
+#include "Component.h"
 #include "SparseSet.h"
 #include "ComponentPool.h"
 

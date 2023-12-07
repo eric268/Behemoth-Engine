@@ -1,0 +1,33 @@
+﻿Build started 2023-12-07 3:47:29 PM.
+Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Tests\BehemothTests\BehemothTests.vcxproj" on node 2 (Build target(s)).
+     1>PrepareForBuild:
+         Creating directory "..\..\..\Build\bin\Release\windows\BehemothTests\".
+         Creating directory "..\..\..\Build\obj\Release\windows\BehemothTests\BehemothTests.tlog\".
+       InitializeBuildStatus:
+         Creating "..\..\..\Build\obj\Release\windows\BehemothTests\BehemothTests.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /I"C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\include" /I..\..\Engine\BehemothCore /I..\..\NextAPI /Zi /nologo /W3 /WX /diagnostics:column /MP /Ox /Oi /D RELEASE /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++20 /Fo"..\..\..\Build\obj\Release\windows\BehemothTests\\" /Fd"..\..\..\Build\obj\Release\windows\BehemothTests\vc142.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt Test\MathLibraryTest.cpp Test\PhysicsLibraryTests.cpp Test\pch.cpp
+         MathLibraryTest.cpp
+         PhysicsLibraryTests.cpp
+         pch.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\..\Build\bin\Release\windows\BehemothTests\BehemothTests.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:..\..\NextAPI\glut\lib\x64 /LIBPATH:..\..\..\Build\bin\Release\windows\Engine /LIBPATH:Build\Release /WX "C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\..\..\lib\native\v140\windesktop\msvcstl\static\rt-dyn\x64\Release\gtest_main.lib" "C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\..\..\lib\native\v140\windesktop\msvcstl\static\rt-dyn\x64\Release\gtest.lib" freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\..\..\Build\bin\Release\windows\BehemothTests\BehemothTests.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\..\Build\bin\Release\windows\BehemothTests\BehemothTests.lib" /MACHINE:X64 ..\..\..\Build\obj\Release\windows\BehemothTests\MathLibraryTest.obj
+         ..\..\..\Build\obj\Release\windows\BehemothTests\PhysicsLibraryTests.obj
+         ..\..\..\Build\obj\Release\windows\BehemothTests\pch.obj
+         C:\Work\Engine\Next2024\Build\bin\Release\windows\NextAPI\NextAPI.lib
+         C:\Work\Engine\Next2024\Build\bin\Release\windows\Engine\Engine.lib
+         BehemothTests.vcxproj -> C:\Work\Engine\Next2024\Build\bin\Release\windows\BehemothTests\BehemothTests.exe
+       _CopyFilesMarkedCopyLocal:
+         Copying file from "C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\lib\native\v140\windesktop\msvcstl\static\rt-dyn\x64\Release\gtest.pdb" to "C:\Work\Engine\Next2024\Build\bin\Release\windows\BehemothTests\gtest.pdb".
+         Copying file from "C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\lib\native\v140\windesktop\msvcstl\static\rt-dyn\x64\Release\gtest_main.pdb" to "C:\Work\Engine\Next2024\Build\bin\Release\windows\BehemothTests\gtest_main.pdb".
+         Creating "C:\Work\Engine\Next2024\Build\obj\Release\windows\BehemothTests\BehemothTests.vcxproj.CopyComplete" because "AlwaysCreate" was specified.
+       FinalizeBuildStatus:
+         Deleting file "..\..\..\Build\obj\Release\windows\BehemothTests\BehemothTests.tlog\unsuccessfulbuild".
+         Touching "..\..\..\Build\obj\Release\windows\BehemothTests\BehemothTests.tlog\BehemothTests.lastbuildstate".
+     1>Done Building Project "C:\Work\Engine\Next2024\Source\Tests\BehemothTests\BehemothTests.vcxproj" (Build target(s)).
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.54

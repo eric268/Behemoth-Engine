@@ -2,16 +2,17 @@
 
 #include "Mesh.h"
 #include "Math/MathCore.h"
+
 //stl
 #include <string>
 
-namespace BehemothEngine
+namespace Behemoth
 {
 	class MeshLoader
 	{
 	public:
 		MeshLoader() = default;
-		bool LoadModel(const std::string& filepath, std::vector<VertexData>& meshContainer);
+		bool LoadModel(const std::string& filepath, std::vector<VertexData>& tData, std::vector<VertexData>& qData);
 
 	private:
 		void ParseFaceData(std::string& faceData, int& vertexIndex, int& uvIndex, int& normalIndex);

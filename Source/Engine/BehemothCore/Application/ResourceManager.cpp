@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 
 
-namespace BehemothEngine
+namespace Behemoth
 {
 	ResourceManager::ResourceManager()
 	{
@@ -28,7 +28,7 @@ namespace BehemothEngine
 		MeshLoader meshLoader{};
 		meshContainer[id] = MeshData();
 
-		bool result = meshLoader.LoadModel("Models/" + filePath, meshContainer[id].meshData);
+		bool result = meshLoader.LoadModel("Models/" + filePath, meshContainer[id].triangleData, meshContainer[id].quadData);
 		if (!result)
 		{
 			meshContainer.erase(id);

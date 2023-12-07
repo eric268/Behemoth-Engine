@@ -33,10 +33,6 @@ namespace Math
 		return m;
 	}
 
-
-
-
-
 	//Matrix 4x4
 	Matrix4x4::Matrix4x4() : Matrix(4)
 	{
@@ -97,33 +93,29 @@ namespace Math
 		return true;
 	}
 
-// 	Matrix4x4& Matrix4x4::operator= (const Matrix4x4& m)
-// 	{
-// 		for (int i = 0; i < 4; i++)
-// 		{
-// 			for (int j = 0; j < 4; j++)
-// 			{
-// 				data[i][j] = m.data[i][i];
-// 			}
-// 		}
-// 		return *this;
-// 	}
+	// 	Matrix4x4& Matrix4x4::operator= (const Matrix4x4& m)
+	// 	{
+	// 		for (int i = 0; i < 4; i++)
+	// 		{
+	// 			for (int j = 0; j < 4; j++)
+	// 			{
+	// 				data[i][j] = m.data[i][i];
+	// 			}
+	// 		}
+	// 		return *this;
+	// 	}
 
 	Matrix4x4 Matrix4x4::operator*(const Matrix4x4& m) const
 	{
 		Matrix4x4 result;
 
-		const int n = m.Size();
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < n; j++)
-			{
-				result.data[i][j] = 0;
-
-				for (int k = 0; k < n; k++)
-				{
-					result.data[i][j] += data[i][k] * m[k][j];
-				}
+		for (int i = 0; i < 4; ++i) {
+			for (int j = 0; j < 4; ++j) {
+				result.data[i][j] = data[i][0] * m.data[0][j] +
+					data[i][1] * m.data[1][j] +
+					data[i][2] * m.data[2][j] +
+					data[i][3] * m.data[3][j];
+				
 			}
 		}
 		return result;
@@ -154,8 +146,8 @@ namespace Math
 		Matrix4x4 m = Matrix4x4::Identity();
 		float rad = DEGREE_TO_RAD(theta);
 
-		float cosTheta = std::cos(theta);
-		float sinTheta = std::sin(theta);
+		float cosTheta = std::cos(rad);
+		float sinTheta = std::sin(rad);
 
 		switch (axis)
 		{

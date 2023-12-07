@@ -19,6 +19,12 @@
     <Filter Include="World">
       <UniqueIdentifier>{4D25640E-B939-8CBF-82BB-2F1FEE8E88F0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{deb51c83-914c-493d-bbad-fae2bc49de2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{a549262e-a6c4-4718-a4b0-9f5a8dce5c0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BehemothCore\Application\MeshMetaData.h">
@@ -30,7 +36,7 @@
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\ECS\Components.h">
+    <ClInclude Include="BehemothCore\ECS\Component.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\ECSCore.h">
@@ -78,6 +84,30 @@
     <ClInclude Include="BehemothCore\World\Scene.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Misc\Stopwatch.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\RenderSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Components\Components.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\RotationSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\MovementSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\ScalingSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\CameraSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -85,9 +115,6 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Application\ResourceManager.cpp">
       <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\ECS\System.cpp">
-      <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Math\Matrix.cpp">
       <Filter>Math</Filter>
@@ -112,6 +139,27 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\World\Scene.cpp">
       <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\RenderSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Components\Components.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\RotationSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\ScalingSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

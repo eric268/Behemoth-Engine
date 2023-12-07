@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "Components.h"
+#include "Component.h"
 #include "Entity.h"
 
 // stl
@@ -16,7 +16,7 @@
 namespace ECS
 {
 	template<typename T>
-	concept IsComponent = std::is_convertible_v<T, Components>;
+	concept IsComponent = std::is_convertible_v<T, Component>;
 
 #define NULL_ENTITY 0xFFFF
 

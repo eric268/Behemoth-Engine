@@ -6,16 +6,20 @@ using namespace Math;
 
 Math::Matrix4x4 CameraHelper::LookAt(const Math::Vector3& eye, const Math::Vector3& target, const Math::Vector3& up)
 {
-	const Vector3 zAxis = Vector3::Normalize(target - eye);
-	const Vector3 xAxis = Vector3::Normalize(Vector3::Cross(zAxis, up));
-	const Vector3 yAxis = Vector3::Cross(xAxis, zAxis);
+	const Vector3 zAxis = Vector3::Normalize(eye - target);
+	const Vector3 xAxis = Vector3::Normalize(Vector3::Cross(up, zAxis));
+	const Vector3 yAxis = Vector3::Cross(zAxis, xAxis);
+
+	const float tx = -Vector3::Dot(xAxis, eye);
+	const float ty = -Vector3::Dot(yAxis, eye);
+	const float tz = -Vector3::Dot(zAxis, eye);
 
 	Matrix4x4 viewMatrix =
 	{
-		{ xAxis.x, xAxis.y, xAxis.z, 0 },
-		{ yAxis.x, yAxis.y, yAxis.z, 0 },
-		{ zAxis.x, zAxis.y, zAxis.z, 0 },
-		{ -Vector3::Dot(xAxis, eye * WORLD_SCALE), -Vector3::Dot(yAxis, eye * WORLD_SCALE), -Vector3::Dot(zAxis, eye * WORLD_SCALE), 1}
+		{ xAxis.x, xAxis.y, xAxis.z, 0},
+		{ yAxis.x, yAxis.y, yAxis.z, 0},
+		{ zAxis.x, zAxis.y, zAxis.z, 0},
+		{ tx,	   ty,      tz,    1.0f}
 	};
 
 	return viewMatrix;

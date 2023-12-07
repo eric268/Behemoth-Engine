@@ -11,13 +11,14 @@
 
 #define DEFAULT_PAGE_SIZE 4096
 
-namespace BehemothEngine
+namespace Behemoth
 {
 	class ResourceManager
 	{
 	public:
-		using page_vector3 = std::unique_ptr<Math::Vector3[]>;
-		using page_vector2 = std::unique_ptr<Math::Vector2[]>;
+		using page_vertex = std::unique_ptr<Math::Vector3[]>;
+		using page_normal = std::unique_ptr<Math::Vector3[]>;
+		using page_uv = std::unique_ptr<Math::Vector2[]>;
 
 		ResourceManager(const ResourceManager&) = delete;
 		ResourceManager& operator=(const ResourceManager&) = delete;

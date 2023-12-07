@@ -1,10 +1,11 @@
-﻿Build started 2023-12-05 6:46:05 PM.
+﻿Build started 2023-12-06 8:58:58 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\NextAPI\NextAPI.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
-         Touching "..\..\Build\obj\Debug\windows\NextAPI\NextAPI.tlog\unsuccessfulbuild".
+         Creating "..\..\Build\obj\Debug\windows\NextAPI\NextAPI.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /Iglut /I. /I"{wks.location\Resources\Textures\}" /ZI /JMC /nologo /W3 /WX- /diagnostics:column /Od /D DEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++14 /Fo"..\..\Build\obj\Debug\windows\NextAPI\\" /Fd"..\..\Build\bin\Debug\windows\NextAPI\NextAPI.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt App\SimpleSprite.cpp
-         SimpleSprite.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /Iglut /I. /I"{wks.location\Resources\Textures\}" /ZI /JMC /nologo /W3 /WX- /diagnostics:column /Od /D DEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++14 /Fo"..\..\Build\obj\Debug\windows\NextAPI\\" /Fd"..\..\Build\bin\Debug\windows\NextAPI\NextAPI.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt App\main.cpp
+         main.cpp
+     1>C:\Work\Engine\Next2024\Source\NextAPI\App\main.cpp(81,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\Lib.exe /OUT:"..\..\Build\bin\Debug\windows\NextAPI\NextAPI.lib" freeglut.lib dxguid.lib dsound.lib /LIBPATH:glut\lib\x64 /LIBPATH:Build\Debug /NOLOGO /MACHINE:X64 ..\..\Build\obj\Debug\windows\NextAPI\DirectSound.obj
          ..\..\Build\obj\Debug\windows\NextAPI\SimpleController.obj
@@ -24,10 +25,15 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
 Build succeeded.
 
        "C:\Work\Engine\Next2024\Source\NextAPI\NextAPI.vcxproj" (Build target) (1) ->
+       (ClCompile target) -> 
+         C:\Work\Engine\Next2024\Source\NextAPI\App\main.cpp(81,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+
+
+       "C:\Work\Engine\Next2024\Source\NextAPI\NextAPI.vcxproj" (Build target) (1) ->
        (Lib target) -> 
          dsound.lib(DSOUND.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in freeglut.lib(freeglut.dll); second definition ignored
 
-    1 Warning(s)
+    2 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.54
+Time Elapsed 00:00:00.95

@@ -1,12 +1,9 @@
-﻿Build started 2023-12-04 2:28:56 PM.
+﻿Build started 2023-12-07 2:12:11 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\NextAPI\NextAPI.vcxproj" on node 2 (Build target(s)).
-     1>PrepareForBuild:
-         Creating directory "..\..\Build\bin\Release\windows\NextAPI\".
-         Creating directory "..\..\Build\obj\Release\windows\NextAPI\NextAPI.tlog\".
-       InitializeBuildStatus:
+     1>InitializeBuildStatus:
          Creating "..\..\Build\obj\Release\windows\NextAPI\NextAPI.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /Iglut /I. /Zi /nologo /W3 /WX- /diagnostics:column /Ox /Oi /D RELEASE /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++14 /Fo"..\..\Build\obj\Release\windows\NextAPI\\" /Fd"..\..\Build\bin\Release\windows\NextAPI\NextAPI.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt App\DirectSound.cpp App\SimpleController.cpp App\SimpleSound.cpp App\SimpleSprite.cpp App\app.cpp App\main.cpp stb_image\stb_image.cpp stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /Iglut /I. /I"{wks.location\Resources\Textures\}" /Zi /nologo /W3 /WX- /diagnostics:column /Ox /Oi /D RELEASE /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++14 /Fo"..\..\Build\obj\Release\windows\NextAPI\\" /Fd"..\..\Build\bin\Release\windows\NextAPI\NextAPI.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt App\DirectSound.cpp App\SimpleController.cpp App\SimpleSound.cpp App\SimpleSprite.cpp App\app.cpp App\main.cpp stb_image\stb_image.cpp stdafx.cpp
          DirectSound.cpp
          linking with Microsoft's DirectSound library ...
          SimpleController.cpp
@@ -48,4 +45,4 @@ Build succeeded.
     2 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:03.29
+Time Elapsed 00:00:02.90

@@ -12,51 +12,50 @@
 #include <iostream>
 #include <filesystem>
 
+#include "Systems/ScalingSystem.h"
+#include "Systems/RenderSystem.h"
+#include "Systems/CameraSystem.h"
+#include "Systems/RotationSystem.h"
+#include "Systems/MovementSystem.h"
+#include "Systems/MeshInitSystem.h"
+
 //------------------------------------------------------------------------
 
 //------------------------------------------------------------------------
 // Called before first update. Do any initial setup here.
 //------------------------------------------------------------------------
 
-BehemothEngine::Primitives* p;
 ECS::Registry registry;
-ECS::RenderSystem renderSystem;
-ECS::ModelInitalizeSystem loadingSystem;
-ECS::CameraSystem cameraSystem;
-ECS::RotationSystem rotationSystem;
-ECS::MovementSystem movementSystem;
+Behemoth::RenderSystem renderSystem;
+Behemoth::MeshInitSystem loadingSystem;
+Behemoth::CameraSystem cameraSystem;
+Behemoth::RotationSystem rotationSystem;
+Behemoth::MovementSystem movementSystem;
+Behemoth::ScalingSystem scalingSystem;
 
 void Init()
 {
-	std::cout << std::filesystem::current_path();
-
 	ECS::Entity e0 = registry.CreateEntity("Main Camera");
-	registry.AddComponent<ECS::CameraComponent>(e0, true);
-	registry.AddComponent<ECS::TransformComponent>(e0);
-	registry.AddComponent<ECS::MovementComponent>(e0, Math::Vector3(0, 0, 10));
-
+	registry.AddComponent<Behemoth::CameraComponent>(e0, true);
+	registry.AddComponent<Behemoth::TransformComponent>(e0);
+	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0, 0, 0));
 
 	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	registry.AddComponent<ECS::MeshComponent>(e1, "cube.obj", "brick.png");
-	registry.AddComponent<ECS::TransformComponent>(e1);
-	registry.AddComponent<ECS::MeshInitalizeComponent>(e1);
-	registry.AddComponent<ECS::RotationComponent>(e1, 1, 2.0f);
-	registry.AddComponent<ECS::MovementComponent>(e1, Math::Vector3(0, 0, 0));
+	registry.AddComponent<Behemoth::MeshComponent>(e1, "cube.obj", "rock.png");
+	registry.AddComponent<Behemoth::TransformComponent>(e1);
+	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
+	registry.AddComponent<Behemoth::RotationComponent>(e1, 0, 1.0f);
+	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0, 0, 5));
+	
 
-	ECS::Entity e2 = registry.CreateEntity("Debug Sphere");
-	registry.AddComponent<ECS::MeshComponent>(e2, "sphere.obj", "rock.png");
-	registry.AddComponent<ECS::TransformComponent>(e2);
-	registry.AddComponent<ECS::MeshInitalizeComponent>(e2);
-	registry.AddComponent<ECS::RotationComponent>(e2, 1, 2.0f);
-	registry.AddComponent<ECS::MovementComponent>(e2, Math::Vector3(-3, 0, 0));
+	registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 
-// 
-// 	ECS::Entity e3 = registry.CreateEntity("Debug Icosphere");
-// 	registry.AddComponent<ECS::MeshComponent>(e3, "Models/icosphere.obj");
-// 	registry.AddComponent<ECS::TransformComponent>(e3);
-// 	registry.AddComponent<ECS::MeshInitalizeComponent>(e3);
-// 	registry.AddComponent<ECS::RotationComponent>(e3, 2, 2.0f);
-// 	registry.AddComponent<ECS::MovementComponent>(e3, Math::Vector3(3, 0, 0));
+	ECS::Entity e2 = registry.CreateEntity("Sphere 1");
+	registry.AddComponent<Behemoth::MeshComponent>(e2, "sphere.obj", "brick.png");
+	registry.AddComponent<Behemoth::TransformComponent>(e2);
+	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e2);
+	registry.AddComponent<Behemoth::RotationComponent>(e2, 1, 2.5f);
+	registry.AddComponent<Behemoth::MovementComponent>(e2, Math::Vector3(3, 0, 5));
 }
 
 //------------------------------------------------------------------------
@@ -67,12 +66,9 @@ void Update(float deltaTime)
 {
 	loadingSystem.Run(registry);
 	movementSystem.Run(registry);
-	cameraSystem.Run(registry);
 	rotationSystem.Run(registry);
-
-#ifdef DEBUG
-	std::cout << "Debugging\n";
-#endif // DEBUG
+	cameraSystem.Run(registry);
+	scalingSystem.Run(registry);
 
 }
 

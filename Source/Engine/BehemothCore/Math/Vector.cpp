@@ -8,7 +8,7 @@ namespace Math
 	// --------------------   Vector 2   ---------------------------
 	// -------------------------------------------------------------
 	// -------------------------------------------------------------
-	
+
 	Vector2::Vector2(const float x, const float y) : x(x), y(y) {}
 
 
@@ -58,7 +58,7 @@ namespace Math
 
 	Vector3 Vector3::operator* (const Vector3& vec) const
 	{
-		return Vector3 (x * vec.x, y * vec.y, z * vec.z);
+		return Vector3(x * vec.x, y * vec.y, z * vec.z);
 	}
 
 	Vector3 Vector3::operator*= (const Vector3 vec) const
@@ -135,8 +135,8 @@ namespace Math
 	bool Vector3::Equals(const Vector3& v1, const Vector3& v2, const float epsilon)
 	{
 		return  std::abs(v1.x - v2.x) <= epsilon &&
-				std::abs(v1.y - v2.y) <= epsilon &&
-				std::abs(v1.z - v2.z) <= epsilon;
+			std::abs(v1.y - v2.y) <= epsilon &&
+			std::abs(v1.z - v2.z) <= epsilon;
 	}
 
 	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix)
@@ -185,11 +185,11 @@ namespace Math
 	bool Vector4::Equals(const Vector4& vec1, const Vector4& vec2, float epsilon)
 	{
 		return std::abs(vec1.x - vec2.x) <= epsilon &&
-			   std::abs(vec1.y - vec2.y) <= epsilon &&
-			   std::abs(vec1.z - vec2.z) <= epsilon &&
-			   std::abs(vec1.w - vec2.w) <= epsilon;
+			std::abs(vec1.y - vec2.y) <= epsilon &&
+			std::abs(vec1.z - vec2.z) <= epsilon &&
+			std::abs(vec1.w - vec2.w) <= epsilon;
 	}
-	
+
 	Vector4 Vector4::Cross(const Vector4& v1, const Vector4& v2, const float wVal)
 	{
 		return Vector4

@@ -3,7 +3,7 @@
 
 #include <random>
 
-namespace BehemothEngine
+namespace Behemoth
 {
 	Primitives::Primitives() : 
 		sprite{ new CSimpleSprite("") }
@@ -11,7 +11,6 @@ namespace BehemothEngine
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
 		verticies[2] = Math::Vector3();
-		
 		RandomizeColor();
 	}
 
@@ -32,20 +31,20 @@ namespace BehemothEngine
 
 
 		sprite->SetColor(1.0f, 1.0f, 1.0f);
-		sprite->SetPosition(400, 400);
 		sprite->Draw();
 	}
 
 	void Primitives::DrawWireMesh()
 	{
-		App::DrawLine(sprite->GetVertexX(0) + 400.0f, sprite->GetVertexY(0) + 400.0f, sprite->GetVertexX(1) + 400.0f, sprite->GetVertexY(1) + 400.0f);
-		App::DrawLine(sprite->GetVertexX(1) + 400.0f, sprite->GetVertexY(1) + 400.0f, sprite->GetVertexX(2) + 400.0f, sprite->GetVertexY(2) + 400.0f);
-		App::DrawLine(sprite->GetVertexX(2) + 400.0f, sprite->GetVertexY(2) + 400.0f, sprite->GetVertexX(0) + 400.0f, sprite->GetVertexY(0) + 400.0f);
+		App::DrawLine(sprite->GetVertexX(0), sprite->GetVertexY(0), sprite->GetVertexX(1), sprite->GetVertexY(1));
+		App::DrawLine(sprite->GetVertexX(1), sprite->GetVertexY(1), sprite->GetVertexX(2), sprite->GetVertexY(2));
+		App::DrawLine(sprite->GetVertexX(2), sprite->GetVertexY(2), sprite->GetVertexX(0), sprite->GetVertexY(0));
 	}
 
-	void Primitives::SetPrimitiveVerticies(Math::Vector3 vert[3], Math::Vector3 normal[3], Math::Vector2 uv[3])
+	void Primitives::SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[4], Math::Vector3 normal[4], Math::Vector2 uv[4])
 	{
-		for (int i = 0; i < 3; i++)
+		primitiveType = type;
+		for (int i = 0; i < static_cast<int>(type); i++)
 		{
 			verticies[i] = vert[i];
 			normals[i] = normal[i];
@@ -53,7 +52,7 @@ namespace BehemothEngine
 		}
 	}
 
-	void Primitives::SetSpriteVerticies(Math::Vector4 vert[3], Math::Vector2 uv[3])
+	void Primitives::SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[])
 	{
 		if (!sprite)
 		{
@@ -61,17 +60,17 @@ namespace BehemothEngine
 			return;
 		}
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < static_cast<int>(type); i++)
 		{
-			sprite->SetVertex(i, vert[i].x * WORLD_SCALE, vert[i].y * WORLD_SCALE);
+			sprite->SetVertex(i, vert[i].x , vert[i].y);
 			sprite->SetUV(i, uv[i].x, uv[i].y);
 		}
 
-		// Set the 4th vertex to the first vertex position since CSimpleSprite takes 4 verticies
-		sprite->SetVertex(3, vert[0].x * WORLD_SCALE, vert[0].y * WORLD_SCALE);
-		sprite->SetUV(3, uv[0].x, uv[0].y);
-
-		sprite->SetColor(color.x , color.y, color.z);
+		if (type == TRIANGLE)
+		{
+			sprite->SetVertex(3, vert[0].x, vert[0].y);
+			sprite->SetUV(3, uv[0].x, uv[0].y);
+		}
 	}
 
 	std::vector<Math::Vector3> Primitives::GetVerticies()

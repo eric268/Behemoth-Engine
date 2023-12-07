@@ -74,7 +74,7 @@ namespace Math
 
 		float* operator[](int row)
 		{
-			assert(row < 4 && row >=0);
+			assert(row < 4 && row >= 0);
 			return data[row];
 		}
 		const float* operator[](int row) const

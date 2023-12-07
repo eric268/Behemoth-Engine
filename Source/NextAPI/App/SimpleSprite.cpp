@@ -90,8 +90,8 @@ void CSimpleSprite::CalculateUVs()
 void CSimpleSprite::Draw()
 {            
 #if APP_USE_VIRTUAL_RES
-    float scalex = (m_scale / APP_VIRTUAL_WIDTH) * 2.0f;
-    float scaley = (m_scale / APP_VIRTUAL_HEIGHT) * 2.0f;
+    float scalex = m_scale / APP_VIRTUAL_WIDTH;
+    float scaley = m_scale / APP_VIRTUAL_HEIGHT;
 #else
     float scalex = m_scale;
     float scaley = m_scale;
@@ -101,22 +101,22 @@ void CSimpleSprite::Draw()
 #if APP_USE_VIRTUAL_RES
     APP_VIRTUAL_TO_NATIVE_COORDS(x, y);
 #endif
-    
+
     glPushMatrix();
-    glTranslatef(x, y, 0.0f);   
-    glScalef(scalex, scaley, 1.0f);    
-    glRotatef(m_angle * 180 / PI, 0.0f, 0.0f, 1.0f);     
-	glColor3f(m_red, m_green, m_blue);
-    glEnable(GL_BLEND);    
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    
+    glTranslatef(x, y, 0.0f);
+    glScalef(scalex, scaley, 0.1f);
+    glRotatef(m_angle * 180 / PI, 0.0f, 0.0f, 1.0f);
+    glColor3f(m_red, m_green, m_blue);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
-    glBegin(GL_QUADS);       
+    glBegin(GL_QUADS);
     for (unsigned int i = 0; i < 8; i += 2)
     {
         glTexCoord2f(m_uvcoords[i], m_uvcoords[i + 1]);
-        glVertex2f(m_points[i], m_points[i+1]);
+        glVertex2f(m_points[i], m_points[i + 1]);
     }
     glEnd();
     glPopMatrix();
