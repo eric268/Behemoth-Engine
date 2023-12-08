@@ -23,6 +23,11 @@ namespace Math
 		std::fill(&data[0][0], &data[0][0] + size * size, 0.0f);
 	}
 
+	Matrix3x3::Matrix3x3(std::initializer_list<std::initializer_list<float>> list) : Matrix(3)
+	{
+		*this = Matrix::GetMatrixFromList<Matrix3x3>(list, size);
+	}
+
 	Matrix3x3 Matrix3x3::Identity()
 	{
 		Matrix3x3 m{};
@@ -31,6 +36,14 @@ namespace Math
 			m.data[i][i] = 1;
 		}
 		return m;
+	}
+
+	float Matrix3x3::Determinant(const Matrix3x3& m)
+	{
+		const float x = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]);
+		const float y = m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]);
+		const float z = m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+		return x - y + z;
 	}
 
 	//Matrix 4x4
@@ -44,20 +57,9 @@ namespace Math
 
 	Matrix4x4::Matrix4x4(std::initializer_list<std::initializer_list<float>> list) : Matrix(4)
 	{
-		assert(list.size() == 4 && list.begin()->size() == 4);
-
-		int row = 0;
-		for (const auto& l : list)
-		{
-			int col = 0;
-			for (const auto val : l)
-			{
-				data[row][col] = val;
-				col++;
-			}
-			row++;
-		}
+		*this = Matrix::GetMatrixFromList<Matrix4x4>(list, size);
 	}
+
 	Matrix4x4 Matrix4x4::Zero()
 	{
 		Matrix4x4 m;
@@ -91,6 +93,84 @@ namespace Math
 			}
 		}
 		return true;
+	}
+
+	Matrix4x4 Matrix4x4::Transpose(const Matrix4x4& m)
+	{
+		Matrix4x4 m2{};
+		for (int row = 0; row < 4; row++)
+		{
+			for (int col = 0; col < 4; col++)
+			{
+				m2[col][row] = m[row][col];
+			}
+		}
+		return m2;
+	}
+	Matrix4x4 Matrix4x4::Inverse(const Matrix4x4& m)
+	{
+		Matrix4x4 m2{};
+
+		float det = Matrix4x4::Determinant(m);
+		if (det == 0.0f)
+			return {};
+
+		for (int row = 0; row < 4; row++)
+		{
+			for (int col = 0; col < 4; col++)
+			{
+				m2[row][col] = Matrix3x3::Determinant(GetSubMatrix(m, row, col));
+				m2[row][col] *= ((row + col) % 2 == 0) ? 1.0f : -1.0f;
+			}
+		}
+
+		m2 = Matrix4x4::Transpose(m2);
+
+		for (int row = 0; row < 4; row++)
+		{
+			for (int col = 0; col < 4; col++)
+			{
+				m2[row][col] /= det;
+			}
+		}
+		
+		return m2;
+	}
+
+	Matrix3x3 Matrix4x4::GetSubMatrix(const Matrix4x4& m, int skipRow, int skipCol)
+	{
+		Matrix3x3 m2{};
+		int subRow = 0, subCol = 0;
+
+		for (int row = 0; row < 4; row++)
+		{
+			if (skipRow == row)
+				continue;
+
+			subCol = 0;
+			for (int col = 0; col < 4; col++)
+			{
+				if (col == skipCol)
+					continue;
+
+				m2[subRow][subCol] = m[row][col];
+				subCol++;
+			}
+			subRow++;
+		}
+		return m2;
+	}
+
+	float Matrix4x4::Determinant(const Matrix4x4& m)
+	{
+		float det = 0;
+		float val = 1.0f;
+		for (int i = 0; i < 4; i++)
+		{
+			det += m[0][i] * Matrix3x3::Determinant(GetSubMatrix(m, 0, i)) * val;
+			val *= -1.0f;
+		}
+		return det;
 	}
 
 	// 	Matrix4x4& Matrix4x4::operator= (const Matrix4x4& m)

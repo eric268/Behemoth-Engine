@@ -27,8 +27,6 @@ int APIENTRY wWinMain(
 
 	std::filesystem::current_path("../../Resources/");
 
-	std::cout << std::filesystem::current_path();
-
 	int result = NextAPI_wWinMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 
 	// Cleanup

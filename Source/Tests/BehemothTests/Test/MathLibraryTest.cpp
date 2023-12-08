@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 // Math Tests
 TEST(Vec4_Mul_M4x4, Math)
@@ -59,4 +59,50 @@ TEST(CrossProd, Math)
 	Math::Vector3 ans(10184.8587, 1033.2659, 60.278);
 
 	EXPECT_TRUE(Math::Vector3::Equals(result, ans));
+}
+
+TEST(TransposeM4x4, Math)
+{
+	Math::Matrix4x4 m1 =
+	{
+		{1, 10, 11, 5},
+		{-2, 3, 5, 17},
+		{0, 9, 2, -2},
+		{-4, -7, 11, 61}
+	};
+
+	Math::Matrix4x4 result = Math::Matrix4x4::Transpose(m1);
+
+	Math::Matrix4x4 ans =
+	{
+		{1, -2, 0, -4},
+		{10, 3, 9, -7},
+		{11, 5, 2, 11},
+		{5, 17, -2, 61}
+	};
+
+	EXPECT_TRUE(Math::Matrix4x4::Equals(result, ans));
+}
+
+TEST(InverseM4x4, Math)
+{
+	Math::Matrix4x4 m1 =
+	{
+		{1, 10, 11, 5},
+		{-2, 3, 5, 17},
+		{0, 9, 2, -2},
+		{-4, -7, 11, 61}
+	};
+
+	Math::Matrix4x4 result = Math::Matrix4x4::Inverse(m1);
+
+	Math::Matrix4x4 ans =
+	{
+		{ 0.0888f  , -1.07f  , 0.4967f ,  0.3073f },
+		{ -0.03089f, -0.075f , 0.1936f ,  0.0298f },
+		{ 0.1197f  ,  0.2192f, -0.2681f, -0.0797f },
+		{ -0.0193f , -0.1183f,  0.1031f,  0.0543f }
+	};
+
+	EXPECT_TRUE(Math::Matrix4x4::Equals(result, ans));
 }

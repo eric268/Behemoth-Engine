@@ -15,6 +15,28 @@ namespace Math
 		}
 	protected:
 		Matrix(std::size_t s) : size(s) {}
+
+		template <typename T>
+			requires std::is_base_of_v<Matrix, T>
+		static T GetMatrixFromList(std::initializer_list<std::initializer_list<float>> list, std::size_t size)
+		{
+			T matrix{};
+			assert(size == matrix.size && list.size() == size && list.begin()->size() == size);
+
+			int row = 0;
+			for (const auto& l : list)
+			{
+				int col = 0;
+				for (const auto val : l)
+				{
+					matrix.data[row][col] = val;
+					col++;
+				}
+				row++;
+			}
+			return matrix;
+		}
+
 		std::size_t size;
 	};
 
@@ -34,9 +56,11 @@ namespace Math
 	{
 	public:
 		Matrix3x3();
+		Matrix3x3(std::initializer_list<std::initializer_list<float>> list);
 		~Matrix3x3() = default;
 
 		static Matrix3x3 Identity();
+		static float Determinant(const Matrix3x3& m);
 
 		float data[3][3];
 
@@ -65,6 +89,10 @@ namespace Math
 		static Matrix4x4 Identity();
 		static bool Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon = 1e-2);
 		static Matrix4x4 GetRotationMatrix(const int axis, const float theta);
+		static Matrix4x4 Transpose(const Matrix4x4& m);
+		static Matrix4x4 Inverse(const Matrix4x4& m);
+		static Matrix3x3 GetSubMatrix(const Matrix4x4& m, int skipRow, int skipCol);
+		static float Determinant(const Matrix4x4& m);
 
 		float data[4][4];
 
