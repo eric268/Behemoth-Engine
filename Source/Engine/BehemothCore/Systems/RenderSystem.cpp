@@ -52,9 +52,6 @@ namespace Behemoth
 					vertex[j] = vertex[j] * transformComp->transformMatrix;
 				}
 
-// 				if (type == PrimitiveType::TRIANGLE)
-// 					vertex[3] = vertex[0];
-
 				if (CullBackFace(mainCameraTransform->position, vertex))
 				{
 					continue;
@@ -69,7 +66,7 @@ namespace Behemoth
 				}
 
 				meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, meshComp->mesh.meshPrimitives[i].uv);
-				// meshComp->mesh.meshPrimitives[i].DrawWireMesh();
+				// meshComp->mesh.meshPrimitives[i].DrawWireMesh(type);
 				meshComp->mesh.meshPrimitives[i].Draw();
 			}
 		}

@@ -1,0 +1,9 @@
+Config: Release Duration: 0milliseconds
+Config: Release Duration: 0 hours
+Config: Release Duration: 0 seconds
+Config: Release Duration: 0 seconds
+Config: Release Duration: 0 seconds
+Config: Release Duration: 0 milliseconds
+Config: Debug Duration: 513 microseconds
+Config: Debug 	Duration: 513 microseconds
+Config: Release 	Duration: 0 microseconds

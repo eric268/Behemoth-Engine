@@ -27,7 +27,7 @@ namespace Behemoth
 		const void PrintVerticies() const;
 
 		void Draw();
-		void DrawWireMesh();
+		void DrawWireMesh(const PrimitiveType type);
 
 		Math::Vector3 verticies[4];
 		Math::Vector3 normals[4];

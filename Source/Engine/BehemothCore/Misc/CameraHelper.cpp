@@ -1,6 +1,6 @@
 #include "CameraHelper.h"
 #include "Math/Vector.h"
-#include "ECS/Components.h"
+#include "ECS/Component.h"
 #include "Log.h"
 using namespace Math;
 

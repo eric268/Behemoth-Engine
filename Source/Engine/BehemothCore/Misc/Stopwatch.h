@@ -7,6 +7,49 @@
 
 #include "Log.h"
 
+template <typename T>
+struct UnitOfMeasurment;
+
+template <>
+struct UnitOfMeasurment<std::chrono::nanoseconds> {
+	static std::string name() { return " nanoseconds"; }
+};
+
+template <>
+struct UnitOfMeasurment<std::chrono::microseconds> {
+	static std::string name() { return " microseconds"; }
+};
+
+template <>
+struct UnitOfMeasurment<std::chrono::milliseconds> {
+	static std::string name() { return " milliseconds"; }
+};
+
+template <>
+struct UnitOfMeasurment<std::chrono::seconds> {
+	static std::string name() { return " seconds"; }
+};
+
+template <>
+struct UnitOfMeasurment<std::chrono::minutes> {
+	static std::string name() { return " minutes"; }
+};
+
+template <>
+struct UnitOfMeasurment<std::chrono::hours> {
+	static std::string name() { return " hours"; }
+};
+
+template <typename T>
+concept IsChronoType = requires(T a) {
+	typename T::rep;
+	typename T::period;
+	{ T::zero() } -> std::same_as<T>;
+	{ T::min() } -> std::same_as<T>;
+	{ T::max() } -> std::same_as<T>;
+};
+
+template <IsChronoType T = std::chrono::microseconds>
 class Stopwatch
 {
 public:
@@ -27,9 +70,9 @@ private:
 
 	void Stop()
 	{
-		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start);
+		auto duration = std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - start);
 		
-		std::string output = "Duration: " + std::to_string(duration.count()) + " microseconds";
+		std::string output = "Duration: " + std::to_string(duration.count()) + UnitOfMeasurment<T>::name();
 		std::cout << output << std::endl;
 
 		if (outputToLog)

@@ -1,15 +1,46 @@
-﻿Build started 2023-12-07 4:29:26 PM.
+﻿Build started 2023-12-08 3:38:16 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Creating "..\..\Build\obj\Release\windows\Engine\Engine.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /IBehemothCore /I..\NextAPI\App /I"{wks.location\Resources\Models\}" /Zi /nologo /W3 /WX- /diagnostics:column /Ox /Oi /D WORLD_SCALE=100 /D RELEASE /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Release\windows\Engine\\" /Fd"..\..\Build\bin\Release\windows\Engine\Engine.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt BehemothCore\Render\Primitives.cpp
-         Primitives.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /IBehemothCore /I..\NextAPI\App /I"{wks.location\Resources\Models\}" /Zi /nologo /W3 /WX- /diagnostics:column /Ox /Oi /D WORLD_SCALE=100 /D RELEASE /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\Build\obj\Release\windows\Engine\\" /Fd"..\..\Build\bin\Release\windows\Engine\Engine.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt BehemothCore\Application\GameLoop.cpp BehemothCore\Misc\CameraHelper.cpp
+         GameLoop.cpp
      1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(9): message : see previous definition of 'PI'
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Render\Primitives.cpp(114,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Render\Primitives.cpp(115,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Render\Primitives.cpp(116,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(67,16): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+                 with
+                 [
+                     _Ty=uint16_t
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(60): message : while compiling class template member function 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)'
+                 with
+                 [
+                     T=Behemoth::ScalingComponent,
+                     Component=Behemoth::ScalingComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(84): message : see reference to function template instantiation 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)' being compiled
+                 with
+                 [
+                     T=Behemoth::ScalingComponent,
+                     Component=Behemoth::ScalingComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(30): message : see reference to class template instantiation 'ECS::SparseSet<T>' being compiled
+                 with
+                 [
+                     T=Behemoth::ScalingComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(80): message : see reference to class template instantiation 'ECS::ComponentPool<T>' being compiled
+                 with
+                 [
+                     T=Behemoth::ScalingComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(51): message : see reference to function template instantiation 'void ECS::Registry::AddComponent<Behemoth::ScalingComponent,Math::Vector3>(ECS::Entity,Math::Vector3 &&)' being compiled
+         CameraHelper.cpp
+     1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(9): message : see previous definition of 'PI'
+         Generating Code...
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\Lib.exe /OUT:"..\..\Build\bin\Release\windows\Engine\Engine.lib" freeglut.lib /LIBPATH:..\NextAPI\glut\lib\x64 /LIBPATH:..\..\Build\bin\Release\windows\NextAPI /LIBPATH:Build\Release /NOLOGO /MACHINE:X64 ..\..\Build\obj\Release\windows\Engine\GameLoop.obj
          ..\..\Build\obj\Release\windows\Engine\ResourceManager.obj
@@ -39,11 +70,12 @@ Build succeeded.
        "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" (Build target) (1) ->
        (ClCompile target) -> 
          C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Render\Primitives.cpp(114,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Render\Primitives.cpp(115,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Render\Primitives.cpp(116,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(67,16): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+         C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
 
-    4 Warning(s)
+    5 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.91
+Time Elapsed 00:00:02.60

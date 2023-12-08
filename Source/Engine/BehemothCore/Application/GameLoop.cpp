@@ -1,6 +1,4 @@
 
-#include <windows.h> 
-#include <iostream>
 #include "ECS/ECSCore.h"
 #include "Render/Primitives.h"
 #include "Misc/Log.h"
@@ -8,16 +6,18 @@
 
 #include "ECS/System.h"
 #include "Misc/CameraHelper.h"
-//stl
-#include <iostream>
-#include <filesystem>
-
+#include "Misc/Stopwatch.h"
 #include "Systems/ScalingSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/CameraSystem.h"
 #include "Systems/RotationSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/MeshInitSystem.h"
+
+#include <windows.h> 
+//stl
+#include <iostream>
+#include <filesystem>
 
 //------------------------------------------------------------------------
 
@@ -56,6 +56,17 @@ void Init()
 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e2);
 	registry.AddComponent<Behemoth::RotationComponent>(e2, 1, 2.5f);
 	registry.AddComponent<Behemoth::MovementComponent>(e2, Math::Vector3(3, 0, 5));
+
+	{
+		Stopwatch<std::chrono::microseconds> s(true, "Test.txt");
+
+		int count = 0;
+		for (int i = 0; i < 100'000; i++)
+		{
+			count += i + 1;
+			count *= 0.5;
+		}
+	}
 }
 
 //------------------------------------------------------------------------

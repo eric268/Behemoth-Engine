@@ -34,11 +34,14 @@ namespace Behemoth
 		sprite->Draw();
 	}
 
-	void Primitives::DrawWireMesh()
+	void Primitives::DrawWireMesh(const PrimitiveType type)
 	{
-		App::DrawLine(sprite->GetVertexX(0), sprite->GetVertexY(0), sprite->GetVertexX(1), sprite->GetVertexY(1));
-		App::DrawLine(sprite->GetVertexX(1), sprite->GetVertexY(1), sprite->GetVertexX(2), sprite->GetVertexY(2));
-		App::DrawLine(sprite->GetVertexX(2), sprite->GetVertexY(2), sprite->GetVertexX(0), sprite->GetVertexY(0));
+		const int verticies = static_cast<int>(type);
+		for (int i = 0, j = i + 1; i < verticies; i++, j++)
+		{
+			j = (j >= verticies) ? 0 : j;
+			App::DrawLine(sprite->GetVertexX(i), sprite->GetVertexY(i), sprite->GetVertexX(j), sprite->GetVertexY(j));
+		}
 	}
 
 	void Primitives::SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[4], Math::Vector3 normal[4], Math::Vector2 uv[4])
@@ -66,11 +69,11 @@ namespace Behemoth
 			sprite->SetUV(i, uv[i].x, uv[i].y);
 		}
 
-		if (type == TRIANGLE)
-		{
-			sprite->SetVertex(3, vert[0].x, vert[0].y);
-			sprite->SetUV(3, uv[0].x, uv[0].y);
-		}
+ 		if (type == TRIANGLE)
+ 		{
+ 			sprite->SetVertex(3, vert[0].x, vert[0].y);
+ 			sprite->SetUV(3, uv[0].x, uv[0].y);
+ 		}
 	}
 
 	std::vector<Math::Vector3> Primitives::GetVerticies()
