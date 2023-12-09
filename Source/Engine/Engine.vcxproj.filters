@@ -108,6 +108,9 @@
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Math\Plane.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -160,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Math\Plane.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

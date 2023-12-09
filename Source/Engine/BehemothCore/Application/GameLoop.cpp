@@ -37,36 +37,24 @@ void Init()
 {
 	ECS::Entity e0 = registry.CreateEntity("Main Camera");
 	registry.AddComponent<Behemoth::CameraComponent>(e0, true);
+	registry.AddComponent<Behemoth::FrustrumComponent>(e0);
 	registry.AddComponent<Behemoth::TransformComponent>(e0);
 	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0, 0, 0));
 
 	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	registry.AddComponent<Behemoth::MeshComponent>(e1, "cube.obj", "rock.png");
+	 registry.AddComponent<Behemoth::MeshComponent>(e1, "cube.obj", "rock.png");
 	registry.AddComponent<Behemoth::TransformComponent>(e1);
 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
 	registry.AddComponent<Behemoth::RotationComponent>(e1, 0, 1.0f);
-	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0, 0, 5));
-	
-
+	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0, 0, -5));
 	registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 
 	ECS::Entity e2 = registry.CreateEntity("Sphere 1");
-	registry.AddComponent<Behemoth::MeshComponent>(e2, "sphere.obj", "brick.png");
+	registry.AddComponent<Behemoth::MeshComponent>(e2, "sphere.obj", "brick.png", false, true);
 	registry.AddComponent<Behemoth::TransformComponent>(e2);
 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e2);
-	registry.AddComponent<Behemoth::RotationComponent>(e2, 1, 2.5f);
-	registry.AddComponent<Behemoth::MovementComponent>(e2, Math::Vector3(3, 0, 5));
-
-	{
-		Stopwatch<std::chrono::microseconds> s(true, "Test.txt");
-
-		int count = 0;
-		for (int i = 0; i < 100'000; i++)
-		{
-			count += i + 1;
-			count *= 0.5;
-		}
-	}
+	registry.AddComponent<Behemoth::MovementComponent>(e2, Math::Vector3(0, 0, -5));
+	registry.AddComponent<Behemoth::ScalingComponent>(e2, Math::Vector3(2.0f, 2.0f, 2.0f));
 }
 
 //------------------------------------------------------------------------

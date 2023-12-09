@@ -1,10 +1,9 @@
-﻿Build started 2023-12-08 6:45:50 PM.
+﻿Build started 2023-12-08 10:05:26 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Tests\BehemothTests\BehemothTests.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Creating "..\..\..\Build\obj\Release\windows\BehemothTests\BehemothTests.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /I"C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\include" /I..\..\Engine\BehemothCore /I..\..\NextAPI /Zi /nologo /W3 /WX /diagnostics:column /MP /Ox /Oi /D RELEASE /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++20 /Fo"..\..\..\Build\obj\Release\windows\BehemothTests\\" /Fd"..\..\..\Build\obj\Release\windows\BehemothTests\vc142.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt Test\MathLibraryTest.cpp
-         MathLibraryTest.cpp
+         All outputs are up-to-date.
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\link.exe /ERRORREPORT:PROMPT /OUT:"..\..\..\Build\bin\Release\windows\BehemothTests\BehemothTests.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:..\..\NextAPI\glut\lib\x64 /LIBPATH:..\..\..\Build\bin\Release\windows\Engine /LIBPATH:Build\Release /WX "C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\..\..\lib\native\v140\windesktop\msvcstl\static\rt-dyn\x64\Release\gtest_main.lib" "C:\Work\Engine\Next2024\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.4\build\native\..\..\lib\native\v140\windesktop\msvcstl\static\rt-dyn\x64\Release\gtest.lib" freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"..\..\..\Build\bin\Release\windows\BehemothTests\BehemothTests.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\..\..\Build\bin\Release\windows\BehemothTests\BehemothTests.lib" /MACHINE:X64 ..\..\..\Build\obj\Release\windows\BehemothTests\MathLibraryTest.obj
          ..\..\..\Build\obj\Release\windows\BehemothTests\PhysicsLibraryTests.obj
@@ -21,4 +20,4 @@ Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:01.28
+Time Elapsed 00:00:00.26

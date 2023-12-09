@@ -1,23 +1,25 @@
 #include "RenderSystem.h"
-#include "Components/Components.h"
 #include "Misc/Log.h"
+#include "Components/Components.h"
 
 namespace Behemoth
 {
 	void RenderSystem::Run(ECS::Registry& registry)
 	{
 		auto components = registry.Get<MeshComponent, TransformComponent>();
-		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
+		auto cameraComponents = registry.Get<CameraComponent, TransformComponent, FrustrumComponent>();
 
+		FrustrumComponent* mainCameraFrustrumComponent = nullptr;
 		CameraComponent* mainCamera = nullptr;
 		TransformComponent* mainCameraTransform = nullptr;
 
-		for (const auto& [cameraComp, transformComp] : cameraComponents)
+		for (const auto& [cameraComp, transformComp, frustrumComp] : cameraComponents)
 		{
 			if (cameraComp->isMain)
 			{
 				mainCamera = cameraComp;
 				mainCameraTransform = transformComp;
+				mainCameraFrustrumComponent = frustrumComp;
 				break;
 			}
 		}
@@ -36,6 +38,10 @@ namespace Behemoth
 				continue;
 			}
 
+			// Do not want to perform calculations if nothing is to be drawn
+			if (!meshComp->isVisible && !meshComp->drawWireMesh)
+				continue;
+
 			// ** Order of multiplication matters here **
 			Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
 
@@ -52,6 +58,13 @@ namespace Behemoth
 					vertex[j] = vertex[j] * transformComp->transformMatrix;
 				}
 
+				// If the object is not within view no need to calculate anything further or draw anything for the entire object
+				if (!IsInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, 2.5f))
+				{
+					break;
+				}
+
+				// If face is not visible no need for further calculations or drawing of this primitive
 				if (CullBackFace(mainCameraTransform->position, vertex))
 				{
 					continue;
@@ -60,14 +73,17 @@ namespace Behemoth
 				for (int j = 0; j < static_cast<int>(type); j++)
 				{
 					vertex[j] = vertex[j] * viewProjMatrix;
-
 					assert(vertex[j].w != 0.0f);
 					vertex[j] = vertex[j] / vertex[j].w;
 				}
 
 				meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, meshComp->mesh.meshPrimitives[i].uv);
-				// meshComp->mesh.meshPrimitives[i].DrawWireMesh(type);
-				meshComp->mesh.meshPrimitives[i].Draw();
+				
+				if (meshComp->drawWireMesh)
+					meshComp->mesh.meshPrimitives[i].DrawWireMesh(type);
+
+				if (meshComp->isVisible)
+					meshComp->mesh.meshPrimitives[i].Draw();
 			}
 		}
 	}
@@ -79,4 +95,17 @@ namespace Behemoth
 		const Math::Vector3 cam = cameraLocation - Math::Vector3(primitiveVerts[0]);
 		return (Math::Vector3::Dot(normal, cam)) <= 0;
 	}
+
+	bool RenderSystem::IsInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius)
+	{
+		for (const auto& p : frustrumComp->worldSpacePlanes)
+		{
+			float distance = Math::Vector3::Dot(p.normal, transformComp->position) + p.distance;
+			if (distance < -boundingRadius - 1e-4)
+				return false;
+		}
+
+		return true;
+	}
+
 }

@@ -160,6 +160,7 @@
     <ClInclude Include="BehemothCore\ECS\System.h" />
     <ClInclude Include="BehemothCore\Math\MathCore.h" />
     <ClInclude Include="BehemothCore\Math\Matrix.h" />
+    <ClInclude Include="BehemothCore\Math\Plane.h" />
     <ClInclude Include="BehemothCore\Math\Vector.h" />
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h" />
     <ClInclude Include="BehemothCore\Misc\Log.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="BehemothCore\Application\ResourceManager.cpp" />
     <ClCompile Include="BehemothCore\Components\Components.cpp" />
     <ClCompile Include="BehemothCore\Math\Matrix.cpp" />
+    <ClCompile Include="BehemothCore\Math\Plane.cpp" />
     <ClCompile Include="BehemothCore\Math\Vector.cpp" />
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp" />
     <ClCompile Include="BehemothCore\Misc\Log.cpp" />

@@ -4,6 +4,10 @@
 
 namespace Behemoth
 {
+	class CameraComponent;
+	class FrustrumComponent;
+	class TransformComponent;
+
 	class RenderSystem : public ECS::System
 	{
 	public:
@@ -13,5 +17,6 @@ namespace Behemoth
 	private:
 
 		bool CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[]);
+		bool IsInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius);
 	};
 }

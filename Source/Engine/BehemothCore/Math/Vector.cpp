@@ -79,6 +79,27 @@ namespace Math
 		return v;
 	}
 
+	float Vector3::Magnitude()
+	{
+		return sqrt(x * x + y * y + z * z);
+	}
+
+	Vector3& Vector3::Normalize()
+	{
+		float mag = Magnitude();
+
+		if (mag == 0)
+		{
+			*this = Vector3::Zero();
+			return *this;
+		}
+
+		x /= mag;
+		y /= mag;
+		z /= mag;
+
+		return *this;
+	}
 
 	float Vector3::Angle(const Vector3& v1, const Vector3& v2)
 	{

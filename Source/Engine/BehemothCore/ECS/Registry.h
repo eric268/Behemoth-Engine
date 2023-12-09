@@ -76,12 +76,13 @@ namespace ECS
 		}
 
 		template<IsComponent T, typename ... Args>
-		void AddComponent(Entity entity, Args&& ... parameters)
+		T AddComponent(Entity entity, Args&& ... parameters)
 		{
 			T component(std::forward<Args>(parameters)...);
 			size_t index = Generator::Value<T>();
 			auto set = GetComponent<T>();
 			set->AddComponent(entity, component);
+			return component;
 		}
 
 		template<IsComponent T>

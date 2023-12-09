@@ -6,9 +6,18 @@ namespace Behemoth
 	{
 	public:
 		MeshComponent() = default;
-		MeshComponent(const std::string& modelName, const std::string& textureName) : modelFileName(modelName), textureFileName(textureName), mesh(modelName, textureName) {}
+		MeshComponent(const std::string& modelName, const std::string& textureName, bool visible = true, bool drawWireMesh = false) : 
+		modelFileName(modelName), 
+			textureFileName(textureName), 
+			mesh(modelName, textureName),
+			isVisible(visible),
+			drawWireMesh(drawWireMesh)
+			{}
+
 		~MeshComponent() override {};
 
+		bool isVisible;
+		bool drawWireMesh;
 		Behemoth::Mesh mesh;
 		std::string modelFileName;
 		std::string textureFileName;
@@ -48,18 +57,22 @@ namespace Behemoth
 			farClippingPlane(1000.0f),
 			windowWidth(0.0f),
 			windowHeight(0.0f),
-			isMain(main) {}
+			isMain(main),
+			isDirty(true)
+			{}
 
 		~CameraComponent() = default;
 
 		Math::Matrix4x4 viewMatrix;
 		Math::Matrix4x4 perspectiveMatrix;
+		Math::Matrix4x4 inverseTransposeViewMatrix;
 		float FOV;
 		float nearClippingPlane;
 		float farClippingPlane;
 		float windowWidth;
 		float windowHeight;
 		bool isMain;
+		bool isDirty;
 	};
 
 	class TransformComponent : public ECS::Component
@@ -108,4 +121,21 @@ namespace Behemoth
 
 		Math::Vector3 scalingVector;
 	};
+
+	class FrustrumComponent : public ECS::Component 
+	{
+	public:
+		FrustrumComponent() = default;
+		Math::Plane worldSpacePlanes[6];
+	};
+
+
+	class BoundingVolumeComponent : public ECS::Component 
+	{
+	public:
+		BoundingVolumeComponent() = default;
+		float volumeRadius;
+		bool drawBoundingVolume;
+	};
+
 }

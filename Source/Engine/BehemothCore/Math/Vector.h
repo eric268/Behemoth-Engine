@@ -74,6 +74,9 @@ namespace Math
 			return *this;
 		}
 
+		Vector3& Normalize();
+		float Magnitude();
+
 		static float Angle(const Vector3& v1, const Vector3& v2);
 		static float SquaredMagnitude(const Vector3& v1);
 		static float Magnitude(const Vector3& v1);

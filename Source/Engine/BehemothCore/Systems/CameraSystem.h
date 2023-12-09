@@ -12,6 +12,7 @@ namespace Behemoth
 		virtual void Run(ECS::Registry& registry) override;
 
 		void UpdatePerspectiveMatrix(CameraComponent& component, const Math::Vector3& position);
+		void UpdateFrustrum(const CameraComponent& cameraComponent, FrustrumComponent& frustrumComponent);
 	};
 
 }
