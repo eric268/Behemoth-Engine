@@ -1,6 +1,7 @@
 #include "RotationSystem.h"
 #include "Components/Components.h"
 #include "Misc/Log.h"
+#include "ECS/Entity.h"
 
 namespace Behemoth
 {
@@ -8,7 +9,7 @@ namespace Behemoth
 	{
 		auto components = registry.Get<RotationComponent, TransformComponent, MeshComponent>();
 
-		for (const auto& [rotationComp, transformComp, meshComp] : components)
+		for (const auto& [entity, rotationComp, transformComp, meshComp] : components)
 		{
 			if (!rotationComp || !transformComp || !meshComp)
 			{

@@ -1,6 +1,7 @@
 #include "CameraSystem.h"
 #include "Misc/CameraHelper.h"
 #include "main.h"
+#include "ECS/Entity.h"
 
 namespace Behemoth
 {
@@ -8,7 +9,7 @@ namespace Behemoth
 	{
 		auto components = registry.Get<CameraComponent, TransformComponent, FrustrumComponent>();
 
-		for (auto& [cameraComp, transformComp, frustrumComp] : components)
+		for (auto& [entity, cameraComp, transformComp, frustrumComp] : components)
 		{
 			UpdatePerspectiveMatrix(*cameraComp, transformComp->position);
 			UpdateFrustrum(*cameraComp, *frustrumComp);

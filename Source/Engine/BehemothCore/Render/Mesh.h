@@ -25,7 +25,7 @@ namespace Behemoth
 	class Mesh
 	{
 	public:
-		Mesh(const std::string& modelPath, const std::string& texturePath);
+		Mesh(const std::string& modelPath, const std::string& texturePath = "");
 		std::string modelFileName;
 		std::string textureFileName;
 		std::vector<Primitives> meshPrimitives;

@@ -18,7 +18,9 @@ namespace Behemoth
 
 		bool isVisible;
 		bool drawWireMesh;
+
 		Behemoth::Mesh mesh;
+
 		std::string modelFileName;
 		std::string textureFileName;
 	};
@@ -133,9 +135,11 @@ namespace Behemoth
 	class BoundingVolumeComponent : public ECS::Component 
 	{
 	public:
-		BoundingVolumeComponent() = default;
+		BoundingVolumeComponent() : mesh("sphere.obj"), volumeRadius(1.0f), drawBoundingVolume(false) {}
+		BoundingVolumeComponent(float radius, bool draw) : mesh("sphere.obj"), volumeRadius(radius), drawBoundingVolume(draw) {}
 		float volumeRadius;
 		bool drawBoundingVolume;
+		Behemoth::Mesh mesh;
 	};
 
 }

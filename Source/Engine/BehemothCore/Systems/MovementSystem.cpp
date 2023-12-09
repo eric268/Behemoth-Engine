@@ -1,5 +1,6 @@
 #include "MovementSystem.h"
 #include "Components/Components.h"
+#include "ECS/Entity.h"
 
 namespace Behemoth
 {
@@ -11,7 +12,7 @@ namespace Behemoth
 			return;
 
 		auto components = registry.Get<MovementComponent, TransformComponent>();
-		for (const auto& [movementComp, transformComp] : components)
+		for (const auto& [entity, movementComp, transformComp] : components)
 		{
 			transformComp->position += movementComp->location;
 			transformComp->transformMatrix[3][0] = movementComp->location.x;

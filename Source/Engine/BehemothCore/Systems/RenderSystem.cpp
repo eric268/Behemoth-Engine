@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include "Misc/Log.h"
 #include "Components/Components.h"
+#include "ECS/Entity.h"
 
 namespace Behemoth
 {
@@ -13,7 +14,7 @@ namespace Behemoth
 		CameraComponent* mainCamera = nullptr;
 		TransformComponent* mainCameraTransform = nullptr;
 
-		for (const auto& [cameraComp, transformComp, frustrumComp] : cameraComponents)
+		for (const auto& [entity, cameraComp, transformComp, frustrumComp] : cameraComponents)
 		{
 			if (cameraComp->isMain)
 			{
@@ -30,7 +31,7 @@ namespace Behemoth
 			return;
 		}
 
-		for (const auto& [meshComp, transformComp] : components)
+		for (const auto& [entity, meshComp, transformComp] : components)
 		{
 			if (!meshComp || !transformComp)
 			{
@@ -49,6 +50,9 @@ namespace Behemoth
 			for (int i = 0; i < size; i++)
 			{
 				Math::Vector4 vertex[4];
+
+
+				// auto bounding = registry.GetComponent<BoundingVolumeComponent>()
 
 				PrimitiveType type = meshComp->mesh.meshPrimitives[i].primitiveType;
 
@@ -108,4 +112,50 @@ namespace Behemoth
 		return true;
 	}
 
+// 	void RenderSystem::DrawMesh(const CameraComponent* cameraComponent, const Mesh& mesh, const TransformComponent* transformComponent, const FrustrumComponent* frustrumComponent)
+// 	{
+// 		// ** Order of multiplication matters here **
+// 		Math::Matrix4x4 viewProjMatrix = cameraComponent->perspectiveMatrix * cameraComponent->viewMatrix;
+// 
+// 		std::size_t size = mesh.meshPrimitives.size();
+// 		for (int i = 0; i < size; i++)
+// 		{
+// 			Math::Vector4 vertex[4];
+// 
+// 			PrimitiveType type = mesh.meshPrimitives[i].primitiveType;
+// 
+// 			for (int j = 0; j < static_cast<int>(type); j++)
+// 			{
+// 				vertex[j] = Math::Vector4(mesh.meshPrimitives[i].verticies[j], 1.0f);
+// 				vertex[j] = vertex[j] * transformComponent->transformMatrix;
+// 			}
+// 
+// 			// If the object is not within view no need to calculate anything further or draw anything for the entire object
+// 			if (!IsInFrustrum(cameraComponent, frustrumComponent, transformComponent, 2.5f))
+// 			{
+// 				return;
+// 			}
+// 
+// 			// If face is not visible no need for further calculations or drawing of this primitive
+// 			if (CullBackFace(mainCameraTransform->position, vertex))
+// 			{
+// 				continue;
+// 			}
+// 
+// 			for (int j = 0; j < static_cast<int>(type); j++)
+// 			{
+// 				vertex[j] = vertex[j] * viewProjMatrix;
+// 				assert(vertex[j].w != 0.0f);
+// 				vertex[j] = vertex[j] / vertex[j].w;
+// 			}
+// 
+// 			meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, meshComp->mesh.meshPrimitives[i].uv);
+// 
+// 			if (meshComp->drawWireMesh)
+// 				meshComp->mesh.meshPrimitives[i].DrawWireMesh(type);
+// 
+// 			if (meshComp->isVisible)
+// 				meshComp->mesh.meshPrimitives[i].Draw();
+// 		}
+// 	}
 }

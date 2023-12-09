@@ -1,5 +1,6 @@
 #include "MeshInitSystem.h"
 #include "Components/Components.h"
+#include "ECS/Entity.h"
 #include "Render/Mesh.h"
 #include "Application/ResourceManager.h"
 #include "Misc/Log.h"
@@ -18,20 +19,19 @@ namespace Behemoth
 			return;
 
 		auto components = registry.Get<MeshComponent>();
-		for (const auto& [meshComp] : components)
+		for (const auto& [entity, meshComp] : components)
 		{
-			const MeshData* data = ResourceManager::GetInstance().GetMesh(meshComp->modelFileName);
-			if (data)
+			InitMesh(meshComp->mesh);
+
+#ifdef DEBUG
+			Behemoth::BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
+			if (boundingVolume)
 			{
-				meshComp->mesh.GenerateMesh(data->triangleData, data->quadData);
+				InitMesh(boundingVolume->mesh);
 			}
-			else
-			{
-				LOG_ERROR("Error loading mesh");
-			}
+#endif
+
 		}
-
-
 		// Iterate over the component backwards because we always swap a component to the back of the container before removing it
 		// iterating over backwards allows us to update the container size and not cause errors in the range of the loop
 		for (int i = eraseInitComponents->dense.size() - 1; i >= 0; i--)
@@ -39,6 +39,19 @@ namespace Behemoth
 			eraseInitComponents->RemoveComponent(eraseInitComponents->dense[i]);
 		}
 
+	}
+
+	void MeshInitSystem::InitMesh(Mesh& mesh)
+	{
+		const MeshData* data = ResourceManager::GetInstance().GetMesh(mesh.modelFileName);
+		if (data)
+		{
+			mesh.GenerateMesh(data->triangleData, data->quadData);
+		}
+		else
+		{
+			LOG_ERROR("Error loading mesh");
+		}
 	}
 
 }

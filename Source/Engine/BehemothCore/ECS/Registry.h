@@ -94,20 +94,20 @@ namespace ECS
 		}
 
 		template<IsComponent... T>
-		std::vector<std::tuple<T*...>> Group()
+		std::vector<std::tuple<Entity, T*...>> Group()
 		{
 			auto componentSets = std::make_tuple((GetComponent<T>()) ...);
 			SortSets(componentSets);
-			std::vector<std::tuple<T* ...>> group = GetSets<T...>(componentSets);
+			std::vector<std::tuple<Entity, T*...>> group = GetSets<T...>(componentSets);
 
 			return group;
 		}
 
 		template<IsComponent... T>
-		std::vector<std::tuple<T*...>> Get()
+		std::vector<std::tuple<Entity, T*...>> Get()
 		{
 			auto componentSets = std::make_tuple((GetComponent<T>()) ...);
-			std::vector<std::tuple<T* ...>> group = GetSets<T...>(componentSets);
+			std::vector<std::tuple<Entity, T*...>> group = GetSets<T...>(componentSets);
 
 			return group;
 		}
@@ -184,9 +184,9 @@ namespace ECS
 		}
 
 		template<IsComponent ... T, IsTuple U>
-		std::vector<std::tuple<T*...>> GetSets(U tuple)
+		std::vector<std::tuple<Entity, T*...>> GetSets(U tuple)
 		{
-			std::vector<std::tuple<T*...>> group;
+			std::vector<std::tuple<Entity, T*...>> group;
 
 			// Need to find a way to get the smallest component set
 
@@ -203,11 +203,10 @@ namespace ECS
 				{
 					group.emplace_back(std::apply([&](auto&... sets)
 						{
-							return std::make_tuple(sets->GetComponent(entity)...);
+							return std::make_tuple(entity, sets->GetComponent(entity)...);
 						}, tuple));
 				}
 			}
-
 			return group;
 		}
 

@@ -1,5 +1,6 @@
 #include "ScalingSystem.h"
 #include "Components/Components.h"
+#include "ECS/Entity.h"
 
 namespace Behemoth
 {
@@ -11,7 +12,7 @@ namespace Behemoth
 			return;
 
 		auto components = registry.Get<ScalingComponent, TransformComponent>();
-		for (const auto& [scalingComp, transformComp] : components)
+		for (const auto& [entity,scalingComp, transformComp] : components)
 		{
 			transformComp->transformMatrix[0][0] = scalingComp->scalingVector.x;
 			transformComp->transformMatrix[1][1] = scalingComp->scalingVector.y;
