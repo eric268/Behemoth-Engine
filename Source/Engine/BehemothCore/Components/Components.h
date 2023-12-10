@@ -83,6 +83,7 @@ namespace Behemoth
 		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), dirty(true) {}
 		Math::Matrix4x4 transformMatrix;
 		Math::Vector3 position;
+		Math::Vector3 scale;
 		bool dirty;
 	};
 

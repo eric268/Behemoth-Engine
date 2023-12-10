@@ -31,70 +31,32 @@ namespace Behemoth
 			return;
 		}
 
+		// ** Order of multiplication matters here **
+		Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+
 		for (const auto& [entity, meshComp, transformComp] : components)
 		{
-			if (!meshComp || !transformComp)
-			{
-				LOG_ERROR("Null component found");
-				continue;
-			}
-
 			// Do not want to perform calculations if nothing is to be drawn
 			if (!meshComp->isVisible && !meshComp->drawWireMesh)
 				continue;
 
-			// ** Order of multiplication matters here **
-			Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
-
-			std::size_t size = meshComp->mesh.meshPrimitives.size();
-			for (int i = 0; i < size; i++)
+			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
+			if (boundingVolume && !IsInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, boundingVolume->volumeRadius))
 			{
-				Math::Vector4 vertex[4];
-
-
-				// auto bounding = registry.GetComponent<BoundingVolumeComponent>()
-
-				PrimitiveType type = meshComp->mesh.meshPrimitives[i].primitiveType;
-
-				for (int j = 0; j < static_cast<int>(type); j++)
-				{
-					vertex[j] = Math::Vector4(meshComp->mesh.meshPrimitives[i].verticies[j], 1.0f);
-					vertex[j] = vertex[j] * transformComp->transformMatrix;
-				}
-
-				// If the object is not within view no need to calculate anything further or draw anything for the entire object
-				if (!IsInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, 2.5f))
-				{
-					break;
-				}
-
-				// If face is not visible no need for further calculations or drawing of this primitive
-				if (CullBackFace(mainCameraTransform->position, vertex))
-				{
-					continue;
-				}
-
-				for (int j = 0; j < static_cast<int>(type); j++)
-				{
-					vertex[j] = vertex[j] * viewProjMatrix;
-					assert(vertex[j].w != 0.0f);
-					vertex[j] = vertex[j] / vertex[j].w;
-				}
-
-				meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, meshComp->mesh.meshPrimitives[i].uv);
-				
-				if (meshComp->drawWireMesh)
-					meshComp->mesh.meshPrimitives[i].DrawWireMesh(type);
-
-				if (meshComp->isVisible)
-					meshComp->mesh.meshPrimitives[i].Draw();
+				continue;
 			}
+
+			DrawMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraTransform->position, transformComp->transformMatrix, viewProjMatrix);
+
+#ifdef DEBUG
+			if (boundingVolume && boundingVolume->drawBoundingVolume)
+				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraTransform->position, transformComp->transformMatrix, viewProjMatrix);
+#endif
 		}
 	}
 
 	bool RenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
 	{
-
 		const Math::Vector3 normal = Math::Vector3(Math::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
 		const Math::Vector3 cam = cameraLocation - Math::Vector3(primitiveVerts[0]);
 		return (Math::Vector3::Dot(normal, cam)) <= 0;
@@ -112,50 +74,54 @@ namespace Behemoth
 		return true;
 	}
 
-// 	void RenderSystem::DrawMesh(const CameraComponent* cameraComponent, const Mesh& mesh, const TransformComponent* transformComponent, const FrustrumComponent* frustrumComponent)
-// 	{
-// 		// ** Order of multiplication matters here **
-// 		Math::Matrix4x4 viewProjMatrix = cameraComponent->perspectiveMatrix * cameraComponent->viewMatrix;
-// 
-// 		std::size_t size = mesh.meshPrimitives.size();
-// 		for (int i = 0; i < size; i++)
-// 		{
-// 			Math::Vector4 vertex[4];
-// 
-// 			PrimitiveType type = mesh.meshPrimitives[i].primitiveType;
-// 
-// 			for (int j = 0; j < static_cast<int>(type); j++)
-// 			{
-// 				vertex[j] = Math::Vector4(mesh.meshPrimitives[i].verticies[j], 1.0f);
-// 				vertex[j] = vertex[j] * transformComponent->transformMatrix;
-// 			}
-// 
-// 			// If the object is not within view no need to calculate anything further or draw anything for the entire object
-// 			if (!IsInFrustrum(cameraComponent, frustrumComponent, transformComponent, 2.5f))
-// 			{
-// 				return;
-// 			}
-// 
-// 			// If face is not visible no need for further calculations or drawing of this primitive
-// 			if (CullBackFace(mainCameraTransform->position, vertex))
-// 			{
-// 				continue;
-// 			}
-// 
-// 			for (int j = 0; j < static_cast<int>(type); j++)
-// 			{
-// 				vertex[j] = vertex[j] * viewProjMatrix;
-// 				assert(vertex[j].w != 0.0f);
-// 				vertex[j] = vertex[j] / vertex[j].w;
-// 			}
-// 
-// 			meshComp->mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, meshComp->mesh.meshPrimitives[i].uv);
-// 
-// 			if (meshComp->drawWireMesh)
-// 				meshComp->mesh.meshPrimitives[i].DrawWireMesh(type);
-// 
-// 			if (meshComp->isVisible)
-// 				meshComp->mesh.meshPrimitives[i].Draw();
-// 		}
-// 	}
+	void RenderSystem::DrawMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const Math::Matrix4x4& meshTransform, const Math::Matrix4x4& viewProjMatrix)
+	{
+		std::size_t size = mesh.meshPrimitives.size();
+		for (int i = 0; i < size; i++)
+		{
+			Math::Vector4 vertex[4];
+
+			PrimitiveType type = mesh.meshPrimitives[i].primitiveType;
+
+			for (int j = 0; j < static_cast<int>(type); j++)
+			{
+				vertex[j] = Math::Vector4(mesh.meshPrimitives[i].verticies[j], 1.0f);
+				vertex[j] = vertex[j] * meshTransform;
+			}
+
+			// If face is not visible no need for further calculations or drawing of this primitive
+			if (CullBackFace(cameraPosition, vertex))
+			{
+				continue;
+			}
+
+			for (int j = 0; j < static_cast<int>(type); j++)
+			{
+				vertex[j] = vertex[j] * viewProjMatrix;
+				assert(vertex[j].w != 0.0f);
+				vertex[j] = vertex[j] / vertex[j].w;
+			}
+
+			mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, mesh.meshPrimitives[i].uv);
+
+			if (isVisible)
+				mesh.meshPrimitives[i].Draw();
+
+			if (drawWireFrame)
+				mesh.meshPrimitives[i].DrawWireMesh(type);
+		}
+	}
+
+	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const Math::Matrix4x4& meshTransform, const Math::Matrix4x4& viewProjMatrix)
+	{
+		Math::Matrix4x4 boundingMatrix{};
+
+		for (int i = 0; i < 3; i++)
+		{
+			boundingMatrix[i][i] = radius;
+			boundingMatrix[3][i] = meshTransform[3][i];
+		}
+
+		DrawMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
+	}
 }

@@ -18,8 +18,8 @@ namespace Behemoth
 
 	void CameraSystem::UpdatePerspectiveMatrix(CameraComponent& component, const Math::Vector3& position)
 	{
-// 		if (!component.isDirty)
-// 			return;
+		if (!component.isDirty)
+			return;
 
 		RECT rect;
 		GetClientRect(MAIN_WINDOW_HANDLE, &rect);

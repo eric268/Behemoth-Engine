@@ -42,13 +42,13 @@ void Init()
 	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0, 0, 0));
 
 	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	registry.AddComponent<Behemoth::MeshComponent>(e1, "cube.obj", "rock.png");
+	registry.AddComponent<Behemoth::MeshComponent>(e1, "sphere.obj", "rock.png");
 	registry.AddComponent<Behemoth::TransformComponent>(e1);
 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-	registry.AddComponent<Behemoth::RotationComponent>(e1, 0, 1.0f);
+	registry.AddComponent<Behemoth::RotationComponent>(e1, 1, 1.0f);
 	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0, 0, -5));
 	registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
-	registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 2.0f, true);
+	registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.0f, false);
 }
 
 //------------------------------------------------------------------------
