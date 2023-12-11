@@ -66,6 +66,12 @@ namespace Math
 		}
 
 		template<typename T>
+		Vector3 operator+(const T vec)
+		{
+			return Vector3(x + vec.x, y + vec.y, z + vec.z);
+		}
+
+		template<typename T>
 		Vector3& operator+=(const T scalar)
 		{
 			x += scalar.x;

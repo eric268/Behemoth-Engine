@@ -57,9 +57,25 @@ namespace Behemoth
 
 	bool RenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
 	{
-		const Math::Vector3 normal = Math::Vector3(Math::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
+		Math::Vector3 normal = Math::Vector3(Math::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
 		const Math::Vector3 cam = cameraLocation - Math::Vector3(primitiveVerts[0]);
 		return (Math::Vector3::Dot(normal, cam)) <= 0;
+	}
+
+	bool  RenderSystem::CullQuadBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
+	{
+		Math::Vector3 edge1 = Math::Vector3(primitiveVerts[1] - primitiveVerts[0]);
+		Math::Vector3 edge2 = Math::Vector3(primitiveVerts[2] - primitiveVerts[0]);
+		Math::Vector3 edge3 = Math::Vector3(primitiveVerts[3] - primitiveVerts[0]);
+
+		Math::Vector3 normal1 = Math::Vector3::Cross(edge1, edge2).Normalize();
+		Math::Vector3 normal2 = Math::Vector3::Cross(edge1, edge3).Normalize();
+
+		Math::Vector3 normal = (normal1 + normal2) * 0.5f;
+
+		const Math::Vector3 cam = cameraLocation - Math::Vector3(primitiveVerts[0]);
+		return Math::Vector3::Dot(normal, cam) < 1e-5;
+
 	}
 
 	bool RenderSystem::IsInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius)
@@ -89,7 +105,6 @@ namespace Behemoth
 				vertex[j] = vertex[j] * meshTransform;
 			}
 
-			// If face is not visible no need for further calculations or drawing of this primitive
 			if (CullBackFace(cameraPosition, vertex))
 			{
 				continue;

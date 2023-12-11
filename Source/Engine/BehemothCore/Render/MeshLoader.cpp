@@ -61,17 +61,33 @@ namespace Behemoth
 					normalIndices.push_back(normalIndex);
 				}
 
-				for (int i = 0; i < vertexIndices.size(); ++i)
+				int numVerticies = vertexIndices.size();
+				bool isNonPlanarQuad = false;
+
+				// Transform non-planar quads into triangles, leave planar quads alone
+				if (numVerticies == 4 && 
+					IsNonPlanarQuad(
+						vertexPositions[vertexIndices[0] - 1],
+						vertexPositions[vertexIndices[1] - 1],
+						vertexPositions[vertexIndices[2] - 1], 
+						vertexPositions[vertexIndices[3] - 1]))
 				{
+					numVerticies = 6;
+					isNonPlanarQuad = true;
+				}
+
+				int quadIndex[6] = { 0,1,2,2,3,0 };
+				for (int i = 0; i < numVerticies; i++)
+				{
+					int index = isNonPlanarQuad ? quadIndex[i] : i;
 					VertexData vData{};
-					vData.vertex = vertexPositions[vertexIndices[i] - 1];
-					vData.normal = vertexNormals[normalIndices[i] - 1];
-					vData.uv = vertexUVs[uvIndices[i] - 1];
-					vertexIndices.size() == 3 ? tData.push_back(vData) : qData.push_back(vData);
+					vData.vertex = vertexPositions[vertexIndices[index] - 1];
+					vData.normal = vertexNormals[normalIndices[index] - 1];
+					vData.uv = vertexUVs[uvIndices[index] - 1];
+					numVerticies == 4  ? qData.push_back(vData) : tData.push_back(vData);
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -80,5 +96,16 @@ namespace Behemoth
 		std::replace(faceData.begin(), faceData.end(), '/', ' ');
 		std::istringstream iss(faceData);
 		iss >> vertexIndex >> uvIndex >> normalIndex;
+	}
+
+	bool MeshLoader::IsNonPlanarQuad(const Math::Vector3& v1, const Math::Vector3& v2, const Math::Vector3& v3, const Math::Vector3& v4)
+	{
+		Math::Vector3 vec1 = v2 - v1;
+		Math::Vector3 vec2 = v3 - v1;
+		Math::Vector3 vec3 = v4 - v1;
+
+		Math::Vector3 normal = Math::Vector3::Cross(vec1, vec2);
+		float dotProduct = Math::Vector3::Dot(normal, vec3);
+		return std::fabs(dotProduct) > 1e-5;
 	}
 }
