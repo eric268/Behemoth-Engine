@@ -2,31 +2,104 @@
 #include "Misc/Log.h"
 
 #include <random>
+#include <cstring>
 
 namespace Behemoth
 {
 	Primitives::Primitives() : 
-		sprite{ new CSimpleSprite("") },
-		depth(0.0)
+		sprite{nullptr},
+		depth(0.0),
+		texturePath(nullptr)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
 		verticies[2] = Math::Vector3();
-		RandomizeColor();
 	}
 
 	Primitives::Primitives(const char* path) : 
 		sprite{ new CSimpleSprite(path)},
-		depth(0.0)
+		depth(0.0),
+		texturePath(path)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
 		verticies[2] = Math::Vector3();
 	}
 
+	Primitives::Primitives(const char* path, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]) :
+		sprite{ new CSimpleSprite(path) },
+		texturePath(path),
+		primitiveType(type),
+		depth(0.0)
+	{
+		CopyVertexData(verticies, normals, uv);
+		SetSpriteUVs(type, uv);
+	}
+
 	Primitives::~Primitives()
 	{
-		// delete sprite;
+		delete sprite;
+	}
+
+	Primitives::Primitives(const Primitives& obj) : depth(obj.depth), primitiveType(obj.primitiveType), color(obj.color)
+	{
+		CopyVertexData(obj.verticies, obj.normals, obj.uv);
+
+		texturePath = (obj.texturePath) ? obj.texturePath : "";
+		sprite = new CSimpleSprite(texturePath);
+	}
+
+	Primitives::Primitives(Primitives&& obj) noexcept
+	{
+		CopyVertexData(obj.verticies, obj.normals, obj.uv);
+
+		sprite = obj.sprite;
+		obj.sprite = nullptr;
+		depth = obj.depth;
+		primitiveType = obj.primitiveType;
+		color = obj.color;
+
+		SetSpriteUVs(primitiveType, uv);
+	}
+// 
+	Primitives& Primitives::operator=(const Primitives& obj)
+	{
+		if (this != &obj) 
+		{ 
+			delete sprite;
+
+			CopyVertexData(obj.verticies, obj.normals, obj.uv);
+
+			texturePath = (obj.texturePath) ? obj.texturePath : "";
+			sprite = new CSimpleSprite(texturePath);
+
+			depth = obj.depth;
+			primitiveType = obj.primitiveType;
+			color = obj.color;
+
+			// Set UVs for sprite
+			// SetSpriteUVs(primitiveType, uv);
+		}
+		return *this;
+	}
+
+	Primitives& Primitives::operator=(Primitives&& obj)  noexcept
+	{
+		if (this != &obj) {
+
+			delete sprite;
+			sprite = obj.sprite;
+			obj.sprite = nullptr;
+
+			CopyVertexData(obj.verticies, obj.normals, obj.uv);
+			depth = obj.depth;
+			primitiveType = obj.primitiveType;
+			color = obj.color;
+			texturePath = obj.texturePath;
+			// SetSpriteUVs(primitiveType, uv);
+		}
+
+		return *this;
 	}
 
 	void Primitives::Draw()
@@ -125,37 +198,5 @@ namespace Behemoth
 			vert[i].y = sprite->GetVertexY(i);
 		}
 		return vert;
-	}
-
-	const void Primitives::PrintVerticies() const
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			std::cout << "Vertex: " << std::to_string(i) 
-					  << " (X: " << std::to_string(verticies[i].x)
-					  << " Y: " << std::to_string(verticies[i].y)
-					  << " Z: " << std::to_string(verticies[i].z) 
-					  << '\n';
-		}
-	}
-
-	void Primitives::RandomizeColor()
-	{
-		std::random_device rd;
-
-		// Initialize a random number generator
-		std::mt19937 gen(rd());
-
-		// Create a distribution in the range [0, 1]
-		std::uniform_real_distribution<> distrib(0.0, 1.0);
-
-		// Generate a random number
-		double randomNumber1 = distrib(gen);
-		double randomNumber2 = distrib(gen);
-		double randomNumber3 = distrib(gen);
-
-		color.x = randomNumber1;
-		color.y = randomNumber2;
-		color.z = randomNumber3;
 	}
 }

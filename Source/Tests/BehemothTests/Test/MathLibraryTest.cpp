@@ -13,7 +13,7 @@ TEST(Vec4_Mul_M4x4, Math)
 		{  91.0f ,   1.13f,   -7.7f,  92.72f}
 	};
 
-	Math::Vector4 result = vec * m;
+	Math::Vector4 result = m * vec;
 	Math::Vector4 ans(482.4876f, -82.1994, 367.87f, -225.456);
 
 	EXPECT_TRUE(Math::Vector4::Equals(result, ans));

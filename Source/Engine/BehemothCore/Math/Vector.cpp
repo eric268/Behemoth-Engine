@@ -79,7 +79,7 @@ namespace Math
 		return v;
 	}
 
-	float Vector3::Magnitude()
+	float Vector3::Magnitude() const
 	{
 		return sqrt(x * x + y * y + z * z);
 	}
@@ -162,7 +162,7 @@ namespace Math
 
 	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix)
 	{
-		Vector4 v = Vector4(vec, 1.0f) * rotationMatrix;
+		Vector4 v = rotationMatrix * Vector4(vec, 1.0f);
 		vec.x = v.x;
 		vec.y = v.y;
 		vec.z = v.z;
@@ -179,24 +179,6 @@ namespace Math
 	Vector4::Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 	Vector4::Vector4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
 	Vector4::Vector4(Vector3 vec, float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
-
-	Vector4 Vector4::operator* (const Matrix4x4& m) const
-	{
-		Vector4 result;
-
-		result.x = x * m.data[0][0] + y * m.data[1][0] + z * m.data[2][0] + w * m.data[3][0];
-		result.y = x * m.data[0][1] + y * m.data[1][1] + z * m.data[2][1] + w * m.data[3][1];
-		result.z = x * m.data[0][2] + y * m.data[1][2] + z * m.data[2][2] + w * m.data[3][2];
-		result.w = x * m.data[0][3] + y * m.data[1][3] + z * m.data[2][3] + w * m.data[3][3];
-
-		return result;
-	}
-
-	Vector4 Vector4::operator*= (const Matrix4x4& m)
-	{
-		*this = *this * m;
-		return *this;
-	}
 
 	Vector4 Vector4::operator-(const Vector4 vec) const
 	{

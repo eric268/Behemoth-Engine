@@ -42,14 +42,17 @@ void Init()
 	registry.AddComponent<Behemoth::TransformComponent>(e0);
 	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0, 0, 0));
 
-	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "brick.png");
-	registry.AddComponent<Behemoth::TransformComponent>(e1);
-	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-	registry.AddComponent<Behemoth::RotationComponent>(e1, 1, 1.0f);
-	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0, 0, -4));
-	registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
-	registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.0f, false);
+	for (int i = 0; i < 50; i++)
+	{
+		ECS::Entity e1 = registry.CreateEntity("Cube 1");
+		registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "brick.png");
+		registry.AddComponent<Behemoth::TransformComponent>(e1);
+		registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
+		registry.AddComponent<Behemoth::RotationComponent>(e1, 1, 1.0f);
+		registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0.0f, 0.0f, -4.0f));
+		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
+		registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.0f, false);
+	}
 }
 
 //------------------------------------------------------------------------

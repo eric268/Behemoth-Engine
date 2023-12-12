@@ -1,10 +1,13 @@
 #pragma once
+
+#include "Vector.h"
 // stl
 #include <memory>
 #include <cassert>
 
 namespace Math
 {
+
 	// Want to make this a pure virtual class eventually
 	class Matrix
 	{
@@ -99,6 +102,8 @@ namespace Math
 		// Matrix4x4& operator= (const Matrix4x4& m);
 		Matrix4x4 operator*(const Matrix4x4& m) const;
 		Matrix4x4 operator*=(const Matrix4x4& m) const;
+
+		Vector4 operator*(const Vector4 vec) const;
 
 		float* operator[](int row)
 		{

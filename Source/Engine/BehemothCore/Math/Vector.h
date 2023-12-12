@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Matrix.h"
+#include <cassert>
 
 namespace Math
 {
 	class Vector2;
 	class Vector3;
 	class Vector4;
+	class Matrix4x4;
 
 	class Vector2
 	{
@@ -48,11 +49,6 @@ namespace Math
 		{
 			return Vector3(x * scalar, y * scalar, z * scalar);
 		}
-		template<typename T>
-		Vector3 operator*= (const T scalar) const
-		{
-			return Vector3(x * scalar, y * scalar, z * scalar);
-		}
 
 		template<typename T>
 		Vector3 operator* (const T scalar)
@@ -62,7 +58,10 @@ namespace Math
 		template<typename T>
 		Vector3 operator*= (const T scalar)
 		{
-			return Vector3(x * scalar, y * scalar, z * scalar);
+			x *= scalar;
+			y *= scalar;
+			z *= scalar;
+			return *this;
 		}
 
 		template<typename T>
@@ -81,7 +80,7 @@ namespace Math
 		}
 
 		Vector3& Normalize();
-		float Magnitude();
+		float Magnitude() const;
 
 		static float Angle(const Vector3& v1, const Vector3& v2);
 		static float SquaredMagnitude(const Vector3& v1);
@@ -114,9 +113,6 @@ namespace Math
 		static bool Equals(const Vector4& vec1, const Vector4& vec2, float epsilon = 1e-2);
 		static Vector4 Cross(const Vector4& v1, const Vector4& v2, const float wVal = 1.0f);
 
-		Vector4 operator* (const Matrix4x4& m) const;
-		Vector4 operator*= (const Matrix4x4& m);
-
 		template<typename T>
 		Vector4 operator* (const T scalar) const
 		{
@@ -124,9 +120,13 @@ namespace Math
 		}
 
 		template<typename T>
-		Vector4 operator*=(const T scalar) const
+		Vector4& operator*=(const T scalar)
 		{
-			return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
+			x *= scalar;
+			y *= scalar;
+			z *= scalar;
+			w *= scalar;
+			return *this;
 		}
 
 		template<typename T>

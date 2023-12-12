@@ -22,7 +22,15 @@ namespace Behemoth
 	public:
 		Primitives();
 		Primitives(const char*);
+		Primitives(const char* path, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]);
 		~Primitives();
+
+		Primitives(const Primitives& obj);
+		Primitives(Primitives&& obj) noexcept;
+
+		Primitives& operator=(Primitives&& obj) noexcept;
+ 		Primitives& operator=(const Primitives& obj);
+
 
 		std::vector<Math::Vector3> GetVerticies();
 		const void PrintVerticies() const;
@@ -44,10 +52,17 @@ namespace Behemoth
 		void SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[], Math::Vector3 normal[], Math::Vector2 uv[]);
 		
 	private:
+
+		inline void CopyVertexData(const Math::Vector3* verticies, const Math::Vector3* normals, const Math::Vector2* uv) 
+		{
+			std::memcpy(this->verticies, verticies, sizeof(Math::Vector3) * 4);
+			std::memcpy(this->normals, normals, sizeof(Math::Vector3) * 4);
+			std::memcpy(this->uv, uv, sizeof(Math::Vector2) * 4);
+		}
+
 		CSimpleSprite* sprite;
 		Math::Vector3 color;
-
-		void RandomizeColor();
+		const char* texturePath;
 	};
 }
 

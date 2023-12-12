@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
-#include "filesystem"
-
+#include <filesystem>
+#include <iostream>
 namespace Behemoth
 {
 	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath) : 
@@ -42,9 +42,8 @@ namespace Behemoth
 				uv[j] = data[i + j].uv;
 			}
 
-			Primitives p(path.c_str());
-			p.SetPrimitiveVerticies(type, v, n, uv);
-			meshPrimitives[i/numVerticies + offset] = p;
+			meshPrimitives[i/numVerticies + offset] = std::move(Primitives(path.c_str(), type, v, n ,uv));
+/*			meshPrimitives[i / numVerticies + offset].SetPrimitiveVerticies(type, v, n, uv);*/
 		}
 	}
 }

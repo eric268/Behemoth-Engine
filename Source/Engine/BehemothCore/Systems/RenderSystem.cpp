@@ -104,7 +104,7 @@ namespace Behemoth
 			for (int j = 0; j < numVerticies; j++)
 			{
 				vertex[j] = Math::Vector4(mesh.meshPrimitives[i].verticies[j], 1.0f);
-				vertex[j] = vertex[j] * meshTransform;
+				vertex[j] = meshTransform * vertex[j];
 			}
 
 			if (CullBackFace(cameraPosition, vertex))
@@ -115,7 +115,7 @@ namespace Behemoth
 			float depth = 0.0f;
 			for (int j = 0; j < numVerticies; j++)
 			{
-				vertex[j] = vertex[j] * viewProjMatrix;
+				vertex[j] = viewProjMatrix * vertex[j];
 				assert(vertex[j].w != 0.0f);
 				vertex[j] = vertex[j] / vertex[j].w;
 				depth += vertex[j].z;
