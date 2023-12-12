@@ -41,7 +41,7 @@ namespace Behemoth
 				continue;
 
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
-			if (boundingVolume && !IsInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, boundingVolume->volumeRadius))
+			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, boundingVolume->volumeRadius))
 			{
 				continue;
 			}
@@ -78,7 +78,7 @@ namespace Behemoth
 
 	}
 
-	bool RenderSystem::IsInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius)
+	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius)
 	{
 		for (const auto& p : frustrumComp->worldSpacePlanes)
 		{
@@ -98,8 +98,9 @@ namespace Behemoth
 			Math::Vector4 vertex[4];
 
 			PrimitiveType type = mesh.meshPrimitives[i].primitiveType;
+			int numVerticies = static_cast<int>(type);
 
-			for (int j = 0; j < static_cast<int>(type); j++)
+			for (int j = 0; j < numVerticies; j++)
 			{
 				vertex[j] = Math::Vector4(mesh.meshPrimitives[i].verticies[j], 1.0f);
 				vertex[j] = vertex[j] * meshTransform;
@@ -115,6 +116,12 @@ namespace Behemoth
 				vertex[j] = vertex[j] * viewProjMatrix;
 				assert(vertex[j].w != 0.0f);
 				vertex[j] = vertex[j] / vertex[j].w;
+			}
+			
+			// No need to call draw on primitive that is not visible in view frustum 
+			if (!IsPrimitiveWithinFrustrum(numVerticies, vertex))
+			{
+				continue;
 			}
 
 			mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, mesh.meshPrimitives[i].uv);
@@ -138,5 +145,25 @@ namespace Behemoth
 		}
 
 		DrawMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
+	}
+
+	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVerticies, Math::Vector4 primitiveVerts[])
+	{
+		// Only want to cull primitives that are entirely outside of view frustum since OpenGL render pipeline will clip
+		// the quads if portions are outside the frustum. Me doing that, potentially creating temporary primitives will
+		// just increase draw calls with is counter intuitive 
+		int numVerticiesOutsideFrustrum = 0;
+		for (int i = 0; i < numVerticies; i++)
+		{
+			if (primitiveVerts[i].x < -primitiveVerts[i].w || 
+				primitiveVerts[i].x >  primitiveVerts[i].w ||
+				primitiveVerts[i].y < -primitiveVerts[i].w ||
+				primitiveVerts[i].y >  primitiveVerts[i].w || 
+				primitiveVerts[i].z >  primitiveVerts[i].w ||
+				primitiveVerts[i].z <= 0)
+				numVerticiesOutsideFrustrum++;
+		}
+		
+		return numVerticiesOutsideFrustrum != numVerticies;
 	}
 }
