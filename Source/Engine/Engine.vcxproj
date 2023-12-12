@@ -168,6 +168,11 @@
     <ClInclude Include="BehemothCore\Render\Mesh.h" />
     <ClInclude Include="BehemothCore\Render\MeshLoader.h" />
     <ClInclude Include="BehemothCore\Render\Primitives.h" />
+    <ClInclude Include="BehemothCore\Render\Renderer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h" />
@@ -188,6 +193,11 @@
     <ClCompile Include="BehemothCore\Render\Mesh.cpp" />
     <ClCompile Include="BehemothCore\Render\MeshLoader.cpp" />
     <ClCompile Include="BehemothCore\Render\Primitives.cpp" />
+    <ClCompile Include="BehemothCore\Render\Renderer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp" />

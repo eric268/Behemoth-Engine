@@ -111,6 +111,9 @@
     <ClInclude Include="BehemothCore\World\Scene.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Render\Renderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\World\Scene.cpp">
       <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Render\Renderer.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "Misc/Log.h"
 #include "Components/Components.h"
 #include "ECS/Entity.h"
+#include "Render/Renderer.h"
 
 namespace Behemoth
 {
@@ -92,8 +93,8 @@ namespace Behemoth
 
 	void RenderSystem::DrawMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const Math::Matrix4x4& meshTransform, const Math::Matrix4x4& viewProjMatrix)
 	{
-		std::size_t size = mesh.meshPrimitives.size();
-		for (int i = 0; i < size; i++)
+		Renderer::GetInstance().ReservePrimitives(mesh.totalPrimitives);
+		for (int i = 0; i < mesh.totalPrimitives; i++)
 		{
 			Math::Vector4 vertex[4];
 
@@ -111,23 +112,31 @@ namespace Behemoth
 				continue;
 			}
 
-			for (int j = 0; j < static_cast<int>(type); j++)
+			float depth = 0.0f;
+			for (int j = 0; j < numVerticies; j++)
 			{
 				vertex[j] = vertex[j] * viewProjMatrix;
 				assert(vertex[j].w != 0.0f);
 				vertex[j] = vertex[j] / vertex[j].w;
+				depth += vertex[j].z;
 			}
+			assert(numVerticies != 0);
 			
 			// No need to call draw on primitive that is not visible in view frustum 
 			if (!IsPrimitiveWithinFrustrum(numVerticies, vertex))
 			{
 				continue;
 			}
+		
 
-			mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex, mesh.meshPrimitives[i].uv);
+			mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex);
 
 			if (isVisible)
-				mesh.meshPrimitives[i].Draw();
+			{
+				// mesh.meshPrimitives[i].Draw();
+				mesh.meshPrimitives[i].depth = depth / numVerticies;
+				Renderer::GetInstance().AddPrimitive(&mesh.meshPrimitives[i]);
+			}
 
 			if (drawWireFrame)
 				mesh.meshPrimitives[i].DrawWireMesh(type);

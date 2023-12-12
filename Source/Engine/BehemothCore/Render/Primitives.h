@@ -22,6 +22,7 @@ namespace Behemoth
 	public:
 		Primitives();
 		Primitives(const char*);
+		~Primitives();
 
 		std::vector<Math::Vector3> GetVerticies();
 		const void PrintVerticies() const;
@@ -35,6 +36,10 @@ namespace Behemoth
 
 		PrimitiveType primitiveType;
 
+		double depth;
+
+		void SetSpriteUVs(PrimitiveType type, Math::Vector2 uv[]);
+		void SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[]);
 		void SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[]);
 		void SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[], Math::Vector3 normal[], Math::Vector2 uv[]);
 		

@@ -6,7 +6,8 @@
 namespace Behemoth
 {
 	Primitives::Primitives() : 
-		sprite{ new CSimpleSprite("") }
+		sprite{ new CSimpleSprite("") },
+		depth(0.0)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
@@ -15,11 +16,17 @@ namespace Behemoth
 	}
 
 	Primitives::Primitives(const char* path) : 
-		sprite{ new CSimpleSprite(path)}
+		sprite{ new CSimpleSprite(path)},
+		depth(0.0)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
 		verticies[2] = Math::Vector3();
+	}
+
+	Primitives::~Primitives()
+	{
+		// delete sprite;
 	}
 
 	void Primitives::Draw()
@@ -44,7 +51,39 @@ namespace Behemoth
 		}
 	}
 
-	void Primitives::SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[4], Math::Vector3 normal[4], Math::Vector2 uv[4])
+	void Primitives::SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[])
+	{
+		if (!sprite)
+		{
+			LOG_ERROR("Null sprite found");
+			return;
+		}
+
+		for (int i = 0; i < static_cast<int>(type); i++)
+		{
+			sprite->SetVertex(i, vert[i].x, vert[i].y);
+		}
+
+		if (type == TRIANGLE)
+		{
+			sprite->SetVertex(3, vert[0].x, vert[0].y);
+		}
+	}
+
+	void Primitives::SetSpriteUVs(PrimitiveType type, Math::Vector2 uv[])
+	{
+		for (int i = 0; i < static_cast<int>(type); i++)
+		{
+			sprite->SetUV(i, uv[i].x, uv[i].y);
+		}
+
+		if (type == TRIANGLE)
+		{
+			sprite->SetUV(3, uv[0].x, uv[0].y);
+		}
+	}
+
+	void Primitives::SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[], Math::Vector3 normal[], Math::Vector2 uv[])
 	{
 		primitiveType = type;
 		for (int i = 0; i < static_cast<int>(type); i++)
@@ -53,6 +92,7 @@ namespace Behemoth
 			normals[i] = normal[i];
 			this->uv[i] = uv[i];
 		}
+		SetSpriteUVs(type, uv);
 	}
 
 	void Primitives::SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[])

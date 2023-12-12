@@ -4,15 +4,17 @@
 
 namespace Behemoth
 {
-	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath) : modelFileName(modelPath), textureFileName(texturePath)
-	{
-
-	}
+	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath) : 
+		modelFileName(modelPath), 
+		textureFileName(texturePath), 
+		totalPrimitives(0)
+	{}
 
 	void Mesh::GenerateMesh(const std::vector<VertexData>& triangleData, const std::vector<VertexData>& quadData)
 	{
 		meshPrimitives.clear();
-		meshPrimitives.resize(triangleData.size() / 3 + quadData.size() / 4);
+		totalPrimitives = triangleData.size() / 3 + quadData.size() / 4;
+		meshPrimitives.resize(totalPrimitives);
 		GeneratePrimitives(triangleData, PrimitiveType::TRIANGLE, 0);
 		GeneratePrimitives(quadData, PrimitiveType::QUAD, triangleData.size() / 3);
 	}

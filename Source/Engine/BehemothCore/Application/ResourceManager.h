@@ -16,10 +16,6 @@ namespace Behemoth
 	class ResourceManager
 	{
 	public:
-		using page_vertex = std::unique_ptr<Math::Vector3[]>;
-		using page_normal = std::unique_ptr<Math::Vector3[]>;
-		using page_uv = std::unique_ptr<Math::Vector2[]>;
-
 		ResourceManager(const ResourceManager&) = delete;
 		ResourceManager& operator=(const ResourceManager&) = delete;
 
@@ -32,7 +28,6 @@ namespace Behemoth
 		const MeshData* GetMesh(const std::string& filePath);
 
 	private:
-
 		ResourceManager();
 		bool LoadMesh(const std::string& filePath, const std::size_t id);
 		std::unordered_map<std::size_t, MeshData> meshContainer;

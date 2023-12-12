@@ -56,7 +56,7 @@ namespace Behemoth
 			perspectiveMatrix(Math::Matrix4x4::Identity()),
 			FOV(90.0f),
 			nearClippingPlane(0.1f),
-			farClippingPlane(1000.0f),
+			farClippingPlane(500.0f),
 			windowWidth(0.0f),
 			windowHeight(0.0f),
 			isMain(main),

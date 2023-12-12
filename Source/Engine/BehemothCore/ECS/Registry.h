@@ -223,7 +223,7 @@ namespace ECS
 
 			for (int i = 0; i < componentArray.size(); i++)
 			{
-				if (set.count(componentArray[i]->typeID) == 0)
+				if (!set.count(componentArray[i]->typeID))
 					continue;
 					
 				if (!componentPoolPtr || componentArray[i]->size() < componentPoolPtr->size())

@@ -3,6 +3,7 @@
 #include "Render/Primitives.h"
 #include "Misc/Log.h"
 #include "ResourceManager.h"
+#include "Render/Renderer.h"
 
 #include "ECS/System.h"
 #include "Misc/CameraHelper.h"
@@ -42,10 +43,10 @@ void Init()
 	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0, 0, 0));
 
 	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "rock.png");
+	registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "brick.png");
 	registry.AddComponent<Behemoth::TransformComponent>(e1);
 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-	registry.AddComponent<Behemoth::RotationComponent>(e1, 2, 1.0f);
+	registry.AddComponent<Behemoth::RotationComponent>(e1, 1, 1.0f);
 	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0, 0, -4));
 	registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 	registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.0f, false);
@@ -62,7 +63,8 @@ void Update(float deltaTime)
 	rotationSystem.Run(registry);
 	cameraSystem.Run(registry);
 	scalingSystem.Run(registry);
-
+	renderSystem.Run(registry);
+	
 }
 
 //------------------------------------------------------------------------
@@ -71,7 +73,7 @@ void Update(float deltaTime)
 //------------------------------------------------------------------------
 void Render()
 {
-	renderSystem.Run(registry);
+	Behemoth::Renderer::GetInstance().Draw();
 }
 //------------------------------------------------------------------------
 // Add your shutdown code here. Called when the APP_QUIT_KEY is pressed.
