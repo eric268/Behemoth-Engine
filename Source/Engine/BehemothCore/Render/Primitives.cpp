@@ -11,7 +11,8 @@ namespace Behemoth
 		depth(0.0),
 		texturePath(nullptr),
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
-		specular(32.0f)
+		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
+		shininess(32.0f)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
@@ -23,7 +24,8 @@ namespace Behemoth
 		depth(0.0),
 		texturePath(path),
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
-		specular(32.0f)
+		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
+		shininess(32.0f)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
@@ -37,7 +39,8 @@ namespace Behemoth
 		primitiveType(type),
 		depth(0.0),
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
-		specular(32.0f)
+		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
+		shininess(32.0f)
 	{
 		SetLighting(Math::Vector3::Zero());
 		CopyVertexData(verticies, normals, uv);
@@ -53,7 +56,8 @@ namespace Behemoth
 		depth(obj.depth),
 		primitiveType(obj.primitiveType),
 		diffuse(obj.diffuse),
-		specular(obj.specular)
+		specular(obj.specular),
+		shininess(obj.shininess)
 	{
 		CopyVertexData(obj.verticies, obj.normals, obj.uv);
 
@@ -71,6 +75,7 @@ namespace Behemoth
 		primitiveType = obj.primitiveType;
 		diffuse = obj.diffuse;
 		specular = obj.specular;
+		shininess = obj.shininess;
 
 		SetSpriteUVs(primitiveType, uv);
 	}
@@ -90,6 +95,7 @@ namespace Behemoth
 			primitiveType = obj.primitiveType;
 			diffuse = obj.diffuse;
 			specular = obj.specular;
+			shininess = obj.shininess;
 
 			// Set UVs for sprite
 			// SetSpriteUVs(primitiveType, uv);
@@ -111,6 +117,7 @@ namespace Behemoth
 			texturePath = obj.texturePath;
 			diffuse = obj.diffuse;
 			specular = obj.specular;
+			shininess = obj.shininess;
 			// SetSpriteUVs(primitiveType, uv);
 		}
 
@@ -127,17 +134,7 @@ namespace Behemoth
 		sprite->Draw();
 	}
 
-	void Primitives::DrawWireMesh(const PrimitiveType type)
-	{
-		const int verticies = static_cast<int>(type);
-		for (int i = 0, j = i + 1; i < verticies; i++, j++)
-		{
-			j = (j >= verticies) ? 0 : j;
-			App::DrawLine(sprite->GetVertexX(i), sprite->GetVertexY(i), sprite->GetVertexX(j), sprite->GetVertexY(j));
-		}
-	}
-
-	void Primitives::SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[])
+	void Primitives::SetSpriteVerticies(const int numVerticies, const Math::Vector4 vert[])
 	{
 		if (!sprite)
 		{
@@ -145,12 +142,12 @@ namespace Behemoth
 			return;
 		}
 
-		for (int i = 0; i < static_cast<int>(type); i++)
+		for (int i = 0; i < numVerticies; i++)
 		{
 			sprite->SetVertex(i, vert[i].x, vert[i].y);
 		}
 
-		if (type == TRIANGLE)
+		if (numVerticies == TRIANGLE)
 		{
 			sprite->SetVertex(3, vert[0].x, vert[0].y);
 		}

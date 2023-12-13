@@ -48,37 +48,6 @@ namespace Math
 		return Vector3{};
 	}
 
-	Vector3& Vector3::operator= (const Vector3& vec)
-	{
-		x = vec.x;
-		y = vec.y;
-		z = vec.z;
-		return *this;
-	}
-
-	Vector3 Vector3::operator* (const Vector3& vec) const
-	{
-		return Vector3(x * vec.x, y * vec.y, z * vec.z);
-	}
-
-	Vector3 Vector3::operator*= (const Vector3 vec) const
-	{
-		Vector3 v;
-		v.x = x * vec.x;
-		v.y = y * vec.y;
-		v.z = z * vec.z;
-		return v;
-	}
-
-	Vector3 Vector3::operator- (const Vector3& vec) const
-	{
-		Vector3 v;
-		v.x = x - vec.x;
-		v.y = y - vec.y;
-		v.z = z - vec.z;
-		return v;
-	}
-
 	float Vector3::Magnitude() const
 	{
 		return sqrt(x * x + y * y + z * z);
@@ -170,6 +139,11 @@ namespace Math
 
 		Vector3::Normalize(vec);
 		return vec;
+	}
+
+	Vector3 Vector3::Reflect(const Vector3& lightDir, const Vector3& normal)
+	{
+		return lightDir - (normal *  Vector3::Dot(normal, lightDir) * 2.0f);
 	}
 
 

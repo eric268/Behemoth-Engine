@@ -9,7 +9,8 @@ namespace Behemoth
 		textureFileName(texturePath),
 		totalPrimitives(0),
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
-		specular(32.0f)
+		specular(Math::Vector3(1.0f,1.0f,1.0f)),
+		shininess(32.0f)
 	{}
 
 	void Mesh::GenerateMesh(const std::vector<VertexData>& triangleData, const std::vector<VertexData>& quadData)
@@ -46,6 +47,7 @@ namespace Behemoth
 			Primitives p(path.c_str(), type, v, n, uv);
 			p.diffuse = diffuse;
 			p.specular = specular;
+			p.shininess = shininess;
 			meshPrimitives[i/numVerticies + offset] = std::move(p);
 /*			meshPrimitives[i / numVerticies + offset].SetPrimitiveVerticies(type, v, n, uv);*/
 		}

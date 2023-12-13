@@ -33,7 +33,8 @@ namespace Behemoth
 		std::size_t totalPrimitives;
 
 		Math::Vector3 diffuse;
-		float specular;
+		Math::Vector3 specular;
+		float shininess;
 	private:
 		void GeneratePrimitives(const std::vector<VertexData>& data, PrimitiveType type, std::size_t offset);
 	};

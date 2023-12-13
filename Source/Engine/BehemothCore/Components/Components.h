@@ -20,7 +20,6 @@ namespace Behemoth
 		bool drawWireMesh;
 
 		Behemoth::Mesh mesh;
-
 		std::string modelFileName;
 		std::string textureFileName;
 	};
@@ -165,18 +164,26 @@ namespace Behemoth
 	{
 	public:
 		PointLightComponent() :
-			position(Math::Vector3(0.0f, 0.0f, -1.0f)),
 			color(Math::Vector3(0.25f, 0.25, 0.25f)),
-			intensity(1.0f) {}
+			intensity(1.0f),
+			constant(1.0f),
+			linear(0.14f),
+			quadratic(0.07f) 
+		{}
 
-		PointLightComponent(Math::Vector3 pos, Math::Vector3 color, float intensity) :
-			position(pos),
+		PointLightComponent(Math::Vector3 color, float intensity, float constant = 1.0f,  float linear = 0.14f, float quadratic = 0.07f) :
 			color(color),
-			intensity(intensity) {}
+			intensity(intensity),
+			constant(constant),
+			linear(linear),
+			quadratic(quadratic)
+		{}
 
-		Math::Vector3 position;
 		Math::Vector3 color;
 		float intensity;
+		float constant;
+		float linear;
+		float quadratic;
 	};
 
 }

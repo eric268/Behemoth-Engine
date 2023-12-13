@@ -1,17 +1,24 @@
 #include "Renderer.h"
 #include "Primitives.h"
 
+#include "app.h"
+
 // stl
 #include <algorithm>
 #include <iostream>
 
 namespace Behemoth
 {
-	Renderer::Renderer() : primitivesIndex(0) {}
+	Renderer::Renderer() : primitivesIndex(0), lineIndex(0) {}
 
 	void Renderer::ReservePrimitives(std::size_t numPrimitives)
 	{
 		primitivesToDraw.resize(primitivesToDraw.size() + numPrimitives);
+	}
+
+	void Renderer::ReserveLines(std::size_t numLines)
+	{
+		linesToDraw.resize(linesToDraw.size() + numLines);
 	}
 
 	void Renderer::SortPrimitivesByDepth()
@@ -28,10 +35,16 @@ namespace Behemoth
 		primitivesToDraw[primitivesIndex++] = primitive;
 	}
 
-	void Renderer::RemovePrimitiveOverflow()
+	void Renderer::FreeResourceOverflow()
 	{
-		// primitivesToDraw.erase(primitivesToDraw.begin() + primitivesIndex, primitivesToDraw.end());
-		primitivesToDraw.erase(std::remove(primitivesToDraw.begin(), primitivesToDraw.end(), nullptr), primitivesToDraw.end());
+		primitivesToDraw.erase(primitivesToDraw.begin() + primitivesIndex, primitivesToDraw.end());
+		linesToDraw.erase(linesToDraw.begin() + lineIndex, linesToDraw.end());
+	}
+
+
+	void Renderer::AddLine(const Math::Vector4& line)
+	{
+		linesToDraw[lineIndex++] = line;
 	}
 
 	void Renderer::Draw()
@@ -43,8 +56,19 @@ namespace Behemoth
 			p->Draw();
 		}
 
+		for (const auto& l : linesToDraw)
+		{
+			App::DrawLine(l.x, l.y, l.z, l.w);
+		}
+
+		ClearResources();
+	}
+	void Renderer::ClearResources()
+	{
 		primitivesToDraw.clear();
 		primitivesIndex = 0;
-	}
 
+		linesToDraw.clear();
+		lineIndex = 0;
+	}
 }

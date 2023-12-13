@@ -14,19 +14,20 @@ namespace Behemoth
 		FrustrumComponent* mainCameraFrustrumComponent = nullptr;
 		CameraComponent* mainCamera = nullptr;
 		TransformComponent* mainCameraTransform = nullptr;
+		Math::Vector3 mainCameraPosition{};
 
 		for (const auto& [entity, cameraComp, transformComp, frustrumComp] : cameraComponents)
 		{
 			if (cameraComp->isMain)
 			{
 				mainCamera = cameraComp;
-				mainCameraTransform = transformComp;
+				mainCameraPosition = transformComp->position;
 				mainCameraFrustrumComponent = frustrumComp;
 				break;
 			}
 		}
 
-		if (!mainCamera || !mainCameraTransform)
+		if (!mainCamera)
 		{
 			LOG_ERROR("Main camera not found");
 			return;
@@ -47,38 +48,61 @@ namespace Behemoth
 				continue;
 			}
 
-			DrawMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraTransform->position, transformComp, viewProjMatrix);
+			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
 
 #ifdef DEBUG
 			if (boundingVolume && boundingVolume->drawBoundingVolume)
-				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraTransform->position, transformComp, viewProjMatrix);
+				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
 #endif
 		}
 
-		Renderer::GetInstance().RemovePrimitiveOverflow();
+		Renderer::GetInstance().FreeResourceOverflow();
 	}
+
+	void RenderSystem::ProcessMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix)
+	{
+		ReserveResources(mesh.totalPrimitives, drawWireFrame);
+
+		for (int i = 0; i < mesh.totalPrimitives; i++)
+		{
+			Math::Vector4 vertex[4] = { {} };
+			Primitives& primitive = mesh.meshPrimitives[i];
+			PrimitiveType type = primitive.primitiveType;
+			int numVerticies = static_cast<int>(type);
+
+			TransformVertex(primitive, transformMatrix, vertex, numVerticies);
+			bool cullPrimitive = CullBackFace(cameraPosition, vertex);
+
+			if (cullPrimitive && !drawWireFrame)
+			{
+				continue;
+			}
+
+			ProcessVertex(viewProjMatrix, vertex, numVerticies);
+
+			if (!IsPrimitiveWithinFrustrum(numVerticies, vertex))
+			{
+				continue;
+			}
+
+			if (drawWireFrame)
+			{
+				AddWireMeshToRenderer(numVerticies, vertex);
+			}
+
+			if (!cullPrimitive && isVisible)
+			{
+				AddPrimitiveToRenderer(primitive, numVerticies, vertex);
+			}
+		}
+	}
+
 
 	bool RenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
 	{
 		Math::Vector3 normal = Math::Vector3(Math::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
 		const Math::Vector3 cam = cameraLocation - Math::Vector3(primitiveVerts[0]);
 		return (Math::Vector3::Dot(normal, cam)) <= 0;
-	}
-
-	bool  RenderSystem::CullQuadBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
-	{
-		Math::Vector3 edge1 = Math::Vector3(primitiveVerts[1] - primitiveVerts[0]);
-		Math::Vector3 edge2 = Math::Vector3(primitiveVerts[2] - primitiveVerts[0]);
-		Math::Vector3 edge3 = Math::Vector3(primitiveVerts[3] - primitiveVerts[0]);
-
-		Math::Vector3 normal1 = Math::Vector3::Cross(edge1, edge2).Normalize();
-		Math::Vector3 normal2 = Math::Vector3::Cross(edge1, edge3).Normalize();
-
-		Math::Vector3 normal = (normal1 + normal2) * 0.5f;
-
-		const Math::Vector3 cam = cameraLocation - Math::Vector3(primitiveVerts[0]);
-		return Math::Vector3::Dot(normal, cam) < 1e-5;
-
 	}
 
 	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius)
@@ -93,72 +117,17 @@ namespace Behemoth
 		return true;
 	}
 
-	void RenderSystem::DrawMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const TransformComponent* transformComp, const Math::Matrix4x4& viewProjMatrix)
-	{
-		Renderer::GetInstance().ReservePrimitives(mesh.totalPrimitives);
-		for (int i = 0; i < mesh.totalPrimitives; i++)
-		{
-			Math::Vector4 vertex[4];
-
-			PrimitiveType type = mesh.meshPrimitives[i].primitiveType;
-			int numVerticies = static_cast<int>(type);
-
-			for (int j = 0; j < numVerticies; j++)
-			{
-				vertex[j] = Math::Vector4(mesh.meshPrimitives[i].verticies[j], 1.0f);
-				vertex[j] = transformComp->transformMatrix * vertex[j];
-			}
-
-			if (CullBackFace(cameraPosition, vertex))
-			{
-				continue;
-			}
-
-			float depth = 0.0f;
-			for (int j = 0; j < numVerticies; j++)
-			{
-				vertex[j] = viewProjMatrix * vertex[j];
-				assert(vertex[j].w != 0.0f);
-
-				float w = 1.0f / vertex[j].w;
-				vertex[j] *= w;
-
-				depth += vertex[j].z;
-			}
-			assert(numVerticies != 0);
-			
-			// No need to call draw on primitive that is not visible in view frustum 
-			if (!IsPrimitiveWithinFrustrum(numVerticies, vertex))
-			{
-				continue;
-			}
-		
-
-			mesh.meshPrimitives[i].SetSpriteVerticies(type, vertex);
-
-			if (isVisible)
-			{
-				// mesh.meshPrimitives[i].Draw();
-				mesh.meshPrimitives[i].depth = depth / numVerticies;
-				Renderer::GetInstance().AddPrimitive(&mesh.meshPrimitives[i]);
-			}
-
-			if (drawWireFrame)
-				mesh.meshPrimitives[i].DrawWireMesh(type);
-		}
-	}
-
-	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const TransformComponent* transformComp, const Math::Matrix4x4& viewProjMatrix)
+	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix)
 	{
 		Math::Matrix4x4 boundingMatrix{};
 
 		for (int i = 0; i < 3; i++)
 		{
 			boundingMatrix[i][i] = radius;
-			boundingMatrix[3][i] = transformComp->transformMatrix[3][i];
+			boundingMatrix[3][i] = transformMatrix[3][i];
 		}
 
-		// DrawMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
+		ProcessMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
 	}
 
 	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVerticies, Math::Vector4 primitiveVerts[])
@@ -179,5 +148,61 @@ namespace Behemoth
 		}
 		
 		return numVerticiesOutsideFrustrum != numVerticies;
+	}
+
+	void RenderSystem::AddWireMeshToRenderer(const int numVerticies, const Math::Vector4 verticies[])
+	{
+		for (int i = 0, j = i + 1; i < numVerticies; i++, j++)
+		{
+			j = (j >= numVerticies) ? 0 : j;
+			Renderer::GetInstance().AddLine(Math::Vector4(verticies[i].x, verticies[i].y, verticies[j].x, verticies[j].y));
+		}
+	}
+
+	void RenderSystem::AddPrimitiveToRenderer(Primitives& primitive, const int numVerticies, const Math::Vector4 vertex[])
+	{
+		primitive.depth = GetPrimitiveDepth(numVerticies, vertex);
+		primitive.SetSpriteVerticies(numVerticies, vertex);
+		Renderer::GetInstance().AddPrimitive(&primitive);
+	}
+
+
+	void RenderSystem::ReserveResources(int numPrimitives, bool drawWireFrame)
+	{
+		Renderer::GetInstance().ReservePrimitives(numPrimitives);
+
+		if (drawWireFrame) 
+		{
+			Renderer::GetInstance().ReserveLines(numPrimitives * 4);
+		}
+	}
+
+	void RenderSystem::TransformVertex(const Primitives& primitive, const Math::Matrix4x4& transformMatrix, Math::Vector4 vertex[], const int numVerticies)
+	{
+		for (int j = 0; j < numVerticies; j++)
+		{
+			vertex[j] = Math::Vector4(primitive.verticies[j], 1.0f);
+			vertex[j] = transformMatrix * vertex[j];
+		}
+	}
+
+	void RenderSystem::ProcessVertex(const Math::Matrix4x4& viewProjMatrix, Math::Vector4 vertex[], int numVerticies)
+	{
+		for (int j = 0; j < numVerticies; j++)
+		{
+			vertex[j] = viewProjMatrix * vertex[j];
+			float w = 1.0f / vertex[j].w;
+			vertex[j] *= w;
+		}
+	}
+
+	float RenderSystem::GetPrimitiveDepth(const int numVerticies, const Math::Vector4 vertex[])
+	{
+		float depth = 0.0f;
+		for (int j = 0; j < numVerticies; j++)
+		{
+			depth += vertex[j].z;
+		}
+		return depth;
 	}
 }

@@ -35,7 +35,6 @@ namespace Behemoth
 		std::vector<Math::Vector3> GetVerticies();
 
 		void Draw();
-		void DrawWireMesh(const PrimitiveType type);
 
 		Math::Vector3 verticies[4];
 		Math::Vector3 normals[4];
@@ -45,15 +44,22 @@ namespace Behemoth
 
 		double depth;
 		Math::Vector3 diffuse;
-		float specular;
+		Math::Vector3 specular;
+		float shininess;
 
 		void SetSpriteUVs(PrimitiveType type, Math::Vector2 uv[]);
-		void SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[]);
+		void SetSpriteVerticies(const int numVerticies, const Math::Vector4 vert[]);
 		void SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[]);
 		void SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[], Math::Vector3 normal[], Math::Vector2 uv[]);
 
-		inline void SetLighting(Math::Vector3 color)
+		inline void SetLighting(Math::Vector3 c)
 		{
+			color = c;
+			sprite->SetColor(c.x, c.y, c.z);
+		}
+		inline void AddLighting(Math::Vector3 light)
+		{
+			color += light;
 			sprite->SetColor(color.x, color.y, color.z);
 		}
 		
@@ -68,6 +74,8 @@ namespace Behemoth
 
 		CSimpleSprite* sprite;
 		const char* texturePath;
+
+		Math::Vector3 color;
 	};
 }
 

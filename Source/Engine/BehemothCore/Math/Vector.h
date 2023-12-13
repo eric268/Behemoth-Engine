@@ -17,11 +17,8 @@ namespace Math
 		
 		float x;
 		float y;
-
 	private:
-
 	};
-
 
 	class Vector3
 	{
@@ -34,24 +31,30 @@ namespace Math
 		float y;
 		float z;
 
+		Vector3& Normalize();
+		float Magnitude() const;
+
 		static Vector3 Forward();
 		static Vector3 Right();
 		static Vector3 Up();
 		static Vector3 Zero();
 
-		Vector3& operator= (const Vector3& vec);
-		Vector3  operator* (const Vector3& vec) const;
-		Vector3  operator- (const Vector3& vec)const ;
-		Vector3  operator*= (const Vector3 vec) const;
+		static Vector3 Normalize(const Vector3& v1);
+		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
+		static Vector3& RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix);
+		static Vector3 Reflect(const Vector3& lightDir, const Vector3& normal);
 
+		static float Angle(const Vector3& v1, const Vector3& v2);
+		static float SquaredMagnitude(const Vector3& v1);
+		static float Magnitude(const Vector3& v1);
+		static float Distance(const Vector3& v1, const Vector3& v2);
+		static float Dot(const Vector3& v1, const Vector3& v2);
+
+		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);
+
+#pragma region Overloaded Operators
 		template<typename T>
 		Vector3 operator* (const T scalar) const
-		{
-			return Vector3(x * scalar, y * scalar, z * scalar);
-		}
-
-		template<typename T>
-		Vector3 operator* (const T scalar)
 		{
 			return Vector3(x * scalar, y * scalar, z * scalar);
 		}
@@ -66,38 +69,108 @@ namespace Math
 		}
 
 		template<typename T>
-		Vector3 operator+(const T vec)
+		Vector3 operator+(const T val) const 
 		{
-			return Vector3(x + vec.x, y + vec.y, z + vec.z);
+			return Vector3(x + val, y + val, z + val);
 		}
 
 		template<typename T>
 		Vector3& operator+=(const T scalar)
 		{
-			x += scalar.x;
-			y += scalar.y;
-			z += scalar.z;
+			x += scalar;
+			y += scalar;
+			z += scalar;
 			return *this;
 		}
 
-		Vector3& Normalize();
-		float Magnitude() const;
+		template<typename T>
+		Vector3 operator-(const T val) const
+		{
+			return Vector3(x - val, y - val, z - val);
+		}
 
-		static float Angle(const Vector3& v1, const Vector3& v2);
-		static float SquaredMagnitude(const Vector3& v1);
-		static float Magnitude(const Vector3& v1);
-		static float Distance(const Vector3& v1, const Vector3& v2);
-		static float Dot(const Vector3& v1, const Vector3& v2);
-		static Vector3 Normalize(const Vector3& v1);
-		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
-		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);
+		template<typename T>
+		Vector3& operator-=(const T val)
+		{
+			x -= val;
+			y -= val;
+			z -= val;
+			return *this;
+		}
 
-		static Vector3& RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix);
+		template<typename T>
+		Vector3 operator/(const T val) const
+		{
+			assert(val != 0.0f);
+			return Vector3(x / val, y / val, z / val);
+		}
 
+		template<typename T>
+		Vector3& operator/=(const T val)
+		{
+			assert(val != 0.0f);
+			x /= val;
+			y /= val;
+			z /= val;
+			return *this;
+		}
+
+		Vector3 operator+(const Vector3& vec) const
+		{
+			return Vector3(x + vec.x, y + vec.y, z + vec.z);
+		}
+
+		Vector3& operator+=(const Vector3& vec)
+		{
+			x += vec.x;
+			y += vec.y;
+			z += vec.z;
+			return *this;
+		}
+
+		Vector3 operator*(const Vector3& vec) const
+		{
+			return Vector3(x * vec.x, y * vec.y, z * vec.z);
+		}
+
+		Vector3& operator*=(const Vector3& vec)
+		{
+			x *= vec.x;
+			y *= vec.y;
+			z *= vec.z;
+			return *this;
+		}
+
+		Vector3 operator-(const Vector3 vec) const
+		{
+			return Vector3(x - vec.x, y - vec.y, z - vec.z);
+		}
+
+		Vector3& operator-=(const Vector3& vec)
+		{
+			x -= vec.x;
+			y -= vec.y;
+			z -= vec.z;
+			return *this;
+		}
+
+		Vector3 operator/(const Vector3& vec) const
+		{
+			assert(vec.x != 0.0f && vec.y != 0.0f && vec.z != 0.0f);
+			return Vector3(x / vec.x, y / vec.y, z / vec.z);
+		}
+
+		Vector3& operator/=(const Vector3& vec)
+		{
+			assert(vec.x != 0.0f && vec.y != 0.0f && vec.z != 0.0f);
+			x /= vec.x;
+			y /= vec.y;
+			z /= vec.z;
+			return *this;
+		}
+#pragma endregion 
 	private:
-
 	};
-
 
 	class Vector4
 	{
