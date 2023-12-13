@@ -24,6 +24,7 @@ namespace Behemoth
 		void Draw();
 		void ReservePrimitives(std::size_t numPrimitives);
 		void AddPrimitive(Primitives* primitive);
+		void RemovePrimitiveOverflow();
 
 	private:
 		Renderer();

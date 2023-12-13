@@ -1,4 +1,4 @@
-﻿Build started 2023-12-12 2:27:57 PM.
+﻿Build started 2023-12-12 9:26:09 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Engine\Engine.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Creating "..\..\Build\obj\Debug\windows\Engine\Engine.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -15,35 +15,47 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
        C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(60): message : while compiling class template member function 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)'
                  with
                  [
-                     T=Behemoth::BoundingVolumeComponent,
-                     Component=Behemoth::BoundingVolumeComponent
+                     T=Behemoth::DirectionalLightComponent,
+                     Component=Behemoth::DirectionalLightComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(84): message : see reference to function template instantiation 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(85): message : see reference to function template instantiation 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)' being compiled
                  with
                  [
-                     T=Behemoth::BoundingVolumeComponent,
-                     Component=Behemoth::BoundingVolumeComponent
+                     T=Behemoth::DirectionalLightComponent,
+                     Component=Behemoth::DirectionalLightComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(30): message : see reference to class template instantiation 'ECS::SparseSet<T>' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(32): message : see reference to class template instantiation 'ECS::SparseSet<T>' being compiled
                  with
                  [
-                     T=Behemoth::BoundingVolumeComponent
+                     T=Behemoth::DirectionalLightComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(80): message : see reference to class template instantiation 'ECS::ComponentPool<T>' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(81): message : see reference to class template instantiation 'ECS::ComponentPool<T>' being compiled
                  with
                  [
-                     T=Behemoth::BoundingVolumeComponent
+                     T=Behemoth::DirectionalLightComponent
                  ]
-       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(54): message : see reference to function template instantiation 'T ECS::Registry::AddComponent<Behemoth::BoundingVolumeComponent,float,bool>(ECS::Entity,float &&,bool &&)' being compiled
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Application\GameLoop.cpp(61): message : see reference to function template instantiation 'T ECS::Registry::AddComponent<Behemoth::DirectionalLightComponent,Math::Vector3,Math::Vector3,float>(ECS::Entity,Math::Vector3 &&,Math::Vector3 &&,float &&)' being compiled
                  with
                  [
-                     T=Behemoth::BoundingVolumeComponent
+                     T=Behemoth::DirectionalLightComponent
+                 ]
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(40,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(33): message : while compiling class template member function 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)'
+                 with
+                 [
+                     T=Behemoth::DirectionalLightComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(43): message : see reference to function template instantiation 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)' being compiled
+                 with
+                 [
+                     T=Behemoth::DirectionalLightComponent
                  ]
      1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
          All outputs are up-to-date.
        Lib:
          C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\Lib.exe /OUT:"..\..\Build\bin\Debug\windows\Engine\Engine.lib" freeglut.lib /LIBPATH:..\NextAPI\glut\lib\x64 /LIBPATH:..\..\Build\bin\Debug\windows\NextAPI /LIBPATH:Build\Debug /NOLOGO /MACHINE:X64 ..\..\Build\obj\Debug\windows\Engine\GameLoop.obj
          ..\..\Build\obj\Debug\windows\Engine\ResourceManager.obj
+         ..\..\Build\obj\Debug\windows\Engine\ThreadPool.obj
          ..\..\Build\obj\Debug\windows\Engine\Components.obj
          ..\..\Build\obj\Debug\windows\Engine\Matrix.obj
          ..\..\Build\obj\Debug\windows\Engine\Plane.obj
@@ -54,6 +66,7 @@ Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Sour
          ..\..\Build\obj\Debug\windows\Engine\MeshLoader.obj
          ..\..\Build\obj\Debug\windows\Engine\Primitives.obj
          ..\..\Build\obj\Debug\windows\Engine\CameraSystem.obj
+         ..\..\Build\obj\Debug\windows\Engine\LightingSystem.obj
          ..\..\Build\obj\Debug\windows\Engine\MeshInitSystem.obj
          ..\..\Build\obj\Debug\windows\Engine\MovementSystem.obj
          ..\..\Build\obj\Debug\windows\Engine\RenderSystem.obj
@@ -73,9 +86,10 @@ Build succeeded.
        (ClCompile target) -> 
          C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(40,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
          C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
 
-    3 Warning(s)
+    4 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:02.21
+Time Elapsed 00:00:02.02

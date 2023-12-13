@@ -17,7 +17,7 @@ namespace Behemoth
 				continue;
 			}
 
-			Math::Matrix4x4 rotationMatrix = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
+			const Math::Matrix4x4 rotationMatrix = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
 			Math::Matrix4x4 newMatrix = transformComp->transformMatrix * rotationMatrix;
 
 			for (int i = 0; i < 3; i++)

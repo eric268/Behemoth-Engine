@@ -22,6 +22,8 @@ namespace ECS
 			return data;
 		}
 
+		virtual void RemoveComponent(const Entity& e) {}
+
 		int typeID;
 	};
 
@@ -34,6 +36,11 @@ namespace ECS
 		std::size_t size() override
 		{
 			return SparseSet<T>::size();
+		}
+
+		virtual void RemoveComponent(const Entity& e) override
+		{
+			SparseSet<T>::RemoveComponent(e);
 		}
 
 		virtual std::vector<Entity>& GetEntities()

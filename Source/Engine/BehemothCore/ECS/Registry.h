@@ -41,16 +41,17 @@ namespace ECS
 
 		void DestroyEntity(Entity entity)
 		{
-			// 		for (int i = 0; i < components.size(); i++)
-			// 		{
-			// 			std::any_cast<SparseSet<Components>>(components[i]).RemoveComponent(entity);
-			// 		}
-
+			for (int i = 0; i < componentArray.size(); i++)
+			{
+				componentArray[i]->RemoveComponent(entity);
+			}
 
 			entity.IncrementVersion();
 			auto identifier = entity.GetIdentifier();
 			if (available > 0)
+			{
 				entity.SetIdentifier(next);
+			}
 
 			entities[identifier] = entity;
 			next = identifier;
@@ -155,7 +156,7 @@ namespace ECS
 		{
 			return std::apply([&](auto&... set)
 				{
-					return (set->HasEntity(entity.GetIdentifier()) && ...);
+					return (set->HasEntity(entity) && ...);
 				}, tuple);
 		}
 

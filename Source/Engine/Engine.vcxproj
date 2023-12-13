@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="BehemothCore\Application\MeshMetaData.h" />
     <ClInclude Include="BehemothCore\Application\ResourceManager.h" />
+    <ClInclude Include="BehemothCore\Application\ThreadPool.h" />
     <ClInclude Include="BehemothCore\Components\Components.h" />
     <ClInclude Include="BehemothCore\ECS\Component.h" />
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h" />
@@ -174,6 +175,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\LightingSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h" />
     <ClInclude Include="BehemothCore\Systems\RenderSystem.h" />
@@ -184,6 +186,7 @@
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp" />
     <ClCompile Include="BehemothCore\Application\ResourceManager.cpp" />
+    <ClCompile Include="BehemothCore\Application\ThreadPool.cpp" />
     <ClCompile Include="BehemothCore\Components\Components.cpp" />
     <ClCompile Include="BehemothCore\Math\Matrix.cpp" />
     <ClCompile Include="BehemothCore\Math\Plane.cpp" />
@@ -199,6 +202,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\LightingSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\RenderSystem.cpp" />

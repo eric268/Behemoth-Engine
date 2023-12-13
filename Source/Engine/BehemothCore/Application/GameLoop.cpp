@@ -14,6 +14,7 @@
 #include "Systems/RotationSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/MeshInitSystem.h"
+#include "Systems/LightingSystem.h"
 
 #include <windows.h> 
 //stl
@@ -33,6 +34,7 @@ Behemoth::CameraSystem cameraSystem;
 Behemoth::RotationSystem rotationSystem;
 Behemoth::MovementSystem movementSystem;
 Behemoth::ScalingSystem scalingSystem;
+Behemoth::LightingSystem lightingSystem;
 
 void Init()
 {
@@ -42,17 +44,21 @@ void Init()
 	registry.AddComponent<Behemoth::TransformComponent>(e0);
 	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0, 0, 0));
 
-	for (int i = 0; i < 50; i++)
-	{
-		ECS::Entity e1 = registry.CreateEntity("Cube 1");
-		registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "brick.png");
-		registry.AddComponent<Behemoth::TransformComponent>(e1);
-		registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-		registry.AddComponent<Behemoth::RotationComponent>(e1, 1, 1.0f);
-		registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0.0f, 0.0f, -4.0f));
-		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
-		registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.0f, false);
-	}
+	ECS::Entity e1 = registry.CreateEntity("Cube 1");
+	registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "brick.png");
+	registry.AddComponent<Behemoth::TransformComponent>(e1);
+	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
+	registry.AddComponent<Behemoth::RotationComponent>(e1, 1, 1.0f);
+	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0.0f, 0.0f, -4.0f));
+	registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
+	registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.0f, false);
+
+	ECS::Entity e2 = registry.CreateEntity("Directional Light");
+	registry.AddComponent<Behemoth::DirectionalLightComponent>(
+		e2,
+		Math::Vector3(1, 0, 0),
+		Math::Vector3(0.25f, 0.25f, 0.25f)
+		,2.5f);
 }
 
 //------------------------------------------------------------------------
@@ -66,8 +72,12 @@ void Update(float deltaTime)
 	rotationSystem.Run(registry);
 	cameraSystem.Run(registry);
 	scalingSystem.Run(registry);
+
+
+	// These systems should always be last and in this order
+	// Maybe make a separate container for them to ensure they are last
 	renderSystem.Run(registry);
-	
+	lightingSystem.Run(registry);
 }
 
 //------------------------------------------------------------------------
@@ -78,6 +88,7 @@ void Render()
 {
 	Behemoth::Renderer::GetInstance().Draw();
 }
+
 //------------------------------------------------------------------------
 // Add your shutdown code here. Called when the APP_QUIT_KEY is pressed.
 // Just before the app exits.

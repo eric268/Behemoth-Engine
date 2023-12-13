@@ -93,11 +93,11 @@ void CSimpleSprite::Draw()
     float scalex = m_scale / APP_VIRTUAL_WIDTH;
     float scaley = m_scale / APP_VIRTUAL_HEIGHT;
 #else
-    float scalex = m_scale;
-    float scaley = m_scale;
+	float scalex = m_scale;
+	float scaley = m_scale;
 #endif
     float x = m_xpos;
-    float y = m_ypos;
+    float y =  m_ypos;
 #if APP_USE_VIRTUAL_RES
     APP_VIRTUAL_TO_NATIVE_COORDS(x, y);
 #endif

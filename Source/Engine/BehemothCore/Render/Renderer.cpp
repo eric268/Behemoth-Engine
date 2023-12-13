@@ -28,10 +28,14 @@ namespace Behemoth
 		primitivesToDraw[primitivesIndex++] = primitive;
 	}
 
-	void Renderer::Draw()
+	void Renderer::RemovePrimitiveOverflow()
 	{
 		// primitivesToDraw.erase(primitivesToDraw.begin() + primitivesIndex, primitivesToDraw.end());
 		primitivesToDraw.erase(std::remove(primitivesToDraw.begin(), primitivesToDraw.end(), nullptr), primitivesToDraw.end());
+	}
+
+	void Renderer::Draw()
+	{
 		SortPrimitivesByDepth();
 
 		for (const auto& p : primitivesToDraw)

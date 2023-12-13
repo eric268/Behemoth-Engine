@@ -143,4 +143,40 @@ namespace Behemoth
 		Behemoth::Mesh mesh;
 	};
 
+	class DirectionalLightComponent : public ECS::Component 
+	{
+	public:
+		DirectionalLightComponent() : 
+			direction(Math::Vector3(0.0f, 0.0f, -1.0f)), 
+			color(Math::Vector3(0.25f, 0.25, 0.25f)),
+			intensity(1.0f) {}
+
+		DirectionalLightComponent(Math::Vector3 dir, Math::Vector3 color, float intensity) :
+			direction(dir),
+			color(color),
+			intensity(intensity) {}
+
+		Math::Vector3 direction;
+		Math::Vector3 color;
+		float intensity;
+	};
+
+	class PointLightComponent : public ECS::Component
+	{
+	public:
+		PointLightComponent() :
+			position(Math::Vector3(0.0f, 0.0f, -1.0f)),
+			color(Math::Vector3(0.25f, 0.25, 0.25f)),
+			intensity(1.0f) {}
+
+		PointLightComponent(Math::Vector3 pos, Math::Vector3 color, float intensity) :
+			position(pos),
+			color(color),
+			intensity(intensity) {}
+
+		Math::Vector3 position;
+		Math::Vector3 color;
+		float intensity;
+	};
+
 }

@@ -47,13 +47,15 @@ namespace Behemoth
 				continue;
 			}
 
-			DrawMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraTransform->position, transformComp->transformMatrix, viewProjMatrix);
+			DrawMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraTransform->position, transformComp, viewProjMatrix);
 
 #ifdef DEBUG
 			if (boundingVolume && boundingVolume->drawBoundingVolume)
-				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraTransform->position, transformComp->transformMatrix, viewProjMatrix);
+				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraTransform->position, transformComp, viewProjMatrix);
 #endif
 		}
+
+		Renderer::GetInstance().RemovePrimitiveOverflow();
 	}
 
 	bool RenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
@@ -91,7 +93,7 @@ namespace Behemoth
 		return true;
 	}
 
-	void RenderSystem::DrawMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const Math::Matrix4x4& meshTransform, const Math::Matrix4x4& viewProjMatrix)
+	void RenderSystem::DrawMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const TransformComponent* transformComp, const Math::Matrix4x4& viewProjMatrix)
 	{
 		Renderer::GetInstance().ReservePrimitives(mesh.totalPrimitives);
 		for (int i = 0; i < mesh.totalPrimitives; i++)
@@ -104,7 +106,7 @@ namespace Behemoth
 			for (int j = 0; j < numVerticies; j++)
 			{
 				vertex[j] = Math::Vector4(mesh.meshPrimitives[i].verticies[j], 1.0f);
-				vertex[j] = meshTransform * vertex[j];
+				vertex[j] = transformComp->transformMatrix * vertex[j];
 			}
 
 			if (CullBackFace(cameraPosition, vertex))
@@ -117,7 +119,10 @@ namespace Behemoth
 			{
 				vertex[j] = viewProjMatrix * vertex[j];
 				assert(vertex[j].w != 0.0f);
-				vertex[j] = vertex[j] / vertex[j].w;
+
+				float w = 1.0f / vertex[j].w;
+				vertex[j] *= w;
+
 				depth += vertex[j].z;
 			}
 			assert(numVerticies != 0);
@@ -143,17 +148,17 @@ namespace Behemoth
 		}
 	}
 
-	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const Math::Matrix4x4& meshTransform, const Math::Matrix4x4& viewProjMatrix)
+	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const TransformComponent* transformComp, const Math::Matrix4x4& viewProjMatrix)
 	{
 		Math::Matrix4x4 boundingMatrix{};
 
 		for (int i = 0; i < 3; i++)
 		{
 			boundingMatrix[i][i] = radius;
-			boundingMatrix[3][i] = meshTransform[3][i];
+			boundingMatrix[3][i] = transformComp->transformMatrix[3][i];
 		}
 
-		DrawMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
+		// DrawMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
 	}
 
 	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVerticies, Math::Vector4 primitiveVerts[])

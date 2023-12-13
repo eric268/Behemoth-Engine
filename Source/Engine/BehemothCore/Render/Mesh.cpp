@@ -4,10 +4,12 @@
 #include <iostream>
 namespace Behemoth
 {
-	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath) : 
-		modelFileName(modelPath), 
-		textureFileName(texturePath), 
-		totalPrimitives(0)
+	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath) :
+		modelFileName(modelPath),
+		textureFileName(texturePath),
+		totalPrimitives(0),
+		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
+		specular(32.0f)
 	{}
 
 	void Mesh::GenerateMesh(const std::vector<VertexData>& triangleData, const std::vector<VertexData>& quadData)
@@ -41,8 +43,10 @@ namespace Behemoth
 
 				uv[j] = data[i + j].uv;
 			}
-
-			meshPrimitives[i/numVerticies + offset] = std::move(Primitives(path.c_str(), type, v, n ,uv));
+			Primitives p(path.c_str(), type, v, n, uv);
+			p.diffuse = diffuse;
+			p.specular = specular;
+			meshPrimitives[i/numVerticies + offset] = std::move(p);
 /*			meshPrimitives[i / numVerticies + offset].SetPrimitiveVerticies(type, v, n, uv);*/
 		}
 	}

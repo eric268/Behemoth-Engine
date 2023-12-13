@@ -55,8 +55,9 @@ namespace Math
 		{
 			return Vector3(x * scalar, y * scalar, z * scalar);
 		}
+
 		template<typename T>
-		Vector3 operator*= (const T scalar)
+		Vector3 operator*= (T scalar)
 		{
 			x *= scalar;
 			y *= scalar;

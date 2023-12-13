@@ -1,6 +1,5 @@
 #pragma once
 #include "Registry.h"
-#include "Render/Primitives.h"
 
 namespace ECS
 {
@@ -8,7 +7,6 @@ namespace ECS
 	{
 	public:
 		virtual ~System() = default;
-
 		virtual void Run(Registry& registry) = 0;
 	};
 }

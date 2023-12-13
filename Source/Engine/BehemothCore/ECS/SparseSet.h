@@ -82,7 +82,7 @@ namespace ECS
 				return nullptr;
 			}
 
-			if (HasEntity(identifier))
+			if (HasEntity(entity))
 			{
 				return &components[sparse[identifier]];
 			}
@@ -90,9 +90,23 @@ namespace ECS
 			return nullptr;
 		}
 
-		bool HasEntity(const std::uint16_t identifier)
+		bool HasEntity(const Entity& entity)
 		{
-			return (identifier < maxSize && sparse[identifier] != NULL_ENTITY);
+			std::uint16_t identifier = entity.GetIdentifier();
+			if (identifier < maxSize && sparse[identifier] != NULL_ENTITY)
+			{
+				if (entity.GetVersion() == dense[sparse[identifier]].GetVersion())
+				{
+					return true;
+				}
+				else
+				{
+
+					RemoveComponent(entity);
+				}
+			}
+
+			return false;
 		}
 
 		size_t size() const

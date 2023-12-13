@@ -9,7 +9,9 @@ namespace Behemoth
 	Primitives::Primitives() : 
 		sprite{nullptr},
 		depth(0.0),
-		texturePath(nullptr)
+		texturePath(nullptr),
+		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
+		specular(32.0f)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
@@ -19,19 +21,25 @@ namespace Behemoth
 	Primitives::Primitives(const char* path) : 
 		sprite{ new CSimpleSprite(path)},
 		depth(0.0),
-		texturePath(path)
+		texturePath(path),
+		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
+		specular(32.0f)
 	{
 		verticies[0] = Math::Vector3();
 		verticies[1] = Math::Vector3();
 		verticies[2] = Math::Vector3();
+		SetLighting(Math::Vector3::Zero());
 	}
 
 	Primitives::Primitives(const char* path, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]) :
 		sprite{ new CSimpleSprite(path) },
 		texturePath(path),
 		primitiveType(type),
-		depth(0.0)
+		depth(0.0),
+		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
+		specular(32.0f)
 	{
+		SetLighting(Math::Vector3::Zero());
 		CopyVertexData(verticies, normals, uv);
 		SetSpriteUVs(type, uv);
 	}
@@ -41,7 +49,11 @@ namespace Behemoth
 		delete sprite;
 	}
 
-	Primitives::Primitives(const Primitives& obj) : depth(obj.depth), primitiveType(obj.primitiveType), color(obj.color)
+	Primitives::Primitives(const Primitives& obj) : 
+		depth(obj.depth),
+		primitiveType(obj.primitiveType),
+		diffuse(obj.diffuse),
+		specular(obj.specular)
 	{
 		CopyVertexData(obj.verticies, obj.normals, obj.uv);
 
@@ -57,11 +69,12 @@ namespace Behemoth
 		obj.sprite = nullptr;
 		depth = obj.depth;
 		primitiveType = obj.primitiveType;
-		color = obj.color;
+		diffuse = obj.diffuse;
+		specular = obj.specular;
 
 		SetSpriteUVs(primitiveType, uv);
 	}
-// 
+
 	Primitives& Primitives::operator=(const Primitives& obj)
 	{
 		if (this != &obj) 
@@ -75,7 +88,8 @@ namespace Behemoth
 
 			depth = obj.depth;
 			primitiveType = obj.primitiveType;
-			color = obj.color;
+			diffuse = obj.diffuse;
+			specular = obj.specular;
 
 			// Set UVs for sprite
 			// SetSpriteUVs(primitiveType, uv);
@@ -94,8 +108,9 @@ namespace Behemoth
 			CopyVertexData(obj.verticies, obj.normals, obj.uv);
 			depth = obj.depth;
 			primitiveType = obj.primitiveType;
-			color = obj.color;
 			texturePath = obj.texturePath;
+			diffuse = obj.diffuse;
+			specular = obj.specular;
 			// SetSpriteUVs(primitiveType, uv);
 		}
 
@@ -109,8 +124,6 @@ namespace Behemoth
 			LOG_ERROR("Null primitive attempted to be drawn");
 		}
 
-
-		sprite->SetColor(1.0f, 1.0f, 1.0f);
 		sprite->Draw();
 	}
 

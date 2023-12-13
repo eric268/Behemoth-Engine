@@ -1,16 +1,24 @@
 #pragma once
 
 #include "Math/MathCore.h"
+// stl
+#include <tuple>
+#include <vector>
 
-namespace ECS 
+namespace ECS
 {
-	class CameraComponent;
+	class Registry;
 }
 
-
-class CameraHelper
+namespace Behemoth
 {
-public:
-	static Math::Matrix4x4 LookAt(const Math::Vector3& eye, const Math::Vector3& target, const Math::Vector3& up);
+	class CameraComponent;
+
+	class CameraHelper
+	{
+	public:
+		static Math::Matrix4x4 LookAt(const Math::Vector3& eye, const Math::Vector3& target, const Math::Vector3& up);
+		static CameraComponent* GetMainCamera(ECS::Registry& registry);
 };
+}
 

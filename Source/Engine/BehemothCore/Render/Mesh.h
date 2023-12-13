@@ -31,6 +31,9 @@ namespace Behemoth
 		std::vector<Primitives> meshPrimitives;
 		void GenerateMesh(const std::vector<VertexData>& triangleData, const std::vector<VertexData>& quadData);
 		std::size_t totalPrimitives;
+
+		Math::Vector3 diffuse;
+		float specular;
 	private:
 		void GeneratePrimitives(const std::vector<VertexData>& data, PrimitiveType type, std::size_t offset);
 	};

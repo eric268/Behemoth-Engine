@@ -162,10 +162,13 @@ namespace Math
 
 	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix)
 	{
-		Vector4 v = rotationMatrix * Vector4(vec, 1.0f);
+		Vector4 v = rotationMatrix * Vector4(vec, 0.0f);
+
 		vec.x = v.x;
 		vec.y = v.y;
 		vec.z = v.z;
+
+		Vector3::Normalize(vec);
 		return vec;
 	}
 
