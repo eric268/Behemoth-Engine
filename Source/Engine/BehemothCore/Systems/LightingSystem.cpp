@@ -13,6 +13,7 @@ namespace Behemoth
 	void LightingSystem::Run(ECS::Registry& registry)
 	{
  		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
+		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
 		auto directionalComponent = registry.Get<DirectionalLightComponent>();
 		auto pointLightComponents = registry.Get<PointLightComponent, TransformComponent>();
@@ -20,78 +21,48 @@ namespace Behemoth
 		// Should only be one directional light but for now continue with possibility of multiple
 		for (const auto& [dirEntity, dirLight] : directionalComponent)
 		{
-			CalculateDirectionalLights(dirLight, mainCamera->viewMatrix);
+			CalculateDirectionalLights(dirLight, mainCameraPosition);
 		}
 
 		for (const auto& [pointEntity, pointLight, transformComp] : pointLightComponents)
 		{
-			CalculatePointLights(pointLight, transformComp->position, mainCamera->viewMatrix);
+			CalculatePointLights(pointLight, mainCameraPosition, transformComp->position, mainCamera->viewMatrix);
 		}
 	}
 
-	void LightingSystem::CalculateDirectionalLights(const DirectionalLightComponent* light, const Math::Matrix4x4& viewMatrix)
+	void LightingSystem::CalculateDirectionalLights(const DirectionalLightComponent* light, const Math::Vector3& cameraPos)
 	{
 		for (int i = 0; i < Renderer::GetInstance().primitivesToDraw.size(); i++)
 		{
 			Primitives* primitive = Renderer::GetInstance().primitivesToDraw[i];
-
-			if (!primitive)
-				continue;
+			assert(primitive);
 			
 			const Math::Vector3 normal = primitive->normals[0];
+			const Math::Vector3 lightDir = Math::Vector3::Normalize(light->direction);
+			const Math::Vector3 primitivePos = GetPrimitivePosition(primitive);
 
-			//Diffuse Light
-			Math::Vector3 negativeLightDirection = Math::Vector3(-light->direction.x, -light->direction.y, -light->direction.z);
-			negativeLightDirection.Normalize();
-			float diff = std::max(Math::Vector3::Dot(normal, negativeLightDirection), 0.0f);
-			Math::Vector3 diffuse = primitive->diffuse * diff * light->intensity;
-			diffuse *= light->color;
-
-// 			// Specular Light
-			Math::Vector3 primitivePos = GetPrimitivePosition(primitive);
-			Math::Vector3 cameraPos = Math::Vector3(viewMatrix[3][0], viewMatrix[3][1], viewMatrix[3][2]);
-			Math::Vector3 viewDir = Math::Vector3::Normalize(cameraPos - primitivePos);
-			Math::Vector3 reflectDir = Math::Vector3::Reflect(light->direction, normal);
-
-			float shininess = primitive->shininess;
-			float spec = std::pow(std::max(Math::Vector3::Dot(viewDir, reflectDir), 0.0f), shininess);
-			Math::Vector3 specular = primitive->specular * light->color * light->intensity * spec;
+			Math::Vector3 diffuse  = CalculateDiffuseLighting(normal, light->direction, primitive->diffuse, light->color, light->intensity);
+			Math::Vector3 specular = CalculateSpecularLighting(primitive, cameraPos, normal, lightDir, light->color, light->intensity);
 	
-			// primitive->SetLighting(diffuse);
 			primitive->SetLighting(diffuse + specular);
 		}
 	}
-	void LightingSystem::CalculatePointLights(const PointLightComponent* light, const Math::Vector3& position, const Math::Matrix4x4& viewMatrix)
+	void LightingSystem::CalculatePointLights(const PointLightComponent* light, const Math::Vector3& cameraPos, const Math::Vector3& lightPos, const Math::Matrix4x4& viewMatrix)
 	{
 		for (int i = 0; i < Renderer::GetInstance().primitivesToDraw.size(); i++)
 		{
 			Primitives* primitive = Renderer::GetInstance().primitivesToDraw[i];
-
-			if (!primitive)
-				continue;
+			assert(primitive);
 
 			const Math::Vector3 normal = primitive->normals[0];
-			Math::Vector3 lightDir = position -  GetPrimitivePosition(primitive);
+			Math::Vector3 lightDir = lightPos -  GetPrimitivePosition(primitive);
 			float distance = Math::Vector3::Magnitude(lightDir);
 			lightDir.Normalize();
 
+			Math::Vector3 diffuse  = CalculateDiffuseLighting(normal, lightDir, primitive->diffuse, light->color, light->intensity);
+			Math::Vector3 specular = CalculateSpecularLighting(primitive, cameraPos, normal, lightDir, light->color, light->intensity);
+
 			float attenuation = 1.0 / (light->constant + (light->linear * distance) + (light->quadratic * distance * distance));
-
-			float diff = std::max(Math::Vector3::Dot(normal, lightDir), 0.0f);
-			Math::Vector3 diffuse = primitive->diffuse * light->color * light->intensity * diff;
-
- 			// Specular Light
-			Math::Vector3 primitivePos = GetPrimitivePosition(primitive);
-			Math::Vector3 cameraPos = Math::Vector3(viewMatrix[3][0], viewMatrix[3][1], viewMatrix[3][2]);
-			Math::Vector3 viewDir = Math::Vector3::Normalize(cameraPos - primitivePos);
-			Math::Vector3 negLightDir = Math::Vector3(-lightDir.x, -lightDir.y, -lightDir.z);
-			Math::Vector3 reflectDir = Math::Vector3::Reflect(negLightDir, normal);
-
-			float shininess = primitive->shininess;
-			float spec = std::pow(std::max(Math::Vector3::Dot(viewDir, reflectDir), 0.0f), shininess);
-			Math::Vector3 specular = primitive->specular * light->color * light->intensity * spec;
-
-			//primitive->SetLighting(diffuse * attenuation);
 			primitive->AddLighting((diffuse + specular) * attenuation);
 		}
 	}
@@ -109,5 +80,30 @@ namespace Behemoth
 		averagePos.y /= numVerticies;
 		averagePos.z /= numVerticies;
 		return averagePos;
+	}
+
+	Math::Vector3 LightingSystem::CalculateDiffuseLighting(const Math::Vector3& surfaceNormal,
+														   const Math::Vector3& lightDir,
+														   const Math::Vector3& primitiveDiffusion,
+														   const Math::Vector3& lightColor,
+														   const float lightIntensity)
+	{
+		//Diffuse Light
+		float diff = std::max(Math::Vector3::Dot(surfaceNormal, lightDir), 0.0f);
+		return primitiveDiffusion * diff * lightIntensity * lightColor;
+	}
+
+	Math::Vector3 LightingSystem::CalculateSpecularLighting(Primitives* primitive,
+														    const Math::Vector3& cameraPos,
+														    const Math::Vector3& surfaceNormal,
+														    const Math::Vector3& lightDir,
+														    const Math::Vector3& lightColor,
+														    const float lightIntensity)
+	{
+		Math::Vector3 primitivePos = GetPrimitivePosition(primitive);
+		Math::Vector3 viewDir = Math::Vector3::Normalize(cameraPos - primitivePos);
+		Math::Vector3 reflectDir = Math::Vector3::Reflect(lightDir, surfaceNormal);
+		float spec = std::pow(std::max(Math::Vector3::Dot(viewDir, reflectDir), 0.0f), primitive->shininess);
+		return primitive->specular * lightColor * lightIntensity * spec;
 	}
 }

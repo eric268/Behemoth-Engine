@@ -19,6 +19,7 @@ namespace Behemoth
 	public:
 		static Math::Matrix4x4 LookAt(const Math::Vector3& eye, const Math::Vector3& target, const Math::Vector3& up);
 		static CameraComponent* GetMainCamera(ECS::Registry& registry);
+		static Math::Vector3 GetMainCameraPostition(ECS::Registry& registry);
 };
 }
 

@@ -44,4 +44,17 @@ namespace Behemoth
 		return nullptr;
 	}
 
+	Math::Vector3 CameraHelper::GetMainCameraPostition(ECS::Registry& registry)
+	{
+		for (const auto& [entity, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
+		{
+			if (camera->isMain)
+				return transform->position;
+		}
+		LOG_ERROR("Unable to find main camera");
+		assert(nullptr);
+
+		return{};
+	}
+
 }

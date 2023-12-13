@@ -18,6 +18,7 @@ namespace Behemoth
 	private:
 		void ProcessMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transform, const Math::Matrix4x4& viewProjMatrix);
 		void DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const Math::Matrix4x4& transform, const Math::Matrix4x4& viewProjMatrix);
+		
 		bool CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[]);
 		bool IsPrimitiveWithinFrustrum(const int numVerticies, Math::Vector4 primitiveVerts[]);
 		bool IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius);

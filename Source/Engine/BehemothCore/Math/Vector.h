@@ -53,6 +53,12 @@ namespace Math
 		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);
 
 #pragma region Overloaded Operators
+
+		Vector3 operator-() const
+		{
+			return Vector3(-x, -y, -z);
+		}
+
 		template<typename T>
 		Vector3 operator* (const T scalar) const
 		{
