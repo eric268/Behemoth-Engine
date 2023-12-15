@@ -4,7 +4,7 @@
 #include "Components/Components.h"
 #include "Misc/CameraHelper.h"
 
-// #define ENABLE_LIGHTING
+#define ENABLE_LIGHTING
 // stl
 #include <algorithm>
 

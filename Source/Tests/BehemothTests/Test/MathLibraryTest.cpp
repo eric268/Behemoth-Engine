@@ -124,3 +124,26 @@ TEST(InverseM4x4, Math)
 
 	EXPECT_TRUE(Math::Matrix4x4::Equals(result, ans));
 }
+
+TEST(InverseM4x4_2, Math)
+{
+	Math::Matrix4x4 m1 =
+	{
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, -10},
+		{0, 0, 0, 1}
+	};
+
+	Math::Matrix4x4 result = Math::Matrix4x4::Inverse(m1);
+
+	Math::Matrix4x4 ans =
+	{
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 10},
+		{0, 0, 0, 1}
+	};
+
+	EXPECT_TRUE(Math::Matrix4x4::Equals(result, ans));
+}

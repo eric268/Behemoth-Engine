@@ -49,7 +49,8 @@ namespace Behemoth
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, boundingVolume->volumeRadius))
 			{
-				continue;
+				std::cout << "OUTSIDE\n";
+				// continue;
 			}
 
 	#ifdef DEBUG
@@ -68,7 +69,6 @@ namespace Behemoth
 	{
 		ReserveResources(mesh.totalPrimitives, drawWireFrame);
 
-		int counter = 0;
 		for (int i = 0; i < mesh.totalPrimitives; i++)
 		{
 			Math::Vector4 vertex[4] = { {} };
@@ -91,10 +91,10 @@ namespace Behemoth
 
 			ProcessVertex(viewProjMatrix, vertex, numVerticies);
 
+
 #ifdef ENABLE_CULLING
 			if (!IsPrimitiveWithinFrustrum(numVerticies, vertex))
 			{
-				counter++;
 				continue;
 			}
 #endif
@@ -108,7 +108,6 @@ namespace Behemoth
 				AddPrimitiveToRenderer(primitive, numVerticies, vertex);
 			}
 		}
-		std::cout << counter << '\n';
 	}
 
 	bool RenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
@@ -118,12 +117,12 @@ namespace Behemoth
 		return (Math::Vector3::Dot(normal, cam)) <= 0;
 	}
 
-	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* transformComp, const float boundingRadius)
+	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* boundingTransformComp, const float boundingRadius)
 	{
 		for (const auto& p : frustrumComp->worldSpacePlanes)
 		{
-			float distance = Math::Vector3::Dot(p.normal, transformComp->position) + p.distance;
-			if (distance < -boundingRadius - 1e-4)
+ 			float distance = Math::Vector3::Dot(p.normal, boundingTransformComp->position) - p.distance;
+			if (distance < -boundingRadius)
 				return false;
 		}
 
@@ -132,13 +131,17 @@ namespace Behemoth
 
 	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix)
 	{
-		Math::Matrix4x4 boundingMatrix{};
+		Math::Matrix4x4 scalingMatrix = Math::Matrix4x4::Identity();
+
+		Math::Matrix4x4 boundingMatrix ;
 
 		for (int i = 0; i < 3; i++)
 		{
-			boundingMatrix.data[i][i] = radius;
-			boundingMatrix.data[i][3] = transformMatrix.data[i][3];
+			scalingMatrix.data[i][i] = radius;
+// 			boundingMatrix.data[i][i] = radius;
+// 			boundingMatrix.data[i][3] = transformMatrix.data[i][3];
 		}
+		boundingMatrix = transformMatrix * scalingMatrix;
 
 		ProcessMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
 	}
@@ -204,8 +207,13 @@ namespace Behemoth
 		for (int j = 0; j < numVerticies; j++)
 		{
 			vertex[j] = viewProjMatrix * vertex[j];
-/*			float w = 1.0f / vertex[j].w;*/
-			vertex[j] = vertex[j] / vertex[j].w;
+
+			if (vertex[j].w == 0.0f)
+				std::cout << "Error\n";
+
+			float w = 1.0f / vertex[j].w;
+
+			vertex[j] *= w;
 		}
 	}
 
@@ -216,6 +224,6 @@ namespace Behemoth
 		{
 			depth += vertex[j].z;
 		}
-		return depth;
+		return depth / numVerticies;
 	}
 }
