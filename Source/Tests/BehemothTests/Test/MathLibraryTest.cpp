@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 
-// Math Tests
+//Math Tests
 TEST(Vec4_Mul_M4x4, Math)
 {
 	Math::Vector4 vec(10.0f, -8.0f, 7.72f, -0.1f);
@@ -14,7 +14,25 @@ TEST(Vec4_Mul_M4x4, Math)
 	};
 
 	Math::Vector4 result = m * vec;
-	Math::Vector4 ans(482.4876f, -82.1994, 367.87f, -225.456);
+	Math::Vector4 ans(142.86, -1023.772, -154.22f, 832.244f);
+
+	EXPECT_TRUE(Math::Vector4::Equals(result, ans));
+}
+
+TEST(Vec4_Mul_M4x4_T2, Math)
+{
+	Math::Vector4 vec(1.0f, 1.0f, -1.0f, 1.0f);
+
+	Math::Matrix4x4 m =
+	{
+		{  1.0f ,   0.0f ,  0.0f,  0.0f},
+		{  0.0f ,   1.0f,   0.0f,  0.0f},
+		{  0.0f,	0.0f,   1.0f, -5.0f},
+		{  0.0f ,   0.0f,   0.0f,  1.0f}
+	};
+
+	Math::Vector4 result = m * vec;
+	Math::Vector4 ans(1.0f, 1.0f, -6.0f, 1.0f);
 
 	EXPECT_TRUE(Math::Vector4::Equals(result, ans));
 }

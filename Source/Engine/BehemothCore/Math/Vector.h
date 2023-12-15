@@ -27,9 +27,17 @@ namespace Math
 		Vector3(const float x, const float y, const float z);
 		explicit Vector3(Vector4 vec);
 
-		float x;
-		float y;
-		float z;
+		union
+		{
+			float data[3];
+			struct 
+			{
+				float x;
+				float y;
+				float z;
+			};
+
+		};
 
 		Vector3& Normalize();
 		float Magnitude() const;
@@ -185,10 +193,18 @@ namespace Math
 		Vector4(const float x, const float y, const float z, const float w);
 		Vector4(Vector3 vec, float w);
 
-		float x;
-		float y;
-		float z;
-		float w;
+		union 
+		{
+			float data[4];
+			struct 
+			{
+				float x;
+				float y;
+				float z;
+				float w;
+			};
+		};
+
 
 		static bool Equals(const Vector4& vec1, const Vector4& vec2, float epsilon = 1e-2);
 		static Vector4 Cross(const Vector4& v1, const Vector4& v2, const float wVal = 1.0f);

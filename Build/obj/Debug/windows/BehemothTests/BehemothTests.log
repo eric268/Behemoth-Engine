@@ -1,4 +1,4 @@
-﻿Build started 2023-12-13 10:19:47 AM.
+﻿Build started 2023-12-14 6:23:54 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Tests\BehemothTests\BehemothTests.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Creating "..\..\..\Build\obj\Debug\windows\BehemothTests\BehemothTests.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -20,4 +20,4 @@ Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.14
+Time Elapsed 00:00:00.08

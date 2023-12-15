@@ -22,10 +22,10 @@ namespace Behemoth
 
 		Matrix4x4 viewMatrix =
 		{
-			{ xAxis.x, xAxis.y, xAxis.z, 0},
-			{ yAxis.x, yAxis.y, yAxis.z, 0},
-			{ zAxis.x, zAxis.y, zAxis.z, 0},
-			{ tx,	   ty,      tz,    1.0f}
+			{ xAxis.x, xAxis.y, xAxis.z, tx},
+			{ yAxis.x, yAxis.y, yAxis.z, ty},
+			{ zAxis.x, zAxis.y, zAxis.z, tz},
+			{ 0.0f,	   0.0f,    0.0f,    1.0f}
 		};
 
 		return viewMatrix;

@@ -18,25 +18,25 @@ namespace Behemoth
 
 	void CameraSystem::UpdatePerspectiveMatrix(CameraComponent& component, const Math::Vector3& position)
 	{
-		if (!component.isDirty)
-			return;
+// 		if (!component.isDirty)
+// 			return;
 
 		RECT rect;
 		GetClientRect(MAIN_WINDOW_HANDLE, &rect);
 		component.windowWidth = rect.right - rect.left;
 		component.windowHeight = rect.bottom - rect.top;
 
-		const float fovScale = 1.0f / (std::tan(DEGREE_TO_RAD(component.FOV) * 0.5f));
+		const float fovScale = 1.0f / (std::tan(DEGREE_TO_RAD(component.FOV * 0.5f)));
 		const float aspectRatio = component.windowWidth / component.windowHeight;
 		const float farPlane = component.farClippingPlane;
 		const float nearPlane = component.nearClippingPlane;
 
 		component.perspectiveMatrix = Math::Matrix4x4::Zero();
-		component.perspectiveMatrix[0][0] = fovScale / aspectRatio;
-		component.perspectiveMatrix[1][1] = fovScale;
-		component.perspectiveMatrix[2][2] = -(farPlane - nearPlane) / (farPlane - nearPlane);
-		component.perspectiveMatrix[3][2] = (-2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
-		component.perspectiveMatrix[2][3] = -1.0f;
+		component.perspectiveMatrix._11 = fovScale / aspectRatio;
+		component.perspectiveMatrix._22 = fovScale;
+		component.perspectiveMatrix._33 = (-farPlane + nearPlane) / (farPlane - nearPlane);
+		component.perspectiveMatrix._43 = (-2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
+		component.perspectiveMatrix._34 = -1.0f;
 
 		component.viewMatrix = CameraHelper::LookAt(position, Math::Vector3(0, 0, -1), Math::Vector3(0, 1, 0));
 		component.inverseTransposeViewMatrix = Math::Matrix4x4::Transpose(Math::Matrix4x4::Inverse(component.viewMatrix));
@@ -46,7 +46,7 @@ namespace Behemoth
 	void CameraSystem::UpdateFrustrum(const CameraComponent& cameraComponent, FrustrumComponent& frustrumComponent)
 	{
 		float tanHalfFOVY = tan(DEGREE_TO_RAD(cameraComponent.FOV) * 0.5f);
-		float tanHalfFOVX = tanHalfFOVY * (cameraComponent.windowHeight / cameraComponent.windowWidth);
+		float tanHalfFOVX = tanHalfFOVY * (cameraComponent.windowWidth / cameraComponent.windowHeight);
 
 		Math::Vector3 nearNormal = Math::Vector3(0.0f, 0.0f, -1.0f);
 		frustrumComponent.worldSpacePlanes[0] = Math::Plane::TransformPlane(Math::Plane(nearNormal, cameraComponent.nearClippingPlane), cameraComponent.inverseTransposeViewMatrix);

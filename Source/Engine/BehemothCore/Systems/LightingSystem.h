@@ -19,8 +19,8 @@ namespace Behemoth
 		virtual void Run(ECS::Registry& registry) override;
 
 	private:
-		void CalculateDirectionalLights(const DirectionalLightComponent* light, const Math::Vector3& cameraPos);
-		void CalculatePointLights(const PointLightComponent* light, const Math::Vector3& cameraPos, const Math::Vector3& lightPos, const Math::Matrix4x4& viewMatrix);
+		void CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const Math::Vector3& cameraPos);
+		void CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const Math::Vector3& cameraPos, const Math::Vector3& lightPos, const Math::Matrix4x4& viewMatrix);
 		Math::Vector3 GetPrimitivePosition(Primitives* primitive);
 
 		Math::Vector3 CalculateDiffuseLighting(const Math::Vector3& surfaceNormal,

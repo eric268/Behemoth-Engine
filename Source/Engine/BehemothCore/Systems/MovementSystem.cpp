@@ -15,9 +15,9 @@ namespace Behemoth
 		for (const auto& [entity, movementComp, transformComp] : components)
 		{
 			transformComp->position += movementComp->location;
-			transformComp->transformMatrix[3][0] = movementComp->location.x;
-			transformComp->transformMatrix[3][1] = movementComp->location.y;
-			transformComp->transformMatrix[3][2] = movementComp->location.z;
+			transformComp->transformMatrix._41 = movementComp->location.x;
+			transformComp->transformMatrix._42 = movementComp->location.y;
+			transformComp->transformMatrix._43 = movementComp->location.z;
 		}
 
 		for (int i = movementComponents->dense.size() - 1; i >= 0; i--)

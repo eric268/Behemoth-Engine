@@ -4,6 +4,9 @@
 #include "ECS/Entity.h"
 #include "Render/Renderer.h"
 
+ #define BOUNDING_CHECK
+ #define ENABLE_CULLING
+
 namespace Behemoth
 {
 	void RenderSystem::Run(ECS::Registry& registry)
@@ -42,18 +45,20 @@ namespace Behemoth
 			if (!meshComp->isVisible && !meshComp->drawWireMesh)
 				continue;
 
+#ifdef BOUNDING_CHECK
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, boundingVolume->volumeRadius))
 			{
 				continue;
 			}
 
-			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
-
-#ifdef DEBUG
+	#ifdef DEBUG
 			if (boundingVolume && boundingVolume->drawBoundingVolume)
 				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
+	#endif
 #endif
+
+			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
 		}
 
 		Renderer::GetInstance().FreeResourceOverflow();
@@ -63,6 +68,7 @@ namespace Behemoth
 	{
 		ReserveResources(mesh.totalPrimitives, drawWireFrame);
 
+		int counter = 0;
 		for (int i = 0; i < mesh.totalPrimitives; i++)
 		{
 			Math::Vector4 vertex[4] = { {} };
@@ -71,20 +77,27 @@ namespace Behemoth
 			int numVerticies = static_cast<int>(type);
 
 			TransformVertex(primitive, transformMatrix, vertex, numVerticies);
-			bool cullPrimitive = CullBackFace(cameraPosition, vertex);
+
+#ifdef ENABLE_CULLING
+			bool cullPrimitive =  CullBackFace(cameraPosition, vertex);
 
 			if (cullPrimitive && !drawWireFrame)
 			{
 				continue;
 			}
+#else
+			bool cullPrimitive = false;
+#endif 
 
 			ProcessVertex(viewProjMatrix, vertex, numVerticies);
 
+#ifdef ENABLE_CULLING
 			if (!IsPrimitiveWithinFrustrum(numVerticies, vertex))
 			{
+				counter++;
 				continue;
 			}
-
+#endif
 			if (drawWireFrame)
 			{
 				AddWireMeshToRenderer(numVerticies, vertex);
@@ -95,6 +108,7 @@ namespace Behemoth
 				AddPrimitiveToRenderer(primitive, numVerticies, vertex);
 			}
 		}
+		std::cout << counter << '\n';
 	}
 
 	bool RenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
@@ -122,8 +136,8 @@ namespace Behemoth
 
 		for (int i = 0; i < 3; i++)
 		{
-			boundingMatrix[i][i] = radius;
-			boundingMatrix[3][i] = transformMatrix[3][i];
+			boundingMatrix.data[i][i] = radius;
+			boundingMatrix.data[i][3] = transformMatrix.data[i][3];
 		}
 
 		ProcessMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
@@ -142,7 +156,7 @@ namespace Behemoth
 				primitiveVerts[i].y < -primitiveVerts[i].w ||
 				primitiveVerts[i].y >  primitiveVerts[i].w || 
 				primitiveVerts[i].z >  primitiveVerts[i].w ||
-				primitiveVerts[i].z <= 0)
+				primitiveVerts[i].z <= 0.0f)
 				numVerticiesOutsideFrustrum++;
 		}
 		
@@ -190,8 +204,8 @@ namespace Behemoth
 		for (int j = 0; j < numVerticies; j++)
 		{
 			vertex[j] = viewProjMatrix * vertex[j];
-			float w = 1.0f / vertex[j].w;
-			vertex[j] *= w;
+/*			float w = 1.0f / vertex[j].w;*/
+			vertex[j] = vertex[j] / vertex[j].w;
 		}
 	}
 

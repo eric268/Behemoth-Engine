@@ -20,11 +20,11 @@ namespace Behemoth
 			const Math::Matrix4x4 rotationMatrix = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
 			Math::Matrix4x4 newMatrix = transformComp->transformMatrix * rotationMatrix;
 
-			for (int i = 0; i < 3; i++)
+			for (int col = 0; col < 3; col++)
 			{
-				for (int j = 0; j < 3; j++)
+				for (int row = 0; row < 3; row++)
 				{
-					transformComp->transformMatrix[i][j] = newMatrix[i][j];
+					transformComp->transformMatrix.data[col][row] = newMatrix.data[col][row];
 				}
 			}
 

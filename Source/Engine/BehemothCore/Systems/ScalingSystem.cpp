@@ -14,25 +14,26 @@ namespace Behemoth
 		auto components = registry.Get<ScalingComponent, TransformComponent>();
 		for (const auto& [entity, scalingComp, transformComp] : components)
 		{
-			for (int i = 0; i < 3; ++i) 
+			for (int col = 0; col < 3; col++) 
 			{
-				float length = sqrt(transformComp->transformMatrix[i][0] * transformComp->transformMatrix[i][0] +
-					transformComp->transformMatrix[i][1] * transformComp->transformMatrix[i][1] +
-					transformComp->transformMatrix[i][2] * transformComp->transformMatrix[i][2]);
+				float length = sqrt(transformComp->transformMatrix.data[col][0] * transformComp->transformMatrix.data[col][0] +
+										transformComp->transformMatrix.data[col][1] * transformComp->transformMatrix.data[col][1] +
+										transformComp->transformMatrix.data[col][2] * transformComp->transformMatrix.data[col][2]);
 				
 				if (length != 0) 
 				{ // Prevent division by zero
-					for (int j = 0; j < 3; ++j) 
+					for (int row = 0; row < 3; row++) 
 					{
-						transformComp->transformMatrix[i][j] /= length;
+						transformComp->transformMatrix.data[col][row] /= length;
 					}
 				}
 			}
 
 			// Apply new scale
-			transformComp->transformMatrix[0][0] = scalingComp->scalingVector.x;
-			transformComp->transformMatrix[1][1] = scalingComp->scalingVector.y;
-			transformComp->transformMatrix[2][2] = scalingComp->scalingVector.z;
+			for (int i = 0; i < 3; i++)
+			{
+				transformComp->transformMatrix.data[i][i] = scalingComp->scalingVector.data[i];
+			}
 
 			transformComp->scale = scalingComp->scalingVector;
 		}

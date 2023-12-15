@@ -62,21 +62,19 @@ namespace Math
 		Matrix3x3(std::initializer_list<std::initializer_list<float>> list);
 		~Matrix3x3() = default;
 
+		union
+		{
+			float data[3][3];
+			struct
+			{
+				float _11, _21, _31;
+				float _12, _22, _32;
+				float _13, _23, _33;
+			};
+		};
+
 		static Matrix3x3 Identity();
 		static float Determinant(const Matrix3x3& m);
-
-		float data[3][3];
-
-		float* operator[](int row)
-		{
-			assert(row < 3 && row >= 0);
-			return data[row];
-		}
-		const float* operator[](int row) const
-		{
-			assert(row < 3 && row >= 0);
-			return data[row];
-		}
 
 	private:
 	};
@@ -88,6 +86,18 @@ namespace Math
 		Matrix4x4(std::initializer_list<std::initializer_list<float>> list);
 		~Matrix4x4() = default;
 
+		union
+		{
+			float data[4][4];
+			struct
+			{
+				float _11, _21, _31, _41;
+				float _12, _22, _32, _42;
+				float _13, _23, _33, _43;
+				float _14, _24, _34, _44;
+			};
+		};
+
 		static Matrix4x4 Zero();
 		static Matrix4x4 Identity();
 		static bool Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon = 1e-2);
@@ -97,24 +107,11 @@ namespace Math
 		static Matrix3x3 GetSubMatrix(const Matrix4x4& m, int skipRow, int skipCol);
 		static float Determinant(const Matrix4x4& m);
 
-		float data[4][4];
-
 		// Matrix4x4& operator= (const Matrix4x4& m);
 		Matrix4x4 operator*(const Matrix4x4& m) const;
 		Matrix4x4 operator*=(const Matrix4x4& m) const;
 
 		Vector4 operator*(const Vector4 vec) const;
-
-		float* operator[](int row)
-		{
-			assert(row < 4 && row >= 0);
-			return data[row];
-		}
-		const float* operator[](int row) const
-		{
-			assert(row < 4 && row >= 0);
-			return data[row];
-		}
 
 	private:
 	};
