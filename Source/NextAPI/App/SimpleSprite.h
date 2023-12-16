@@ -70,6 +70,11 @@ public:
 		return (i <= 3) ? m_uvcoords[i * 2 + 1] : 0.0f;
 	}
 
+    inline void SetAlpha(const float alpha)
+    {
+        m_alpha = (alpha >= 0.0f && alpha <= 1.0f) ? alpha : 1.0f;
+    }
+
     // Note: speed must be > 0, frames must have size >= 1, id must be unique among animations
     void CreateAnimation( unsigned int id, float speed, const std::vector<int> &frames)
     {
@@ -99,6 +104,7 @@ private:
 	float m_red = 1.0f;
 	float m_green = 1.0f;
 	float m_blue = 1.0f;
+    float m_alpha = 1.0f; // added this variable
     int     m_currentAnim = -1;
     float   m_animTime = 0.0F;
 

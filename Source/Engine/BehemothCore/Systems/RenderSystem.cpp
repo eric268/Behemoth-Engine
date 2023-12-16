@@ -60,6 +60,7 @@ namespace Behemoth
 #endif
 
 			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
+			counter = 0;
 		}
 
 		Renderer::GetInstance().FreeResourceOverflow();
@@ -88,7 +89,7 @@ namespace Behemoth
 #else
 			bool cullPrimitive = false;
 #endif 
-
+			counter++;
 			ProcessVertex(viewProjMatrix, vertex, numVerticies);
 
 
@@ -209,7 +210,10 @@ namespace Behemoth
 			vertex[j] = viewProjMatrix * vertex[j];
 
 			if (vertex[j].w == 0.0f)
-				std::cout << "Error\n";
+			{
+				std::cout << counter << std::endl;
+				vertex[j].w = 0.01f;
+			}
 
 			float w = 1.0f / vertex[j].w;
 

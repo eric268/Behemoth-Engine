@@ -38,7 +38,7 @@ namespace Behemoth
 		component.perspectiveMatrix._43 = (-2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
 		component.perspectiveMatrix._34 = -1.0f;
 
-		component.viewMatrix = CameraHelper::LookAt(position, Math::Vector3(0.0f, 0.0f, -1.0f), Math::Vector3(0, 1, 0));
+		component.viewMatrix = CameraHelper::LookAt(position, Math::Vector3(0.0f, 0.0f, -5.0f), Math::Vector3(0, 1, 0));
 		component.inverseTransposeViewMatrix = Math::Matrix4x4::Inverse(component.viewMatrix);
 		component.isDirty = false;
 	}

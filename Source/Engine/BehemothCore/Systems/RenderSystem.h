@@ -28,5 +28,7 @@ namespace Behemoth
 		void TransformVertex(const Primitives& primitive, const Math::Matrix4x4& transformMatix, Math::Vector4 vertex[], const int numVerticies);
 		void ProcessVertex(const Math::Matrix4x4& viewProjMatrix, Math::Vector4 verticies[], int numVerticies);
 		float GetPrimitiveDepth(const int numVerticies, const Math::Vector4 verticies[]);
+
+		int counter = 0;
 	};
 }

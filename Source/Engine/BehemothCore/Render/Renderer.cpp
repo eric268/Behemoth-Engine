@@ -53,6 +53,7 @@ namespace Behemoth
 
 		for (const auto& p : primitivesToDraw)
 		{
+			
 			p->Draw();
 		}
 

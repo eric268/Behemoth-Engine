@@ -1,4 +1,4 @@
-﻿Build started 2023-12-15 12:46:43 AM.
+﻿Build started 2023-12-16 4:09:39 PM.
 Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\NextAPI\NextAPI.vcxproj" on node 2 (Build target(s)).
      1>InitializeBuildStatus:
          Creating "..\..\Build\obj\Debug\windows\NextAPI\NextAPI.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -40,4 +40,4 @@ Build succeeded.
     2 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:01.70
+Time Elapsed 00:00:01.82

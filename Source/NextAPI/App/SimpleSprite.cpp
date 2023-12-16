@@ -106,7 +106,7 @@ void CSimpleSprite::Draw()
     glTranslatef(x, y, 0.0f);
     glScalef(scalex, scaley, 0.1f);
     glRotatef(m_angle * 180 / PI, 0.0f, 0.0f, 1.0f);
-    glColor3f(m_red, m_green, m_blue);
+    glColor4f(m_red, m_green, m_blue, m_alpha); // Changed glColor3f to glColor4f to be able to change alpha values
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_2D);

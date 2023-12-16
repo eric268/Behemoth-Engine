@@ -25,13 +25,14 @@ namespace Behemoth
 	class Mesh
 	{
 	public:
-		Mesh(const std::string& modelPath, const std::string& texturePath = "");
+		Mesh(const std::string& modelPath, const std::string& texturePath = "", const Math::Vector2 uv = {1.0f, 1.0f});
 		std::string modelFileName;
 		std::string textureFileName;
 		std::vector<Primitives> meshPrimitives;
 		void GenerateMesh(const std::vector<VertexData>& triangleData, const std::vector<VertexData>& quadData);
 		std::size_t totalPrimitives;
 
+		Math::Vector2 uvScale;
 		Math::Vector3 diffuse;
 		Math::Vector3 specular;
 		float shininess;

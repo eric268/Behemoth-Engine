@@ -4,10 +4,11 @@
 #include <iostream>
 namespace Behemoth
 {
-	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath) :
+	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath, const Math::Vector2 uv) :
 		modelFileName(modelPath),
 		textureFileName(texturePath),
 		totalPrimitives(0),
+		uvScale(uv),
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
 		specular(Math::Vector3(1.0f,1.0f,1.0f)),
 		shininess(32.0f)
@@ -42,7 +43,8 @@ namespace Behemoth
 
 				n[j] = data[i + j].normal;
 
-				uv[j] = data[i + j].uv;
+				uv[j].x = data[i + j].uv.x * uvScale.x;
+				uv[j].y = data[i + j].uv.y * uvScale.y;
 			}
 			Primitives p(path.c_str(), type, v, n, uv);
 			p.diffuse = diffuse;

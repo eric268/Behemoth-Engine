@@ -5,6 +5,7 @@
 #include "Misc/CameraHelper.h"
 
 #define ENABLE_LIGHTING
+
 // stl
 #include <algorithm>
 
@@ -58,7 +59,7 @@ namespace Behemoth
 	void LightingSystem::CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const Math::Vector3& cameraPos, const Math::Vector3& lightPos, const Math::Matrix4x4& viewMatrix)
 	{
 		const Math::Vector3 normal = primitive->normals[0];
-		Math::Vector3 lightDir = lightPos - GetPrimitivePosition(primitive);
+		Math::Vector3 lightDir = GetPrimitivePosition(primitive) - lightPos;
 		float distance = Math::Vector3::Magnitude(lightDir);
 		lightDir.Normalize();
 
@@ -71,16 +72,16 @@ namespace Behemoth
 
 	Math::Vector3 LightingSystem::GetPrimitivePosition(Primitives* primitive)
 	{
-		int numVerticies = static_cast<PrimitiveType>(primitive->primitiveType);
+		int numVertices = static_cast<PrimitiveType>(primitive->primitiveType);
+		if (numVertices <= 0) 
+			return Math::Vector3{};
+
 		Math::Vector3 averagePos{};
 
-		for (int i = 0; i < numVerticies; i++)
+		for (int i = 0; i < numVertices; i++) 
 		{
-			averagePos += primitive->verticies[i];
+			averagePos += primitive->verticies[i] / static_cast<float>(numVertices);
 		}
-		averagePos.x /= numVerticies;
-		averagePos.y /= numVerticies;
-		averagePos.z /= numVerticies;
 		return averagePos;
 	}
 
@@ -102,8 +103,9 @@ namespace Behemoth
 														    const float lightIntensity)
 	{
 		Math::Vector3 primitivePos = GetPrimitivePosition(primitive);
-		Math::Vector3 viewDir = Math::Vector3::Normalize(cameraPos - primitivePos);
+		Math::Vector3 viewDir = Math::Vector3::Normalize(primitivePos - cameraPos);
 		Math::Vector3 reflectDir = Math::Vector3::Reflect(lightDir, surfaceNormal);
+		
 		float spec = std::pow(std::max(Math::Vector3::Dot(viewDir, reflectDir), 0.0f), primitive->shininess);
 		return primitive->specular * lightColor * lightIntensity * spec;
 	}

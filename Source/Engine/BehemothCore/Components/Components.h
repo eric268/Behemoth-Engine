@@ -6,10 +6,10 @@ namespace Behemoth
 	{
 	public:
 		MeshComponent() = default;
-		MeshComponent(const std::string& modelName, const std::string& textureName, bool visible = true, bool drawWireMesh = false) : 
+		MeshComponent(const std::string& modelName, const std::string& textureName, const Math::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true, bool drawWireMesh = false) :
 		modelFileName(modelName), 
 			textureFileName(textureName), 
-			mesh(modelName, textureName),
+			mesh(modelName, textureName, uvScale),
 			isVisible(visible),
 			drawWireMesh(drawWireMesh)
 			{}

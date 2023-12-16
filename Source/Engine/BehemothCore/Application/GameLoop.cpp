@@ -42,26 +42,35 @@ void Init()
 	registry.AddComponent<Behemoth::CameraComponent>(e0, true);
 	registry.AddComponent<Behemoth::FrustrumComponent>(e0);
 	registry.AddComponent<Behemoth::TransformComponent>(e0);
-	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0.0f, 0.0f, 5.0f));
+	registry.AddComponent<Behemoth::MovementComponent>(e0, Math::Vector3(0.0f, 0.0f, 0.0f));
 
-	ECS::Entity e1 = registry.CreateEntity("Cube 1");
-	registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "diamond.png");
-	registry.AddComponent<Behemoth::TransformComponent>(e1);
-	registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-	registry.AddComponent<Behemoth::RotationComponent>(e1, 1, 1.0f);
-	registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(0.f, 0.0f, -5.0f));
-	registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
-	registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.5f, true);
+	for (int i = -1; i < 2; i++)
+	{
+		ECS::Entity e1 = registry.CreateEntity("Cube 1");
+		registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "diamond.png");
+		registry.AddComponent<Behemoth::TransformComponent>(e1);
+		registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
+		registry.AddComponent<Behemoth::RotationComponent>(e1, i + 1, 1.0f);
+		registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(-3.0f * i, 0.0f, -5.0f));
+		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
+		registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.5f, false);
+	}
 
 	ECS::Entity e2 = registry.CreateEntity("Directional Light");
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(e2, Math::Vector3(-0.707f, 0, -0.707f),
 		Math::Vector3(0.25f, 0.25f, 0.25f) ,3.0f);
 
-	ECS::Entity e3 = registry.CreateEntity("Point Light 1");
-	registry.AddComponent<Behemoth::PointLightComponent>(e3,Math::Vector3(0.75f, 0.75f, 0.75f), 2.5f);
-	registry.AddComponent<Behemoth::TransformComponent>(e3);
-	registry.AddComponent<Behemoth::MovementComponent>(e3, Math::Vector3(6.0f, 0.0f, 4.0f));
-
+	for (int i = -1; i < 2; i++)
+	{
+		ECS::Entity e3 = registry.CreateEntity("Point Light 1");
+		registry.AddComponent<Behemoth::PointLightComponent>(e3, Math::Vector3(0.75f, 0.75f, 0.75f), 0.5f);
+		registry.AddComponent<Behemoth::TransformComponent>(e3);
+		registry.AddComponent<Behemoth::MovementComponent>(e3, Math::Vector3(-2.0f * i, 0.0f, -3.0f));
+#ifdef DEBUG
+		registry.AddComponent<Behemoth::MeshComponent>(e3, "cube.obj", "brick.png", Math::Vector2(0.5f, 0.5f), false);
+		registry.AddComponent<Behemoth::ScalingComponent>(e3, Math::Vector3(0.3f, 0.3f, 0.3f));
+#endif
+	}
 }
 
 //------------------------------------------------------------------------

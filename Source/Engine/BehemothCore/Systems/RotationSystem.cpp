@@ -18,7 +18,7 @@ namespace Behemoth
 			}
 
 			const Math::Matrix4x4 rotationMatrix = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
-			Math::Matrix4x4 newMatrix = transformComp->transformMatrix * rotationMatrix;
+			Math::Matrix4x4 newMatrix = rotationMatrix * transformComp->transformMatrix;
 
 			for (int col = 0; col < 3; col++)
 			{
@@ -28,14 +28,12 @@ namespace Behemoth
 				}
 			}
 
-
 			for (int i = 0; i < meshComp->mesh.meshPrimitives.size(); i++)
 			{
 				for (int j = 0; j < 3; j++)
 				{
 					Math::Vector3::RotateVector(meshComp->mesh.meshPrimitives[i].normals[j], rotationMatrix);
 				}
-
 			}
 		}
 	}

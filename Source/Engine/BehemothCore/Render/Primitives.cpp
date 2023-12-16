@@ -130,7 +130,6 @@ namespace Behemoth
 		{
 			LOG_ERROR("Null primitive attempted to be drawn");
 		}
-
 		sprite->Draw();
 	}
 
