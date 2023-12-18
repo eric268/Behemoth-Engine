@@ -75,8 +75,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WORLD_SCALE=100;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>BehemothCore;..\NextAPI\App;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>BehemothCore;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -96,8 +96,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WORLD_SCALE=100;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>BehemothCore;..\NextAPI\App;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>BehemothCore;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -123,8 +123,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WORLD_SCALE=100;DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>BehemothCore;..\NextAPI\App;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>BehemothCore;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -159,6 +159,8 @@
     <ClInclude Include="BehemothCore\ECS\Registry.h" />
     <ClInclude Include="BehemothCore\ECS\SparseSet.h" />
     <ClInclude Include="BehemothCore\ECS\System.h" />
+    <ClInclude Include="BehemothCore\Factories\CameraFactory.h" />
+    <ClInclude Include="BehemothCore\Factories\LightFactories.h" />
     <ClInclude Include="BehemothCore\Math\MathCore.h" />
     <ClInclude Include="BehemothCore\Math\Matrix.h" />
     <ClInclude Include="BehemothCore\Math\Plane.h" />
@@ -169,11 +171,7 @@
     <ClInclude Include="BehemothCore\Render\Mesh.h" />
     <ClInclude Include="BehemothCore\Render\MeshLoader.h" />
     <ClInclude Include="BehemothCore\Render\Primitives.h" />
-    <ClInclude Include="BehemothCore\Render\Renderer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="BehemothCore\Render\Renderer.h" />
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h" />
     <ClInclude Include="BehemothCore\Systems\LightingSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h" />
@@ -182,12 +180,15 @@
     <ClInclude Include="BehemothCore\Systems\RotationSystem.h" />
     <ClInclude Include="BehemothCore\Systems\ScalingSystem.h" />
     <ClInclude Include="BehemothCore\World\Scene.h" />
+    <ClInclude Include="BehemothCore\World\World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp" />
     <ClCompile Include="BehemothCore\Application\ResourceManager.cpp" />
     <ClCompile Include="BehemothCore\Application\ThreadPool.cpp" />
     <ClCompile Include="BehemothCore\Components\Components.cpp" />
+    <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp" />
+    <ClCompile Include="BehemothCore\Factories\LightFactories.cpp" />
     <ClCompile Include="BehemothCore\Math\Matrix.cpp" />
     <ClCompile Include="BehemothCore\Math\Plane.cpp" />
     <ClCompile Include="BehemothCore\Math\Vector.cpp" />
@@ -196,11 +197,7 @@
     <ClCompile Include="BehemothCore\Render\Mesh.cpp" />
     <ClCompile Include="BehemothCore\Render\MeshLoader.cpp" />
     <ClCompile Include="BehemothCore\Render\Primitives.cpp" />
-    <ClCompile Include="BehemothCore\Render\Renderer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="BehemothCore\Render\Renderer.cpp" />
     <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\LightingSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp" />
@@ -209,6 +206,7 @@
     <ClCompile Include="BehemothCore\Systems\RotationSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\ScalingSystem.cpp" />
     <ClCompile Include="BehemothCore\World\Scene.cpp" />
+    <ClCompile Include="BehemothCore\World\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NextAPI\NextAPI.vcxproj">

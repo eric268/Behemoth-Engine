@@ -10,17 +10,17 @@ language "C++"
    
    files { "**.h", "**.hpp", "**.cpp" }
 
+   if _OPTIONS["new"] then
+    include("GameCreator.lua")
+    CreateProject(_OPTIONS["prjname"])
+   end
+   
       -- Specify library directories based on the build configuration and StaticLib's location
    
       -- Link against the StaticLib project
-      links { "NextAPI", "freeglut" }
+    links { "NextAPI", "freeglut" }
 
-      defines
-      {
-          "WORLD_SCALE=100"
-      }
-
-      includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/App/" }
+     includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/" }
      filter "architecture:Win32"
          libdirs 
          {

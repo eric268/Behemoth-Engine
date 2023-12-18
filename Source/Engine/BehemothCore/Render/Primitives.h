@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Math/MathCore.h"
-#include "SimpleSprite.h"
-#include "app.h"
+#include "NextAPI/App/SimpleSprite.h"
+#include "NextAPI/App/app.h"
 // stl
 #include <vector>
 #include <string>

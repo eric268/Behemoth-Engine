@@ -1,6 +1,6 @@
 #include "CameraSystem.h"
 #include "Misc/CameraHelper.h"
-#include "main.h"
+#include "NextAPI/App/main.h"
 #include "ECS/Entity.h"
 
 namespace Behemoth
