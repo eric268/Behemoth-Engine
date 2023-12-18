@@ -1,4 +1,9 @@
 workspace "BehemothEngine"
+
+     if not _OPTIONS["prj"] then
+          _OPTIONS["prj"] = "NextGame"
+     end
+   -- os.execute("rmdir /s /q .vs")
    architecture "x64"
    configurations { "Debug", "Release", "Dist" }
 
@@ -8,7 +13,7 @@ workspace "BehemothEngine"
 
    newoption
    {
-        trigger = "prjname",
+        trigger = "prj",
         value = "NAME",
         description = "Specify the name of the game you wish to create"
    }
@@ -33,13 +38,11 @@ workspace "BehemothEngine"
 
         include "Source/NextAPI"
 
-     if not _OPTIONS["prjname"] then
-          _OPTIONS["prjname"] = "Sandbox"
-     end
 
-     if _OPTIONS["prjname"] then
+
+     if _OPTIONS["prj"] then
      group "Game"
-          include("Source/Games/" .. _OPTIONS["prjname"])
+          include("Source/Games/" .. _OPTIONS["prj"])
           
      else
           print("Error - Project not found")

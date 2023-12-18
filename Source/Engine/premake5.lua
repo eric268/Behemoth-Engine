@@ -12,7 +12,7 @@ language "C++"
 
    if _OPTIONS["new"] then
     include("GameCreator.lua")
-    CreateProject(_OPTIONS["prjname"])
+    CreateProject(_OPTIONS["prj"])
    end
    
       -- Specify library directories based on the build configuration and StaticLib's location

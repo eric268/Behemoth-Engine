@@ -10,13 +10,15 @@ project "NextEntry"
    objdir    (objectdir .. "%{prj.name}/")
 
 
-   files { "**.h", "**.hpp", "**.cpp" }
+   files { "%{wks.location}/Source/EntryPoint/**.h",
+           "%{wks.location}/Source/EntryPoint/**.hpp",
+           "%{wks.location}/Source/EntryPoint/**.cpp" }
 
       -- Specify library directories based on the build configuration and StaticLib's location
 
    
       -- Link against the StaticLib project
-      links { "Engine", "NextAPI", "Sandbox", "freeglut" }
+      links { "Engine", "NextAPI", _OPTIONS["prj"], "freeglut" }
 
       includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/"}
  
@@ -24,7 +26,7 @@ project "NextEntry"
         libdirs {"%{wks.location}/Source/NextAPI/glut/lib/", 
         outputdir .. "Engine/",
         outputdir .. "NextAPI/",
-        outputdir .. "Sandbox/"
+        outputdir .. _OPTIONS["prj"]
         }
 
         glutLoc = "%{wks.location}/Source"
@@ -38,7 +40,7 @@ project "NextEntry"
         libdirs {"%{wks.location}/Source/NextAPI/glut/lib/x64/",
         outputdir .. "Engine/",
         outputdir .. "NextAPI/",
-        outputdir .. "Sandbox/" 
+        outputdir .. _OPTIONS["prj"] 
         }
 
         postbuildcommands 

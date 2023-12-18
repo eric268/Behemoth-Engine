@@ -12,13 +12,13 @@
 #include <algorithm>
 
 #define DEFAULT_SPARSE_SIZE 10'000
+#define NULL_ENTITY 0xFFFF
+#define NULL_VERSION 0xFFFF
 
 namespace ECS
 {
 	template<typename T>
 	concept IsComponent = std::is_convertible_v<T, Component>;
-
-#define NULL_ENTITY 0xFFFF
 
 	template<typename Component>
 	class SparseSet

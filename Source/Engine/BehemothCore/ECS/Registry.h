@@ -76,6 +76,13 @@ namespace ECS
 			return e;
 		}
 
+		Entity CreateNullEntity()
+		{
+			Entity e("Null Entity");
+			e.SetID(0xFFFFFFFF);
+			return e;
+		}
+
 		template<IsComponent T, typename ... Args>
 		T AddComponent(Entity entity, Args&& ... parameters)
 		{

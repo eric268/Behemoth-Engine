@@ -1,50 +1,39 @@
 project "BehemothTests"
    kind "ConsoleApp"
    language "C++"
-   cppdialect    "C++20"
+   cppdialect "C++20"
    staticruntime "off"
    floatingpoint "fast"
-   rtti          "on"
+   rtti "on"
 
-   nuget { "Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn:1.8.1.4" }
+   nuget { "Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn:1.8.1.7" }
    
-   flags {
-       "FatalWarnings",
-       "MultiProcessorCompile"
-   }
+   flags { "FatalWarnings", "MultiProcessorCompile" }
 
- --  pchheader "pch.h"
- --  pchsource "pch/pch.cpp"
+   pchheader "pch.h"
+   pchsource "pch.cpp"
 
- targetdir (outputdir .. "%{prj.name}/")
- objdir    (objectdir .. "%{prj.name}/")
+   targetdir (outputdir .. "%{prj.name}/")
+   objdir (outputdir .. "%{prj.name}/obj/") -- Changed to a more typical obj directory
 
-   files { "**.h", "**.hpp", "**.cpp" }
+   files { "%{wks.location}/Source/Tests/BehemothTests/**.h",
+           "%{wks.location}/Source/Tests/BehemothTests/**.hpp",
+           "%{wks.location}/Source/Tests/BehemothTests/**.cpp" }
 
-      -- Specify library directories based on the build configuration and StaticLib's location
-   
-      -- Link against the StaticLib project
-      links { "Engine", "freeglut" }
+   links { "Engine", "freeglut" }
 
-      filter "architecture:Win32"
-      libdirs 
-      {
-          "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "Engine/"
-      }
+   filter "architecture:Win32"
+      libdirs { "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "Engine/" }
 
-  filter "architecture:x64"
-      libdirs 
-      {
-          "%{wks.location}/Source/NextAPI/glut/lib/x64/", outputdir .. "Engine/"
-      }
+   filter "architecture:x64"
+      libdirs { "%{wks.location}/Source/NextAPI/glut/lib/x64/", outputdir .. "Engine/" }
 
-      includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/" }
-   
-      filter "system:windows"
+   includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/" }
+
+   filter "system:windows"
       systemversion "latest"
       defines {}
-   
-   -- Specify library directories based on the build configuration
+
    filter "configurations:Debug"
       libdirs {"Build/Debug"}
       defines { "DEBUG" }
@@ -57,7 +46,7 @@ project "BehemothTests"
       symbols "On"
 
    filter "configurations:Dist"
-     libdirs {"Build/Dist"}
+      libdirs {"Build/Dist"}
       defines {"DIST"}
       runtime "Release"
       optimize "On"

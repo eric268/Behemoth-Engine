@@ -33,7 +33,7 @@ namespace ECS
 		const std::string GetName() const {
 			return name;
 		}
-
+		
 	private:
 		friend class Registry;
 
