@@ -32,6 +32,8 @@
 
 extern void CreateApplication();
 
+Behemoth::RenderSystem renderSystem{};
+Behemoth::LightingSystem lightingSystem{};
 void Init()
 {
 	CreateApplication();
@@ -44,8 +46,8 @@ void Init()
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
+	//Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
+	//Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
 }
 
 //------------------------------------------------------------------------
@@ -59,6 +61,13 @@ void Update(float deltaTime)
 	// Need to add a check here to ensure that world and active scene are valid
 	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->registry;
 	Behemoth::SystemManager::GetInstance().Run(registry);
+
+	{
+		Stopwatch sw;
+		renderSystem.Run(registry);
+	}
+
+	lightingSystem.Run(registry);
 }
 
 //------------------------------------------------------------------------

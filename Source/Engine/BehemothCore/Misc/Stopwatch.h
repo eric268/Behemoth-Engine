@@ -73,7 +73,7 @@ private:
 		auto duration = std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - start);
 		
 		std::string output = "Duration: " + std::to_string(duration.count()) + UnitOfMeasurment<T>::name();
-		std::cout << output << std::endl;
+		std::cout << std::to_string(duration.count()) << std::endl;
 
 		if (outputToLog)
 		{
