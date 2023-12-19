@@ -3,12 +3,12 @@
 
 namespace Behemoth
 {
-	class ScalingSystem : public ECS::System
+	class ScalingSystem
 	{
 	public:
 		ScalingSystem() = default;
 
-		virtual void Run(ECS::Registry& registry) override;
+		void Run(ECS::Registry& registry);
 	};
 }
 

@@ -19,8 +19,8 @@ namespace Behemoth
 		registry.AddComponent<Behemoth::TransformComponent>(entity);
 		registry.AddComponent<Behemoth::MovementComponent>(entity, Math::Vector3(0.0f, 0.0f, 0.0f));
 #ifdef DEBUG
-		registry.AddComponent<Behemoth::MeshComponent>(entity, "cube.obj", "brick.png", Math::Vector2(0.5f, 0.5f), false);
-		registry.AddComponent<Behemoth::ScalingComponent>(entity, Math::Vector3(0.15f, 0.15f, 0.15f));
+		registry.AddComponent<Behemoth::MeshComponent>(entity, "cube.obj", "brick.png", Math::Vector2(0.5f, 0.5f), true);
+		registry.AddComponent<Behemoth::ScalingComponent>(entity, Math::Vector3(0.3f, 0.3f, 0.3f));
 #endif
 		return entity;
 	}

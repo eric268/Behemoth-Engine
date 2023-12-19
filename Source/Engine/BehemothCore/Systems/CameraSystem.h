@@ -5,12 +5,13 @@
 
 namespace Behemoth
 {
-	class CameraSystem : public ECS::System
+	class CameraSystem
 	{
 	public:
 		CameraSystem() = default;
-		virtual void Run(ECS::Registry& registry) override;
+		void Run(ECS::Registry& registry);
 
+	private:
 		void UpdatePerspectiveMatrix(CameraComponent& component, const Math::Vector3& position);
 		void UpdateFrustrum(const CameraComponent& cameraComponent, FrustrumComponent& frustrumComponent);
 	};

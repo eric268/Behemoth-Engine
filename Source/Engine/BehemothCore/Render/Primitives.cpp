@@ -1,15 +1,17 @@
 #include "Primitives.h"
 #include "Misc/Log.h"
+#include "Application/ResourceManager.h"
 
 #include <random>
 #include <cstring>
+#include <iostream>
 
 namespace Behemoth
 {
 	Primitives::Primitives() : 
 		sprite{nullptr},
 		depth(0.0),
-		texturePath(nullptr),
+		textureName(""),
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
 		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
 		shininess(32.0f)
@@ -19,10 +21,10 @@ namespace Behemoth
 		verticies[2] = Math::Vector3();
 	}
 
-	Primitives::Primitives(const char* path) : 
-		sprite{ new CSimpleSprite(path)},
+	Primitives::Primitives(std::string& path, std::string& textureName) :
 		depth(0.0),
-		texturePath(path),
+		textureName(textureName),
+		sprite{ new CSimpleSprite(path.c_str())},
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
 		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
 		shininess(32.0f)
@@ -33,9 +35,9 @@ namespace Behemoth
 		SetLighting(Math::Vector3::Zero());
 	}
 
-	Primitives::Primitives(const char* path, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]) :
-		sprite{ new CSimpleSprite(path) },
-		texturePath(path),
+	Primitives::Primitives(std::string& path, std::string& textureName, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]) :
+		textureName(textureName),
+		sprite{ new CSimpleSprite(path.c_str()) },
 		primitiveType(type),
 		depth(0.0),
 		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
@@ -60,9 +62,8 @@ namespace Behemoth
 		shininess(obj.shininess)
 	{
 		CopyVertexData(obj.verticies, obj.normals, obj.uv);
-
-		texturePath = (obj.texturePath) ? obj.texturePath : "";
-		sprite = new CSimpleSprite(texturePath);
+		std::string& str = Behemoth::ResourceManager::GetInstance().GetTexture(textureName);
+		sprite = new CSimpleSprite(str.c_str());
 	}
 
 	Primitives::Primitives(Primitives&& obj) noexcept
@@ -70,14 +71,16 @@ namespace Behemoth
 		CopyVertexData(obj.verticies, obj.normals, obj.uv);
 
 		sprite = obj.sprite;
-		obj.sprite = nullptr;
 		depth = obj.depth;
 		primitiveType = obj.primitiveType;
 		diffuse = obj.diffuse;
 		specular = obj.specular;
 		shininess = obj.shininess;
+		textureName = obj.textureName;
 
 		SetSpriteUVs(primitiveType, uv);
+
+		obj.sprite = nullptr;
 	}
 
 	Primitives& Primitives::operator=(const Primitives& obj)
@@ -88,8 +91,9 @@ namespace Behemoth
 
 			CopyVertexData(obj.verticies, obj.normals, obj.uv);
 
-			texturePath = (obj.texturePath) ? obj.texturePath : "";
-			sprite = new CSimpleSprite(texturePath);
+			textureName = obj.textureName;
+			std::string& str = Behemoth::ResourceManager::GetInstance().GetTexture(textureName);
+			sprite = new CSimpleSprite(str.c_str());
 
 			depth = obj.depth;
 			primitiveType = obj.primitiveType;
@@ -98,7 +102,7 @@ namespace Behemoth
 			shininess = obj.shininess;
 
 			// Set UVs for sprite
-			// SetSpriteUVs(primitiveType, uv);
+			SetSpriteUVs(primitiveType, uv);
 		}
 		return *this;
 	}
@@ -109,16 +113,17 @@ namespace Behemoth
 
 			delete sprite;
 			sprite = obj.sprite;
-			obj.sprite = nullptr;
+
 
 			CopyVertexData(obj.verticies, obj.normals, obj.uv);
 			depth = obj.depth;
 			primitiveType = obj.primitiveType;
-			texturePath = obj.texturePath;
+			textureName = std::move(obj.textureName);
 			diffuse = obj.diffuse;
 			specular = obj.specular;
 			shininess = obj.shininess;
-			// SetSpriteUVs(primitiveType, uv);
+			SetSpriteUVs(primitiveType, uv);
+			obj.sprite = nullptr;
 		}
 
 		return *this;
@@ -131,6 +136,7 @@ namespace Behemoth
 			LOG_ERROR("Null primitive attempted to be drawn");
 		}
 		sprite->Draw();
+		
 	}
 
 	void Primitives::SetSpriteVerticies(const int numVerticies, const Math::Vector4 vert[])
@@ -161,7 +167,7 @@ namespace Behemoth
 
 		if (type == TRIANGLE)
 		{
-			sprite->SetUV(3, uv[0].x, uv[0].y);
+			// sprite->SetUV(3, uv[0].x, uv[0].y);
 		}
 	}
 
@@ -172,9 +178,9 @@ namespace Behemoth
 		{
 			verticies[i] = vert[i];
 			normals[i] = normal[i];
-			this->uv[i] = uv[i];
+			// this->uv[i] = uv[i];
 		}
-		SetSpriteUVs(type, uv);
+		// SetSpriteUVs(type, uv);
 	}
 
 	void Primitives::SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[])
@@ -194,18 +200,7 @@ namespace Behemoth
  		if (type == TRIANGLE)
  		{
  			sprite->SetVertex(3, vert[0].x, vert[0].y);
- 			sprite->SetUV(3, uv[0].x, uv[0].y);
+ 			// sprite->SetUV(3, uv[0].x, uv[0].y);
  		}
-	}
-
-	std::vector<Math::Vector3> Primitives::GetVerticies()
-	{
-		std::vector<Math::Vector3> vert(3);
-		for (int i = 0; i < vert.size(); i++)
-		{
-			vert[i].x = sprite->GetVertexX(i);
-			vert[i].y = sprite->GetVertexY(i);
-		}
-		return vert;
 	}
 }

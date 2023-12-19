@@ -124,16 +124,17 @@ namespace ECS
 		std::shared_ptr<ComponentPool<T>> GetComponent()
 		{
 			type_index typeIndex = Generator::Value<T>();
-			assert(typeIndex <= componentArray.size());
 
-			if (typeIndex == componentArray.size())
+			if (componentID.find(typeIndex) == componentID.end())
 			{
 				auto newArray = std::make_shared<ComponentPool<T>>();
 				newArray->typeID = Generator::Value<T>();
 				componentArray.push_back(newArray);
+
+				componentID[typeIndex] = componentArray.size() - 1;
 			}
 
-			return std::static_pointer_cast<ComponentPool<T>>(componentArray[typeIndex]);
+			return std::static_pointer_cast<ComponentPool<T>>(componentArray[componentID[typeIndex]]);
 		}
 
 	private:
@@ -143,6 +144,7 @@ namespace ECS
 		std::uint32_t next{};
 		int IDIndex = 0;
 
+		std::unordered_map<int,int> componentID;
 		std::vector<std::shared_ptr<IComponentPool>> componentArray;
 
 		std::uint32_t RecycleEntity()

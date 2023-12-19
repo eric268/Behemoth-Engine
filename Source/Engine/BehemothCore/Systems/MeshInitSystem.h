@@ -5,13 +5,14 @@ namespace Behemoth
 {
 	class Mesh;
 
-	class MeshInitSystem : public ECS::System
+	class MeshInitSystem
 	{
 	public:
 		MeshInitSystem() = default;
 
-		virtual void Run(ECS::Registry& registry) override;
+		void Run(ECS::Registry& registry);
 
+	private:
 		void InitMesh(Mesh& mesh);
 	};
 

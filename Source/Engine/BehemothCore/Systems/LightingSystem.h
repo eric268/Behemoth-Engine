@@ -13,10 +13,10 @@ namespace Behemoth
 	class TransformComponent;
 	class Primitives;
 	
-	class LightingSystem : ECS::System
+	class LightingSystem
 	{
 	public:
-		virtual void Run(ECS::Registry& registry) override;
+		void Run(ECS::Registry& registry);
 
 	private:
 		void CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const Math::Vector3& cameraPos);
@@ -30,8 +30,8 @@ namespace Behemoth
 											   const float lightIntensity);
 
 		Math::Vector3 CalculateSpecularLighting(Primitives* primitive,
-			const Math::Vector3& cameraPos,
-			const Math::Vector3& surfaceNormal,
+												const Math::Vector3& cameraPos,
+												const Math::Vector3& surfaceNormal,
 											    const Math::Vector3& lightDir, 
 											    const Math::Vector3& lightColor,
 											    const float lightIntensity);

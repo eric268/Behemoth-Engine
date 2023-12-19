@@ -3,10 +3,31 @@
 
 namespace ECS
 {
-	class System
+	template<typename T>
+	concept HasRunMethod = requires(T t, Registry r)
+	{
+		{ t.Run(r) } -> std::same_as<void>;
+	};
+
+	class ISystem
 	{
 	public:
-		virtual ~System() = default;
-		virtual void Run(Registry& registry) = 0;
+		virtual ~ISystem() = default;
+		virtual void Run(Registry& registry) {}
+	};
+
+	template<HasRunMethod T>
+	class System : public ISystem
+	{
+	public:
+		System() = default;
+
+		void Run(Registry& registry) override
+		{
+			instance.Run(registry);
+		}
+
+		T instance;
+	private:
 	};
 }

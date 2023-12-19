@@ -132,6 +132,9 @@
     <ClInclude Include="BehemothCore\World\World.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\SystemManager.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">

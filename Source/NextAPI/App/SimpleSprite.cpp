@@ -18,6 +18,8 @@
 #include "../stb_image/stb_image.h"
 #include "../glut/include/GL/freeglut_ext.h"
 
+#include <iostream>
+
 std::map<const char *, CSimpleSprite::sTextureDef > CSimpleSprite::m_textures;
 
 //-----------------------------------------------------------------------------
@@ -150,7 +152,7 @@ void CSimpleSprite::SetAnimation(int id)
 bool CSimpleSprite::LoadTexture(const char * filename)
 {
     if (m_textures.find(filename) != m_textures.end())
-    {        
+    {
         sTextureDef &texDef = m_textures[filename];
         m_texture = texDef.m_textureID;
         m_texWidth = texDef.m_width;
@@ -179,7 +181,6 @@ bool CSimpleSprite::LoadTexture(const char * filename)
 		sTextureDef textureDef = { (unsigned int) m_texWidth, (unsigned int) m_texHeight, texture };
 		m_textures[filename] = textureDef;
 		m_texture = texture;
-		return true;
 	}
 	return false;
 }

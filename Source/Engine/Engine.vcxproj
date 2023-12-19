@@ -179,6 +179,7 @@
     <ClInclude Include="BehemothCore\Systems\RenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\RotationSystem.h" />
     <ClInclude Include="BehemothCore\Systems\ScalingSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\SystemManager.h" />
     <ClInclude Include="BehemothCore\World\Scene.h" />
     <ClInclude Include="BehemothCore\World\World.h" />
   </ItemGroup>

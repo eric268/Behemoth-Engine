@@ -8,6 +8,8 @@
 
 // stl
 #include <algorithm>
+#include <iostream>
+#include <string>
 
 namespace Behemoth
 {
@@ -18,7 +20,6 @@ namespace Behemoth
 
 		auto directionalComponent = registry.Get<DirectionalLightComponent>();
 		auto pointLightComponents = registry.Get<PointLightComponent, TransformComponent>();
-
 
 		for (int i = 0; i < Renderer::GetInstance().primitivesToDraw.size(); i++)
 		{
@@ -62,6 +63,8 @@ namespace Behemoth
 		Math::Vector3 lightDir = GetPrimitivePosition(primitive) - lightPos;
 		float distance = Math::Vector3::Magnitude(lightDir);
 		lightDir.Normalize();
+		// std::cout << "Distance: " << std::to_string(distance) << std::endl;
+		// std::cout << "Direction X: " << std::to_string(lightDir.x ) << " Y: " << std::to_string(lightDir.y) << " Z: " << std::to_string(lightDir.y) << std::endl;
 
 		Math::Vector3 diffuse = CalculateDiffuseLighting(normal, lightDir, primitive->diffuse, light->color, light->intensity);
 		Math::Vector3 specular = CalculateSpecularLighting(primitive, cameraPos, normal, lightDir, light->color, light->intensity);

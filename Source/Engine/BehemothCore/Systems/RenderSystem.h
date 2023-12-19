@@ -9,11 +9,11 @@ namespace Behemoth
 	class TransformComponent;
 	class Mesh;
 
-	class RenderSystem : public ECS::System
+	class RenderSystem
 	{
 	public:
 		RenderSystem() = default;
-		virtual void Run(ECS::Registry& registry) override;
+		void Run(ECS::Registry& registry);
 
 	private:
 		void ProcessMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transform, const Math::Matrix4x4& viewProjMatrix);

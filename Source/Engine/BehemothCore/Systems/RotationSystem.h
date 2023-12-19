@@ -3,11 +3,11 @@
 
 namespace Behemoth
 {
-	class RotationSystem : public ECS::System
+	class RotationSystem
 	{
 	public:
 		RotationSystem() = default;
 
-		virtual void Run(ECS::Registry& registry) override;
+		void Run(ECS::Registry& registry);
 	};
 }

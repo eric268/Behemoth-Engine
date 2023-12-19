@@ -7,6 +7,15 @@
  #define BOUNDING_CHECK
  #define ENABLE_CULLING
 
+/*
+* - Need to create a class that will hold a lot of the rendering information, such as vertex position, recieve lighting, diffuse specular shinniess, alpha etc.
+* - Then when iterating through a mesh to determine primitives to be drawn start with a vector that contains the max number of primitives
+*  - Then shink to fit only primitives that are actually drawn
+* - Then reserve this space in the render queue singleton and copy this data over ... 
+* - Profile if this is faster or slow then reversing the entire primitive in the render queue for all primitives then shrinking at the end
+* - Then when finally drawing in the renderer set the actual primitive reference verticies to that of the rendering primitive
+*/
+
 namespace Behemoth
 {
 	void RenderSystem::Run(ECS::Registry& registry)

@@ -8,6 +8,7 @@
 #include "World/Scene.h"
 
 #include "ECS/System.h"
+#include "Systems/SystemManager.h"
 #include "Misc/CameraHelper.h"
 #include "Misc/Stopwatch.h"
 #include "Systems/ScalingSystem.h"
@@ -29,19 +30,24 @@
 // Called before first update. Do any initial setup here.
 //------------------------------------------------------------------------
 
-Behemoth::RenderSystem renderSystem;
-Behemoth::MeshInitSystem loadingSystem;
-Behemoth::CameraSystem cameraSystem;
-Behemoth::RotationSystem rotationSystem;
-Behemoth::MovementSystem movementSystem;
-Behemoth::ScalingSystem scalingSystem;
-Behemoth::LightingSystem lightingSystem;
-
 extern void CreateApplication();
 
 void Init()
 {
 	CreateApplication();
+
+	ECS::Generator::Value<Behemoth::DirectionalLightComponent>();
+
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MovementSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
+
+	// These systems should always be last and in this order
+	// Maybe make a separate container for them to ensure they are last
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
 }
 
 //------------------------------------------------------------------------
@@ -52,19 +58,9 @@ void Update(float deltaTime)
 {
 	Behemoth::World::GetInstance().Update(deltaTime);
 
+	// Need to add a check here to ensure that world and active scene are valid
 	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->registry;
-
-	loadingSystem.Run(registry);
-	movementSystem.Run(registry);
-	rotationSystem.Run(registry);
-	cameraSystem.Run(registry);
-	scalingSystem.Run(registry);
-
-
-	// These systems should always be last and in this order
-	// Maybe make a separate container for them to ensure they are last
-	renderSystem.Run(registry);
-	lightingSystem.Run(registry);
+	Behemoth::SystemManager::GetInstance().Run(registry);
 }
 
 //------------------------------------------------------------------------

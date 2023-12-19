@@ -3,12 +3,12 @@
 
 namespace Behemoth
 {
-	class MovementSystem : public ECS::System
+	class MovementSystem
 	{
 	public:
 		MovementSystem() = default;
 
-		virtual void Run(ECS::Registry& registry) override;
+		void Run(ECS::Registry& registry);
 	};
 }
 

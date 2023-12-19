@@ -2,6 +2,8 @@
 #include "Render/MeshLoader.h"
 #include "ResourceManager.h"
 
+//stl
+#include <filesystem>
 
 namespace Behemoth
 {
@@ -35,5 +37,15 @@ namespace Behemoth
 		}
 
 		return result;
+	}
+
+	std::string& ResourceManager::GetTexture(std::string& textureName)
+	{
+		if (textureMap.find(textureName) != textureMap.end())
+			return textureMap[textureName];
+
+		std::filesystem::path full_path = std::filesystem::current_path() / "Textures" / textureName;
+		textureMap[textureName] = full_path.string();
+		return textureMap[textureName];
 	}
 }

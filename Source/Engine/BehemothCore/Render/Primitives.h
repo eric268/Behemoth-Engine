@@ -21,8 +21,8 @@ namespace Behemoth
 	{
 	public:
 		Primitives();
-		Primitives(const char*);
-		Primitives(const char* path, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]);
+		Primitives(std::string& path, std::string& textureName);
+		Primitives(std::string& path, std::string& textureName, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]);
 		~Primitives();
 
 		Primitives(const Primitives& obj);
@@ -30,9 +30,6 @@ namespace Behemoth
 
 		Primitives& operator=(Primitives&& obj) noexcept;
  		Primitives& operator=(const Primitives& obj);
-
-
-		std::vector<Math::Vector3> GetVerticies();
 
 		void Draw();
 
@@ -62,7 +59,7 @@ namespace Behemoth
 			color += light;
 			sprite->SetColor(color.x, color.y, color.z);
 		}
-		
+
 	private:
 
 		inline void CopyVertexData(const Math::Vector3* verticies, const Math::Vector3* normals, const Math::Vector2* uv) 
@@ -73,7 +70,7 @@ namespace Behemoth
 		}
 
 		CSimpleSprite* sprite;
-		const char* texturePath;
+		std::string textureName;
 
 		Math::Vector3 color;
 	};

@@ -1,6 +1,6 @@
 #include "Mesh.h"
+#include "Application/ResourceManager.h"
 
-#include <filesystem>
 #include <iostream>
 namespace Behemoth
 {
@@ -25,8 +25,6 @@ namespace Behemoth
 
 	void Mesh::GeneratePrimitives(const std::vector<VertexData>& data, PrimitiveType type, std::size_t offset)
 	{
-		std::filesystem::path full_path = std::filesystem::current_path() / "Textures" / textureFileName;
-		std::string path = full_path.string();
 		int numVerticies = static_cast<int>(type);
 
 		for (int i = 0; i < data.size(); i += numVerticies)
@@ -46,10 +44,13 @@ namespace Behemoth
 				uv[j].x = data[i + j].uv.x * uvScale.x;
 				uv[j].y = data[i + j].uv.y * uvScale.y;
 			}
-			Primitives p(path.c_str(), type, v, n, uv);
+			std::string& path = Behemoth::ResourceManager::GetInstance().GetTexture(textureFileName);
+			Primitives p{ path,textureFileName, type, v, n, uv };
+			
 			p.diffuse = diffuse;
 			p.specular = specular;
 			p.shininess = shininess;
+;
 			meshPrimitives[i/numVerticies + offset] = std::move(p);
 /*			meshPrimitives[i / numVerticies + offset].SetPrimitiveVerticies(type, v, n, uv);*/
 		}
