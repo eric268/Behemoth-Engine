@@ -36,8 +36,6 @@ void Init()
 {
 	CreateApplication();
 
-	ECS::Generator::Value<Behemoth::DirectionalLightComponent>();
-
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MovementSystem>();

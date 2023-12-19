@@ -4,7 +4,7 @@
 #include "ECS/Generator.h"
 #include "ECS/SparseSet.h"
 
-#include <unordered_set>
+#include <unordered_map>
 #include <vector>
 #include <memory>
 
@@ -26,11 +26,11 @@ namespace Behemoth
 		void AddSystem()
 		{
 			int typeIndex = ECS::Generator::Value<T>();
-			if (systemTypeID.count(typeIndex))
+			if (systemTypeID.find(typeIndex) != systemTypeID.end())
 				return;
 
-			systemTypeID.insert(typeIndex);
 			systemContainer.push_back(std::make_shared<ECS::System<T>>());
+			systemTypeID[typeIndex] = systemContainer.size() - 1;
 		}
 
 		void Run(ECS::Registry& registry)
@@ -47,7 +47,7 @@ namespace Behemoth
 		
 		// ECS::SparseSet<std::shared_ptr<ECS::ISystem>> sparseSet;
 
-		std::unordered_set<int> systemTypeID;
+		std::unordered_map<int, int> systemTypeID;
 		std::vector<std::shared_ptr<ECS::ISystem>> systemContainer;
 	};
 }
