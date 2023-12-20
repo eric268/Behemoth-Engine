@@ -1,0 +1,90 @@
+﻿Build started 2023-12-19 7:19:44 PM.
+Logging verbosity is set to: Normal.     1>Project "C:\Work\Engine\Next2024\Source\Games\NextGame\NextGame.vcxproj" on node 2 (Build target(s)).
+     1>PrepareForBuild:
+         Creating directory "..\..\..\Build\bin\Release\windows\NextGame\".
+         Creating directory "..\..\..\Build\obj\Release\windows\NextGame\NextGame.tlog\".
+       InitializeBuildStatus:
+         Creating "..\..\..\Build\obj\Release\windows\NextGame\NextGame.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\CL.exe /c /I..\..\Engine\BehemothCore /I..\.. /I. /Zi /nologo /W3 /WX- /diagnostics:column /Ox /Oi /D RELEASE /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MD /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++20 /Fo"..\..\..\Build\obj\Release\windows\NextGame\\" /Fd"..\..\..\Build\bin\Release\windows\NextGame\NextGame.pdb" /external:W3 /Gd /TP /FC /errorReport:prompt Application\game.cpp Scenes\MainScene.cpp
+         game.cpp
+     1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(10): message : see previous definition of 'PI'
+         MainScene.cpp
+     1>C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\Math\MathCore.h(10): message : see previous definition of 'PI'
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+                 with
+                 [
+                     _Ty=uint16_t
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(60): message : while compiling class template member function 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)'
+                 with
+                 [
+                     T=Behemoth::BoundingVolumeComponent,
+                     Component=Behemoth::BoundingVolumeComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(92): message : see reference to function template instantiation 'void ECS::SparseSet<T>::AddComponent(const ECS::Entity &,const Component &)' being compiled
+                 with
+                 [
+                     T=Behemoth::BoundingVolumeComponent,
+                     Component=Behemoth::BoundingVolumeComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(32): message : see reference to class template instantiation 'ECS::SparseSet<T>' being compiled
+                 with
+                 [
+                     T=Behemoth::BoundingVolumeComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(88): message : see reference to class template instantiation 'ECS::ComponentPool<T>' being compiled
+                 with
+                 [
+                     T=Behemoth::BoundingVolumeComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Games\NextGame\Scenes\MainScene.cpp(32): message : see reference to function template instantiation 'T ECS::Registry::AddComponent<Behemoth::BoundingVolumeComponent,float,bool>(ECS::Entity,float &&,bool &&)' being compiled
+                 with
+                 [
+                     T=Behemoth::BoundingVolumeComponent
+                 ]
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(40,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(33): message : while compiling class template member function 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)'
+                 with
+                 [
+                     T=Behemoth::BoundingVolumeComponent
+                 ]
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(43): message : see reference to function template instantiation 'void ECS::SparseSet<T>::RemoveComponent(const ECS::Entity &)' being compiled
+                 with
+                 [
+                     T=Behemoth::BoundingVolumeComponent
+                 ]
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(134,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+       C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(88): message : see reference to function template instantiation 'std::shared_ptr<ECS::ComponentPool<T>> ECS::Registry::GetComponent<T>(void)' being compiled
+                 with
+                 [
+                     T=Behemoth::MeshComponent
+                 ]
+         Generating Code...
+     1>C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\Lib.exe /OUT:"..\..\..\Build\bin\Release\windows\NextGame\NextGame.lib" /LIBPATH:Build\Release /NOLOGO /MACHINE:X64 ..\..\..\Build\obj\Release\windows\NextGame\game.obj
+         ..\..\..\Build\obj\Release\windows\NextGame\MainScene.obj
+         NextGame.vcxproj -> C:\Work\Engine\Next2024\Build\bin\Release\windows\NextGame\NextGame.lib
+       FinalizeBuildStatus:
+         Deleting file "..\..\..\Build\obj\Release\windows\NextGame\NextGame.tlog\unsuccessfulbuild".
+         Touching "..\..\..\Build\obj\Release\windows\NextGame\NextGame.tlog\NextGame.lastbuildstate".
+     1>Done Building Project "C:\Work\Engine\Next2024\Source\Games\NextGame\NextGame.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+       "C:\Work\Engine\Next2024\Source\Games\NextGame\NextGame.vcxproj" (Build target) (1) ->
+       (ClCompile target) -> 
+         C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+         C:\Work\Engine\Next2024\Source\NextAPI\App\AppSettings.h(60,1): warning C4005: 'PI': macro redefinition
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(67,1): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\SparseSet.h(40,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\Registry.h(134,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+         C:\Work\Engine\Next2024\Source\Engine\BehemothCore\ECS\ComponentPool.h(22): warning C4172: returning address of local variable or temporary: data
+
+    6 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.11
