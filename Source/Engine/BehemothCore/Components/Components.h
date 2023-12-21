@@ -62,7 +62,7 @@ namespace Behemoth
 			{}
 
 		~CameraComponent() = default;
-
+		Math::Plane worldSpaceFrustum[6];
 		Math::Matrix4x4 viewMatrix;
 		Math::Matrix4x4 perspectiveMatrix;
 		Math::Matrix4x4 inverseTransposeViewMatrix;
@@ -121,13 +121,6 @@ namespace Behemoth
 		ScalingComponent(Math::Vector3 vec) : scalingVector(vec) {}
 
 		Math::Vector3 scalingVector;
-	};
-
-	class FrustrumComponent : public ECS::Component 
-	{
-	public:
-		FrustrumComponent() = default;
-		Math::Plane worldSpacePlanes[6];
 	};
 
 

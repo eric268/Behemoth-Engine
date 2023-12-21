@@ -12,8 +12,8 @@ namespace Behemoth
 		void Run(ECS::Registry& registry);
 
 	private:
-		void UpdatePerspectiveMatrix(CameraComponent& component, const Math::Vector3& position);
-		void UpdateFrustrum(const CameraComponent& cameraComponent, FrustrumComponent& frustrumComponent);
+		void UpdatePerspectiveMatrix(CameraComponent* component, const Math::Vector3& position);
+		void UpdateFrustrum(CameraComponent* cameraComponent);
 	};
 
 }

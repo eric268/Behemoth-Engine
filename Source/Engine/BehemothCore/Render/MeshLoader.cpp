@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MeshLoader.h"
 #include "Misc/Log.h"
 
@@ -8,7 +9,7 @@
 
 namespace Behemoth
 {
-	bool MeshLoader::LoadModel(const std::string& modelPath, std::vector<VertexData>& tData, std::vector<VertexData>& qData)
+	bool MeshLoader::LoadModel(const std::string& modelPath, std::vector<VertexData>& data, MeshData& meshData)
 	{
 		std::ifstream file(modelPath, std::ios::in);
 		if (!file.is_open())
@@ -16,9 +17,10 @@ namespace Behemoth
 			LOG_ERROR(modelPath + " not found");
 			return false;
 		}
+		std::vector<VertexData> triangle;
+		std::vector<VertexData> quad;
+		std::vector<std::pair<int, VertexData>> verticies;
 
-		tData.clear();
-		qData.clear();
 		std::string line;
 
 		while (std::getline(file, line))
@@ -84,10 +86,28 @@ namespace Behemoth
 					vData.vertex = vertexPositions[vertexIndices[index] - 1];
 					vData.normal = vertexNormals[normalIndices[index] - 1];
 					vData.uv = vertexUVs[uvIndices[index] - 1];
-					numVerticies == 4  ? qData.push_back(vData) : tData.push_back(vData);
+
+					(numVerticies == 4) ? quad.push_back(vData) : triangle.push_back(vData);
 				}
+				
 			}
 		}
+		meshData.triangleVertexCount = triangle.size();
+		meshData.quadVertexCount = quad.size();
+		meshData.totalPrimitives = triangle.size()/3 + quad.size()/4;
+
+		data.clear();
+		data.reserve(meshData.totalPrimitives);
+
+		for (int i = 0; i < triangle.size(); i++)
+		{
+			data.push_back(std::move(triangle[i]));
+		}
+		for (int i = 0; i < quad.size(); i++)
+		{
+			data.push_back(std::move(quad[i]));
+		}
+
 		return true;
 	}
 

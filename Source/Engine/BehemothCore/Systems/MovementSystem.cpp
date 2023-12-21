@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MovementSystem.h"
 #include "Components/Components.h"
 #include "ECS/Entity.h"
@@ -14,6 +15,7 @@ namespace Behemoth
 		auto components = registry.Get<MovementComponent, TransformComponent>();
 		for (const auto& [entity, movementComp, transformComp] : components)
 		{
+			transformComp->dirty = true;
 			transformComp->position += movementComp->location;
 			transformComp->transformMatrix._41 = movementComp->location.x;
 			transformComp->transformMatrix._42 = movementComp->location.y;

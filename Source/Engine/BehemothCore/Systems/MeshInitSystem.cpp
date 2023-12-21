@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MeshInitSystem.h"
 #include "Components/Components.h"
 #include "ECS/Entity.h"
@@ -43,15 +44,9 @@ namespace Behemoth
 
 	void MeshInitSystem::InitMesh(Mesh& mesh)
 	{
-		const MeshData* data = ResourceManager::GetInstance().GetMesh(mesh.modelFileName);
-		if (data)
-		{
-			mesh.GenerateMesh(data->triangleData, data->quadData);
-		}
-		else
-		{
-			LOG_ERROR("Error loading mesh");
-		}
+		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVerticies(mesh.meshData.modelFileName);
+		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(mesh.meshData.modelFileName);
+		mesh.GenerateMesh(meshData, vertexData );
 	}
 
 }

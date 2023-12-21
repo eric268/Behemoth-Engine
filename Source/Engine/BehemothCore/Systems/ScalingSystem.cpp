@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ScalingSystem.h"
 #include "Components/Components.h"
 #include "ECS/Entity.h"

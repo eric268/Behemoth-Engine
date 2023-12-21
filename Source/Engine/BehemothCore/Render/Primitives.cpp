@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Primitives.h"
 #include "Misc/Log.h"
 #include "Application/ResourceManager.h"
@@ -16,9 +17,9 @@ namespace Behemoth
 		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
 		shininess(32.0f)
 	{
-		verticies[0] = Math::Vector3();
-		verticies[1] = Math::Vector3();
-		verticies[2] = Math::Vector3();
+		verticies[0] = Math::Vector4();
+		verticies[1] = Math::Vector4();
+		verticies[2] = Math::Vector4();
 	}
 
 	Primitives::Primitives(std::string& path, std::string& textureName) :
@@ -29,13 +30,13 @@ namespace Behemoth
 		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
 		shininess(32.0f)
 	{
-		verticies[0] = Math::Vector3();
-		verticies[1] = Math::Vector3();
-		verticies[2] = Math::Vector3();
+		verticies[0] = Math::Vector4();
+		verticies[1] = Math::Vector4();
+		verticies[2] = Math::Vector4();
 		SetLighting(Math::Vector3::Zero());
 	}
 
-	Primitives::Primitives(std::string& path, std::string& textureName, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]) :
+	Primitives::Primitives(const std::string& path, const std::string& textureName, PrimitiveType type, Math::Vector4 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]) :
 		textureName(textureName),
 		sprite{ new CSimpleSprite(path.c_str()) },
 		primitiveType(type),
@@ -62,7 +63,7 @@ namespace Behemoth
 		shininess(obj.shininess)
 	{
 		CopyVertexData(obj.verticies, obj.normals, obj.uv);
-		std::string& str = Behemoth::ResourceManager::GetInstance().GetTexture(textureName);
+		std::string& str = Behemoth::ResourceManager::GetInstance().GetTexturePath(textureName);
 		sprite = new CSimpleSprite(str.c_str());
 	}
 
@@ -92,7 +93,7 @@ namespace Behemoth
 			CopyVertexData(obj.verticies, obj.normals, obj.uv);
 
 			textureName = obj.textureName;
-			std::string& str = Behemoth::ResourceManager::GetInstance().GetTexture(textureName);
+			std::string& str = Behemoth::ResourceManager::GetInstance().GetTexturePath(textureName);
 			sprite = new CSimpleSprite(str.c_str());
 
 			depth = obj.depth;
@@ -171,7 +172,7 @@ namespace Behemoth
 		}
 	}
 
-	void Primitives::SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[], Math::Vector3 normal[], Math::Vector2 uv[])
+	void Primitives::SetPrimitiveVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector3 normal[], Math::Vector2 uv[])
 	{
 		primitiveType = type;
 		for (int i = 0; i < static_cast<int>(type); i++)

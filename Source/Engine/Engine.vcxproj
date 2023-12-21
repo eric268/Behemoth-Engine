@@ -73,7 +73,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>BehemothCore;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -94,7 +95,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>BehemothCore;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -121,7 +123,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>BehemothCore;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -159,6 +162,7 @@
     <ClInclude Include="BehemothCore\ECS\Registry.h" />
     <ClInclude Include="BehemothCore\ECS\SparseSet.h" />
     <ClInclude Include="BehemothCore\ECS\System.h" />
+    <ClInclude Include="BehemothCore\ECS\SystemManager.h" />
     <ClInclude Include="BehemothCore\Factories\CameraFactory.h" />
     <ClInclude Include="BehemothCore\Factories\LightFactories.h" />
     <ClInclude Include="BehemothCore\Math\MathCore.h" />
@@ -182,12 +186,14 @@
     <ClInclude Include="BehemothCore\Systems\SystemManager.h" />
     <ClInclude Include="BehemothCore\World\Scene.h" />
     <ClInclude Include="BehemothCore\World\World.h" />
+    <ClInclude Include="BehemothCore\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp" />
     <ClCompile Include="BehemothCore\Application\ResourceManager.cpp" />
     <ClCompile Include="BehemothCore\Application\ThreadPool.cpp" />
     <ClCompile Include="BehemothCore\Components\Components.cpp" />
+    <ClCompile Include="BehemothCore\ECS\SystemManager.cpp" />
     <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp" />
     <ClCompile Include="BehemothCore\Factories\LightFactories.cpp" />
     <ClCompile Include="BehemothCore\Math\Matrix.cpp" />
@@ -208,6 +214,9 @@
     <ClCompile Include="BehemothCore\Systems\ScalingSystem.cpp" />
     <ClCompile Include="BehemothCore\World\Scene.cpp" />
     <ClCompile Include="BehemothCore\World\World.cpp" />
+    <ClCompile Include="BehemothCore\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NextAPI\NextAPI.vcxproj">

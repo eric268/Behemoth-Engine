@@ -1,11 +1,12 @@
+#include "pch.h"
 #include "RenderSystem.h"
 #include "Misc/Log.h"
+#include "Misc/CameraHelper.h"
 #include "Components/Components.h"
 #include "ECS/Entity.h"
 #include "Render/Renderer.h"
-
- #define BOUNDING_CHECK
- #define ENABLE_CULLING
+#include "Render/MeshLoader.h"
+#include "Application/ResourceManager.h"
 
 /*
 * - Need to create a class that will hold a lot of the rendering information, such as vertex position, recieve lighting, diffuse specular shinniess, alpha etc.
@@ -21,29 +22,16 @@ namespace Behemoth
 	void RenderSystem::Run(ECS::Registry& registry)
 	{
 		auto components = registry.Get<MeshComponent, TransformComponent>();
-		auto cameraComponents = registry.Get<CameraComponent, TransformComponent, FrustrumComponent>();
+		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
 
-		FrustrumComponent* mainCameraFrustrumComponent = nullptr;
-		CameraComponent* mainCamera = nullptr;
-		TransformComponent* mainCameraTransform = nullptr;
-		Math::Vector3 mainCameraPosition{};
+		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
+		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
-		for (const auto& [entity, cameraComp, transformComp, frustrumComp] : cameraComponents)
-		{
-			if (cameraComp->isMain)
+		std::sort(components.begin(), components.end(),
+			[&](std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple1, std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple2)
 			{
-				mainCamera = cameraComp;
-				mainCameraPosition = transformComp->position;
-				mainCameraFrustrumComponent = frustrumComp;
-				break;
-			}
-		}
-
-		if (!mainCamera)
-		{
-			LOG_ERROR("Main camera not found");
-			return;
-		}
+				return std::get<1>(tuple1)->mesh.meshPrimitives.size() < std::get<1>(tuple2)->mesh.meshPrimitives.size();
+			});
 
 		// ** Order of multiplication matters here **
 		Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
@@ -54,68 +42,81 @@ namespace Behemoth
 			if (!meshComp->isVisible && !meshComp->drawWireMesh)
 				continue;
 
-#ifdef BOUNDING_CHECK
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
-			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, mainCameraFrustrumComponent, transformComp, boundingVolume->volumeRadius))
+
+			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, transformComp, boundingVolume->volumeRadius))
 			{
-				std::cout << "OUTSIDE\n";
-				// continue;
+				continue;
 			}
 
-	#ifdef DEBUG
+#ifdef DEBUG
 			if (boundingVolume && boundingVolume->drawBoundingVolume)
-				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
-	#endif
+				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, transformComp->dirty);
 #endif
 
-			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
-			counter = 0;
+			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, transformComp->dirty);
+			transformComp->dirty = false;
 		}
 
 		Renderer::GetInstance().FreeResourceOverflow();
 	}
 
-	void RenderSystem::ProcessMesh(Mesh& mesh, bool isVisible, bool drawWireFrame, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix)
+
+	void RenderSystem::ProcessMesh(Mesh& mesh, bool isVisible, bool drawWireMesh, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, bool isDirty)
 	{
-		ReserveResources(mesh.totalPrimitives, drawWireFrame);
+		const MeshData& meshData = mesh.meshData;
 
-		for (int i = 0; i < mesh.totalPrimitives; i++)
+		ReserveResources(meshData.totalPrimitives, drawWireMesh);
+		if (isDirty && cachedMeshName != meshData.modelFileName)
 		{
-			Math::Vector4 vertex[4] = { {} };
+			cachedMeshName = meshData.modelFileName;
+			cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
+		}
+
+		int numVerticies = 3;
+		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
+		{
+			if (vertexIndex >= meshData.triangleVertexCount)
+				numVerticies = 4;
+
 			Primitives& primitive = mesh.meshPrimitives[i];
-			PrimitiveType type = primitive.primitiveType;
-			int numVerticies = static_cast<int>(type);
 
-			TransformVertex(primitive, transformMatrix, vertex, numVerticies);
+			// Only need to update the verticies if matrix dirty
+			if (isDirty)
+			{
+				for (int j = 0; j < numVerticies; j++)
+				{
+					primitive.verticies[j] = transformMatrix * Math::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
+					vertexIndex++;
+				}
+			}
 
-#ifdef ENABLE_CULLING
-			bool cullPrimitive =  CullBackFace(cameraPosition, vertex);
+			
 
-			if (cullPrimitive && !drawWireFrame)
+			bool cullPrimitive = CullBackFace(cameraPosition, primitive.verticies);
+			if (cullPrimitive && !drawWireMesh)
 			{
 				continue;
 			}
-#else
-			bool cullPrimitive = false;
-#endif 
-			counter++;
-			ProcessVertex(viewProjMatrix, vertex, numVerticies);
 
+			Math::Vector4 renderVerts[4];
+			memcpy(renderVerts, primitive.verticies, sizeof(Math::Vector4) * 4);
 
-#ifdef ENABLE_CULLING
-			if (!IsPrimitiveWithinFrustrum(numVerticies, vertex))
+			ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
+
+			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
 			{
 				continue;
 			}
-#endif
-			if (drawWireFrame)
+
+			if (drawWireMesh)
 			{
-				AddWireMeshToRenderer(numVerticies, vertex);
+				AddWireMeshToRenderer(numVerticies, renderVerts);
 			}
 
 			if (!cullPrimitive && isVisible)
 			{
-				AddPrimitiveToRenderer(primitive, numVerticies, vertex);
+				AddPrimitiveToRenderer(primitive, numVerticies, renderVerts);
 			}
 		}
 	}
@@ -127,9 +128,9 @@ namespace Behemoth
 		return (Math::Vector3::Dot(normal, cam)) <= 0;
 	}
 
-	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const FrustrumComponent* frustrumComp, const TransformComponent* boundingTransformComp, const float boundingRadius)
+	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* boundingTransformComp, const float boundingRadius)
 	{
-		for (const auto& p : frustrumComp->worldSpacePlanes)
+		for (const auto& p : cameraComponent->worldSpaceFrustum)
 		{
  			float distance = Math::Vector3::Dot(p.normal, boundingTransformComp->position) - p.distance;
 			if (distance < -boundingRadius)
@@ -139,7 +140,7 @@ namespace Behemoth
 		return true;
 	}
 
-	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix)
+	void RenderSystem::DrawBoundingVolume(Mesh& mesh, const float radius, const Math::Vector3& cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, bool isDirty)
 	{
 		Math::Matrix4x4 scalingMatrix = Math::Matrix4x4::Identity();
 
@@ -153,7 +154,7 @@ namespace Behemoth
 		}
 		boundingMatrix = transformMatrix * scalingMatrix;
 
-		ProcessMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix);
+		ProcessMesh(mesh, false, true, cameraPosition, boundingMatrix, viewProjMatrix, isDirty);
 	}
 
 	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVerticies, Math::Vector4 primitiveVerts[])
@@ -207,8 +208,7 @@ namespace Behemoth
 	{
 		for (int j = 0; j < numVerticies; j++)
 		{
-			vertex[j] = Math::Vector4(primitive.verticies[j], 1.0f);
-			vertex[j] = transformMatrix * vertex[j];
+			vertex[j] = transformMatrix * primitive.verticies[j];
 		}
 	}
 
@@ -220,7 +220,6 @@ namespace Behemoth
 
 			if (vertex[j].w == 0.0f)
 			{
-				std::cout << counter << std::endl;
 				vertex[j].w = 0.01f;
 			}
 

@@ -7,6 +7,9 @@ language "C++"
 
    targetdir (outputdir .. "%{prj.name}/")
    objdir    (objectdir .. "%{prj.name}/")
+
+   pchheader "pch.h"
+   pchsource "BehemothCore/pch.cpp"
    
    files { "**.h", "**.hpp", "**.cpp" }
 

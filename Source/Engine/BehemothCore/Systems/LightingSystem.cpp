@@ -1,10 +1,11 @@
+#include "pch.h"
 #include "LightingSystem.h"
 #include "Render/Renderer.h"
 
 #include "Components/Components.h"
 #include "Misc/CameraHelper.h"
 
-#define ENABLE_LIGHTING
+ #define ENABLE_LIGHTING
 
 // stl
 #include <algorithm>
@@ -60,7 +61,7 @@ namespace Behemoth
 	void LightingSystem::CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const Math::Vector3& cameraPos, const Math::Vector3& lightPos, const Math::Matrix4x4& viewMatrix)
 	{
 		const Math::Vector3 normal = primitive->normals[0];
-		Math::Vector3 lightDir = GetPrimitivePosition(primitive) - lightPos;
+		Math::Vector3 lightDir = lightPos - GetPrimitivePosition(primitive);
 		float distance = Math::Vector3::Magnitude(lightDir);
 		lightDir.Normalize();
 		// std::cout << "Distance: " << std::to_string(distance) << std::endl;
@@ -83,7 +84,7 @@ namespace Behemoth
 
 		for (int i = 0; i < numVertices; i++) 
 		{
-			averagePos += primitive->verticies[i] / static_cast<float>(numVertices);
+			averagePos += Math::Vector3(primitive->verticies[i]) / static_cast<float>(numVertices);
 		}
 		return averagePos;
 	}

@@ -8,6 +8,7 @@
 #include <string>
 #include <functional>
 #include <memory>
+#include <vector>
 
 #define DEFAULT_PAGE_SIZE 4096
 
@@ -25,17 +26,20 @@ namespace Behemoth
 			return instance;
 		}
 
-		const MeshData* GetMesh(const std::string& filePath);
+		const std::vector<VertexData>& GetMeshVerticies(const std::string& filePath);
+		const MeshData& GetMeshData(const std::string& filePath);
 
-		std::string& GetTexture(std::string& textureName);
+		std::string& GetTexturePath(const std::string& textureName);
 
 	private:
 		ResourceManager();
 		bool LoadMesh(const std::string& filePath, const std::size_t id);
-		std::unordered_map<std::size_t, MeshData> meshContainer;
-		std::hash<std::string> hasher;
 
+		const std::pair <MeshData, std::vector<VertexData>>& GetMesh(const std::string& filepath);
+
+		std::hash<std::string> hasher;
 		std::unordered_map<std::string, std::string> textureMap;
+		std::unordered_map<std::size_t, std::pair<MeshData, std::vector<VertexData>>> meshMap;
 	};
 
 }

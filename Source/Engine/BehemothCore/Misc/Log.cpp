@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Log.h"
 
 std::string TrimFilenamePath(const std::string& fullPath)

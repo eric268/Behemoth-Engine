@@ -18,25 +18,32 @@ namespace Behemoth
 
 	struct MeshData
 	{
-		std::vector<VertexData> triangleData;
-		std::vector<VertexData> quadData;
+		std::string modelFileName;
+		std::uint32_t totalPrimitives;
+		std::uint32_t triangleVertexCount;
+		std::uint32_t quadVertexCount;
+	};
+
+	struct MaterialData
+	{
+		std::string textureFileName;
+		Math::Vector2 uvScale;
+		Math::Vector3 diffuse;
+		Math::Vector3 specular;
+		float shininess;
 	};
 
 	class Mesh
 	{
 	public:
-		Mesh(const std::string& modelPath, const std::string& texturePath = "marble.png", const Math::Vector2 uv = {1.0f, 1.0f});
-		std::string modelFileName;
-		std::string textureFileName;
-		std::vector<Primitives> meshPrimitives;
-		void GenerateMesh(const std::vector<VertexData>& triangleData, const std::vector<VertexData>& quadData);
-		std::size_t totalPrimitives;
+		Mesh(const std::string& modelPath, const std::string& texturePath = "", const Math::Vector2 uv = {1.0f, 1.0f});
+		void GenerateMesh(const MeshData& meshData, const std::vector<VertexData>& vertexData);
 
-		Math::Vector2 uvScale;
-		Math::Vector3 diffuse;
-		Math::Vector3 specular;
-		float shininess;
+		MaterialData materialData;
+		MeshData meshData;
+		std::vector<Primitives> meshPrimitives;
+		
 	private:
-		void GeneratePrimitives(const std::vector<VertexData>& data, PrimitiveType type, std::size_t offset);
+		void GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVerticies, int vertexOffset);
 	};
 }

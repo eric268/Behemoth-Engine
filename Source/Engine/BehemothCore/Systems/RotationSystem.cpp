@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "RotationSystem.h"
 #include "Components/Components.h"
 #include "Misc/Log.h"
@@ -17,6 +18,7 @@ namespace Behemoth
 				continue;
 			}
 
+			transformComp->dirty = true;
 			const Math::Matrix4x4 rotationMatrix = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
 			Math::Matrix4x4 newMatrix = rotationMatrix * transformComp->transformMatrix;
 

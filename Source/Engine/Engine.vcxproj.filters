@@ -66,6 +66,9 @@
     <ClInclude Include="BehemothCore\ECS\System.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\SystemManager.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Factories\CameraFactory.h">
       <Filter>Factories</Filter>
     </ClInclude>
@@ -126,15 +129,16 @@
     <ClInclude Include="BehemothCore\Systems\ScalingSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\SystemManager.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\World\Scene.h">
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\World\World.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\SystemManager.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
+    <ClInclude Include="BehemothCore\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -148,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Components\Components.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\ECS\SystemManager.cpp">
+      <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp">
       <Filter>Factories</Filter>
@@ -209,5 +216,6 @@
     <ClCompile Include="BehemothCore\World\World.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\pch.cpp" />
   </ItemGroup>
 </Project>

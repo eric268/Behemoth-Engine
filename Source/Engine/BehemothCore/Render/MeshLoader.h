@@ -12,7 +12,7 @@ namespace Behemoth
 	{
 	public:
 		MeshLoader() = default;
-		bool LoadModel(const std::string& filepath, std::vector<VertexData>& tData, std::vector<VertexData>& qData);
+		bool LoadModel(const std::string& filepath, std::vector<VertexData>& data, MeshData& meshData);
 
 	private:
 		void ParseFaceData(std::string& faceData, int& vertexIndex, int& uvIndex, int& normalIndex);

@@ -1,3 +1,4 @@
+#include "pch.h"
 
 #include "ECS/ECSCore.h"
 #include "Render/Primitives.h"
@@ -46,8 +47,8 @@ void Init()
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last
-	//Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
-	//Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
+	// Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
+	// Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
 }
 
 //------------------------------------------------------------------------
@@ -57,16 +58,13 @@ void Init()
 void Update(float deltaTime)
 {
 	Behemoth::World::GetInstance().Update(deltaTime);
-
+	
 	// Need to add a check here to ensure that world and active scene are valid
 	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->registry;
 	Behemoth::SystemManager::GetInstance().Run(registry);
 
-	{
-		Stopwatch sw;
-		renderSystem.Run(registry);
-	}
-
+	// Leave this in for profiling for now
+	renderSystem.Run(registry);	
 	lightingSystem.Run(registry);
 }
 

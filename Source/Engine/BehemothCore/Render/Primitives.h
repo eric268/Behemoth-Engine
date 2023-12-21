@@ -22,7 +22,7 @@ namespace Behemoth
 	public:
 		Primitives();
 		Primitives(std::string& path, std::string& textureName);
-		Primitives(std::string& path, std::string& textureName, PrimitiveType type, Math::Vector3 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]);
+		Primitives(const std::string& path, const std::string& textureName, PrimitiveType type, Math::Vector4 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]);
 		~Primitives();
 
 		Primitives(const Primitives& obj);
@@ -33,7 +33,7 @@ namespace Behemoth
 
 		void Draw();
 
-		Math::Vector3 verticies[4];
+		Math::Vector4 verticies[4];
 		Math::Vector3 normals[4];
 		Math::Vector2 uv[4];
 
@@ -47,7 +47,7 @@ namespace Behemoth
 		void SetSpriteUVs(PrimitiveType type, Math::Vector2 uv[]);
 		void SetSpriteVerticies(const int numVerticies, const Math::Vector4 vert[]);
 		void SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[]);
-		void SetPrimitiveVerticies(PrimitiveType type, Math::Vector3 vert[], Math::Vector3 normal[], Math::Vector2 uv[]);
+		void SetPrimitiveVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector3 normal[], Math::Vector2 uv[]);
 
 		inline void SetLighting(Math::Vector3 c)
 		{
@@ -62,9 +62,9 @@ namespace Behemoth
 
 	private:
 
-		inline void CopyVertexData(const Math::Vector3* verticies, const Math::Vector3* normals, const Math::Vector2* uv) 
+		inline void CopyVertexData(const Math::Vector4* verticies, const Math::Vector3* normals, const Math::Vector2* uv) 
 		{
-			std::memcpy(this->verticies, verticies, sizeof(Math::Vector3) * 4);
+			std::memcpy(this->verticies, verticies, sizeof(Math::Vector4) * 4);
 			std::memcpy(this->normals, normals, sizeof(Math::Vector3) * 4);
 			std::memcpy(this->uv, uv, sizeof(Math::Vector2) * 4);
 		}

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Misc/Log.h"
 #include "Render/MeshLoader.h"
 #include "ResourceManager.h"
@@ -12,34 +13,48 @@ namespace Behemoth
 
 	}
 
-	const MeshData* ResourceManager::GetMesh(const std::string& filePath)
+	const MeshData& ResourceManager::GetMeshData(const std::string& filepath)
+	{
+		return GetMesh(filepath).first;
+	}
+
+	const std::vector<VertexData>& ResourceManager::GetMeshVerticies(const std::string& filePath) 
+	{
+		return GetMesh(filePath).second;
+	}
+
+	const std::pair<MeshData, std::vector<VertexData>>& ResourceManager::GetMesh(const std::string& filePath)
 	{
 		std::size_t id = hasher(filePath);
 
-		if (meshContainer.find(id) != meshContainer.end() || LoadMesh(filePath, id))
+		if (meshMap.find(id) != meshMap.end() || LoadMesh(filePath, id))
 		{
-			return &meshContainer[id];
+			return meshMap[id];
 		}
 
 		LOG_ERROR("Failed to copy mesh");
-		return nullptr;
+		return meshMap[id];
 	}
 
 	bool ResourceManager::LoadMesh(const std::string& filePath, const std::size_t id)
 	{
 		MeshLoader meshLoader{};
-		meshContainer[id] = MeshData();
 
-		bool result = meshLoader.LoadModel("Models/" + filePath, meshContainer[id].triangleData, meshContainer[id].quadData);
-		if (!result)
+		MeshData meshData{};
+		std::vector<VertexData> meshVerticies;
+
+		bool result = meshLoader.LoadModel("Models/" + filePath, meshVerticies, meshData);
+		meshData.modelFileName = filePath;
+
+		if (result)
 		{
-			meshContainer.erase(id);
+			meshMap[id] = {std::move(meshData), std::move(meshVerticies)};
 		}
 
 		return result;
 	}
 
-	std::string& ResourceManager::GetTexture(std::string& textureName)
+	std::string& ResourceManager::GetTexturePath(const std::string& textureName)
 	{
 		if (textureMap.find(textureName) != textureMap.end())
 			return textureMap[textureName];

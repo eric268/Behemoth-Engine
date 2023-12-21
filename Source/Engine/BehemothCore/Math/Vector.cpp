@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MathCore.h"
 
 
@@ -129,9 +130,9 @@ namespace Math
 			std::abs(v1.z - v2.z) <= epsilon;
 	}
 
-	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix)
+	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix, float w)
 	{
-		Vector4 v = rotationMatrix * Vector4(vec, 0.0f);
+		Vector4 v = rotationMatrix * Vector4(vec, w);
 
 		vec.x = v.x;
 		vec.y = v.y;
