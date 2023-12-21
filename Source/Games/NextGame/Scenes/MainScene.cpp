@@ -53,5 +53,5 @@ void MainScene::Init()
 
 	void MainScene::Shutdown()
 	{
-
+		// for (const auto e : registry.)
 	}

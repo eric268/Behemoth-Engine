@@ -165,6 +165,8 @@
     <ClInclude Include="BehemothCore\ECS\SystemManager.h" />
     <ClInclude Include="BehemothCore\Factories\CameraFactory.h" />
     <ClInclude Include="BehemothCore\Factories\LightFactories.h" />
+    <ClInclude Include="BehemothCore\Input\InputManager.h" />
+    <ClInclude Include="BehemothCore\Input\InputMapping.h" />
     <ClInclude Include="BehemothCore\Math\MathCore.h" />
     <ClInclude Include="BehemothCore\Math\Matrix.h" />
     <ClInclude Include="BehemothCore\Math\Plane.h" />
@@ -196,6 +198,7 @@
     <ClCompile Include="BehemothCore\ECS\SystemManager.cpp" />
     <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp" />
     <ClCompile Include="BehemothCore\Factories\LightFactories.cpp" />
+    <ClCompile Include="BehemothCore\Input\InputManager.cpp" />
     <ClCompile Include="BehemothCore\Math\Matrix.cpp" />
     <ClCompile Include="BehemothCore\Math\Plane.cpp" />
     <ClCompile Include="BehemothCore\Math\Vector.cpp" />

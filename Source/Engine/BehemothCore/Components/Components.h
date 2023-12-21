@@ -178,4 +178,13 @@ namespace Behemoth
 		float quadratic;
 	};
 
+	template<typename U = void>
+	class InputComponent : public ECS::Component 
+	{
+		InputComponent() {}
+
+		std::vector<uint16_t> keyboardInputBindings;
+		std::vector<uint16_t> mouseInputBindings;
+		std::vector<uint16_t> controllerInputBindings;
+	};
 }

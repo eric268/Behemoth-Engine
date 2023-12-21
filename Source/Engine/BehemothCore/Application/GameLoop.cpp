@@ -20,6 +20,8 @@
 #include "Systems/MeshInitSystem.h"
 #include "Systems/LightingSystem.h"
 
+#include "NextAPI/App/app.h"
+
 #include <windows.h> 
 //stl
 #include <iostream>
@@ -66,6 +68,17 @@ void Update(float deltaTime)
 	// Leave this in for profiling for now
 	renderSystem.Run(registry);	
 	lightingSystem.Run(registry);
+
+	if (App::IsKeyPressed('C'))
+	{
+		std::cout << "Pressed\n";
+	}
+	float x = 0;
+	float y = 0;
+	App::GetMousePos(x, y);
+	std::cout << "X: " << x << " Y: " << y << '\n';
+	
+
 }
 
 //------------------------------------------------------------------------
