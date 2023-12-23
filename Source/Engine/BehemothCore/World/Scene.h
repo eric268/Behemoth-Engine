@@ -3,18 +3,21 @@
 
 namespace Behemoth
 {
+	class Event;
+
 	class Scene
 	{
 	public:
-		Scene();
+		Scene() = default;
 
+		virtual void OnEvent(Event& e) = 0;
 		virtual void Init() = 0;
-		virtual void Update(const float deltaTime);
-		virtual void Shutdown();
+		virtual void Update(const float deltaTime) = 0;
+		virtual void Shutdown() = 0;
+		virtual ECS::Registry& GetRegistry() = 0;
 
+	protected:
 		ECS::Registry registry;
-	private:
-
 	};
 }
 

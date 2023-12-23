@@ -3,8 +3,6 @@
 #include "Render/MeshLoader.h"
 #include "ResourceManager.h"
 
-//stl
-#include <filesystem>
 
 namespace Behemoth
 {

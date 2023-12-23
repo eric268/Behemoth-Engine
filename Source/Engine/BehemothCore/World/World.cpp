@@ -56,5 +56,4 @@ namespace Behemoth
 
 		currentScene->Shutdown();
 	}
-
 }

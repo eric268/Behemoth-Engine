@@ -13,7 +13,7 @@ namespace ECS
 	{
 	public:
 		virtual ~ISystem() = default;
-		virtual void Run(Registry& registry) {}
+		virtual void Run(Registry& registry) = 0;
 	};
 
 	template<HasRunMethod T>

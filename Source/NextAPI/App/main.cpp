@@ -165,8 +165,17 @@ void Idle()
 // Break here and use the diagnostics debug view to check for user mem leaks.
 void CheckMemCallback()
 {
+
 }
 
+void Idle2()
+{
+
+}
+void Display2()
+{
+
+}
 
 //---------------------------------------------------------------------------------
 int APIENTRY NextAPI_wWinMain(_In_ HINSTANCE hInstance, 	_In_opt_ HINSTANCE hPrevInstance,	_In_ LPWSTR    lpCmdLine, _In_ int       nCmdShow)
@@ -181,10 +190,12 @@ int APIENTRY NextAPI_wWinMain(_In_ HINSTANCE hInstance, 	_In_opt_ HINSTANCE hPre
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutInitWindowPosition(100, 100);
 	int glutWind = glutCreateWindow(APP_WINDOW_TITLE);	
+
 	HDC dc = wglGetCurrentDC();
 	MAIN_WINDOW_HANDLE = WindowFromDC(dc);
 	glutIdleFunc(Idle);
 	glutDisplayFunc(Display);       // Register callback handler for window re-paint event	
+
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	InitGL();                       // Our own OpenGL initialization
 

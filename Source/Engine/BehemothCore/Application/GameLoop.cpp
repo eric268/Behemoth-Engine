@@ -7,6 +7,7 @@
 #include "Render/Renderer.h"
 #include "World/World.h"
 #include "World/Scene.h"
+#include "Event/EventManager.h"
 
 #include "ECS/System.h"
 #include "Systems/SystemManager.h"
@@ -22,24 +23,27 @@
 
 #include "NextAPI/App/app.h"
 
-#include <windows.h> 
-//stl
-#include <iostream>
-#include <filesystem>
+extern void CreateApplication();
+
+
+
+void OnEvent(Behemoth::Event& e)
+{
+	// Possibly iterate over a container
+	Behemoth::World::GetInstance().GetActiveScene()->OnEvent(e);
+}
 
 //------------------------------------------------------------------------
-
 //------------------------------------------------------------------------
 // Called before first update. Do any initial setup here.
 //------------------------------------------------------------------------
 
-extern void CreateApplication();
-
-Behemoth::RenderSystem renderSystem{};
-Behemoth::LightingSystem lightingSystem{};
 void Init()
 {
 	CreateApplication();
+
+	 Behemoth::EventManager::GetInstance().sceneEventFunc = OnEvent;
+	 Behemoth::EventManager::GetInstance().BindEventCallbacks();
 
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
@@ -49,9 +53,10 @@ void Init()
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last
-	// Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
-	// Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
 }
+
 
 //------------------------------------------------------------------------
 // Update your simulation here. deltaTime is the elapsed time since the last update in ms.
@@ -62,23 +67,8 @@ void Update(float deltaTime)
 	Behemoth::World::GetInstance().Update(deltaTime);
 	
 	// Need to add a check here to ensure that world and active scene are valid
-	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->registry;
+	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->GetRegistry();
 	Behemoth::SystemManager::GetInstance().Run(registry);
-
-	// Leave this in for profiling for now
-	renderSystem.Run(registry);	
-	lightingSystem.Run(registry);
-
-	if (App::IsKeyPressed('C'))
-	{
-		std::cout << "Pressed\n";
-	}
-	float x = 0;
-	float y = 0;
-	App::GetMousePos(x, y);
-	std::cout << "X: " << x << " Y: " << y << '\n';
-	
-
 }
 
 //------------------------------------------------------------------------

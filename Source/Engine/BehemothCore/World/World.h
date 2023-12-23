@@ -1,4 +1,7 @@
 #pragma once
+#include "Event/Event.h"
+
+#include <queue>
 
 namespace Behemoth
 {
@@ -18,7 +21,7 @@ namespace Behemoth
 		}
 
 		Scene* GetActiveScene();
-		
+
 		void ChangeScene(Scene* newScene);
 		void Init();
 		void Update(const float deltaTime);

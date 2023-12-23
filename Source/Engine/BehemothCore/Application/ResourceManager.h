@@ -2,15 +2,13 @@
 
 #include "Render/Mesh.h"
 #include "Math/MathCore.h"
-#include "MeshMetaData.h"
+
 // stl
 #include <unordered_map>
 #include <string>
 #include <functional>
 #include <memory>
 #include <vector>
-
-#define DEFAULT_PAGE_SIZE 4096
 
 namespace Behemoth
 {
