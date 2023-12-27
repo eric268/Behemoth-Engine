@@ -18,7 +18,7 @@ namespace Behemoth
 			transformComp->transformMatrix._41 += delta.x;
 			transformComp->transformMatrix._42 += delta.y;
 			transformComp->transformMatrix._43 += delta.z;
-			transformComp->dirty = true;
+			transformComp->isDirty = true;
 
 			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
 			if (cameraComponent && cameraComponent->isMain)

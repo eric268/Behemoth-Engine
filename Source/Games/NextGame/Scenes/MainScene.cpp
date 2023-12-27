@@ -28,7 +28,7 @@ void MainScene::Init()
 		registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "diamond.png");
 		registry.AddComponent<Behemoth::TransformComponent>(e1);
 		registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-		// registry.AddComponent<Behemoth::RotationComponent>(e1, i + 2, 1.0f);
+		registry.AddComponent<Behemoth::RotationComponent>(e1, i + 2, 1.0f);
 		registry.AddComponent<Behemoth::MoveComponent>(e1, Math::Vector3(-3.0f * i, 0.0f, -5.0f));
 		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 

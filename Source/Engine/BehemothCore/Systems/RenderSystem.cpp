@@ -51,11 +51,11 @@ namespace Behemoth
 
 #ifdef DEBUG
 			if (boundingVolume && boundingVolume->drawBoundingVolume)
-				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, transformComp->dirty);
+				DrawBoundingVolume(boundingVolume->mesh, boundingVolume->volumeRadius, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, transformComp->isDirty);
 #endif
 
-			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, transformComp->dirty);
-			transformComp->dirty = false;
+			ProcessMesh(meshComp->mesh, meshComp->isVisible, meshComp->drawWireMesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, transformComp->isDirty);
+			transformComp->isDirty = false;
 		}
 
 		Renderer::GetInstance().FreeResourceOverflow();

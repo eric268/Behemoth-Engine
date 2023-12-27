@@ -78,14 +78,14 @@ namespace Behemoth
 	class TransformComponent : public ECS::Component
 	{
 	public:
-		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), dirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()) {}
+		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), isDirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()) {}
 		Math::Matrix4x4 transformMatrix;
 		Math::Vector3 forwardVector;
 		Math::Vector3 rightVector;
 		Math::Vector3 upVector;
 		Math::Vector3 position;
 		Math::Vector3 scale;
-		bool dirty;
+		bool isDirty;
 	};
 
 	class MoveComponent : public ECS::Component

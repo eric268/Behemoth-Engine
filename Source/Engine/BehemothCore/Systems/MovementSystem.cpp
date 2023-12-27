@@ -15,7 +15,7 @@ namespace Behemoth
 		auto components = registry.Get<MoveComponent, TransformComponent>();
 		for (const auto& [entity, movementComp, transformComp] : components)
 		{
-			transformComp->dirty = true;
+			transformComp->isDirty = true;
 			transformComp->position += movementComp->location;
 			transformComp->transformMatrix._41 = movementComp->location.x;
 			transformComp->transformMatrix._42 = movementComp->location.y;

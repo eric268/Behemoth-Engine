@@ -17,39 +17,48 @@ namespace Behemoth
 				continue;
 			}
 
-			transformComp->dirty = true;
 			const Math::Matrix4x4 rotationMatrix = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
-			Math::Matrix4x4 newMatrix = rotationMatrix * transformComp->transformMatrix;
 
-			for (int col = 0; col < 3; col++)
-			{
-				for (int row = 0; row < 3; row++)
-				{
-					transformComp->transformMatrix.data[col][row] = newMatrix.data[col][row];
-				}
-			}
+			RotateTransformMatrix(transformComp, rotationMatrix);
 
-			transformComp->forwardVector = GetForwardVector(transformComp->transformMatrix);
-			transformComp->rightVector = GetRightVector(transformComp->transformMatrix);
-
+			// If this entity has a camera component we need to update the view matrix as well after a rotation
 			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
-
-
 			if (cameraComponent)
 			{
 				cameraComponent->isDirty = true;
 			}
 
+			// If this entity has a mesh component then we need to update the mesh normals after a rotation
 			MeshComponent* meshComp = registry.GetComponent<MeshComponent>(entity);
 			if (meshComp)
 			{
-				for (int i = 0; i < meshComp->mesh.meshPrimitives.size(); i++)
-				{
-					for (int j = 0; j < 3; j++)
-					{
-						Math::Vector3::RotateVector(meshComp->mesh.meshPrimitives[i].normals[j], rotationMatrix);
-					}
-				}
+				RotateMeshNormals(meshComp, rotationMatrix);
+			}
+		}
+	}
+
+	void RotationSystem::RotateTransformMatrix(TransformComponent* transformComponent, const Math::Matrix4x4& rotationMatrix)
+	{
+		Math::Matrix4x4 rotatedTransformMatrix = rotationMatrix * transformComponent->transformMatrix;
+		for (int col = 0; col < 3; col++)
+		{
+			for (int row = 0; row < 3; row++)
+			{
+				transformComponent->transformMatrix.data[col][row] = rotatedTransformMatrix.data[col][row];
+			}
+		}
+		transformComponent->forwardVector = GetForwardVector(transformComponent->transformMatrix);
+		transformComponent->rightVector = GetRightVector(transformComponent->transformMatrix);
+		transformComponent->isDirty = true;
+	}
+
+	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const Math::Matrix4x4& rotationMatrix)
+	{
+		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				Math::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[j], rotationMatrix);
 			}
 		}
 	}
