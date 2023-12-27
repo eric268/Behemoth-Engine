@@ -242,19 +242,19 @@ namespace Math
 
 		switch (axis)
 		{
-		case 0:
+		case 1:
 			m._22 = cosTheta;
 			m._23 = -sinTheta;
 			m._32 = sinTheta;
 			m._33 = cosTheta;
 			break;
-		case 1:
+		case 2:
 			m._11 = cosTheta;
 			m._13 = -sinTheta;
 			m._31 = sinTheta;
 			m._33 = cosTheta;
 			break;
-		case 2:
+		case 3:
 			m._11 = cosTheta;
 			m._12 = -sinTheta;
 			m._21 = sinTheta;

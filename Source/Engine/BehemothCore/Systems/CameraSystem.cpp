@@ -43,6 +43,7 @@ namespace Behemoth
 
 		Math::Vector3 target = transformComponent->position + transformComponent->forwardVector;
 
+
 		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->position, target, Math::Vector3::Up());
 		cameraComponent->inverseTransposeViewMatrix = Math::Matrix4x4::Inverse(cameraComponent->viewMatrix);
 	}

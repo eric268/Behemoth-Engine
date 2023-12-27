@@ -28,7 +28,7 @@ void MainScene::Init()
 		registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "diamond.png");
 		registry.AddComponent<Behemoth::TransformComponent>(e1);
 		registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-		registry.AddComponent<Behemoth::RotationComponent>(e1, i + 1, 1.0f);
+		// registry.AddComponent<Behemoth::RotationComponent>(e1, i + 2, 1.0f);
 		registry.AddComponent<Behemoth::MoveComponent>(e1, Math::Vector3(-3.0f * i, 0.0f, -5.0f));
 		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 
@@ -62,12 +62,12 @@ void MainScene::OnEvent(Behemoth::Event& e)
 				Behemoth::VelocityComponent* velocityComponent = registry.GetComponent<Behemoth::VelocityComponent>(cameraEntity);
 
 				auto [vel, transformComponent] = registry.GetMultipleComponents<Behemoth::VelocityComponent, Behemoth::TransformComponent>(cameraEntity);
+				Behemoth::KeyCode keyCode = keyEvent.GetKeyCode();
 
 				if (velocityComponent && transformComponent)
 				{
 					float movementSpeed = 1.0f;
 					velocityComponent->velocity = Math::Vector3::Zero();
-					Behemoth::KeyCode keyCode = keyEvent.GetKeyCode();
 
 					if (keyCode == Behemoth::KeyCode::B_W)
 					{
@@ -75,21 +75,40 @@ void MainScene::OnEvent(Behemoth::Event& e)
 					}
 					if (keyCode == Behemoth::KeyCode::B_A)
 					{
-						velocityComponent->velocity -=  transformComponent->rightVector;
+						velocityComponent->velocity  -= transformComponent->rightVector;
 					}
 					if (keyCode == Behemoth::KeyCode::B_S)
 					{
-						velocityComponent->velocity -= transformComponent->forwardVector;
+						velocityComponent->velocity  -= transformComponent->forwardVector;
 					}
 					if (keyCode == Behemoth::KeyCode::B_D)
 					{
-						velocityComponent->velocity += transformComponent->rightVector;
+						velocityComponent->velocity  += transformComponent->rightVector;
 					}
 						
 					velocityComponent->velocity.Normalize();
 					velocityComponent->velocity *= movementSpeed;
-					 
-				 }
+				}
+
+				if (keyCode == Behemoth::KeyCode::B_E)
+				{
+					Behemoth::RotationComponent* rotationComponent = registry.GetComponent<Behemoth::RotationComponent>(cameraEntity);
+					if (rotationComponent)
+					{
+						rotationComponent->axis = Behemoth::RotationComponent::Y_AXIS;
+						rotationComponent->speed = 0.5f;
+					}
+				}
+
+				if (keyCode == Behemoth::KeyCode::B_Q)
+				{
+					Behemoth::RotationComponent* rotationComponent = registry.GetComponent<Behemoth::RotationComponent>(cameraEntity);
+					if (rotationComponent)
+					{
+						rotationComponent->axis = Behemoth::RotationComponent::Y_AXIS;
+						rotationComponent->speed = -0.5f;
+					}
+				}
 			 }
 	 	});
 

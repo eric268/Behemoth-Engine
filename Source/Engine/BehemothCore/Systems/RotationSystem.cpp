@@ -8,13 +8,12 @@ namespace Behemoth
 {
 	void RotationSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto components = registry.Get<RotationComponent, TransformComponent, MeshComponent>();
+		auto components = registry.Get<RotationComponent, TransformComponent>();
 
-		for (const auto& [entity, rotationComp, transformComp, meshComp] : components)
+		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-			if (!rotationComp || !transformComp || !meshComp)
+			if (rotationComp->axis == RotationComponent::None || rotationComp->speed == 0.0f)
 			{
-				LOG_ERROR("Null component found");
 				continue;
 			}
 
@@ -30,14 +29,26 @@ namespace Behemoth
 				}
 			}
 
-			transformComp->forwardVector =	GetForwardVector(transformComp->transformMatrix);
-			transformComp->rightVector =	GetRightVector(transformComp->transformMatrix);
+			transformComp->forwardVector = GetForwardVector(transformComp->transformMatrix);
+			transformComp->rightVector = GetRightVector(transformComp->transformMatrix);
 
-			for (int i = 0; i < meshComp->mesh.meshPrimitives.size(); i++)
+			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
+
+
+			if (cameraComponent)
 			{
-				for (int j = 0; j < 3; j++)
+				cameraComponent->isDirty = true;
+			}
+
+			MeshComponent* meshComp = registry.GetComponent<MeshComponent>(entity);
+			if (meshComp)
+			{
+				for (int i = 0; i < meshComp->mesh.meshPrimitives.size(); i++)
 				{
-					Math::Vector3::RotateVector(meshComp->mesh.meshPrimitives[i].normals[j], rotationMatrix);
+					for (int j = 0; j < 3; j++)
+					{
+						Math::Vector3::RotateVector(meshComp->mesh.meshPrimitives[i].normals[j], rotationMatrix);
+					}
 				}
 			}
 		}
@@ -45,10 +56,10 @@ namespace Behemoth
 
 	Math::Vector3 RotationSystem::GetForwardVector(const Math::Matrix4x4& transformMatrix)
 	{
-		return Math::Vector3(transformMatrix.data[0][2], transformMatrix.data[1][2], transformMatrix.data[2][2]);
+		return  Math::Vector3(-transformMatrix._13, -transformMatrix._23, -transformMatrix._33).Normalize();
 	}
 	Math::Vector3 RotationSystem::GetRightVector(const Math::Matrix4x4& transformMatrix)
 	{
-		return Math::Vector3(transformMatrix.data[0][0], transformMatrix.data[1][0], transformMatrix.data[2][0]);
+		return Math::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();
 	}
 }

@@ -113,12 +113,13 @@ namespace Behemoth
 
 		enum Axis
 		{
+			None,
 			X_AXIS,
 			Y_AXIS,
 			Z_AXIS
 		};
 
-		RotationComponent() : axis(X_AXIS), speed(1.0f) {}
+		RotationComponent() : axis(None), speed(0.0f) {}
 		RotationComponent(Axis a, float s) : axis(a), speed(s) {}
 		RotationComponent(int a, float s) : axis(static_cast<Axis>(a)), speed(s) {}
 

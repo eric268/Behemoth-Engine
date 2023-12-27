@@ -8,8 +8,10 @@ namespace Behemoth
 	{
 		ECS::Entity entity = registry.CreateEntity(name);
 		registry.AddComponent<Behemoth::CameraComponent>(entity, isMain);
-		registry.AddComponent<Behemoth::TransformComponent>(entity);
 		registry.AddComponent<Behemoth::VelocityComponent>(entity);
+		registry.AddComponent<Behemoth::RotationComponent>(entity);
+		registry.AddComponent<Behemoth::TransformComponent>(entity);
+		
 		return entity;
 	}
 }
