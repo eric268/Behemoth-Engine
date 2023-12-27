@@ -56,4 +56,12 @@ namespace Behemoth
 
 		currentScene->Shutdown();
 	}
+
+	void World::OnEvent(Event& e)
+	{
+		if (currentScene)
+		{
+			currentScene->OnEvent(e);
+		}
+	}
 }

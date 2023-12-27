@@ -20,6 +20,7 @@
 #include "Systems/MovementSystem.h"
 #include "Systems/MeshInitSystem.h"
 #include "Systems/LightingSystem.h"
+#include "Systems/VelocitySystem.h"
 
 #include "NextAPI/App/app.h"
 
@@ -30,7 +31,7 @@ extern void CreateApplication();
 void OnEvent(Behemoth::Event& e)
 {
 	// Possibly iterate over a container
-	Behemoth::World::GetInstance().GetActiveScene()->OnEvent(e);
+	Behemoth::World::GetInstance().OnEvent(e);
 }
 
 //------------------------------------------------------------------------
@@ -42,7 +43,7 @@ void Init()
 {
 	CreateApplication();
 
-	 Behemoth::EventManager::GetInstance().sceneEventFunc = OnEvent;
+	 Behemoth::EventManager::GetInstance().OnEventDelegate = OnEvent;
 	 Behemoth::EventManager::GetInstance().BindEventCallbacks();
 
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
@@ -50,6 +51,7 @@ void Init()
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MovementSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::VelocitySystem>();
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last
@@ -68,7 +70,7 @@ void Update(float deltaTime)
 	
 	// Need to add a check here to ensure that world and active scene are valid
 	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->GetRegistry();
-	Behemoth::SystemManager::GetInstance().Run(registry);
+	Behemoth::SystemManager::GetInstance().Run(deltaTime, registry);
 }
 
 //------------------------------------------------------------------------

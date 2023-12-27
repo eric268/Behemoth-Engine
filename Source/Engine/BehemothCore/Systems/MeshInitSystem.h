@@ -10,7 +10,7 @@ namespace Behemoth
 	public:
 		MeshInitSystem() = default;
 
-		void Run(ECS::Registry& registry);
+		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
 		void InitMesh(Mesh& mesh);

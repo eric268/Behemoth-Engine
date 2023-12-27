@@ -19,7 +19,7 @@
 
 namespace Behemoth
 {
-	void RenderSystem::Run(ECS::Registry& registry)
+	void RenderSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		auto components = registry.Get<MeshComponent, TransformComponent>();
 		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();

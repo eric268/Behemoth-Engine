@@ -14,7 +14,7 @@
 
 namespace Behemoth
 {
-	void LightingSystem::Run(ECS::Registry& registry)
+	void LightingSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
  		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);

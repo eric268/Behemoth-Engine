@@ -164,12 +164,14 @@
     <ClInclude Include="BehemothCore\Event\ControllerEvents.h" />
     <ClInclude Include="BehemothCore\Event\Event.h" />
     <ClInclude Include="BehemothCore\Event\EventManager.h" />
-    <ClInclude Include="BehemothCore\Event\InputMapping.h" />
     <ClInclude Include="BehemothCore\Event\KeyboardEvents.h" />
     <ClInclude Include="BehemothCore\Event\MouseEvents.h" />
     <ClInclude Include="BehemothCore\Event\WindowEvents.h" />
     <ClInclude Include="BehemothCore\Factories\CameraFactory.h" />
     <ClInclude Include="BehemothCore\Factories\LightFactories.h" />
+    <ClInclude Include="BehemothCore\Input\Input.h" />
+    <ClInclude Include="BehemothCore\Input\InputCodes.h" />
+    <ClInclude Include="BehemothCore\Input\InputMapping.h" />
     <ClInclude Include="BehemothCore\Math\MathCore.h" />
     <ClInclude Include="BehemothCore\Math\Matrix.h" />
     <ClInclude Include="BehemothCore\Math\Plane.h" />
@@ -189,6 +191,7 @@
     <ClInclude Include="BehemothCore\Systems\RotationSystem.h" />
     <ClInclude Include="BehemothCore\Systems\ScalingSystem.h" />
     <ClInclude Include="BehemothCore\Systems\SystemManager.h" />
+    <ClInclude Include="BehemothCore\Systems\VelocitySystem.h" />
     <ClInclude Include="BehemothCore\World\Scene.h" />
     <ClInclude Include="BehemothCore\World\World.h" />
     <ClInclude Include="BehemothCore\pch.h" />
@@ -217,6 +220,7 @@
     <ClCompile Include="BehemothCore\Systems\RenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\RotationSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\ScalingSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\VelocitySystem.cpp" />
     <ClCompile Include="BehemothCore\World\World.cpp" />
     <ClCompile Include="BehemothCore\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

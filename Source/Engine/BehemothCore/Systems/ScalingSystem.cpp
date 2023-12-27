@@ -5,7 +5,7 @@
 
 namespace Behemoth
 {
-	void ScalingSystem::Run(ECS::Registry& registry)
+	void ScalingSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		auto scalingComponents = registry.GetComponent<ScalingComponent>();
 

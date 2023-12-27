@@ -5,14 +5,14 @@
 
 namespace Behemoth
 {
-	void MovementSystem::Run(ECS::Registry& registry)
+	void MovementSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto movementComponents = registry.GetComponent<MovementComponent>();
+		auto movementComponents = registry.GetComponent<MoveComponent>();
 
 		if (!movementComponents->size())
 			return;
 
-		auto components = registry.Get<MovementComponent, TransformComponent>();
+		auto components = registry.Get<MoveComponent, TransformComponent>();
 		for (const auto& [entity, movementComp, transformComp] : components)
 		{
 			transformComp->dirty = true;

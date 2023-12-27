@@ -8,7 +8,7 @@ namespace Behemoth
 	public:
 		ScalingSystem() = default;
 
-		void Run(ECS::Registry& registry);
+		void Run(const float deltaTime, ECS::Registry& registry);
 	};
 }
 

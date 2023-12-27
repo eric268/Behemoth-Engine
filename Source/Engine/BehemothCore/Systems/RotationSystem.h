@@ -8,6 +8,6 @@ namespace Behemoth
 	public:
 		RotationSystem() = default;
 
-		void Run(ECS::Registry& registry);
+		void Run(const float deltaTime, ECS::Registry& registry);
 	};
 }

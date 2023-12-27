@@ -34,6 +34,9 @@
     <Filter Include="Events">
       <UniqueIdentifier>{a56f50f1-f196-497f-9036-68fa4e1b9d5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{2f005806-c501-4058-9c4e-cc9b4191d3ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BehemothCore\Application\ResourceManager.h">
@@ -139,9 +142,6 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
-    <ClInclude Include="BehemothCore\Event\InputMapping.h">
-      <Filter>Events</Filter>
-    </ClInclude>
     <ClInclude Include="BehemothCore\Event\EventManager.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -160,6 +160,16 @@
     <ClInclude Include="BehemothCore\Event\KeyboardEvents.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Input\InputCodes.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Input\InputMapping.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\VelocitySystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -235,5 +245,6 @@
     <ClCompile Include="BehemothCore\Event\EventManager.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\VelocitySystem.cpp" />
   </ItemGroup>
 </Project>

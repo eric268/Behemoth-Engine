@@ -33,11 +33,11 @@ namespace Behemoth
 			systemTypeID[typeIndex] = systemContainer.size() - 1;
 		}
 
-		void Run(ECS::Registry& registry)
+		void Run(const float deltaTime, ECS::Registry& registry)
 		{
 			for (const auto& system : systemContainer)
 			{
-				system->Run(registry);
+				system->Run(deltaTime, registry);
 			}
 		}
 

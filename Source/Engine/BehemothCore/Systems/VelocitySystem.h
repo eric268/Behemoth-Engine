@@ -1,14 +1,16 @@
 #pragma once
-#include "ECS/System.h"
+#include "ECS/ECSCore.h"
 
 namespace Behemoth
 {
-	class MovementSystem
+	class VelocitySystem
 	{
 	public:
-		MovementSystem() = default;
+		VelocitySystem() = default;
 
 		void Run(const float deltaTime, ECS::Registry& registry);
-	};
-}
 
+	private:
+	};
+
+}

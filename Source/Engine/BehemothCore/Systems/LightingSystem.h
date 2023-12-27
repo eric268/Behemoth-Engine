@@ -16,7 +16,7 @@ namespace Behemoth
 	class LightingSystem
 	{
 	public:
-		void Run(ECS::Registry& registry);
+		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
 		void CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const Math::Vector3& cameraPos);

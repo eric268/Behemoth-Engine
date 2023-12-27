@@ -21,7 +21,7 @@ namespace Behemoth
 		}
 
 		Scene* GetActiveScene();
-
+		void OnEvent(Event& e);
 		void ChangeScene(Scene* newScene);
 		void Init();
 		void Update(const float deltaTime);
@@ -30,5 +30,7 @@ namespace Behemoth
 	private:
 		World() = default;
 		Scene* currentScene;
+
+		std::queue<Event> eventQueue;
 	};
 }

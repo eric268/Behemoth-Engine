@@ -5,6 +5,7 @@
 
 #include <queue>
 #include <functional>
+#include <unordered_map>
 
 namespace Behemoth
 {
@@ -28,11 +29,9 @@ namespace Behemoth
 		template<typename T>
 		using EventFunc = std::function<void(T&)>;
 
-
-		std::function<void(Event&)> sceneEventFunc;
+		std::function<void(Event&)> OnEventDelegate;
 
 	private:
 		EventManager() = default;
-
 	};
 }

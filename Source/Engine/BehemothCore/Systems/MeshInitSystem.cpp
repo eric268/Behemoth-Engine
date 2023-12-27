@@ -8,7 +8,7 @@
 
 namespace Behemoth
 {
-	void MeshInitSystem::Run(ECS::Registry& registry)
+	void MeshInitSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		// Will need to get the sparse set container no matter what since the .Get<>() returns a tuple and iterating backwards is difficult
 		// This way we can do a very quick and easy check to see if there are any meshes that need to be initialized

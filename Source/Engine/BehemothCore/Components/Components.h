@@ -85,14 +85,23 @@ namespace Behemoth
 		bool dirty;
 	};
 
-	class MovementComponent : public ECS::Component
+	class MoveComponent : public ECS::Component
 	{
 	public:
-		MovementComponent() : location(Math::Vector3{}) {}
-		MovementComponent(Math::Vector3 vec) : location(vec) {}
-		~MovementComponent() override {};
+		MoveComponent() : location(Math::Vector3{}) {}
+		MoveComponent(Math::Vector3 vec) : location(vec) {}
+		~MoveComponent() override {};
 
 		Math::Vector3 location;
+	};
+
+	class VelocityComponent : public ECS::Component
+	{
+	public:
+		VelocityComponent() : velocity(Math::Vector3{}) {}
+		VelocityComponent(Math::Vector3 v) : velocity(v) {}
+
+		Math::Vector3 velocity;
 	};
 
 	class RotationComponent : public ECS::Component
@@ -178,13 +187,9 @@ namespace Behemoth
 		float quadratic;
 	};
 
-	template<typename U = void>
 	class InputComponent : public ECS::Component 
 	{
 		InputComponent() {}
-
-		std::vector<uint16_t> keyboardInputBindings;
-		std::vector<uint16_t> mouseInputBindings;
-		std::vector<uint16_t> controllerInputBindings;
+ 
 	};
 }

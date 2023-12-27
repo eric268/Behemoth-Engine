@@ -58,4 +58,17 @@ namespace Behemoth
 		return{};
 	}
 
+	ECS::Entity CameraHelper::GetMainCameraEntity(ECS::Registry& registry)
+	{
+		for (const auto& [entity, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
+		{
+			if (camera->isMain)
+				return entity;
+		}
+		LOG_ERROR("Unable to find main camera");
+		assert(nullptr);
+
+		return registry.CreateNullEntity();
+	}
+
 }

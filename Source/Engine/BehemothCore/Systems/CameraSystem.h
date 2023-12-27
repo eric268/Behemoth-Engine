@@ -9,7 +9,7 @@ namespace Behemoth
 	{
 	public:
 		CameraSystem() = default;
-		void Run(ECS::Registry& registry);
+		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
 		void UpdatePerspectiveMatrix(CameraComponent* component, const Math::Vector3& position);

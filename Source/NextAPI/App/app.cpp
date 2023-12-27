@@ -36,6 +36,7 @@ namespace App
 
 	bool IsKeyPressed(int key)
 	{
+		
 		return ((GetAsyncKeyState(key) & 0x8000) != 0);
 	}
 

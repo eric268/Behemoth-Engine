@@ -4,16 +4,16 @@
 namespace ECS
 {
 	template<typename T>
-	concept HasRunMethod = requires(T t, Registry r)
+	concept HasRunMethod = requires(T t, float dt, Registry r)
 	{
-		{ t.Run(r) } -> std::same_as<void>;
+		{ t.Run(dt, r) } -> std::same_as<void>;
 	};
 
 	class ISystem
 	{
 	public:
 		virtual ~ISystem() = default;
-		virtual void Run(Registry& registry) = 0;
+		virtual void Run(const float deltaTime, Registry& registry) = 0;
 	};
 
 	template<HasRunMethod T>
@@ -22,9 +22,9 @@ namespace ECS
 	public:
 		System() = default;
 
-		void Run(Registry& registry) override
+		void Run(const float deltaTime, Registry& registry) override
 		{
-			instance.Run(registry);
+			instance.Run(deltaTime, registry);
 		}
 
 		T instance;

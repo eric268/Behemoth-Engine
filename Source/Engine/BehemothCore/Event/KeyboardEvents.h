@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Event.h"
-#include "InputMapping.h"
+#include "Input/InputCodes.h"
 
 namespace Behemoth
 {
@@ -14,6 +14,8 @@ namespace Behemoth
 		virtual uint16_t GetEventFlags() = 0;
 		virtual const char* GetEventName() = 0;
 
+		const KeyCode GetKeyCode() const { return keyCode; }
+
 	private:
 		KeyCode keyCode;
 	};
@@ -23,9 +25,9 @@ namespace Behemoth
 	{
 	public:
 		KeyDownEvent(KeyCode keyCode) : KeyboardEvent(keyCode) {}
-
+		static EventType GetStaticEventType() { return EventType::KeyPressed; }
 		virtual EventType GetEventType()   override { return EventType::KeyPressed; }
-		virtual uint16_t GetEventFlags()   override { return EventFlags::InputEvent | EventFlags::KeyboardEvent; }
+		virtual uint16_t GetEventFlags()   override { return EventFlags::Input | EventFlags::Keyboard; }
 		virtual const char* GetEventName() override { return "KeyDownEvent"; }
 	};
 
@@ -34,8 +36,9 @@ namespace Behemoth
 	public:
 		KeyReleasedEvent(KeyCode keyCode) : KeyboardEvent(keyCode) {}
 
+		static EventType GetStaticEventType() { return EventType::KeyReleased; }
 		virtual EventType GetEventType()   override { return EventType::KeyReleased; }
-		virtual uint16_t GetEventFlags()   override { return EventFlags::InputEvent | EventFlags::KeyboardEvent; }
+		virtual uint16_t GetEventFlags()   override { return EventFlags::Input | EventFlags::Keyboard; }
 		virtual const char* GetEventName() override { return "KeyReleasedEvent"; }
 	};
 

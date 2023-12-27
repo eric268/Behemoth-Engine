@@ -6,7 +6,7 @@
 
 namespace Behemoth
 {
-	void RotationSystem::Run(ECS::Registry& registry)
+	void RotationSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		auto components = registry.Get<RotationComponent, TransformComponent, MeshComponent>();
 
