@@ -20,6 +20,12 @@ namespace Behemoth
 			transformComp->transformMatrix._41 = movementComp->location.x;
 			transformComp->transformMatrix._42 = movementComp->location.y;
 			transformComp->transformMatrix._43 = movementComp->location.z;
+
+			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
+			if (cameraComponent && cameraComponent->isMain)
+			{
+				cameraComponent->isDirty = true;
+			}
 		}
 
 		for (int i = movementComponents->dense.size() - 1; i >= 0; i--)

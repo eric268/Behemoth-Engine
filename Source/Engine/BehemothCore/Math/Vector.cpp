@@ -27,14 +27,14 @@ namespace Math
 
 	Vector3 Vector3::Forward()
 	{
-		Vector3 vec;
+		Vector3 vec{};
 		vec.z = -1.0f;
 		return vec;
 	}
 	Vector3 Vector3::Right()
 	{
-		Vector3 vec;
-		vec.x = -1.0f;
+		Vector3 vec{};
+		vec.x = 1.0f;
 		return vec;
 	}
 	Vector3 Vector3::Up()

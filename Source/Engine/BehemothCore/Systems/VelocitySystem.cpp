@@ -12,13 +12,19 @@ namespace Behemoth
 			if (Math::Vector3::Equals(velocityComp->velocity, Math::Vector3::Zero()))
 				continue;
 
-			Math::Vector3 diff = velocityComp->velocity * deltaTime;
+			Math::Vector3 delta = velocityComp->velocity / deltaTime;
 
+			transformComp->position += delta;
+			transformComp->transformMatrix._41 += delta.x;
+			transformComp->transformMatrix._42 += delta.y;
+			transformComp->transformMatrix._43 += delta.z;
 			transformComp->dirty = true;
-			transformComp->position += diff;
-			transformComp->transformMatrix._41 = diff.x;
-			transformComp->transformMatrix._42 = diff.y;
-			transformComp->transformMatrix._43 = diff.z;
+
+			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
+			if (cameraComponent && cameraComponent->isMain)
+			{
+				cameraComponent->isDirty = true;
+			}
 		}
 	}
 }

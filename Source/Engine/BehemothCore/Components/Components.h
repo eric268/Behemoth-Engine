@@ -78,8 +78,11 @@ namespace Behemoth
 	class TransformComponent : public ECS::Component
 	{
 	public:
-		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), dirty(true) {}
+		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), dirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()) {}
 		Math::Matrix4x4 transformMatrix;
+		Math::Vector3 forwardVector;
+		Math::Vector3 rightVector;
+		Math::Vector3 upVector;
 		Math::Vector3 position;
 		Math::Vector3 scale;
 		bool dirty;
@@ -99,7 +102,7 @@ namespace Behemoth
 	{
 	public:
 		VelocityComponent() : velocity(Math::Vector3{}) {}
-		VelocityComponent(Math::Vector3 v) : velocity(v) {}
+		VelocityComponent(Math::Vector3 vel) : velocity(vel) {}
 
 		Math::Vector3 velocity;
 	};

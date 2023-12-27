@@ -53,35 +53,42 @@ void MainScene::OnEvent(Behemoth::Event& e)
 	Behemoth::EventDispatcher dispatcher{e};
 
 	//  Maybe move this to world because in essentially any scene I would want this
-	 dispatcher.Dispatch<Behemoth::KeyDownEvent>([&](Behemoth::KeyDownEvent keyEvent)
-	 	{
-			 ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
+	dispatcher.Dispatch<Behemoth::KeyDownEvent>([&](Behemoth::KeyDownEvent keyEvent)
+		{
+			ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
 
-			 if (cameraEntity.GetIdentifier() != NULL_ENTITY)
-			 {
-				 Behemoth::VelocityComponent* velocityComponent = registry.GetComponent<Behemoth::VelocityComponent>(cameraEntity);
-				 if (velocityComponent)
-				 {
-					 switch (keyEvent.GetKeyCode())
-					 {
-					
-					 case Behemoth::KeyCode::B_W:
-						 std::cout << "W\n";
-						 velocityComponent->velocity = Math::Vector3::Forward();
-						 break;
-						 std::cout << "A\n";
-					 case Behemoth::KeyCode::B_A:
-						 velocityComponent->velocity = -Math::Vector3::Right();
-						 break;
-						 std::cout << "S\n";
-					 case Behemoth::KeyCode::B_S:
-						 velocityComponent->velocity = -Math::Vector3::Forward();
-						 break;
-						 std::cout << "D\n";
-					 case Behemoth::KeyCode::B_D:
-						 velocityComponent->velocity = Math::Vector3::Right();
-						 break;
-					 }
+			if (cameraEntity.GetIdentifier() != NULL_ENTITY)
+			{
+				Behemoth::VelocityComponent* velocityComponent = registry.GetComponent<Behemoth::VelocityComponent>(cameraEntity);
+
+				auto [vel, transformComponent] = registry.GetMultipleComponents<Behemoth::VelocityComponent, Behemoth::TransformComponent>(cameraEntity);
+
+				if (velocityComponent && transformComponent)
+				{
+					float movementSpeed = 1.0f;
+					velocityComponent->velocity = Math::Vector3::Zero();
+					Behemoth::KeyCode keyCode = keyEvent.GetKeyCode();
+
+					if (keyCode == Behemoth::KeyCode::B_W)
+					{
+						 velocityComponent->velocity += transformComponent->forwardVector;
+					}
+					if (keyCode == Behemoth::KeyCode::B_A)
+					{
+						velocityComponent->velocity -=  transformComponent->rightVector;
+					}
+					if (keyCode == Behemoth::KeyCode::B_S)
+					{
+						velocityComponent->velocity -= transformComponent->forwardVector;
+					}
+					if (keyCode == Behemoth::KeyCode::B_D)
+					{
+						velocityComponent->velocity += transformComponent->rightVector;
+					}
+						
+					velocityComponent->velocity.Normalize();
+					velocityComponent->velocity *= movementSpeed;
+					 
 				 }
 			 }
 	 	});

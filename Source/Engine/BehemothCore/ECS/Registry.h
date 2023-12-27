@@ -94,9 +94,14 @@ namespace ECS
 		template<IsComponent T>
 		T* GetComponent(Entity entity)
 		{
-			size_t index = Generator::Value<T>();
 			auto set = GetComponent<T>();
 			return set->GetComponent(entity);
+		}
+
+		template<IsComponent ...T>
+		std::tuple<T*...> GetMultipleComponents(Entity entity)
+		{
+			return std::make_tuple((GetComponent<T>(entity)) ...);
 		}
 
 		template<IsComponent... T>

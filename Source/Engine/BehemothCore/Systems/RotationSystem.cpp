@@ -30,6 +30,9 @@ namespace Behemoth
 				}
 			}
 
+			transformComp->forwardVector =	GetForwardVector(transformComp->transformMatrix);
+			transformComp->rightVector =	GetRightVector(transformComp->transformMatrix);
+
 			for (int i = 0; i < meshComp->mesh.meshPrimitives.size(); i++)
 			{
 				for (int j = 0; j < 3; j++)
@@ -38,5 +41,14 @@ namespace Behemoth
 				}
 			}
 		}
+	}
+
+	Math::Vector3 RotationSystem::GetForwardVector(const Math::Matrix4x4& transformMatrix)
+	{
+		return Math::Vector3(transformMatrix.data[0][2], transformMatrix.data[1][2], transformMatrix.data[2][2]);
+	}
+	Math::Vector3 RotationSystem::GetRightVector(const Math::Matrix4x4& transformMatrix)
+	{
+		return Math::Vector3(transformMatrix.data[0][0], transformMatrix.data[1][0], transformMatrix.data[2][0]);
 	}
 }

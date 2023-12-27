@@ -1,10 +1,12 @@
 #pragma once
 
 #include "ECS/System.h"
-#include "Components/Components.h"
 
 namespace Behemoth
 {
+	class CameraComponent;
+	class TransformComponent;
+
 	class CameraSystem
 	{
 	public:
@@ -12,7 +14,7 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void UpdatePerspectiveMatrix(CameraComponent* component, const Math::Vector3& position);
+		void UpdatePerspectiveMatrix(CameraComponent* component, const TransformComponent* transformComponent);
 		void UpdateFrustrum(CameraComponent* cameraComponent);
 	};
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CameraSystem.h"
+#include "Components/Components.h"
 #include "Misc/CameraHelper.h"
 #include "NextAPI/App/main.h"
 #include "ECS/Entity.h"
@@ -14,16 +15,15 @@ namespace Behemoth
 		{
 			if (cameraComp->isDirty)
 			{
-				UpdatePerspectiveMatrix(cameraComp, transformComp->position);
+				UpdatePerspectiveMatrix(cameraComp, transformComp);
 				UpdateFrustrum(cameraComp);
 				cameraComp->isDirty = false;
 			}
 		}
 	}
 
-	void CameraSystem::UpdatePerspectiveMatrix(CameraComponent* cameraComponent, const Math::Vector3& position)
+	void CameraSystem::UpdatePerspectiveMatrix(CameraComponent* cameraComponent, const TransformComponent* transformComponent)
 	{
-
 		RECT rect;
 		GetClientRect(MAIN_WINDOW_HANDLE, &rect);
 		cameraComponent->windowWidth = rect.right - rect.left;
@@ -41,7 +41,9 @@ namespace Behemoth
 		cameraComponent->perspectiveMatrix._43 = (-2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
 		cameraComponent->perspectiveMatrix._34 = -1.0f;
 
-		cameraComponent->viewMatrix = CameraHelper::LookAt(position, Math::Vector3(0.0f, 0.0f, -5.0f), Math::Vector3(0, 1, 0));
+		Math::Vector3 target = transformComponent->position + transformComponent->forwardVector;
+
+		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->position, target, Math::Vector3::Up());
 		cameraComponent->inverseTransposeViewMatrix = Math::Matrix4x4::Inverse(cameraComponent->viewMatrix);
 	}
 
