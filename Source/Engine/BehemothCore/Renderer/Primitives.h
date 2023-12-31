@@ -3,7 +3,7 @@
 #include "Math/MathCore.h"
 #include "NextAPI/App/SimpleSprite.h"
 #include "NextAPI/App/app.h"
-// stl
+
 #include <vector>
 #include <string>
 

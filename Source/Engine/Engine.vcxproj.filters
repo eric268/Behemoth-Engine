@@ -99,16 +99,16 @@
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Render\Mesh.h">
+    <ClInclude Include="BehemothCore\Renderer\Mesh.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Render\MeshLoader.h">
+    <ClInclude Include="BehemothCore\Renderer\MeshLoader.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Render\Primitives.h">
+    <ClInclude Include="BehemothCore\Renderer\Primitives.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Render\Renderer.h">
+    <ClInclude Include="BehemothCore\Renderer\Renderer.h">
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h">
@@ -123,7 +123,7 @@
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\RenderSystem.h">
+    <ClInclude Include="BehemothCore\Systems\Render\MeshRenderSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\RotationSystem.h">
@@ -170,6 +170,9 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\VelocitySystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Render\WireframeRenderSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -180,9 +183,6 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Application\ThreadPool.cpp">
       <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Components\Components.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp">
       <Filter>Factories</Filter>
@@ -205,16 +205,16 @@
     <ClCompile Include="BehemothCore\Misc\Log.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Render\Mesh.cpp">
+    <ClCompile Include="BehemothCore\Renderer\Mesh.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Render\MeshLoader.cpp">
+    <ClCompile Include="BehemothCore\Renderer\MeshLoader.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Render\Primitives.cpp">
+    <ClCompile Include="BehemothCore\Renderer\Primitives.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Render\Renderer.cpp">
+    <ClCompile Include="BehemothCore\Renderer\Renderer.cpp">
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp">
@@ -229,7 +229,7 @@
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\RenderSystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Render\MeshRenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\RotationSystem.cpp">
@@ -246,5 +246,9 @@
       <Filter>Events</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\VelocitySystem.cpp" />
+    <ClCompile Include="BehemothCore\Input\Input.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Render\RenderSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Math/MathCore.h"
-#include "Render/Primitives.h"
+#include "Renderer/Primitives.h"
 
 //stl
 #include <string>

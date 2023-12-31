@@ -6,6 +6,11 @@
 #include "Event/Event.h"
 #include "Event/KeyboardEvents.h"
 #include "Misc/CameraHelper.h"
+#include "Systems/SystemManager.h"
+
+#include "GameSystems/CameraControllerSystem.h"
+#include "GameComponents/CameraControllerComponent.h"
+
 #include <iostream>
 
 MainScene::MainScene() : pointLight(registry.CreateNullEntity())
@@ -15,12 +20,14 @@ MainScene::MainScene() : pointLight(registry.CreateNullEntity())
 
 void MainScene::Init()
 {
+	InitSystems();
+	
 	Behemoth::CameraFactory cameraFactory{};
-	cameraFactory.CreateCamera(registry, true, "Main Camera");
+	ECS::Entity mainCameraEntity = cameraFactory.CreateCamera(registry, true, "Main Camera");
+	//registry.AddComponent<CameraControllerComponent>(mainCameraEntity);
 
 	Behemoth::DirectionalLightFactory dirLightFactory{};
 	dirLightFactory.CreateDirectionalLight(registry);
-
 
 	for (int i = -1; i < 2; i++)
 	{
@@ -32,6 +39,7 @@ void MainScene::Init()
 		registry.AddComponent<Behemoth::MoveComponent>(e1, Math::Vector3(-3.0f * i, 0.0f, -5.0f));
 		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 
+		registry.AddComponent<Behemoth::WireframeComponent>(e1, "cube.obj", true);
 		registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.5f, false);
 	}
 
@@ -135,4 +143,9 @@ void MainScene::Update(const float deltaTime)
 void MainScene::Shutdown()
 {
 
+}
+
+void MainScene::InitSystems()
+{
+	Behemoth::SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
 }

@@ -144,10 +144,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponents\CameraControllerComponent.h" />
+    <ClInclude Include="GameSystems\CameraControllerSystem.h" />
     <ClInclude Include="Scenes\MainScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp" />
+    <ClCompile Include="GameSystems\CameraControllerSystem.cpp" />
     <ClCompile Include="Scenes\MainScene.cpp" />
   </ItemGroup>
   <ItemGroup>

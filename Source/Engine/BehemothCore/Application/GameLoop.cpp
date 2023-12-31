@@ -1,10 +1,10 @@
 #include "pch.h"
 
 #include "ECS/ECSCore.h"
-#include "Render/Primitives.h"
+#include "Renderer/Primitives.h"
 #include "Misc/Log.h"
 #include "ResourceManager.h"
-#include "Render/Renderer.h"
+#include "Renderer/Renderer.h"
 #include "World/World.h"
 #include "World/Scene.h"
 #include "Event/EventManager.h"
@@ -14,7 +14,9 @@
 #include "Misc/CameraHelper.h"
 #include "Misc/Stopwatch.h"
 #include "Systems/ScalingSystem.h"
-#include "Systems/RenderSystem.h"
+#include "Systems/Render/MeshRenderSystem.h"
+#include "Systems/Render/WireframeRenderSystem.h"
+#include "Systems/Render/BoundingVolumeRenderSystem.h"
 #include "Systems/CameraSystem.h"
 #include "Systems/RotationSystem.h"
 #include "Systems/MovementSystem.h"
@@ -43,8 +45,8 @@ void Init()
 {
 	CreateApplication();
 
-	 Behemoth::EventManager::GetInstance().OnEventDelegate = OnEvent;
-	 Behemoth::EventManager::GetInstance().BindEventCallbacks();
+	Behemoth::EventManager::GetInstance().OnEventDelegate = OnEvent;
+	Behemoth::EventManager::GetInstance().BindEventCallbacks();
 
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
@@ -55,7 +57,9 @@ void Init()
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RenderSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshRenderSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::WireframeRenderSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BoundingVolumeRenderSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
 }
 

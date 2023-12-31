@@ -16,6 +16,6 @@ public:
 	ECS::Entity pointLight;
 
 private:
-            
+	void InitSystems();
 };
             

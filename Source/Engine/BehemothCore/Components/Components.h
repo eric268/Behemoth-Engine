@@ -1,28 +1,47 @@
 #include "ECS/Component.h"
+#include "Input/InputCodes.h"
+
+#include <functional>
+#include <unordered_map>
 
 namespace Behemoth
 {
 	class MeshComponent : public ECS::Component
 	{
 	public:
-		MeshComponent(const std::string& modelName, const std::string& textureName, const Math::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true, bool drawWireMesh = false) :
+		MeshComponent(const std::string& modelName, const std::string& textureName, const Math::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
 		modelFileName(modelName), 
 			textureFileName(textureName), 
 			mesh(modelName, textureName, uvScale),
-			isVisible(visible),
-			drawWireMesh(drawWireMesh)
+			isVisible(visible)
 			{}
 
 		~MeshComponent() override {};
 
 		bool isVisible;
-		bool drawWireMesh;
 
 		Behemoth::Mesh mesh;
 		std::string modelFileName;
 		std::string textureFileName;
 	};
 
+	struct WireframeComponent : public ECS::Component
+	{
+		WireframeComponent(const std::string& modelName, bool visible = false) : modelFileName(modelName), isVisible(visible), mesh(modelName) {}
+		Behemoth::Mesh mesh;
+		std::string modelFileName;
+		bool isVisible;
+	};
+
+	class BoundingVolumeComponent : public ECS::Component
+	{
+	public:
+		BoundingVolumeComponent() : mesh("sphere.obj"), volumeRadius(1.0f), isVisible(false) {}
+		BoundingVolumeComponent(float radius, bool visible) : mesh("sphere.obj"), volumeRadius(radius), isVisible(visible) {}
+		float volumeRadius;
+		bool isVisible;
+		Behemoth::Mesh mesh;
+	};
 
 	class MeshInitalizeComponent : public ECS::Component
 	{
@@ -136,17 +155,6 @@ namespace Behemoth
 		Math::Vector3 scalingVector;
 	};
 
-
-	class BoundingVolumeComponent : public ECS::Component 
-	{
-	public:
-		BoundingVolumeComponent() : mesh("sphere.obj"), volumeRadius(1.0f), drawBoundingVolume(false) {}
-		BoundingVolumeComponent(float radius, bool draw) : mesh("sphere.obj"), volumeRadius(radius), drawBoundingVolume(draw) {}
-		float volumeRadius;
-		bool drawBoundingVolume;
-		Behemoth::Mesh mesh;
-	};
-
 	class DirectionalLightComponent : public ECS::Component 
 	{
 	public:
@@ -191,9 +199,12 @@ namespace Behemoth
 		float quadratic;
 	};
 
+	template <typename ...T>
 	class InputComponent : public ECS::Component 
 	{
-		InputComponent() {}
- 
+	public:
+		InputComponent() = default;
+
+		std::unordered_map<KeyCode, std::function<void(T...)>> actionMap;
 	};
 }

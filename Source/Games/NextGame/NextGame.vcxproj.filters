@@ -7,10 +7,22 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{86EEB3D0-7290-DEA6-5B4B-F2FA478C65F7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameComponents">
+      <UniqueIdentifier>{74465c83-6edd-4fca-851c-262ddcea57c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSystems">
+      <UniqueIdentifier>{99f1dbf1-8100-4202-8fde-9d0f97e0ec0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes\MainScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\CameraControllerComponent.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\CameraControllerSystem.h">
+      <Filter>GameSystems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -19,6 +31,9 @@
     </ClCompile>
     <ClCompile Include="Scenes\MainScene.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystems\CameraControllerSystem.cpp">
+      <Filter>GameSystems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

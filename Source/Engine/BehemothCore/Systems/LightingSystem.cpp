@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "LightingSystem.h"
-#include "Render/Renderer.h"
+#include "Renderer/Renderer.h"
 
 #include "Components/Components.h"
 #include "Misc/CameraHelper.h"

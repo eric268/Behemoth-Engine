@@ -2,7 +2,7 @@
 #include "MeshInitSystem.h"
 #include "Components/Components.h"
 #include "ECS/Entity.h"
-#include "Render/Mesh.h"
+#include "Renderer/Mesh.h"
 #include "Application/ResourceManager.h"
 #include "Misc/Log.h"
 
@@ -29,6 +29,12 @@ namespace Behemoth
 			if (boundingVolume)
 			{
 				InitMesh(boundingVolume->mesh);
+			}
+
+			Behemoth::WireframeComponent* wireframeMesh = registry.GetComponent<WireframeComponent>(entity);
+			if (wireframeMesh)
+			{
+				InitMesh(wireframeMesh->mesh);
 			}
 #endif
 
