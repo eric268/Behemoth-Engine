@@ -4,6 +4,8 @@
 
 namespace Behemoth
 {
+	using namespace Events;
+	
 	class MouseEvent : public Event
 	{
 	public:
@@ -12,7 +14,7 @@ namespace Behemoth
 		virtual EventType GetEventType() = 0;
 		virtual uint16_t GetEventFlags() = 0;
 		virtual const char* GetEventName() = 0;
-		std::pair<float, float> GetMousePos() { return { xPos, yPos }; }
+		const std::pair<float, float> GetMousePos() const { return { xPos, yPos }; }
 
 	protected:
 		float xPos;
@@ -32,7 +34,7 @@ namespace Behemoth
 
 	};
 
-	class MouseDragEvent : public MouseEvent 
+	class MouseDragEvent : public MouseEvent
 	{
 	public:
 		MouseDragEvent(int x, int y) : MouseEvent(x, y) {}
@@ -53,7 +55,7 @@ namespace Behemoth
 		virtual uint16_t GetEventFlags() override { return EventFlags::Input | EventFlags::Mouse | EventFlags::MouseClick; }
 		virtual const char* GetEventName() { return "Mouse Down Event"; }
 
-		MouseCode GetMouseCode() { return code; }
+		const MouseCode GetMouseCode() const { return code; }
 	private:
 		MouseCode code;
 	};
@@ -68,10 +70,9 @@ namespace Behemoth
 		virtual uint16_t GetEventFlags() override { return EventFlags::Input | EventFlags::Mouse | EventFlags::MouseClick; }
 		virtual const char* GetEventName() { return "Mouse Up Event"; }
 
-		MouseCode GetMouseCode() { return code; }
+		const MouseCode GetMouseCode() const { return code; }
 	private:
 		MouseCode code;
 	};
-
 
 }

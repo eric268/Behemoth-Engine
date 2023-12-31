@@ -11,6 +11,8 @@
 #include "GameSystems/CameraControllerSystem.h"
 #include "GameComponents/CameraControllerComponent.h"
 
+#include "Input/Input.h"
+
 #include <iostream>
 
 MainScene::MainScene() : pointLight(registry.CreateNullEntity())
@@ -24,7 +26,7 @@ void MainScene::Init()
 	
 	Behemoth::CameraFactory cameraFactory{};
 	ECS::Entity mainCameraEntity = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	//registry.AddComponent<CameraControllerComponent>(mainCameraEntity);
+	registry.AddComponent<CameraControllerComponent>(mainCameraEntity, 1.0f, 1.0f);
 
 	Behemoth::DirectionalLightFactory dirLightFactory{};
 	dirLightFactory.CreateDirectionalLight(registry);
@@ -40,7 +42,7 @@ void MainScene::Init()
 		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 
 		registry.AddComponent<Behemoth::WireframeComponent>(e1, "cube.obj", true, Math::Vector3(0.0f, 1.0f, 0.0f));
-		registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.5f, false);
+		registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.5f, true);
 	}
 
 	Behemoth::PointLightFactory pointLightFactory{};
@@ -61,64 +63,6 @@ void MainScene::OnEvent(Behemoth::Event& e)
 	Behemoth::EventDispatcher dispatcher{e};
 
 	//  Maybe move this to world because in essentially any scene I would want this
-	dispatcher.Dispatch<Behemoth::KeyDownEvent>([&](Behemoth::KeyDownEvent keyEvent)
-		{
-			ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
-
-			if (cameraEntity.GetIdentifier() != NULL_ENTITY)
-			{
-				Behemoth::VelocityComponent* velocityComponent = registry.GetComponent<Behemoth::VelocityComponent>(cameraEntity);
-
-				auto [vel, transformComponent] = registry.GetMultipleComponents<Behemoth::VelocityComponent, Behemoth::TransformComponent>(cameraEntity);
-				Behemoth::KeyCode keyCode = keyEvent.GetKeyCode();
-
-				if (velocityComponent && transformComponent)
-				{
-					float movementSpeed = 1.0f;
-					velocityComponent->velocity = Math::Vector3::Zero();
-
-					if (keyCode == Behemoth::KeyCode::B_W)
-					{
-						 velocityComponent->velocity += transformComponent->forwardVector;
-					}
-					if (keyCode == Behemoth::KeyCode::B_A)
-					{
-						velocityComponent->velocity  -= transformComponent->rightVector;
-					}
-					if (keyCode == Behemoth::KeyCode::B_S)
-					{
-						velocityComponent->velocity  -= transformComponent->forwardVector;
-					}
-					if (keyCode == Behemoth::KeyCode::B_D)
-					{
-						velocityComponent->velocity  += transformComponent->rightVector;
-					}
-						
-					velocityComponent->velocity.Normalize();
-					velocityComponent->velocity *= movementSpeed;
-				}
-
-				if (keyCode == Behemoth::KeyCode::B_E)
-				{
-					Behemoth::RotationComponent* rotationComponent = registry.GetComponent<Behemoth::RotationComponent>(cameraEntity);
-					if (rotationComponent)
-					{
-						rotationComponent->axis = Behemoth::RotationComponent::Y_AXIS;
-						rotationComponent->speed = 0.5f;
-					}
-				}
-
-				if (keyCode == Behemoth::KeyCode::B_Q)
-				{
-					Behemoth::RotationComponent* rotationComponent = registry.GetComponent<Behemoth::RotationComponent>(cameraEntity);
-					if (rotationComponent)
-					{
-						rotationComponent->axis = Behemoth::RotationComponent::Y_AXIS;
-						rotationComponent->speed = -0.5f;
-					}
-				}
-			 }
-	 	});
 
 	 dispatcher.Dispatch<Behemoth::KeyReleasedEvent>([&](Behemoth::KeyReleasedEvent keyEvent)
 		 {
@@ -137,7 +81,18 @@ void MainScene::OnEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
-
+	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::Space))
+	{
+		std::cout << "Space Down\n";
+	}
+	if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::Space))
+	{
+		std::cout << "Space Held\n";
+	}
+	if (Behemoth::Input::IsKeyReleased(Behemoth::KeyCode::Space))
+	{
+		std::cout << "Space Released\n";
+	}
 }
 
 void MainScene::Shutdown()
@@ -147,5 +102,5 @@ void MainScene::Shutdown()
 
 void MainScene::InitSystems()
 {
-	Behemoth::SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
+	// Behemoth::SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
 }

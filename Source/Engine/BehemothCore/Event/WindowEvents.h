@@ -3,6 +3,8 @@
 
 namespace Behemoth
 {
+	using namespace Events;
+	
 	class WindowResizeEvent : public Event
 	{
 	public:

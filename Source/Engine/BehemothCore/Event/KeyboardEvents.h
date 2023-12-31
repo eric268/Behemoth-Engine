@@ -5,6 +5,8 @@
 
 namespace Behemoth
 {
+	using namespace Events;
+
 	class KeyboardEvent : public Event
 	{
 	public:
