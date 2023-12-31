@@ -27,7 +27,8 @@ namespace Behemoth
 
 	struct WireframeComponent : public ECS::Component
 	{
-		WireframeComponent(const std::string& modelName, bool visible = false) : modelFileName(modelName), isVisible(visible), mesh(modelName) {}
+		WireframeComponent(const std::string& modelName, bool visible = false, Math::Vector3 color = Math::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), isVisible(visible), mesh(modelName), wireframeColor(color) {}
+		Math::Vector3 wireframeColor;
 		Behemoth::Mesh mesh;
 		std::string modelFileName;
 		bool isVisible;

@@ -179,6 +179,7 @@
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h" />
     <ClInclude Include="BehemothCore\Misc\Log.h" />
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h" />
+    <ClInclude Include="BehemothCore\Renderer\Line.h" />
     <ClInclude Include="BehemothCore\Renderer\Mesh.h" />
     <ClInclude Include="BehemothCore\Renderer\MeshLoader.h" />
     <ClInclude Include="BehemothCore\Renderer\Primitives.h" />

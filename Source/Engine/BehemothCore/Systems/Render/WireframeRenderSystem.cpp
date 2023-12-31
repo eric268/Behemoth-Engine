@@ -5,6 +5,7 @@
 #include "Renderer/Renderer.h"
 #include "Application/ResourceManager.h"
 #include "Renderer/Mesh.h"
+#include "Renderer/Line.h"
 
 namespace Behemoth
 {
@@ -36,11 +37,11 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessWireframe(wireframeComp->mesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, true);
+			ProcessWireframe(wireframeComp->mesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, true, wireframeComp->wireframeColor);
 		}
 	}
 
-	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, bool isDirty)
+	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, bool isDirty, Math::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -80,16 +81,17 @@ namespace Behemoth
 				continue;
 			}
 			
-			AddWireMeshToRenderer(numVerticies, renderVerts);
+			AddWireMeshToRenderer(numVerticies, renderVerts, color);
 		}
 	}
 
-	void WireframeRenderSystem::AddWireMeshToRenderer(const int numVerticies, const Math::Vector4 verticies[])
+	void WireframeRenderSystem::AddWireMeshToRenderer(const int numVerticies, const Math::Vector4 verticies[], Math::Vector3 color)
 	{
 		for (int i = 0, j = i + 1; i < numVerticies; i++, j++)
 		{
 			j = (j >= numVerticies) ? 0 : j;
-			Renderer::GetInstance().AddLine(Math::Vector4(verticies[i].x, verticies[i].y, verticies[j].x, verticies[j].y));
+			Line line = Line(Math::Vector4(verticies[i].x, verticies[i].y, verticies[j].x, verticies[j].y), color);
+			Renderer::GetInstance().AddLine(std::move(line));
 		}
 	}
 

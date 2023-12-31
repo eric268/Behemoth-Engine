@@ -43,7 +43,7 @@ namespace Behemoth
 	}
 
 
-	void Renderer::AddLine(const Math::Vector4& line)
+	void Renderer::AddLine(const Line& line)
 	{
 		linesToDraw[lineIndex++] = line;
 	}
@@ -58,9 +58,9 @@ namespace Behemoth
 			p->Draw();
 		}
 
-		for (const auto& l : linesToDraw)
+		for (const auto& line : linesToDraw)
 		{
-			App::DrawLine(l.x, l.y, l.z, l.w);
+			App::DrawLine(line.lineData.x, line.lineData.y, line.lineData.z, line.lineData.w, line.lineColor.x, line.lineColor.y, line.lineColor.z);
 		}
 
 		ClearResources();

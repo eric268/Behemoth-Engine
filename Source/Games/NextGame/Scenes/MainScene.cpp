@@ -39,7 +39,7 @@ void MainScene::Init()
 		registry.AddComponent<Behemoth::MoveComponent>(e1, Math::Vector3(-3.0f * i, 0.0f, -5.0f));
 		registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
 
-		registry.AddComponent<Behemoth::WireframeComponent>(e1, "cube.obj", true);
+		registry.AddComponent<Behemoth::WireframeComponent>(e1, "cube.obj", true, Math::Vector3(0.0f, 1.0f, 0.0f));
 		registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.5f, false);
 	}
 

@@ -173,6 +173,7 @@
     <ClInclude Include="BehemothCore\Systems\Render\WireframeRenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
+    <ClInclude Include="BehemothCore\Renderer\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
