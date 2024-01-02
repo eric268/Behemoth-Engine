@@ -94,6 +94,15 @@ void MainScene::Init()
             ]]
                 createFile(projectDir .. "\\Application\\game.cpp", gameSource)
     
+    local pchHeader = [[
+#pragma once
+    ]]
+    createFile(projectDir .. "\\pch.h", pchHeader)
+
+    local pchSource = [[
+#include "pch.h"
+    ]]
+    createFile(projectDir .. "\\pch.cpp", pchSource)
     
     CreatePremakeConfig(projectName)
 end
@@ -108,6 +117,9 @@ project "]] .. projectName .. [["
         cppdialect "C++20"
         staticruntime "off"
         floatingpoint "fast"
+
+        pchheader "pch.h"
+        pchsource "%{wks.location}/Source/Games/]] .. projectName .. [[/pch.cpp"
         
         targetdir ("]] .. outputdir .. projectName .. [[")
         objdir    ("]] .. objectdir .. projectName .. [[")

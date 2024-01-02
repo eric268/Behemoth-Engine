@@ -4,6 +4,9 @@ project "NextGame"
         cppdialect "C++20"
         staticruntime "off"
         floatingpoint "fast"
+
+        pchheader "pch.h"
+        pchsource "%{wks.location}/Source/Games/NextGame/pch.cpp"
         
         targetdir ("%{wks.location}/Build/bin/%{cfg.buildcfg}/%{cfg.system}/NextGame")
         objdir    ("%{wks.location}/Build/obj/%{cfg.buildcfg}/%{cfg.system}/NextGame")

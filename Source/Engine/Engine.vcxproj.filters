@@ -10,8 +10,14 @@
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{E70B220D-5320-4ABE-1CA2-ED1D887546EF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Factories">
       <UniqueIdentifier>{05F1892C-715B-3EA3-BA99-EF4826431CF8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{AFF4887C-9B2B-8A0D-4418-7010302E060F}</UniqueIdentifier>
@@ -19,23 +25,20 @@
     <Filter Include="Misc">
       <UniqueIdentifier>{9116897C-7D4D-8A0D-263A-70101250060F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Render">
-      <UniqueIdentifier>{C5BB87CE-B15D-B2A4-9A18-C6F8865939F5}</UniqueIdentifier>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{888B590D-F46A-D8A8-FD82-637F69E13E0A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{7CCE658F-689B-C09A-91B4-AE427DE0F528}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems">
       <UniqueIdentifier>{1DDE831B-89BD-02B7-92D5-8D8DFE336918}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Render">
+      <UniqueIdentifier>{EC19CD6C-D8E7-C072-C17B-3199ADE89CD7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{4D25640E-B939-8CBF-82BB-2F1FEE8E88F0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{c977df07-7e49-491f-80a8-8b1800e87ffb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events">
-      <UniqueIdentifier>{a56f50f1-f196-497f-9036-68fa4e1b9d5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{2f005806-c501-4058-9c4e-cc9b4191d3ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +48,7 @@
     <ClInclude Include="BehemothCore\Application\ThreadPool.h">
       <Filter>Application</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\BehemothCore.h" />
     <ClInclude Include="BehemothCore\Components\Components.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -72,11 +76,41 @@
     <ClInclude Include="BehemothCore\ECS\System.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Event\ControllerEvents.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Event\Event.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Event\EventManager.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Event\KeyboardEvents.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Event\MouseEvents.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Event\WindowEvents.h">
+      <Filter>Event</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Factories\CameraFactory.h">
+      <Filter>Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Factories\GameObjectFactory.h">
       <Filter>Factories</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Factories\LightFactories.h">
       <Filter>Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Input\InputCodes.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Input\InputMapping.h">
+      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Math\MathCore.h">
       <Filter>Math</Filter>
@@ -99,17 +133,23 @@
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Physics\CollisionMask.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Renderer\Line.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Renderer\Mesh.h">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Renderer\MeshLoader.h">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Renderer\Primitives.h">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Renderer\Renderer.h">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h">
       <Filter>Systems</Filter>
@@ -123,8 +163,17 @@
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h">
+      <Filter>Systems\Render</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Render\MeshRenderSystem.h">
-      <Filter>Systems</Filter>
+      <Filter>Systems\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h">
+      <Filter>Systems\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Render\WireframeRenderSystem.h">
+      <Filter>Systems\Render</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\RotationSystem.h">
       <Filter>Systems</Filter>
@@ -135,6 +184,9 @@
     <ClInclude Include="BehemothCore\Systems\SystemManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\VelocitySystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\World\Scene.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -142,41 +194,6 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
-    <ClInclude Include="BehemothCore\Event\EventManager.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Event\Event.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Event\WindowEvents.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Event\MouseEvents.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Event\ControllerEvents.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Event\KeyboardEvents.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Input\Input.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Input\InputCodes.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Input\InputMapping.h">
-      <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\VelocitySystem.h" />
-    <ClInclude Include="BehemothCore\Systems\Render\WireframeRenderSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
-    <ClInclude Include="BehemothCore\Renderer\Line.h" />
-    <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
-    <ClInclude Include="BehemothCore\Factories\GameObjectFactory.h" />
-    <ClInclude Include="BehemothCore\BehemothCore.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -188,11 +205,20 @@
     <ClCompile Include="BehemothCore\Application\ThreadPool.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Event\EventManager.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp">
+      <Filter>Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Factories\GameObjectFactory.cpp">
       <Filter>Factories</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Factories\LightFactories.cpp">
       <Filter>Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Input\Input.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Math\Matrix.cpp">
       <Filter>Math</Filter>
@@ -210,16 +236,16 @@
       <Filter>Misc</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Renderer\Mesh.cpp">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Renderer\MeshLoader.cpp">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Renderer\Primitives.cpp">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Renderer\Renderer.cpp">
-      <Filter>Render</Filter>
+      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp">
       <Filter>Systems</Filter>
@@ -233,8 +259,17 @@
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp">
+      <Filter>Systems\Render</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Render\MeshRenderSystem.cpp">
-      <Filter>Systems</Filter>
+      <Filter>Systems\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Render\RenderSystem.cpp">
+      <Filter>Systems\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp">
+      <Filter>Systems\Render</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\RotationSystem.cpp">
       <Filter>Systems</Filter>
@@ -242,18 +277,12 @@
     <ClCompile Include="BehemothCore\Systems\ScalingSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\VelocitySystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\World\World.cpp">
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
-    <ClCompile Include="BehemothCore\Event\EventManager.cpp">
-      <Filter>Events</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\VelocitySystem.cpp" />
-    <ClCompile Include="BehemothCore\Input\Input.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Render\RenderSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp" />
-    <ClCompile Include="BehemothCore\Factories\GameObjectFactory.cpp" />
   </ItemGroup>
 </Project>

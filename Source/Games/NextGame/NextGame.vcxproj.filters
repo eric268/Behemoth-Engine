@@ -4,36 +4,38 @@
     <Filter Include="Application">
       <UniqueIdentifier>{D9DE78AF-4594-F1A4-CE88-EB7B3A3DE8A8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameComponents">
+      <UniqueIdentifier>{657292E4-5140-86EA-3AD4-F6102641624F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSystems">
+      <UniqueIdentifier>{5765DA56-C31A-534C-4C0F-4D23B8C34950}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{86EEB3D0-7290-DEA6-5B4B-F2FA478C65F7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameComponents">
-      <UniqueIdentifier>{74465c83-6edd-4fca-851c-262ddcea57c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameSystems">
-      <UniqueIdentifier>{99f1dbf1-8100-4202-8fde-9d0f97e0ec0b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scenes\MainScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="GameComponents\CameraControllerComponent.h">
       <Filter>GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="GameSystems\CameraControllerSystem.h">
       <Filter>GameSystems</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\MainScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\MainScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="GameSystems\CameraControllerSystem.cpp">
       <Filter>GameSystems</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\MainScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
 </Project>
