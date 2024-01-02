@@ -12,6 +12,7 @@
 #include "GameComponents/CameraControllerComponent.h"
 
 #include "Input/Input.h"
+#include "NextAPI/App/SimpleController.h"
 
 #include <iostream>
 
@@ -81,18 +82,7 @@ void MainScene::OnEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
-	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::Space))
-	{
-		std::cout << "Space Down\n";
-	}
-	if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::Space))
-	{
-		std::cout << "Space Held\n";
-	}
-	if (Behemoth::Input::IsKeyReleased(Behemoth::KeyCode::Space))
-	{
-		std::cout << "Space Released\n";
-	}
+	
 }
 
 void MainScene::Shutdown()

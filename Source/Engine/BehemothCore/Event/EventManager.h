@@ -19,13 +19,6 @@ namespace Behemoth
 
 		void BindEventCallbacks();
 
-		// TODO:
-		// container for keyboard input tracking
-		// container for mouse input tracking
-		// container for controller 
-		// Need to track previous frame input states as well as current frames input states
-
-		// Some way to track multiple controller inputs
 		template<typename T>
 		using EventFunc = std::function<void(T&)>;
 

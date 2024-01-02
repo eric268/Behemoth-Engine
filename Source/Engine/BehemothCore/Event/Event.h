@@ -10,7 +10,7 @@ namespace Behemoth
 		{
 			None = 0,
 			WindowResize, WindowClose, WindowMove,
-			KeyPressed, KeyReleased, KeyHeld, // possibly add special key event types?
+			KeyPressed, KeyReleased, KeyHeld,
 			MouseDown, MouseUp, MouseMove, MouseScrollWheel, MouseDrag,
 			ControllerPressed, ControllerMove, ControllerTriggerPressed
 		};

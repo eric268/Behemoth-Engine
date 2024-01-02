@@ -3,17 +3,23 @@
 #include "Event/Event.h"
 #include "Event/KeyboardEvents.h"
 #include "Event/MouseEvents.h"
+#include "InputCodes.h"
+
+#include "NextAPI/App/SimpleController.h"
 
 namespace Behemoth
 {
 #include "Input.h" // Or whatever the name of your header file is
 
 	// Initialize the static members of Input.
-	std::bitset<NUM_KEYS> Input::currentKeyState;
-	std::bitset<NUM_KEYS> Input::prevKeyState;
+	std::bitset<NUM_KC> Input::currentKeyState;
+	std::bitset<NUM_KC> Input::prevKeyState;
 
-	std::bitset<NUM_MOUSE_KEYS> Input::currentMouseState;
-	std::bitset<NUM_MOUSE_KEYS> Input::prevMouseState;
+	std::bitset<NUM_MC> Input::currentMouseState;
+	std::bitset<NUM_MC> Input::prevMouseState;
+
+	std::vector<std::bitset<NUM_CC>> Input::currentControllerButtonState(MAX_CONTROLLERS);
+	std::vector<std::bitset<NUM_CC>> Input::prevControllerButtonState(MAX_CONTROLLERS);
 
 	std::pair<float, float> Input::mousePosition = std::make_pair(0.0f, 0.0f);
 
@@ -21,6 +27,21 @@ namespace Behemoth
 	{
 		prevKeyState = currentKeyState;
 		prevMouseState = currentMouseState;
+
+		ProcessControllerInput();
+	}
+
+	void Input::ProcessControllerInput()
+	{
+		prevControllerButtonState = currentControllerButtonState;
+
+		for (int controller = 0; controller < MAX_CONTROLLERS; controller++)
+		{
+			for (int button = 0; button < Behemoth::ControllerCode::NUM_CC; button++)
+			{
+				currentControllerButtonState[controller][button] = CSimpleControllers::GetInstance().GetController(controller).CheckButton(Behemoth::controllerButtonMap[button], false);
+			}
+		}
 	}
 
 	bool Input::OnEvent(Event& event)
@@ -69,37 +90,66 @@ namespace Behemoth
 
 	void Input::OnKeyDown(const KeyDownEvent& event)
 	{
-		// std::cout << "Key Down\n";
-
 		const KeyCode code = event.GetKeyCode();
-		// prevKeyState.set(code, currentKeyState.test(code));
 		currentKeyState.set(code, 1);
 	}
 
 	void Input::OnKeyReleased(const KeyReleasedEvent& event)
 	{
-		// std::cout << "Key Released\n";
 		const KeyCode code = event.GetKeyCode();
-		// prevKeyState.set(code, currentKeyState.test(code));
 		currentKeyState.set(code, 0);
 	}
 
 	void Input::OnMouseDown(const MouseDownEvent& event)
 	{
 		const MouseCode code = event.GetMouseCode();
-		// prevMouseState.set(code, currentMouseState.test(code));
 		currentMouseState.set(code, 1);
 	}
 
 	void Input::OnMouseUp(const MouseUpEvent& event)
 	{
 		const MouseCode code = event.GetMouseCode();
-		// prevMouseState.set(code, currentMouseState.test(code));
 		currentMouseState.set(code, 0);
 	}
 
 	void Input::OnMouseMove(const MouseMoveEvent& event)
 	{
 		mousePosition = event.GetMousePos();
+	}
+
+	bool Input::IsControllerKeyDown(ControllerCode code, int controller)
+	{
+		return !prevControllerButtonState[controller][code] && currentControllerButtonState[controller][code];
+	}
+	bool Input::IsControllerKeyHeld(ControllerCode code, int controller)
+	{
+		return prevControllerButtonState[controller][code] && currentControllerButtonState[controller][code];
+	}
+	bool Input::IsControllerKeyUp(ControllerCode code, int controller)
+	{
+		return prevControllerButtonState[controller][code] && !currentControllerButtonState[controller][code];
+	}
+
+	AnalogInput Input::GetLeftControllerAnaloge(int controller)
+	{
+		float x = CSimpleControllers::GetInstance().GetController(controller).GetLeftThumbStickX();
+		float y = CSimpleControllers::GetInstance().GetController(controller).GetLeftThumbStickY();
+		return {x, y};
+	}
+
+	AnalogInput Input::GetRightControllerAnaloge(int controller)
+	{
+		float x = CSimpleControllers::GetInstance().GetController(controller).GetRightThumbStickX();
+		float y = CSimpleControllers::GetInstance().GetController(controller).GetRightThumbStickY();
+		return {x, y};
+	}
+
+	float Input::GetLeftControllerTrigger(int controller)
+	{
+		return CSimpleControllers::GetInstance().GetController(controller).GetLeftTrigger();
+	}
+	float Input::GetRightControllerTrigger(int controller)
+	{
+		return CSimpleControllers::GetInstance().GetController(controller).GetRightTrigger();
 	}
 }
