@@ -1,5 +1,6 @@
 #include "ECS/Component.h"
 #include "Input/InputCodes.h"
+#include "Physics/CollisionMask.h"
 
 #include <functional>
 #include <unordered_map>
@@ -207,5 +208,55 @@ namespace Behemoth
 		InputComponent() = default;
 
 		std::unordered_map<KeyCode, std::function<void(T...)>> actionMap;
+	};
+
+
+	// Physics Components
+	struct BoxColliderComponent : public ECS::Component
+	{
+		BoxColliderComponent(Math::Vector3 scale = Math::Vector3::One(), bool enabled = true, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject) :
+			isEnabled(enabled), 
+			scale(scale), 
+			collisionType(collisionType),
+			collisionMask(Behemoth::CollisionMask::Everything) {}
+
+
+		bool isEnabled;
+		Math::Vector3 scale;
+		std::uint16_t collisionType;
+		std::uint16_t collisionMask;
+	};
+
+	struct SphereColliderComponent : public ECS::Component
+	{
+		SphereColliderComponent(float radius = 1.0f, bool enabled = true, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject) :
+			isEnabled(enabled),
+			radius(radius),
+			collisionType(collisionType),
+			collisionMask(Behemoth::CollisionMask::Everything) {}
+
+		bool isEnabled;
+		float radius;
+		std::uint16_t collisionType;
+		std::uint16_t collisionMask;
+	};
+
+	struct MeshColliderComponent : public ECS::Component
+	{
+		MeshColliderComponent(std::string& filename, bool enabled = true, Math::Vector3 scale = Math::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject) :
+			modelFileName(filename),
+			mesh(filename),
+			isEnabled(enabled),
+			scale(scale),
+			collisionType(collisionType),
+			collisionMask(Behemoth::CollisionMask::Everything) {}
+
+
+		bool isEnabled;
+		Math::Vector3 scale;
+		std::uint16_t collisionType;
+		std::uint16_t collisionMask;
+		std::string modelFileName;
+		Mesh mesh;
 	};
 }

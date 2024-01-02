@@ -46,6 +46,7 @@ namespace Math
 		static Vector3 Right();
 		static Vector3 Up();
 		static Vector3 Zero();
+		static Vector3 One();
 
 		static Vector3 Normalize(const Vector3& v1);
 		static Vector3 Cross(const Vector3& v1, const Vector3& v2);

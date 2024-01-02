@@ -174,6 +174,8 @@
     <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
     <ClInclude Include="BehemothCore\Renderer\Line.h" />
+    <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
+    <ClInclude Include="BehemothCore\Factories\GameObjectFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -251,5 +253,6 @@
     <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\RenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp" />
+    <ClCompile Include="BehemothCore\Factories\GameObjectFactory.cpp" />
   </ItemGroup>
 </Project>

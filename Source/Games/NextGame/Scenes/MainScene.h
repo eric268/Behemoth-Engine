@@ -14,6 +14,8 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 	ECS::Entity pointLight;
+	ECS::Entity cube1;
+	ECS::Entity cube2;
 
 private:
 	void InitSystems();

@@ -49,6 +49,11 @@ namespace Math
 		return Vector3{};
 	}
 
+	Vector3 Vector3::One()
+	{
+		return Vector3(1.0f, 1.0f, 1.0f);
+	}
+
 	float Vector3::Magnitude() const
 	{
 		return sqrt(x * x + y * y + z * z);

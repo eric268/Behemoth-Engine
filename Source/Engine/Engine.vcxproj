@@ -179,6 +179,7 @@
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h" />
     <ClInclude Include="BehemothCore\Misc\Log.h" />
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h" />
+    <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
     <ClInclude Include="BehemothCore\Renderer\Line.h" />
     <ClInclude Include="BehemothCore\Renderer\Mesh.h" />
     <ClInclude Include="BehemothCore\Renderer\MeshLoader.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="BehemothCore\World\Scene.h" />
     <ClInclude Include="BehemothCore\World\World.h" />
     <ClInclude Include="BehemothCore\pch.h" />
+    <ClInclude Include="BehemothCore\Factories\GameObjectFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp" />
@@ -232,6 +234,7 @@
     <ClCompile Include="BehemothCore\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Factories\GameObjectFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NextAPI\NextAPI.vcxproj">
