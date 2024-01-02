@@ -7,17 +7,14 @@
 
 namespace Behemoth
 {
-	class MeshComponent : public ECS::Component
+	struct MeshComponent : public ECS::Component
 	{
-	public:
 		MeshComponent(const std::string& modelName, const std::string& textureName, const Math::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
 		modelFileName(modelName), 
 			textureFileName(textureName), 
 			mesh(modelName, textureName, uvScale),
 			isVisible(visible)
 			{}
-
-		~MeshComponent() override {};
 
 		bool isVisible;
 
@@ -35,9 +32,8 @@ namespace Behemoth
 		bool isVisible;
 	};
 
-	class BoundingVolumeComponent : public ECS::Component
+	struct BoundingVolumeComponent : public ECS::Component
 	{
-	public:
 		BoundingVolumeComponent() : mesh("sphere.obj"), volumeRadius(1.0f), isVisible(false) {}
 		BoundingVolumeComponent(float radius, bool visible) : mesh("sphere.obj"), volumeRadius(radius), isVisible(visible) {}
 		float volumeRadius;
@@ -45,31 +41,20 @@ namespace Behemoth
 		Behemoth::Mesh mesh;
 	};
 
-	class MeshInitalizeComponent : public ECS::Component
+	struct MeshInitalizeComponent : public ECS::Component
 	{
-	public:
 		MeshInitalizeComponent() = default;
 	};
 
-	class HealthComponent : public ECS::Component
+	struct HealthComponent : public ECS::Component
 	{
-	public:
 		HealthComponent(int health) : currentHealth(health) {}
-		~HealthComponent() override {};
 
 		int currentHealth;
 	};
 
-	class PhysicsComponent : public ECS::Component
+	struct CameraComponent : public ECS::Component
 	{
-	public:
-		PhysicsComponent() {}
-		~PhysicsComponent() override {};
-	};
-
-	class CameraComponent : public ECS::Component
-	{
-	public:
 		CameraComponent(bool main = false) :
 			viewMatrix(Math::Matrix4x4::Identity()),
 			perspectiveMatrix(Math::Matrix4x4::Identity()),
@@ -96,9 +81,8 @@ namespace Behemoth
 		bool isDirty;
 	};
 
-	class TransformComponent : public ECS::Component
+	struct TransformComponent : public ECS::Component
 	{
-	public:
 		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), isDirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()) {}
 		Math::Matrix4x4 transformMatrix;
 		Math::Vector3 forwardVector;
@@ -109,29 +93,24 @@ namespace Behemoth
 		bool isDirty;
 	};
 
-	class MoveComponent : public ECS::Component
+	struct MoveComponent : public ECS::Component
 	{
-	public:
 		MoveComponent() : location(Math::Vector3{}) {}
 		MoveComponent(Math::Vector3 vec) : location(vec) {}
-		~MoveComponent() override {};
 
 		Math::Vector3 location;
 	};
 
-	class VelocityComponent : public ECS::Component
+	struct VelocityComponent : public ECS::Component
 	{
-	public:
 		VelocityComponent() : velocity(Math::Vector3{}) {}
 		VelocityComponent(Math::Vector3 vel) : velocity(vel) {}
 
 		Math::Vector3 velocity;
 	};
 
-	class RotationComponent : public ECS::Component
+	struct RotationComponent : public ECS::Component
 	{
-	public:
-
 		enum Axis
 		{
 			None,
@@ -148,18 +127,16 @@ namespace Behemoth
 		float speed;
 	};
 
-	class ScalingComponent : public ECS::Component
+	struct ScalingComponent : public ECS::Component
 	{
-	public:
 		ScalingComponent() : scalingVector(Math::Vector3(1.0f, 1.0f, 1.0f)) {}
 		ScalingComponent(Math::Vector3 vec) : scalingVector(vec) {}
 
 		Math::Vector3 scalingVector;
 	};
 
-	class DirectionalLightComponent : public ECS::Component 
+	struct DirectionalLightComponent : public ECS::Component
 	{
-	public:
 		DirectionalLightComponent() : 
 			direction(Math::Vector3(-0.57f, -0.57f, 0.57f)),
 			color(Math::Vector3(0.25f, 0.25f, 0.25f)),
@@ -175,9 +152,8 @@ namespace Behemoth
 		float intensity;
 	};
 
-	class PointLightComponent : public ECS::Component
+	struct PointLightComponent : public ECS::Component
 	{
-	public:
 		PointLightComponent() :
 			color(Math::Vector3(0.25f, 0.25, 0.25f)),
 			intensity(1.0f),
@@ -201,61 +177,61 @@ namespace Behemoth
 		float quadratic;
 	};
 
-	template <typename ...T>
-	class InputComponent : public ECS::Component 
-	{
-	public:
-		InputComponent() = default;
-
-		std::unordered_map<KeyCode, std::function<void(T...)>> actionMap;
-	};
-
 
 	// Physics Components
-	struct BoxColliderComponent : public ECS::Component
+	struct RigidBodyComponent : public ECS::Component
 	{
-		BoxColliderComponent(Math::Vector3 scale = Math::Vector3::One(), bool enabled = true, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject) :
-			isEnabled(enabled), 
-			scale(scale), 
-			collisionType(collisionType),
-			collisionMask(Behemoth::CollisionMask::Everything) {}
-
-
-		bool isEnabled;
-		Math::Vector3 scale;
-		std::uint16_t collisionType;
-		std::uint16_t collisionMask;
+		RigidBodyComponent() {}
 	};
 
-	struct SphereColliderComponent : public ECS::Component
+	struct ColliderComponent : public ECS::Component 
 	{
-		SphereColliderComponent(float radius = 1.0f, bool enabled = true, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject) :
+	protected:
+		ColliderComponent(Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
+			collisionType(collisionType),
 			isEnabled(enabled),
-			radius(radius),
-			collisionType(collisionType),
 			collisionMask(Behemoth::CollisionMask::Everything) {}
-
+	public:
 		bool isEnabled;
-		float radius;
 		std::uint16_t collisionType;
 		std::uint16_t collisionMask;
 	};
 
-	struct MeshColliderComponent : public ECS::Component
+	struct AABBColliderComponent : public ColliderComponent
 	{
-		MeshColliderComponent(std::string& filename, bool enabled = true, Math::Vector3 scale = Math::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject) :
+		AABBColliderComponent(Math::Vector3 min, Math::Vector3 max, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
+			ColliderComponent(collisionType, enabled),
+			minPoint(min),
+			maxPoint(max) {}
+
+		Math::Vector3 minPoint;
+		Math::Vector3 maxPoint;
+	};
+
+	struct OBBColliderComponent : public AABBColliderComponent
+	{
+		OBBColliderComponent(Math::Vector3 min, Math::Vector3 max, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
+			AABBColliderComponent(min, max, collisionType, enabled){}
+	};
+
+	struct SphereColliderComponent : public ColliderComponent
+	{
+		SphereColliderComponent(float radius = 1.0f, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
+			ColliderComponent(collisionType, enabled),
+			radius(radius) {}
+
+		float radius;
+	};
+
+	struct MeshColliderComponent : public ColliderComponent
+	{
+		MeshColliderComponent(std::string& filename, Math::Vector3 scale = Math::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
+			ColliderComponent(collisionType, enabled),
 			modelFileName(filename),
 			mesh(filename),
-			isEnabled(enabled),
-			scale(scale),
-			collisionType(collisionType),
-			collisionMask(Behemoth::CollisionMask::Everything) {}
+			scale(scale) {}
 
-
-		bool isEnabled;
 		Math::Vector3 scale;
-		std::uint16_t collisionType;
-		std::uint16_t collisionMask;
 		std::string modelFileName;
 		Mesh mesh;
 	};

@@ -38,7 +38,7 @@ namespace Behemoth
 			
 			for (const auto& [pointEntity, pointLight, transformComp] : pointLightComponents)
 			{
-				CalculatePointLights(primitive, pointLight, mainCameraPosition, transformComp->position, mainCamera->viewMatrix);
+				 CalculatePointLights(primitive, pointLight, mainCameraPosition, transformComp->position, mainCamera->viewMatrix);
 			}
 #else
 			primitive->SetLighting(Math::Vector3(1.0f, 1.0f, 1.0f));

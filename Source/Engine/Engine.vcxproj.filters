@@ -49,12 +49,6 @@
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\BehemothCore.h" />
-    <ClInclude Include="BehemothCore\Components\Components.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\ECS\Component.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h">
       <Filter>ECS</Filter>
     </ClInclude>
@@ -194,6 +188,8 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
+    <ClInclude Include="BehemothCore\ECS\Component.h" />
+    <ClInclude Include="BehemothCore\Components\Components.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
