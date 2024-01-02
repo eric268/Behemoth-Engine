@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="BehemothCore\Application\ResourceManager.h" />
     <ClInclude Include="BehemothCore\Application\ThreadPool.h" />
+    <ClInclude Include="BehemothCore\BehemothCore.h" />
     <ClInclude Include="BehemothCore\Components\Components.h" />
     <ClInclude Include="BehemothCore\ECS\Component.h" />
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h" />

@@ -11,6 +11,7 @@ namespace Behemoth
 		registry.AddComponent<Behemoth::VelocityComponent>(entity);
 		registry.AddComponent<Behemoth::RotationComponent>(entity);
 		registry.AddComponent<Behemoth::TransformComponent>(entity);
+		registry.AddComponent<Behemoth::MoveComponent>(entity, Math::Vector3(0.0f, 0.0f, 0.0f));
 		
 		return entity;
 	}

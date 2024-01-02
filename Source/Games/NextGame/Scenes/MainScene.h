@@ -1,7 +1,6 @@
 #pragma once
             
-#include "World/Scene.h"
-#include "ECS/Entity.h" 
+#include "BehemothCore.h"
             
 class MainScene : public Behemoth::Scene
 {

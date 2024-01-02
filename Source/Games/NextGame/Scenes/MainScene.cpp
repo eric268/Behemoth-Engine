@@ -1,18 +1,7 @@
 #include "MainScene.h"
-#include "ECS/ECSCore.h"
-#include "Factories/CameraFactory.h"
-#include "Factories/LightFactories.h"
-#include "Components/Components.h"
-#include "Event/Event.h"
-#include "Event/KeyboardEvents.h"
-#include "Misc/CameraHelper.h"
-#include "Systems/SystemManager.h"
 
 #include "GameSystems/CameraControllerSystem.h"
 #include "GameComponents/CameraControllerComponent.h"
-
-#include "Input/Input.h"
-#include "NextAPI/App/SimpleController.h"
 
 #include <iostream>
 
@@ -30,14 +19,20 @@ void MainScene::Init()
 	registry.AddComponent<CameraControllerComponent>(mainCameraEntity, 1.0f, 1.0f);
 
 	Behemoth::DirectionalLightFactory dirLightFactory{};
-	dirLightFactory.CreateDirectionalLight(registry);
-	
+	ECS::Entity dirLight = dirLightFactory.CreateDirectionalLight(registry);
+
+	Behemoth::GameObjectFactory gameObjectFactory{};
+	cube1 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube1");
+	cube2 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube2");
+
+	registry.AddComponent<Behemoth::MoveComponent>(cube1, Math::Vector3(-3.0f, 0.0f, -5.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(cube2, Math::Vector3(3.0f, 0.0f, -5.0f));
 
 	Behemoth::PointLightFactory pointLightFactory{};
 	pointLight = pointLightFactory.CreatePointLight(registry, "Point Light 1");
 	Behemoth::MoveComponent* pointLightMovementComp = registry.GetComponent<Behemoth::MoveComponent>(pointLight);
 	if (pointLightMovementComp)
-		pointLightMovementComp->location = Math::Vector3(-3.0f, 2, -3.0f);
+		pointLightMovementComp->location = Math::Vector3(0.0f, 0, -3.0f);
 
 	Behemoth::PointLightComponent* pointLightComponent = registry.GetComponent<Behemoth::PointLightComponent>(pointLight);
 	if (pointLightComponent)

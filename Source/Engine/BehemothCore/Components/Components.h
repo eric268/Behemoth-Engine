@@ -161,9 +161,9 @@ namespace Behemoth
 	{
 	public:
 		DirectionalLightComponent() : 
-			direction(Math::Vector3(0.0f, 0.0f, -1.0f)), 
-			color(Math::Vector3(0.25f, 0.25, 0.25f)),
-			intensity(1.0f) {}
+			direction(Math::Vector3(-0.57f, -0.57f, 0.57f)),
+			color(Math::Vector3(0.25f, 0.25f, 0.25f)),
+			intensity(2.5f) {}
 
 		DirectionalLightComponent(Math::Vector3 dir, Math::Vector3 color, float intensity) :
 			direction(dir),

@@ -176,6 +176,7 @@
     <ClInclude Include="BehemothCore\Renderer\Line.h" />
     <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
     <ClInclude Include="BehemothCore\Factories\GameObjectFactory.h" />
+    <ClInclude Include="BehemothCore\BehemothCore.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">

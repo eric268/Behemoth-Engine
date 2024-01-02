@@ -7,8 +7,7 @@ namespace Behemoth
 	ECS::Entity DirectionalLightFactory::CreateDirectionalLight(ECS::Registry& registry, const std::string& name)
 	{
 		ECS::Entity entity = registry.CreateEntity(name);
-		registry.AddComponent<Behemoth::DirectionalLightComponent>(entity, Math::Vector3(-0.707f, 0, -0.707f),
-			Math::Vector3(0.25f, 0.25f, 0.25f), 1.5f);
+		registry.AddComponent<Behemoth::DirectionalLightComponent>(entity);
 		return entity;
 	}
 
