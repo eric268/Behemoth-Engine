@@ -58,6 +58,11 @@ namespace Behemoth
 		return false;
 	}
 
+	bool Input::IsAnyKeyDown()
+	{
+		return !currentKeyState.none();
+	}
+
 	bool Input::IsKeyDown(KeyCode code)
 	{
 		return !prevKeyState.test(code) && currentKeyState.test(code);
@@ -70,7 +75,7 @@ namespace Behemoth
 
 	bool Input::IsKeyHeld(KeyCode code)
 	{
-		return currentKeyState.test(code) && prevKeyState.test(code);
+		return prevKeyState.test(code) && currentKeyState.test(code);
 	}
 
 	bool Input::IsMouseButtonDown(MouseCode code)

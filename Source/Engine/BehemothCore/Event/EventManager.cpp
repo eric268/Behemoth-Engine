@@ -56,8 +56,7 @@ namespace Behemoth
 		glutSpecialFunc([](int key, int x, int y)
 		{
 			// Do a check for key down events to see if it is held or this is the first press
-			KeyCode code = static_cast<KeyCode>(key);
-			std::cout << "Key: " << static_cast<KeyCode>(key) << '\n';
+			KeyCode code = static_cast<KeyCode>(key + KeyCode::SpecialKeyOffset);
 			KeyDownEvent e(code);
 			EventManager::GetInstance().OnEventDelegate(e);
 		});
@@ -65,7 +64,7 @@ namespace Behemoth
 		// Special keyboard up input
 		glutSpecialUpFunc([](int key, int x, int y)
 		{
-			KeyCode code = static_cast<KeyCode>(key);
+			KeyCode code = static_cast<KeyCode>(key + KeyCode::SpecialKeyOffset);
 			KeyReleasedEvent e(code);
 			EventManager::GetInstance().OnEventDelegate(e);
 		});

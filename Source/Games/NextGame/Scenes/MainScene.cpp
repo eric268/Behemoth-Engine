@@ -75,5 +75,5 @@ void MainScene::Shutdown()
 
 void MainScene::InitSystems()
 {
-	// Behemoth::SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
 }

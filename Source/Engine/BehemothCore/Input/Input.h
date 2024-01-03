@@ -21,6 +21,8 @@ namespace Behemoth
 	class Input
 	{
 	public:
+		static bool IsAnyKeyDown();
+
 		static bool IsKeyDown(KeyCode code);
 		static bool IsKeyReleased(KeyCode code);
 		static bool IsKeyHeld(KeyCode code);

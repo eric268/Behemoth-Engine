@@ -17,15 +17,15 @@ namespace Behemoth
 
 		enum EventFlags : uint16_t
 		{
-			None = 0x0000,
-			Window = 0x0001,
-			Input = 0x0002,
-			Keyboard = 0x0004,
-			Controller = 0x0008,
-			Mouse = 0x0010,
-			MouseMove = 0x0020,
-			MouseClick = 0x0040,
-			MouseDrag = 0x0080
+			None			= 0x0000,
+			Window			= 0x0001,
+			Input			= 0x0002,
+			Keyboard		= 0x0004,
+			Controller		= 0x0008,
+			Mouse			= 0x0010,
+			MouseMove		= 0x0020,
+			MouseClick		= 0x0040,
+			MouseDrag		= 0x0080
 		};
 	}
 

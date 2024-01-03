@@ -1,5 +1,6 @@
 #pragma once
-#include "ECS/ECSCore.h"
+
+#include "BehemothCore.h"
 
 
 class CameraControllerSystem
