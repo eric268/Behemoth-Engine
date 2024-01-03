@@ -193,6 +193,8 @@
     <ClInclude Include="BehemothCore\Physics\Collision.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\AABBCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\SphereCollisionSystem.h" />
+    <ClInclude Include="BehemothCore\Physics\OBB.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\OBBCollisionSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -286,5 +288,6 @@
     <ClCompile Include="BehemothCore\Physics\Collision.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\AABBCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\SphereCollisionSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\OBBCollisionSystem.cpp" />
   </ItemGroup>
 </Project>

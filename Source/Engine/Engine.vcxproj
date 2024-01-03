@@ -183,6 +183,7 @@
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h" />
     <ClInclude Include="BehemothCore\Physics\Collision.h" />
     <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
+    <ClInclude Include="BehemothCore\Physics\OBB.h" />
     <ClInclude Include="BehemothCore\Renderer\Line.h" />
     <ClInclude Include="BehemothCore\Renderer\Mesh.h" />
     <ClInclude Include="BehemothCore\Renderer\MeshLoader.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\AABBCollisionSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\OBBCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\SphereCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\MeshRenderSystem.h" />
@@ -230,6 +232,7 @@
     <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\AABBCollisionSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\OBBCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\SphereCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\MeshRenderSystem.cpp" />

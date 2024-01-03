@@ -10,3 +10,4 @@
 #define PI 3.14159
 #define DEGREE_TO_RAD(x) ((x) * PI/ 180.0f)
 #define RAD_TO_DEGREE(x) ((x) * 180.0f / PI)
+#define EPSILON 1e-5

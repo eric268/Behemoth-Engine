@@ -33,6 +33,15 @@ namespace ECS
 		const std::string GetName() const {
 			return name;
 		}
+
+		const bool operator == (const Entity& e) const
+		{
+			return GetIdentifier() == e.GetIdentifier();
+		}
+		const bool operator != (const Entity & e) const
+		{
+			return !(*this == e);
+		}
 		
 	private:
 		friend class Registry;

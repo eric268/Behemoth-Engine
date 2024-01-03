@@ -65,6 +65,16 @@ namespace Math
 
 #pragma region Overloaded Operators
 
+		float& operator[](int i)
+		{
+			return data[i];
+		}
+
+		const float& operator[](int i) const
+		{
+			return data[i];
+		}
+
 		Vector3 operator-() const
 		{
 			return Vector3(-x, -y, -z);
@@ -211,6 +221,16 @@ namespace Math
 
 		static bool Equals(const Vector4& vec1, const Vector4& vec2, float epsilon = 1e-2);
 		static Vector4 Cross(const Vector4& v1, const Vector4& v2, const float wVal = 1.0f);
+
+		float& operator[](int i)
+		{
+			return data[i];
+		}
+
+		const float& operator[](int i) const
+		{
+			return data[i];
+		}
 
 		template<typename T>
 		Vector4 operator* (const T scalar) const
