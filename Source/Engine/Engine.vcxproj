@@ -181,6 +181,7 @@
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h" />
     <ClInclude Include="BehemothCore\Misc\Log.h" />
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h" />
+    <ClInclude Include="BehemothCore\Physics\Collision.h" />
     <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
     <ClInclude Include="BehemothCore\Renderer\Line.h" />
     <ClInclude Include="BehemothCore\Renderer\Mesh.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="BehemothCore\Systems\LightingSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\AABBCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\MeshRenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="BehemothCore\Math\Vector.cpp" />
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp" />
     <ClCompile Include="BehemothCore\Misc\Log.cpp" />
+    <ClCompile Include="BehemothCore\Physics\Collision.cpp" />
     <ClCompile Include="BehemothCore\Renderer\Mesh.cpp" />
     <ClCompile Include="BehemothCore\Renderer\MeshLoader.cpp" />
     <ClCompile Include="BehemothCore\Renderer\Primitives.cpp" />
@@ -225,6 +228,7 @@
     <ClCompile Include="BehemothCore\Systems\LightingSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\AABBCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\MeshRenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\RenderSystem.cpp" />

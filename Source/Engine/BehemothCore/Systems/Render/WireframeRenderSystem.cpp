@@ -37,11 +37,11 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessWireframe(wireframeComp->mesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, true, wireframeComp->wireframeColor);
+			ProcessWireframe(wireframeComp->mesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, wireframeComp->scale, true, wireframeComp->wireframeColor);
 		}
 	}
 
-	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, bool isDirty, Math::Vector3 color)
+	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, const Math::Vector3& scale, bool isDirty, Math::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -66,7 +66,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * Math::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
+					primitive.verticies[j] = transformMatrix * Math::Vector4(cachedVerticies[vertexIndex].vertex * scale, 1.0f);
 					vertexIndex++;
 				}
 			}

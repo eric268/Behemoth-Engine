@@ -23,6 +23,7 @@
 #include "Systems/MeshInitSystem.h"
 #include "Systems/LightingSystem.h"
 #include "Systems/VelocitySystem.h"
+#include "Systems/Physics/AABBCollisionSystem.h"
 
 #include "Input/Input.h"
 
@@ -62,6 +63,7 @@ void Init()
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::VelocitySystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last

@@ -25,6 +25,8 @@ namespace Math
 
 	Vector3::Vector3(Vector4 vec) : x(vec.x), y(vec.y), z(vec.z) {}
 
+	Vector3::Vector3(const float val) : x(val), y(val), z(val) {}
+
 	Vector3 Vector3::Forward()
 	{
 		Vector3 vec{};

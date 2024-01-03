@@ -7,6 +7,7 @@ namespace Behemoth
 {
 	enum KeyCode : uint16_t
 	{
+		KC_None						= 0,
 		KC_Backspace				= 8,
 		KC_Tab						= 9,
 		KC_Enter					= 13,

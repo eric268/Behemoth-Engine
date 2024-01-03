@@ -1,41 +1,35 @@
 #include "pch.h"
 #include "CameraControllerSystem.h"
+#include "GameComponents/CameraControllerComponent.h"
 
 
 void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
-	ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
+	auto components = registry.Get<Behemoth::TransformComponent, Behemoth::VelocityComponent, Behemoth::RotationComponent, CameraControllerComponent>();
 
-	if (cameraEntity.GetIdentifier() == NULL_ENTITY)
-	{
-		LOG_ERROR("Unable to find main camera");
-		return;
-	}
-	auto components = registry.GetMultipleComponents<Behemoth::TransformComponent, Behemoth::VelocityComponent, Behemoth::RotationComponent>(cameraEntity);
-
-	auto& [transformComp, velocityComp, rotationComp] = components;
+	for (auto& [entity, transformComp, velocityComp, rotationComp, controllerComp] : components)
 	{
 		velocityComp->velocity = Math::Vector3::Zero();
 		rotationComp->speed = 0;
 
-		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Up))
+		if (Behemoth::Input::IsKeyHeld(controllerComp->forward))
 		{
 			velocityComp->velocity += transformComp->forwardVector;
 		}
 
-		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Down))
+		if (Behemoth::Input::IsKeyHeld(controllerComp->back))
 		{
 			velocityComp->velocity -= transformComp->forwardVector;
 		}
 
-		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Right))
-		{
-			velocityComp->velocity += transformComp->rightVector;
-		}
-
-		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Left))
+		if (Behemoth::Input::IsKeyHeld(controllerComp->right))
 		{
 			velocityComp->velocity -= transformComp->rightVector;
+		}
+
+		if (Behemoth::Input::IsKeyHeld(controllerComp->left))
+		{
+			velocityComp->velocity += transformComp->rightVector;
 		}
 
 		if (Behemoth::Input::IsKeyHeld(Behemoth::KC_I))
