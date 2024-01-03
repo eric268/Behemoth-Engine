@@ -29,6 +29,8 @@ namespace Behemoth
 		cameraComponent->windowWidth = rect.right - rect.left;
 		cameraComponent->windowHeight = rect.bottom - rect.top;
 
+		// std::cout << "Width: " << cameraComponent->windowWidth << ' ' << " Height: " << cameraComponent->windowHeight << std::endl;
+
 		const float fovScale = 1.0f / (std::tan(DEGREE_TO_RAD(cameraComponent->FOV) * 0.5f));
 		const float aspectRatio = cameraComponent->windowWidth / cameraComponent->windowHeight;
 		const float farPlane = cameraComponent->farClippingPlane;
@@ -51,7 +53,7 @@ namespace Behemoth
 	void CameraSystem::UpdateFrustrum(CameraComponent* cameraComponent)
 	{
 		float thetaY = DEGREE_TO_RAD(cameraComponent->FOV);
-		float aspectRatio = cameraComponent->windowWidth / cameraComponent->windowHeight;
+		float aspectRatio = cameraComponent->windowHeight / cameraComponent->windowWidth;
 		float thetaX = 2.0f * std::atan(std::tan(DEGREE_TO_RAD(cameraComponent->FOV) * 0.5f) * aspectRatio);
 
 		thetaY *= 0.5f;

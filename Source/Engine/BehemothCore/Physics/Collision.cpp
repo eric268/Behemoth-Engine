@@ -16,4 +16,11 @@ namespace Behemoth
 
 		return true;
 	}
+
+	bool CheckSphereSphereCollision(const Math::Vector3 sphere1Pos, const float sphere1Radius, const Math::Vector3 sphere2Pos, const float sphere2Radius)
+	{
+		float distance = Math::Vector3::SquaredDistance(sphere1Pos, sphere2Pos);
+		float rad = sphere1Radius + sphere2Radius;
+		return distance <= (rad * rad);
+	}
 }

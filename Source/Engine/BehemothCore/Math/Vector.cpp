@@ -102,6 +102,11 @@ namespace Math
 		return Magnitude(v1 - v2);
 	}
 
+	float Vector3::SquaredDistance(const Vector3& v1, const Vector3& v2)
+	{
+		const Vector3 v = v1 - v2;
+		return SquaredMagnitude(v1 - v2);
+	}
 
 	Vector3 Vector3::Normalize(const Vector3& vec)
 	{

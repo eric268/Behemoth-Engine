@@ -58,6 +58,7 @@ namespace Math
 		static float SquaredMagnitude(const Vector3& v1);
 		static float Magnitude(const Vector3& v1);
 		static float Distance(const Vector3& v1, const Vector3& v2);
+		static float SquaredDistance(const Vector3& v1, const Vector3& v2);
 		static float Dot(const Vector3& v1, const Vector3& v2);
 
 		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);

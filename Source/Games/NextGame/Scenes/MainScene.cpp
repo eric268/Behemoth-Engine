@@ -25,12 +25,12 @@ void MainScene::Init()
 	Behemoth::GameObjectFactory gameObjectFactory{};
 	cube1 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube1");
 	registry.AddComponent<CameraControllerComponent>(cube1, 1.0f, 1.0f, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D);
-	registry.AddComponent<Behemoth::AABBColliderComponent>(cube1, Math::Vector3::One() * -1.1f, Math::Vector3::One() * 1.1f);
-	registry.AddComponent<Behemoth::WireframeComponent>(cube1, "cube.obj", Math::Vector3(1.1f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
+	registry.AddComponent<Behemoth::SphereColliderComponent>(cube1, 1.5f);
+	registry.AddComponent<Behemoth::WireframeComponent>(cube1, "sphere.obj", Math::Vector3(1.5f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
 
 	cube2 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube2");
-	registry.AddComponent<Behemoth::AABBColliderComponent>(cube2, Math::Vector3::One() * -1.1f, Math::Vector3::One() * 1.1f);
-	registry.AddComponent<Behemoth::WireframeComponent>(cube2,"cube.obj", Math::Vector3(1.1f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
+	registry.AddComponent<Behemoth::SphereColliderComponent>(cube2, 1.5f);
+	registry.AddComponent<Behemoth::WireframeComponent>(cube2,"sphere.obj", Math::Vector3(1.5f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
 
 	registry.AddComponent<Behemoth::MoveComponent>(cube1, Math::Vector3(-3.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::MoveComponent>(cube2, Math::Vector3(3.0f, 0.0f, -5.0f));
@@ -54,16 +54,16 @@ void MainScene::OnEvent(Behemoth::Event& e)
 
 	//  Maybe move this to world because in essentially any scene I would want this
 
-	 dispatcher.Dispatch<Behemoth::KeyReleasedEvent>([&](Behemoth::KeyReleasedEvent keyEvent)
+	 dispatcher.Dispatch<Behemoth::WindowResizeEvent>([&](Behemoth::WindowResizeEvent keyEvent)
 		 {
 			 ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
 
 			 if (cameraEntity.GetIdentifier() != NULL_ENTITY)
 			 {
-				 Behemoth::VelocityComponent* velocityComponent = registry.GetComponent<Behemoth::VelocityComponent>(cameraEntity);
-				 if (velocityComponent)
+				 Behemoth::CameraComponent* cameraComponent = registry.GetComponent<Behemoth::CameraComponent>(cameraEntity);
+				 if (cameraComponent)
 				 {
-					 velocityComponent->velocity = Math::Vector3::Zero();
+					 cameraComponent->isDirty = true;
 				 }
 			 }
 		 });
