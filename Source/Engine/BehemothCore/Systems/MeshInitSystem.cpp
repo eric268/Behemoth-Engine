@@ -25,13 +25,13 @@ namespace Behemoth
 			InitMesh(meshComp->mesh);
 
 #ifdef DEBUG
-			Behemoth::BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
+			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume)
 			{
 				InitMesh(boundingVolume->mesh);
 			}
 
-			Behemoth::WireframeComponent* wireframeMesh = registry.GetComponent<WireframeComponent>(entity);
+			WireframeComponent* wireframeMesh = registry.GetComponent<WireframeComponent>(entity);
 			if (wireframeMesh)
 			{
 				InitMesh(wireframeMesh->mesh);

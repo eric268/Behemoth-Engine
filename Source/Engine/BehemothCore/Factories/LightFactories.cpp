@@ -7,7 +7,7 @@ namespace Behemoth
 	ECS::Entity DirectionalLightFactory::CreateDirectionalLight(ECS::Registry& registry, const std::string& name)
 	{
 		ECS::Entity entity = registry.CreateEntity(name);
-		registry.AddComponent<Behemoth::DirectionalLightComponent>(entity);
+		registry.AddComponent<DirectionalLightComponent>(entity);
 		return entity;
 	}
 
@@ -15,12 +15,12 @@ namespace Behemoth
 	{
 		ECS::Entity entity = registry.CreateEntity(name);
 
-		registry.AddComponent<Behemoth::PointLightComponent>(entity, Math::Vector3(0.75f, 0.75f, 0.75f), 1.0f);
-		registry.AddComponent<Behemoth::TransformComponent>(entity);
-		registry.AddComponent<Behemoth::MoveComponent>(entity, Math::Vector3(0.0f, 0.0f, 0.0f));
+		registry.AddComponent<PointLightComponent>(entity, Math::Vector3(0.75f, 0.75f, 0.75f), 1.0f);
+		registry.AddComponent<TransformComponent>(entity);
+		registry.AddComponent<MoveComponent>(entity, Math::Vector3(0.0f, 0.0f, 0.0f));
 #ifdef DEBUG
-		registry.AddComponent<Behemoth::MeshComponent>(entity, "cube.obj", "brick.png", Math::Vector2(0.5f, 0.5f), false);
-		registry.AddComponent<Behemoth::ScalingComponent>(entity, Math::Vector3(0.3f, 0.3f, 0.3f));
+		registry.AddComponent<MeshComponent>(entity, "cube.obj", "brick.png", Math::Vector2(0.5f, 0.5f), false);
+		registry.AddComponent<ScalingComponent>(entity, Math::Vector3(0.3f, 0.3f, 0.3f));
 #endif
 		return entity;
 	}

@@ -154,6 +154,7 @@
     <ClInclude Include="BehemothCore\Application\ThreadPool.h" />
     <ClInclude Include="BehemothCore\BehemothCore.h" />
     <ClInclude Include="BehemothCore\Components\Components.h" />
+    <ClInclude Include="BehemothCore\Components\PhysicsComponents.h" />
     <ClInclude Include="BehemothCore\ECS\Component.h" />
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h" />
     <ClInclude Include="BehemothCore\ECS\ECSCore.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h" />
     <ClInclude Include="BehemothCore\Misc\Log.h" />
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h" />
+    <ClInclude Include="BehemothCore\Physics\Colliders.h" />
     <ClInclude Include="BehemothCore\Physics\Collision.h" />
     <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
     <ClInclude Include="BehemothCore\Physics\OBB.h" />

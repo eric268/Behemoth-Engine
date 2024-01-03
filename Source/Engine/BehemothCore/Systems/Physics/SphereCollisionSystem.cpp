@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "SphereCollisionSystem.h"
+#include "ECS/Registry.h"
 #include "Components/Components.h"
+#include "Components/PhysicsComponents.h"
 #include "Physics/Collision.h"
 
 namespace Behemoth
@@ -13,12 +15,16 @@ namespace Behemoth
 		{
 			for (const auto& [entity2, sphereColliderComp2, transformComp2] : components)
 			{
-				if (entity.GetIdentifier() == entity2.GetIdentifier())
+				if (entity == entity2)
 				{
 					continue;
 				}
 
-				if (CheckSphereSphereCollision(transformComp->position, sphereColliderComp->radius, transformComp2->position, sphereColliderComp2->radius))
+				sphereColliderComp->collider.pos = transformComp->position;
+				sphereColliderComp2->collider.pos = transformComp2->position;
+
+
+				if (CheckCollision(sphereColliderComp->collider, sphereColliderComp->collider))
 				{
 					std::cout << "Sphere Sphere Collision\n";
 				}

@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "AABBCollisionSystem.h"
+#include "ECS/Registry.h"
 #include "Components/Components.h"
+#include "Components/PhysicsComponents.h"
 #include "Physics/Collision.h"
+
 
 namespace Behemoth
 {
@@ -16,18 +19,10 @@ namespace Behemoth
 				if (entity.GetIdentifier() == entity2.GetIdentifier())
 					continue;
 
-				Math::Vector3 box1Min = transformComp->position + AABBComp->minPoint;
-				Math::Vector3 box1Max = transformComp->position + AABBComp->maxPoint;
+				AABBComp->collider.pos = transformComp->position;
+				AABBComp2->collider.pos = transformComp2->position;
 
-				Math::Vector3 box2Min = transformComp2->position + AABBComp2->minPoint;
-				Math::Vector3 box2Max = transformComp2->position + AABBComp2->maxPoint;
-
-				if (CheckAABBCollision(box1Min, box1Max, box2Min, box2Max))
-				{
-					std::cout << "Colliding\n";
-				}
-				else
-					std::cout << "NOT Colliding\n";
+				std::cout << (CheckCollision(AABBComp->collider, AABBComp->collider)) ?  "Colliding\n" : "NOT Colliding\n";
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ECS/System.h"
+#include "Renderer/Mesh.h"
 
 namespace Behemoth
 {

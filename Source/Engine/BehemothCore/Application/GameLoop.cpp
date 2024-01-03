@@ -65,7 +65,9 @@ void Init()
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::VelocitySystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
+
+
+ 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereCollisionSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::OBBCollisionSystem>();
 

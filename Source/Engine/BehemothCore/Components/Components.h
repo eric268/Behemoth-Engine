@@ -1,6 +1,6 @@
 #include "ECS/Component.h"
 #include "Input/InputCodes.h"
-#include "Physics/CollisionMask.h"
+#include "Renderer/Mesh.h"
 
 #include <functional>
 #include <unordered_map>
@@ -18,7 +18,7 @@ namespace Behemoth
 
 		bool isVisible;
 
-		Behemoth::Mesh mesh;
+		Mesh mesh;
 		std::string modelFileName;
 		std::string textureFileName;
 	};
@@ -27,7 +27,7 @@ namespace Behemoth
 	{
 		WireframeComponent(const std::string& modelName, Math::Vector3 scale = Math::Vector3::One(), bool visible = false, Math::Vector3 color = Math::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), scale(scale), isVisible(visible), mesh(modelName), wireframeColor(color) {}
 		Math::Vector3 wireframeColor;
-		Behemoth::Mesh mesh;
+		Mesh mesh;
 		std::string modelFileName;
 		Math::Vector3 scale;
 		bool isVisible;
@@ -39,7 +39,7 @@ namespace Behemoth
 		BoundingVolumeComponent(float radius, bool visible) : mesh("sphere.obj"), volumeRadius(radius), isVisible(visible) {}
 		float volumeRadius;
 		bool isVisible;
-		Behemoth::Mesh mesh;
+		Mesh mesh;
 	};
 
 	struct MeshInitalizeComponent : public ECS::Component
@@ -176,64 +176,5 @@ namespace Behemoth
 		float constant;
 		float linear;
 		float quadratic;
-	};
-
-
-	// Physics Components
-	struct RigidBodyComponent : public ECS::Component
-	{
-		RigidBodyComponent() {}
-	};
-
-	struct ColliderComponent : public ECS::Component 
-	{
-	protected:
-		ColliderComponent(Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
-			collisionType(collisionType),
-			isEnabled(enabled),
-			collisionMask(Behemoth::CollisionMask::Everything) {}
-	public:
-		bool isEnabled;
-		std::uint16_t collisionType;
-		std::uint16_t collisionMask;
-	};
-
-	struct AABBColliderComponent : public ColliderComponent
-	{
-		AABBColliderComponent(Math::Vector3 min, Math::Vector3 max, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(collisionType, enabled),
-			minPoint(min),
-			maxPoint(max) {}
-
-		Math::Vector3 minPoint;
-		Math::Vector3 maxPoint;
-	};
-
-	struct OBBColliderComponent : public AABBColliderComponent
-	{
-		OBBColliderComponent(Math::Vector3 min, Math::Vector3 max, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
-			AABBColliderComponent(min, max, collisionType, enabled){}
-	};
-
-	struct SphereColliderComponent : public ColliderComponent
-	{
-		SphereColliderComponent(float radius = 1.0f, Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(collisionType, enabled),
-			radius(radius) {}
-
-		float radius;
-	};
-
-	struct MeshColliderComponent : public ColliderComponent
-	{
-		MeshColliderComponent(std::string& filename, Math::Vector3 scale = Math::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(collisionType, enabled),
-			modelFileName(filename),
-			mesh(filename),
-			scale(scale) {}
-
-		Math::Vector3 scale;
-		std::string modelFileName;
-		Mesh mesh;
 	};
 }

@@ -1,31 +1,39 @@
 #include "pch.h"
 #include "Collision.h"
-#include "Components/Components.h"
+#include "Math/MathCore.h"
+#include "Colliders.h"
 #include "ECS/ECSCore.h"
 
-namespace Behemoth
+namespace Behemoth::Collision
 {
-	bool CheckAABBCollision(const Math::Vector3& box1Min, const Math::Vector3& box1Max, const Math::Vector3& box2Min, const Math::Vector3& box2Max)
+	bool CheckAABBCollision(const AABBCollider& box1, const AABBCollider& box2)
 	{
-		if (box1Max.x < box2Min.x || box1Min.x > box2Max.x)
+		Math::Vector3 minPos1 = box1.pos - box1.halfwidthExtents;
+		Math::Vector3 maxPos1 = box1.pos + box1.halfwidthExtents;
+
+		Math::Vector3 minPos2 = box2.pos - box2.halfwidthExtents;
+		Math::Vector3 maxPos2 = box2.pos + box2.halfwidthExtents;
+
+
+		if (maxPos1.x < minPos2.x || minPos1.x > maxPos2.x)
 			return false;
-		if (box1Max.y < box2Min.y || box1Min.y > box2Max.y)
+		if (maxPos1.y < minPos2.y || minPos1.y > maxPos2.y)
 			return false;
-		if (box1Max.z < box2Min.z || box1Min.z > box2Max.z)
+		if (maxPos1.z < minPos2.z || minPos1.z > maxPos2.z)
 			return false;
 
 		return true;
 	}
 
-	bool CheckSphereSphereCollision(const Math::Vector3 sphere1Pos, const float sphere1Radius, const Math::Vector3 sphere2Pos, const float sphere2Radius)
+	bool CheckSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
 	{
-		float distance = Math::Vector3::SquaredDistance(sphere1Pos, sphere2Pos);
-		float rad = sphere1Radius + sphere2Radius;
+		float distance = Math::Vector3::SquaredDistance(sphere1.pos, sphere2.pos);
+		float rad = sphere1.radius + sphere2.radius;
 		return distance <= (rad * rad);
 	}
 
 	// Real-Time Collision Detection-Morgan Kaufmann (2005)
-	bool CheckOBBCollision(const OBB& box1, const OBB& box2)
+	bool CheckOBBCollision(const OBBCollider& box1, const OBBCollider& box2)
 	{
 		float rBox1, rBox2;
 
@@ -34,12 +42,12 @@ namespace Behemoth
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				R.data[i][j] = Math::Vector3::Dot(box1.rotVecs[i], box2.rotVecs[j]);
+				R.data[i][j] = Math::Vector3::Dot(box1.orientation[i], box2.orientation[j]);
 			}
 		}
 
-		Math::Vector3 t = box2.point - box1.point;
-		t = Math::Vector3(Math::Vector3::Dot(t, box1.rotVecs[0]), Math::Vector3::Dot(t, box1.rotVecs[1]), Math::Vector3::Dot(t, box1.rotVecs[2]));
+		Math::Vector3 t = box2.pos - box1.pos;
+		t = Math::Vector3(Math::Vector3::Dot(t, box1.orientation[0]), Math::Vector3::Dot(t, box1.orientation[1]), Math::Vector3::Dot(t, box1.orientation[2]));
 
 		for (int i = 0; i < 3; i++)
 		{

@@ -2,6 +2,7 @@
 #include "OBBCollisionSystem.h"
 #include "ECS/Registry.h"
 #include "Components/Components.h"
+#include "Components/PhysicsComponents.h"
 #include "Physics/Collision.h"
 
 namespace Behemoth
@@ -19,24 +20,20 @@ namespace Behemoth
 					continue;
 				}
 
-				OBB box1;
-				box1.point = transformComp->position;
-				box1.halfwidthExtents = OBBComp->maxPoint;
+				OBBComp->collider.pos = transformComp->position;
+				OBBComp2->collider.pos = transformComp2->position;
 
-				OBB box2;
-				box2.point = transformComp2->position;
-				box2.halfwidthExtents = OBBComp2->maxPoint;
 
 				for (int i = 0; i < 3; i++)
 				{
 					for (int j = 0; j < 3; j++)
 					{
-						box1.rotVecs[i][j] = transformComp->transformMatrix.data[i][j] / transformComp->scale[i];
-						box2.rotVecs[i][j] = transformComp2->transformMatrix.data[i][j] / transformComp2->scale[i];
+						OBBComp->collider.orientation[i][j] = transformComp->transformMatrix.data[i][j] / transformComp->scale[i];
+						OBBComp2->collider.orientation[i][j] = transformComp2->transformMatrix.data[i][j] / transformComp2->scale[i];
 					}
 				}
 
-				if (CheckOBBCollision(box1, box2))
+				if (CheckCollision(OBBComp->collider, OBBComp2->collider))
 				{
 					std::cout << "Colliding\n";
 				}

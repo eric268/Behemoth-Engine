@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Math/MathCore.h"
-#include "ECS/ECSCore.h"
+namespace ECS
+{
+	class Registry;
+}
 
 namespace Behemoth
 {
-
-
 	class SphereCollisionSystem
 	{
 	public:

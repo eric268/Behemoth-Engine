@@ -195,6 +195,8 @@
     <ClInclude Include="BehemothCore\Systems\Physics\SphereCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Physics\OBB.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\OBBCollisionSystem.h" />
+    <ClInclude Include="BehemothCore\Physics\Colliders.h" />
+    <ClInclude Include="BehemothCore\Components\PhysicsComponents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">

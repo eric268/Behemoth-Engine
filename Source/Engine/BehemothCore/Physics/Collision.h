@@ -1,13 +1,30 @@
 #pragma once
+#include "Components/PhysicsComponents.h"
 
-#include "Math/MathCore.h"
-#include "OBB.h"
-
-namespace Behemoth
+namespace Behemoth::Collision
 {
-	bool CheckAABBCollision(const Math::Vector3& box1Min, const Math::Vector3& box1Max, const Math::Vector3& box2Min, const Math::Vector3& box2Max);
-	bool CheckSphereSphereCollision(const Math::Vector3 sphere1Pos, const float sphere1Radius, const Math::Vector3 sphere2Pos, const float sphere2Radius);
+	bool CheckAABBCollision(const AABBCollider& box1, const AABBCollider& box2);
+	bool CheckSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2);
+	bool CheckOBBCollision(const OBBCollider& box1, const OBBCollider& box2);
 
-	bool CheckOBBCollision(const OBB& box1, const OBB& box2);
+	template <typename T, typename U>
+	bool CheckCollision(const T& a, const U& b);
+
+	template<>
+	inline bool CheckCollision<AABBCollider, AABBCollider>(const AABBCollider& a, const AABBCollider& b)
+	{
+		return CheckAABBCollision(a, b);
+	}
+
+	template<>
+	inline bool CheckCollision<SphereCollider, SphereCollider>(const SphereCollider& s1, const SphereCollider& s2)
+	{
+		return CheckSphereSphereCollision(s1, s2);
+	}
+
+	template<>
+	inline bool CheckCollision<OBBCollider, OBBCollider>(const OBBCollider& c1, const OBBCollider& c2)
+	{
+		return CheckOBBCollision(c1, c2);
+	}
 }
-

@@ -1,5 +1,9 @@
 #pragma once
-#include "ECS/ECSCore.h"
+
+namespace ECS
+{
+	class Registry;
+}
 
 namespace Behemoth
 {

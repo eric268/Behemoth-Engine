@@ -6,6 +6,7 @@
 
 // Components
 #include "Components/Components.h"
+#include "Components/PhysicsComponents.h"
 
 // ECS
 #include "ECS/ECSCore.h"

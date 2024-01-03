@@ -25,11 +25,11 @@ void MainScene::Init()
 	Behemoth::GameObjectFactory gameObjectFactory{};
 	cube1 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube1");
 	registry.AddComponent<CameraControllerComponent>(cube1, 1.0f, 1.0f, true, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D);
-	registry.AddComponent<Behemoth::OBBColliderComponent>(cube1, Math::Vector3(-1.1f), Math::Vector3(1.1f));
+	registry.AddComponent<Behemoth::OBBColliderComponent>(cube1, Math::Vector3(1.1f));
 	registry.AddComponent<Behemoth::WireframeComponent>(cube1, "cube.obj", Math::Vector3(1.1f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
 
 	cube2 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube2");
-	registry.AddComponent<Behemoth::OBBColliderComponent>(cube2, Math::Vector3(-1.1f), Math::Vector3(1.1f));
+	registry.AddComponent<Behemoth::OBBColliderComponent>(cube2, Math::Vector3(1.1f));
 	registry.AddComponent<Behemoth::WireframeComponent>(cube2,"cube.obj", Math::Vector3(1.1f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
 
 	registry.AddComponent<Behemoth::MoveComponent>(cube1, Math::Vector3(-3.0f, 0.0f, -5.0f));
