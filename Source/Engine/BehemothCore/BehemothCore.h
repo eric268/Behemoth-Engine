@@ -10,7 +10,7 @@
 // ECS
 #include "ECS/ECSCore.h"
 
-// Event
+// Events
 #include "Event/Event.h"
 #include "Event/EventManager.h"
 #include "Event/MouseEvents.h"
@@ -33,6 +33,7 @@
 #include "Misc/Log.h"
 #include "Misc/Stopwatch.h"
 
+// Rendering
 #include "Renderer/Line.h"
 #include "Renderer/Mesh.h"
 
