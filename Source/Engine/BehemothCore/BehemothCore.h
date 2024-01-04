@@ -34,6 +34,12 @@
 #include "Misc/Log.h"
 #include "Misc/Stopwatch.h"
 
+// Physics 
+#include "Physics/BVH.h"
+#include "Physics/Colliders.h"
+#include "Physics/Collision.h"
+#include "Physics/CollisionMask.h"
+
 // Rendering
 #include "Renderer/Line.h"
 #include "Renderer/Mesh.h"

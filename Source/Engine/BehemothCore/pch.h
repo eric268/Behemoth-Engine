@@ -11,6 +11,7 @@
 #include <cmath>
 #include <cstddef>
 #include <filesystem>
+#include <limits>
 
 #define NOMINMAX
 #include <windows.h>

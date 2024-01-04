@@ -60,8 +60,8 @@ void Init()
 	Behemoth::EventManager::GetInstance().BindEventCallbacks();
 
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MovementSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::VelocitySystem>();

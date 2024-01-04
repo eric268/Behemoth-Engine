@@ -56,7 +56,7 @@ namespace ECS
 			available++;
 		}
 
-		Entity CreateEntity(std::string name)
+		Entity CreateEntity(std::string name = "Entity")
 		{
 			Entity e(name);
 

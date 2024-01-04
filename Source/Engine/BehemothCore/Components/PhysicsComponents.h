@@ -31,7 +31,7 @@ namespace Behemoth
 	{
 		AABBColliderComponent(Math::Vector3 extents, Collision::CollisionMask collisionType = Collision::CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
-			collider(extents)
+			collider(extents/2.0f)
 		{}
 
 		Collision::AABBCollider collider;

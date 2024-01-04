@@ -26,11 +26,11 @@ namespace Behemoth
 	struct WireframeComponent : public ECS::Component
 	{
 		WireframeComponent(const std::string& modelName, Math::Vector3 scale = Math::Vector3::One(), bool visible = false, Math::Vector3 color = Math::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), scale(scale), isVisible(visible), mesh(modelName), wireframeColor(color) {}
-		Math::Vector3 wireframeColor;
-		Mesh mesh;
 		std::string modelFileName;
 		Math::Vector3 scale;
 		bool isVisible;
+		Math::Vector3 wireframeColor;
+		Mesh mesh;
 	};
 
 	struct BoundingVolumeComponent : public ECS::Component
@@ -85,6 +85,7 @@ namespace Behemoth
 	struct TransformComponent : public ECS::Component
 	{
 		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), isDirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()) {}
+
 		Math::Matrix4x4 transformMatrix;
 		Math::Vector3 forwardVector;
 		Math::Vector3 rightVector;

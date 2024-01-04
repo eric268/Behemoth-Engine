@@ -52,6 +52,8 @@ namespace Behemoth
 			cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
 		}
 
+		const Math::Matrix4x4 scaledTransformMatrix = GetScaledTransformMatrix(transformMatrix, scale);
+
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
@@ -65,7 +67,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * Math::Vector4(cachedVerticies[vertexIndex].vertex * scale, 1.0f);
+					primitive.verticies[j] = scaledTransformMatrix * Math::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
 					vertexIndex++;
 				}
 			}
@@ -97,5 +99,32 @@ namespace Behemoth
 	void WireframeRenderSystem::ReserveResources(int numPrimitives)
 	{
 		Renderer::GetInstance().ReserveLines(numPrimitives * 4);
+	}
+
+	Math::Matrix4x4 WireframeRenderSystem::GetScaledTransformMatrix(const Math::Matrix4x4& transformMatrix, const Math::Vector3& scale)
+	{
+		Math::Matrix4x4 scaledTransformMatrix = transformMatrix;
+
+		for (int col = 0; col < 3; col++)
+		{
+			float length = sqrt(scaledTransformMatrix.data[col][0]  * scaledTransformMatrix.data[col][0]  +
+									scaledTransformMatrix.data[col][1]  * scaledTransformMatrix.data[col][1]  +
+									scaledTransformMatrix.data[col][2]  * scaledTransformMatrix.data[col][2]);
+
+			if (length != 0)
+			{ // Prevent division by zero
+				for (int row = 0; row < 3; row++)
+				{
+					scaledTransformMatrix.data[col][row] /= length;
+				}
+			}
+		}
+
+		// Apply new scale
+		for (int i = 0; i < 3; i++)
+		{
+			scaledTransformMatrix.data[i][i] = scale[i];
+		}
+		return scaledTransformMatrix;
 	}
 }

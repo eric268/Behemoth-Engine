@@ -16,6 +16,11 @@ public:
 	ECS::Entity cube1;
 	ECS::Entity cube2;
 
+	Behemoth::Collision::BVH collisionBVH;
+
+	bool doOnce = true;
+	int counter = 0;
+
 private:
 	void InitSystems();
 };

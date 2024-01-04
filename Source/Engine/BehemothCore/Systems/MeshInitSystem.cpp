@@ -14,15 +14,14 @@ namespace Behemoth
 		// This way we can do a very quick and easy check to see if there are any meshes that need to be initialized
 		// most likely this check will fail and exit early so want to do this before calling .Get on the registry
 
-
-		auto eraseInitComponents = registry.GetComponent<MeshInitalizeComponent>();
-		if (!eraseInitComponents->size())
-			return;
-
-		auto components = registry.Get<MeshComponent>();
+		auto components = registry.Get<MeshInitalizeComponent>();
 		for (const auto& [entity, meshComp] : components)
 		{
-			InitMesh(meshComp->mesh);
+			MeshComponent* meshComponent = registry.GetComponent<MeshComponent>(entity);
+			if (meshComponent)
+			{
+				InitMesh(meshComponent->mesh);
+			}
 
 #ifdef DEBUG
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
@@ -39,11 +38,14 @@ namespace Behemoth
 #endif
 
 		}
+
+		auto componentsToRemove = registry.GetComponent<MeshInitalizeComponent>();
+
 		// Iterate over the component backwards because we always swap a component to the back of the container before removing it
 		// iterating over backwards allows us to update the container size and not cause errors in the range of the loop
-		for (int i = eraseInitComponents->dense.size() - 1; i >= 0; i--)
+		for (int i = componentsToRemove->dense.size() - 1; i >= 0; i--)
 		{
-			eraseInitComponents->RemoveComponent(eraseInitComponents->dense[i]);
+			componentsToRemove->RemoveComponent(componentsToRemove->dense[i]);
 		}
 
 	}
