@@ -24,8 +24,8 @@ namespace Behemoth::Collision
 
 		ECS::Entity rootDebugEntity = registry.CreateEntity();
 		registry.AddComponent<TransformComponent>(rootDebugEntity);
-		registry.AddComponent<MoveComponent>(rootDebugEntity, root->collider.pos);
-		registry.AddComponent<WireframeComponent>(rootDebugEntity, "cube.obj", root->collider.halfwidthExtents + Math::Vector3(0.5f), true, Math::Vector3(1.0f, 0.0f, 0.0f));
+		registry.AddComponent<MoveComponent>(rootDebugEntity, root->debugColliderPos);
+		registry.AddComponent<WireframeComponent>(rootDebugEntity, "cube.obj", root->debugColliderScale, true, Math::Vector3(1.0f, 0.0f, 0.0f));
 		registry.AddComponent<MeshInitalizeComponent>(rootDebugEntity);
 	}
 
@@ -49,10 +49,14 @@ namespace Behemoth::Collision
 			for (int i = 0; i < 3; i++)
 			{
 				if (colliderMin[i] < minPos[i])
+				{
 					minPos[i] = colliderMin[i];
+				}
 
 				if (colliderMax[i] > maxPos[i])
+				{
 					maxPos[i] = colliderMax[i];
+				}
 			}
 		}
 		rootNode->collider.pos = (maxPos + minPos) / 2.0f;
@@ -60,6 +64,32 @@ namespace Behemoth::Collision
 		rootNode->leftChild = nullptr;
 		rootNode->rightChild = nullptr;
 		rootNode->entity = nullptr;
+
+#ifdef DEBUG
+		Math::Vector3 debugMinPos = Math::Vector3(std::numeric_limits<float>::max());
+		Math::Vector3 debugMaxPos = Math::Vector3(std::numeric_limits<float>::lowest());
+
+		for (const auto& [entity, transformComp, colliderComp] : components)
+		{
+			Math::Vector3 debugColliderMin = transformComp->position - colliderComp->collider.halfwidthExtents * 2.0f;
+			Math::Vector3 debugColliderMax = transformComp->position + colliderComp->collider.halfwidthExtents * 2.0f;
+
+			for (int i = 0; i < 3; i++)
+			{
+				if (debugColliderMin[i] < debugMinPos[i])
+				{
+					debugMinPos[i] = debugColliderMin[i];
+				}
+
+				if (debugColliderMax[i] > debugMaxPos[i])
+				{
+					debugMaxPos[i] = debugColliderMax[i];
+				}
+			}
+		}
+		rootNode->debugColliderPos = (debugMaxPos + debugMinPos) / 2.0f;
+		rootNode->debugColliderScale = (debugMaxPos - debugMinPos) / 2.0f;
+#endif
 
 		return rootNode;
 	}

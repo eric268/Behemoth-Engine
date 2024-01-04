@@ -25,6 +25,8 @@ namespace Behemoth::Collision
 		AABBCollider collider;
 		BVHNode* leftChild;
 		BVHNode* rightChild;
+		Math::Vector3 debugColliderPos;
+		Math::Vector3 debugColliderScale;
 		ECS::Entity* entity;
 	};
 

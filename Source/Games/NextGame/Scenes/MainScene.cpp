@@ -18,9 +18,9 @@ MainScene::MainScene() : pointLight(registry.CreateNullEntity()), cube1(registry
 	Behemoth::GameObjectFactory gameObjectFactory{};
 	cube1 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube1");
 	registry.AddComponent<CameraControllerComponent>(cube1, 1.0f, 1.0f, true, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D);
-	registry.AddComponent<Behemoth::AABBColliderComponent>(cube1, Math::Vector3(1.0f));
-	registry.AddComponent<Behemoth::WireframeComponent>(cube1, "cube.obj", Math::Vector3(1.5f, 2.5f, 0.5f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
-	registry.AddComponent<Behemoth::ScalingComponent>(cube1, Math::Vector3(1.5f, 2.5f, 0.5f));
+	registry.AddComponent<Behemoth::AABBColliderComponent>(cube1, Math::Vector3(2.5, 1.75, 2.0f));
+	registry.AddComponent<Behemoth::WireframeComponent>(cube1, "cube.obj", Math::Vector3(2.5, 1.75, 2.0f), true, Math::Vector3(0.0f, 1.0f, 0.0f));
+	registry.AddComponent<Behemoth::ScalingComponent>(cube1, Math::Vector3(2.5, 1.75, 2.0f));
 
 	cube2 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube2");
 	registry.AddComponent<Behemoth::AABBColliderComponent>(cube2, Math::Vector3(1.0f));
@@ -70,13 +70,10 @@ void MainScene::OnEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
-	if (doOnce && counter > 2)
+	if (Behemoth::Input::IsKeyReleased(Behemoth::KeyCode::KC_Space))
 	{
-		doOnce = false;
 		collisionBVH.OnConstruction(registry);
 	}
-	else
-		counter++;
 }
 
 void MainScene::Shutdown()
