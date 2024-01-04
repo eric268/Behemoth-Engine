@@ -4,9 +4,9 @@
 
 namespace Behemoth
 {
-	ECS::Entity CameraFactory::CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name)
+	ECS::EntityHandle CameraFactory::CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name)
 	{
-		ECS::Entity entity = registry.CreateEntity(name);
+		ECS::EntityHandle entity = registry.CreateEntity(name);
 		registry.AddComponent<CameraComponent>(entity, isMain);
 		registry.AddComponent<VelocityComponent>(entity);
 		registry.AddComponent<RotationComponent>(entity);

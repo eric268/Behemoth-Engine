@@ -11,7 +11,7 @@ namespace Behemoth
 	{
 	public:
 		DirectionalLightFactory() = default;
-		ECS::Entity CreateDirectionalLight(ECS::Registry& registry, const std::string& name = "Directional Light");
+		ECS::EntityHandle CreateDirectionalLight(ECS::Registry& registry, const std::string& name = "Directional Light");
 
 	private:
 
@@ -21,7 +21,7 @@ namespace Behemoth
 	{
 	public:
 		PointLightFactory() = default;
-		ECS::Entity CreatePointLight(ECS::Registry& registry, const std::string& name = "Point Light");
+		ECS::EntityHandle CreatePointLight(ECS::Registry& registry, const std::string& name = "Point Light");
 
 	private:
 

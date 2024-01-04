@@ -11,7 +11,7 @@ namespace Behemoth
 	{
 	public:
 		CameraFactory() = default;
-		ECS::Entity CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name = "Camera");
+		ECS::EntityHandle CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name = "Camera");
 
 	private:
 	};

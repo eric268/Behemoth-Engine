@@ -22,7 +22,7 @@ namespace Behemoth::Collision
 		auto components = registry.Get<TransformComponent, AABBColliderComponent>();
 		root = CreateRootNode(components);
 
-		ECS::Entity rootDebugEntity = registry.CreateEntity();
+		ECS::EntityHandle rootDebugEntity = registry.CreateEntity();
 		registry.AddComponent<TransformComponent>(rootDebugEntity);
 		registry.AddComponent<MoveComponent>(rootDebugEntity, root->debugColliderPos);
 		registry.AddComponent<WireframeComponent>(rootDebugEntity, "cube.obj", root->debugColliderScale, true, Math::Vector3(1.0f, 0.0f, 0.0f));

@@ -12,9 +12,9 @@ public:
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
-	ECS::Entity pointLight;
-	ECS::Entity cube1;
-	ECS::Entity cube2;
+	ECS::EntityHandle pointLight;
+	ECS::EntityHandle cube1;
+	ECS::EntityHandle cube2;
 
 	Behemoth::Collision::BVH collisionBVH;
 

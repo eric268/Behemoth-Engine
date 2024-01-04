@@ -6,14 +6,14 @@
 
 #include <iostream>
 
-MainScene::MainScene() : pointLight(registry.CreateNullEntity()), cube1(registry.CreateNullEntity()), cube2(registry.CreateNullEntity())
+MainScene::MainScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
-	ECS::Entity mainCameraEntity = cameraFactory.CreateCamera(registry, true, "Main Camera");
+	ECS::EntityHandle mainCameraEntity = cameraFactory.CreateCamera(registry, true, "Main Camera");
 	registry.AddComponent<CameraControllerComponent>(mainCameraEntity, 1.0f, 1.0f, false, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right);
 
 	Behemoth::DirectionalLightFactory dirLightFactory{};
-	ECS::Entity dirLight = dirLightFactory.CreateDirectionalLight(registry);
+	ECS::EntityHandle dirLight = dirLightFactory.CreateDirectionalLight(registry);
 
 	Behemoth::GameObjectFactory gameObjectFactory{};
 	cube1 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube1");

@@ -5,27 +5,36 @@
 
 namespace ECS
 {
+	using EntityID = std::uint32_t;
+	using EntityIdentifier = std::uint16_t;
+	using EntityVersion = std::uint16_t;
+
+	struct EntityHandle
+	{
+		EntityID ID;
+	};
+
 	class Entity
 	{
 	public:
 
-		inline std::uint32_t GetID() const
+		EntityID GetID() const
 		{
 			return ID;
 		}
 
-		inline std::uint16_t GetIdentifier() const
+		EntityIdentifier GetIdentifier() const
 		{
 			return ID & 0x0000FFFF;
 		}
 
 		inline void IncrementVersion()
 		{
-			std::uint16_t version = (ID >> 16) + 1;
+			EntityVersion version = (ID >> 16) + 1;
 			ID = (version << 16) | (ID & 0x0000FFFF);
 		}
 
-		std::uint16_t GetVersion() const
+		EntityVersion GetVersion() const
 		{
 			return ID >> 16;
 		}
@@ -48,8 +57,18 @@ namespace ECS
 
 		Entity(std::string name) : name(name), ID(0) {}
 
+		static inline EntityIdentifier GetIdentifier(EntityID ID)
+		{
+			return ID & 0x0000FFFF;
+		}
+
+		static inline EntityVersion GetVersion(EntityID ID)
+		{
+			return ID >> 16;
+		}
+
 		// Only want to be able to use this in Registry class to point to next recycled entity ID
-		inline void SetIdentifier(const std::uint16_t newIdentifier)
+		inline void SetIdentifier(const EntityIdentifier newIdentifier)
 		{
 			ID = (ID & 0xFFFF0000) | newIdentifier;
 		}
@@ -59,7 +78,12 @@ namespace ECS
 			ID = newID;
 		}
 
-		std::uint32_t ID;
+		bool IsValid()
+		{
+			return ID != 0xFFFFFFFF;
+		}
+
+		EntityID ID;
 		std::string name;
 	};
 

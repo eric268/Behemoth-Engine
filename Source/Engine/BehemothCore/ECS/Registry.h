@@ -37,26 +37,16 @@ namespace ECS
 		Registry(Registry&& obj) = delete;
 		Registry(const Registry& other) = delete;
 
-		void DestroyEntity(Entity entity)
+		void DestroyEntity(EntityHandle entityHandle)
 		{
-			for (int i = 0; i < componentArray.size(); i++)
+			Entity entity = GetEntityFromHandle(entityHandle);
+			if (entity.IsValid())
 			{
-				componentArray[i]->RemoveComponent(entity);
+				DestroyEntity(entity);
 			}
-
-			entity.IncrementVersion();
-			auto identifier = entity.GetIdentifier();
-			if (available > 0)
-			{
-				entity.SetIdentifier(next);
-			}
-
-			entities[identifier] = entity;
-			next = identifier;
-			available++;
 		}
 
-		Entity CreateEntity(std::string name = "Entity")
+		EntityHandle CreateEntity(std::string name = "Entity")
 		{
 			Entity e(name);
 
@@ -71,7 +61,10 @@ namespace ECS
 				entities.push_back(e);
 			}
 
-			return e;
+			EntityHandle entityHandle{};
+			entityHandle.ID = e.ID;
+
+			return entityHandle;
 		}
 
 		Entity CreateNullEntity()
@@ -79,6 +72,31 @@ namespace ECS
 			Entity e("Null Entity");
 			e.SetID(0xFFFFFFFF);
 			return e;
+		}
+
+		template<IsComponent T, typename ... Args>
+		T* AddComponent(EntityHandle handle, Args&& ... parameters)
+		{
+			Entity entity = GetEntityFromHandle(handle);
+			if (entity.IsValid())
+			{
+				return AddComponent<T>(entity, std::forward<Args>(parameters)...);
+			}
+			else
+			{
+				return nullptr;
+			}
+		}
+
+		template<IsComponent T>
+		T* GetComponent(EntityHandle handle)
+		{
+			Entity entity = GetEntityFromHandle(handle);
+			if (entity.IsValid())
+			{
+				return GetComponent<T>(entity);
+			}
+			return nullptr;
 		}
 
 		template<IsComponent T, typename ... Args>
@@ -90,6 +108,7 @@ namespace ECS
 			set->AddComponent(entity, component);
 			return &component;
 		}
+
 
 		template<IsComponent T>
 		T* GetComponent(Entity entity)
@@ -149,6 +168,38 @@ namespace ECS
 
 		std::unordered_map<int,int> componentID;
 		std::vector<std::shared_ptr<IComponentPool>> componentArray;
+
+		Entity GetEntityFromHandle(EntityHandle handle)
+		{
+			EntityIdentifier identifier = Entity::GetIdentifier(handle.ID);
+			if (entities[identifier].GetID() == handle.ID)
+			{
+				return entities[identifier];
+			}
+			else
+			{
+				return CreateNullEntity();
+			}
+		}
+
+		void DestroyEntity(Entity entity)
+		{
+			for (int i = 0; i < componentArray.size(); i++)
+			{
+				componentArray[i]->RemoveComponent(entity);
+			}
+
+			entity.IncrementVersion();
+			auto identifier = entity.GetIdentifier();
+			if (available > 0)
+			{
+				entity.SetIdentifier(next);
+			}
+
+			entities[identifier] = entity;
+			next = identifier;
+			available++;
+		}
 
 		std::uint32_t RecycleEntity()
 		{

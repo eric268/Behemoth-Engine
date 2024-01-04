@@ -4,9 +4,9 @@
 
 namespace Behemoth
 {
-	ECS::Entity GameObjectFactory::CreateGameObject(ECS::Registry& registry, std::string modelFilePath, std::string texturePath, std::string entityName)
+	ECS::EntityHandle GameObjectFactory::CreateGameObject(ECS::Registry& registry, std::string modelFilePath, std::string texturePath, std::string entityName)
 	{
-		ECS::Entity entity = registry.CreateEntity(entityName);
+		ECS::EntityHandle entity = registry.CreateEntity(entityName);
 		registry.AddComponent<MeshComponent>(entity, modelFilePath, texturePath);
 		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<MeshInitalizeComponent>(entity);
