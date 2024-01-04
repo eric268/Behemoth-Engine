@@ -42,6 +42,9 @@ namespace Behemoth::Collision
 	private:
 		std::shared_ptr<BVHNode> CreateRootNode(std::vector<std::tuple<ECS::Entity, TransformComponent*, AABBColliderComponent*>> components);
 		std::shared_ptr<BVHNode> root;
+
+		float GetSurfaceArea(const AABBCollider& componenets);
+		float CalculateSAH(float traversalCost, std::vector<AABBCollider>& leftColliders, std::vector<AABBCollider>& rightColliders, float intersectCost);
 	};
 }
 

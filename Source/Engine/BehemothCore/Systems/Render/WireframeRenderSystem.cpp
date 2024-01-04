@@ -112,7 +112,7 @@ namespace Behemoth
 									scaledTransformMatrix.data[col][2]  * scaledTransformMatrix.data[col][2]);
 
 			if (length != 0)
-			{ // Prevent division by zero
+			{
 				for (int row = 0; row < 3; row++)
 				{
 					scaledTransformMatrix.data[col][row] /= length;

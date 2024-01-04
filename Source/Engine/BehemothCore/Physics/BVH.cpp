@@ -93,4 +93,35 @@ namespace Behemoth::Collision
 
 		return rootNode;
 	}
+
+
+	float BVH::GetSurfaceArea(const AABBCollider& aabb)
+	{
+		float l = 2.0f * aabb.halfwidthExtents.x;
+		float w = 2.0f * aabb.halfwidthExtents.y;
+		float h = 2.0f * aabb.halfwidthExtents.z;
+
+		return 2.0f * (l * w + l * h + w * h);
+	}
+
+	float BVH::CalculateSAH(float traversalCost, std::vector<AABBCollider>& leftColliders, std::vector<AABBCollider>& rightColliders, float intersectCost)
+	{
+		const int numLeft =  leftColliders.size();
+		const int numRight = rightColliders.size();
+
+		float leftSurfaceArea = 0.0f;
+		float rightSurfaceArea = 0.0f;
+
+		for (int i = 0; i < numLeft; i++)
+		{
+			leftSurfaceArea += GetSurfaceArea(leftColliders[i]);
+		}
+
+		for (int i = 0; i < numRight; i++)
+		{
+			rightSurfaceArea += GetSurfaceArea(rightColliders[i]);
+		}
+
+		return traversalCost + (numLeft * leftSurfaceArea + numRight * rightSurfaceArea) * intersectCost;
+	}
 }
