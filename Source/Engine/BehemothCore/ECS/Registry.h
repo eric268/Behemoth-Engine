@@ -117,6 +117,17 @@ namespace ECS
 			return set->GetComponent(entity);
 		}
 
+		template <IsComponent ...T>
+		std::tuple<T*...> GetMultipleComponents(EntityHandle handle)
+		{
+			Entity entity = GetEntityFromHandle(handle);
+			if (entity.IsValid())
+			{
+				return GetMultipleComponents<T...>(entity);
+			}
+			return {};
+		}
+
 		template<IsComponent ...T>
 		std::tuple<T*...> GetMultipleComponents(Entity entity)
 		{
@@ -172,14 +183,13 @@ namespace ECS
 		Entity GetEntityFromHandle(EntityHandle handle)
 		{
 			EntityIdentifier identifier = Entity::GetIdentifier(handle.ID);
-			if (entities[identifier].GetID() == handle.ID)
-			{
-				return entities[identifier];
-			}
-			else
+
+			if (identifier >= entities.size() || entities[identifier].GetID() != handle.ID)
 			{
 				return CreateNullEntity();
 			}
+
+			return entities[identifier];
 		}
 
 		void DestroyEntity(Entity entity)

@@ -2,6 +2,7 @@
 #include "World.h"
 #include "Scene.h"
 #include "Misc/Log.h"
+#include "Systems/SystemManager.h"
 
 namespace Behemoth
 {
@@ -20,6 +21,10 @@ namespace Behemoth
 		}
 
 		currentScene = newScene;
+
+		// This is temporary need to find a way to run system initializations when changing scene, this is for things like loading any new meshes, moving entities to their world locations etc
+		// For now just running all systems
+		Behemoth::SystemManager::GetInstance().Run(0.0f, currentScene->GetRegistry());
 		currentScene->Init();
 	}
 
@@ -41,6 +46,7 @@ namespace Behemoth
 
 		currentScene->Init();
 	}
+
 	void World::Update(const float deltaTime)
 	{
 		if (!currentScene)
@@ -55,6 +61,7 @@ namespace Behemoth
 			return;
 
 		currentScene->Shutdown();
+		delete currentScene;
 	}
 
 	void World::OnEvent(Event& e)

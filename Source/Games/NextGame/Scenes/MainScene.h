@@ -13,8 +13,8 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 	ECS::EntityHandle pointLight;
-	ECS::EntityHandle cube1;
-	ECS::EntityHandle cube2;
+
+	ECS::EntityHandle cubes[4];
 
 	Behemoth::Collision::BVH collisionBVH;
 

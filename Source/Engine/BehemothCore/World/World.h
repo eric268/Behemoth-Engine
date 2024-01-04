@@ -29,8 +29,7 @@ namespace Behemoth
 
 	private:
 		World() = default;
-		Scene* currentScene;
 
-		std::queue<Event> eventQueue;
+		Scene* currentScene;
 	};
 }

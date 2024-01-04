@@ -28,6 +28,8 @@ namespace Behemoth
 			}
 		}
 
+		std::cout << "Move system fired\n";
+
 		for (int i = movementComponents->dense.size() - 1; i >= 0; i--)
 		{
 			movementComponents->RemoveComponent(movementComponents->dense[i]);

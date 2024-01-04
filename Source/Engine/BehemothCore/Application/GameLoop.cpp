@@ -54,8 +54,6 @@ void OnEvent(Behemoth::Event& e)
 
 void Init()
 {
-	CreateApplication();
-
 	Behemoth::EventManager::GetInstance().OnEventDelegate = OnEvent;
 	Behemoth::EventManager::GetInstance().BindEventCallbacks();
 
@@ -77,6 +75,8 @@ void Init()
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::WireframeRenderSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BoundingVolumeRenderSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
+
+	CreateApplication();
 }
 
 
@@ -86,11 +86,13 @@ void Init()
 //------------------------------------------------------------------------
 void Update(float deltaTime)
 {
+	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->GetRegistry();
+	Behemoth::SystemManager::GetInstance().Run(deltaTime, registry);
+
+
 	Behemoth::World::GetInstance().Update(deltaTime);
 	Behemoth::Input::Update(deltaTime);
 	// Need to add a check here to ensure that world and active scene are valid
-	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->GetRegistry();
-	Behemoth::SystemManager::GetInstance().Run(deltaTime, registry);
 }
 
 //------------------------------------------------------------------------

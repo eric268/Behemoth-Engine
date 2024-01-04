@@ -41,6 +41,14 @@ namespace Behemoth
 			}
 		}
 
+		void InitScene(ECS::Registry& registry)
+		{
+			for (const auto& system : initSystemContainer)
+			{
+				system->Run(0.0f, registry);
+			}
+		}
+
 	private:
 		SystemManager() = default;
 
@@ -49,6 +57,7 @@ namespace Behemoth
 
 		std::unordered_map<int, int> systemTypeID;
 		std::vector<std::shared_ptr<ECS::ISystem>> systemContainer;
+		std::vector<std::shared_ptr<ECS::ISystem>> initSystemContainer;
 	};
 }
 
