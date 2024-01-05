@@ -49,6 +49,7 @@ namespace Behemoth
 		}
 		transformComponent->forwardVector = GetForwardVector(transformComponent->transformMatrix);
 		transformComponent->rightVector = GetRightVector(transformComponent->transformMatrix);
+		transformComponent->upVector = Math::Vector3::Up();
 		transformComponent->isDirty = true;
 	}
 

@@ -84,7 +84,7 @@ namespace Behemoth
 
 	struct TransformComponent : public ECS::Component
 	{
-		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), isDirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()) {}
+		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), isDirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()), upVector(Math::Vector3::Up()) {}
 
 		Math::Matrix4x4 transformMatrix;
 		Math::Vector3 forwardVector;

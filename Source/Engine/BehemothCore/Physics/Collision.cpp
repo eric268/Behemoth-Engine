@@ -146,6 +146,7 @@ namespace Behemoth::Collision
 	bool CheckSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
 	{
 		float squaredDist = 0;
+		float squaredRad = sphere.radius * sphere.radius;
 
 		for (int axis = 0; axis < 3; axis++)
 		{
@@ -167,6 +168,6 @@ namespace Behemoth::Collision
 			squaredDist += diff * diff;
 		}
 
-		return squaredDist <= sphere.radius * sphere.radius;
+		return squaredDist <= squaredRad;
 	}
 }

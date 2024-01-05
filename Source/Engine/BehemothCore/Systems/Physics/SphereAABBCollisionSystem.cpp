@@ -17,6 +17,8 @@ namespace Behemoth
 		{
 			for (const auto& [entity2, transformComp2, aabbComp] : components2)
 			{
+				sphereComp->collider.pos = transformComp1->position;
+				aabbComp->collider.pos = transformComp2->position;
 				if (Collision::CheckCollision(sphereComp->collider, aabbComp->collider))
 				{
 					std::cout << "Sphere AABB colliding\n";

@@ -25,21 +25,16 @@ namespace Behemoth::Collision
 		AABBCollider collider;
 		std::shared_ptr<BVHNode> leftChild;
 		std::shared_ptr<BVHNode> rightChild;
-
-		// Only for drawing the debug wireframe collider
-		Math::Vector3 debugColliderPos;
-		Math::Vector3 debugColliderScale;
-		
 		// For leaf nodes only
 		ECS::EntityHandle entityHandles;
 	};
 
 	struct BVHData
 	{
+		BVHData() : handle(), collider() {}
+		BVHData(ECS::EntityHandle handle, AABBCollider collider) : handle(handle), collider(collider) {}
 		ECS::EntityHandle handle;
 		AABBCollider collider;
-		BVHData() = default;
-		BVHData(ECS::EntityHandle handle, AABBCollider collider) : handle(handle), collider(collider) {}
 	};
 
 	class BVH
@@ -52,11 +47,13 @@ namespace Behemoth::Collision
 		void OnReconstruction(ECS::Registry& registry);
 
 	private:
-		std::shared_ptr<BVHNode> CreateRootNode(ECS::Registry& registry, std::vector<BVHData>& data);
+		std::vector<BVHData> GetColliderData(ECS::Registry& registry);
+		std::shared_ptr<BVHNode> CreateRootNode(const std::vector<BVHData>& data);
+		AABBCollider GenerateBound(const std::vector<BVHData>& colliders);
 
 		void GenerateBVHTree(ECS::Registry& DEBUG_registry, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth);
 
-		AABBCollider GenerateBound(std::vector<BVHData>& colliders, bool debug = false);
+
 
 		float GetSurfaceArea(const AABBCollider& componenets);
 		float CalculateSAH(int position, std::vector<BVHData>& colliders, float traversalCost, float intersectCost);
@@ -67,7 +64,7 @@ namespace Behemoth::Collision
 
 		// Debug
 		ECS::EntityHandle rootDebugEntity;
-		void GenerateDebugBound(ECS::Registry& DEBUG_registry, AABBCollider& debugBound, Math::Vector3 color = Math::Vector3(1.0f, 0.0f, 0.0f));
+		void GenerateDebugBound(ECS::Registry& DEBUG_registry, AABBCollider collider, Math::Vector3 color);
 
 		Math::Vector3 colors[7] =
 		{

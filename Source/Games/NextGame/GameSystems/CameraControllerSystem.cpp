@@ -9,27 +9,37 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 
 	for (auto& [entity, transformComp, velocityComp, rotationComp, controllerComp] : components)
 	{
-		velocityComp->velocity = Math::Vector3::Zero();
 		rotationComp->speed = 0;
+
+		Math::Vector3 velocity = Math::Vector3::Zero();
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->forward))
 		{
-			velocityComp->velocity += transformComp->forwardVector;
+			velocity += transformComp->forwardVector;
 		}
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->back))
 		{
-			velocityComp->velocity -= transformComp->forwardVector;
+			velocity -= transformComp->forwardVector;
 		}
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->right))
 		{
-			velocityComp->velocity -= transformComp->rightVector;
+			velocity -= transformComp->rightVector;
 		}
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->left))
 		{
-			velocityComp->velocity += transformComp->rightVector;
+			velocity += transformComp->rightVector;
+		}
+
+		if (Behemoth::Input::IsKeyHeld(controllerComp->up))
+		{
+			velocity += transformComp->upVector;
+		}
+		if (Behemoth::Input::IsKeyHeld(controllerComp->down))
+		{
+			velocity -= transformComp->upVector;
 		}
 
 		if (controllerComp->enableRotation)
@@ -58,8 +68,9 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 			}
 		}
 
+		velocity.Normalize();
+		velocity *= 0.75f;
 
-		velocityComp->velocity.Normalize();
-		velocityComp->velocity *= 0.75f;
+		velocityComp->velocity = velocity;
 	}
 }
