@@ -2,14 +2,13 @@
 
 #include "Physics/Colliders.h"
 #include "ECS/Entity.h"
-#include "ECS/Registry.h"
 #include <vector>
 #include <tuple>
 #include <memory>
 
 namespace ECS
 {
-	// class Registry;
+	class Registry;
 }
 
 namespace Behemoth
@@ -47,24 +46,20 @@ namespace Behemoth::Collision
 		void OnReconstruction(ECS::Registry& registry);
 
 	private:
-		std::vector<BVHData> GetColliderData(ECS::Registry& registry);
-		std::shared_ptr<BVHNode> CreateRootNode(const std::vector<BVHData>& data);
-		AABBCollider GenerateBound(const std::vector<BVHData>& colliders);
+		std::vector<BVHData> GetSceneColliderData(ECS::Registry& registry);
+		AABBCollider GenerateCollider(const std::vector<BVHData>& colliders);
+		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, AABBCollider collider, bool drawCollider = true, Math::Vector3 color = Math::Vector3(1.0f, 1.0f, 1.0f));
+		std::shared_ptr<BVHNode> GenerateLeaf(const BVHData& colliderData);
 
-		void GenerateBVHTree(ECS::Registry& DEBUG_registry, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth);
-
-
-
-		float GetSurfaceArea(const AABBCollider& componenets);
+		void GenerateBVHTree(ECS::Registry& registry, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth);
 		float CalculateSAH(int position, std::vector<BVHData>& colliders, float traversalCost, float intersectCost);
+		float GetSurfaceArea(const AABBCollider& componenets);
+
+		void CreateBVHTree(ECS::Registry& registry);
+		void DestroyBVHTree(ECS::Registry& registry);
 
 		std::shared_ptr<BVHNode> root;
-
-		std::vector<ECS::EntityHandle> DEBUG_ColliderHandles;
-
-		// Debug
-		ECS::EntityHandle rootDebugEntity;
-		void GenerateDebugBound(ECS::Registry& DEBUG_registry, AABBCollider collider, Math::Vector3 color);
+		std::vector<ECS::EntityHandle> colliderHandles;
 
 		Math::Vector3 colors[7] =
 		{

@@ -3,57 +3,42 @@
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
+#include "Misc/Log.h"
 
 namespace Behemoth::Collision
 {
-	BVH::BVH() : root()
-	{
+	BVH::BVH() : root() {}
 
-	}
-
-	BVH::~BVH()
-	{
-
-	}
+	BVH::~BVH() {}
 
 	void BVH::OnConstruction(ECS::Registry& registry)
 	{
-		std::vector<BVHData> data = GetColliderData(registry);
-		root = CreateRootNode(data);
-
-  		rootDebugEntity = registry.CreateEntity("BVH Root Bound");
-		registry.AddComponent<TransformComponent>(rootDebugEntity);
-		registry.AddComponent<MoveComponent>(rootDebugEntity, root->collider.pos);
-		registry.AddComponent<WireframeComponent>(rootDebugEntity, "cube.obj", root->collider.halfwidthExtents, true, Math::Vector3(1.0f, 0.0f, 0.0f));
-		registry.AddComponent<MeshInitalizeComponent>(rootDebugEntity);
- 		registry.AddComponent<AABBColliderComponent>(rootDebugEntity, root->collider.halfwidthExtents);
-
-		 GenerateBVHTree(registry, root, data, 1);
+		CreateBVHTree(registry);
 	}
 
 	void BVH::OnReconstruction(ECS::Registry& registry)
 	{
-		for (int i = 0; i < DEBUG_ColliderHandles.size(); i++)
-		{
-			registry.DestroyEntity(DEBUG_ColliderHandles[i]);
-		}
-
-		registry.DestroyEntity(rootDebugEntity);
-
-		std::vector<BVHData> data;
-		root = CreateRootNode(data);
-
-		rootDebugEntity = registry.CreateEntity();
-		registry.AddComponent<TransformComponent>(rootDebugEntity);
-		registry.AddComponent<MoveComponent>(rootDebugEntity, root->collider.pos);
-		registry.AddComponent<WireframeComponent>(rootDebugEntity, "cube.obj", root->collider.halfwidthExtents, true, Math::Vector3(1.0f, 0.0f, 0.0f));
-		registry.AddComponent<MeshInitalizeComponent>(rootDebugEntity);
-		registry.AddComponent<AABBColliderComponent>(rootDebugEntity, root->collider.halfwidthExtents);
-
-		// GenerateBVHTree(registry, root, data, 1);
+		DestroyBVHTree(registry);
+		CreateBVHTree(registry);
 	}
 
-	std::vector<BVHData> BVH::GetColliderData(ECS::Registry& registry)
+	void BVH::CreateBVHTree(ECS::Registry& registry)
+	{
+		std::vector<BVHData> data = GetSceneColliderData(registry);
+		root = GenerateNode(registry, GenerateCollider(data), true, colors[0]);
+		GenerateBVHTree(registry, root, data, 1);
+	}
+
+	void BVH::DestroyBVHTree(ECS::Registry& registry)
+	{
+		for (const auto& handle : colliderHandles)
+		{
+			registry.DestroyEntity(handle);
+		}
+		colliderHandles.clear();
+	}
+
+	std::vector<BVHData> BVH::GetSceneColliderData(ECS::Registry& registry)
 	{
 		auto components = registry.Get<TransformComponent, AABBColliderComponent>();
 		std::vector<BVHData> data;
@@ -62,30 +47,15 @@ namespace Behemoth::Collision
 		for (const auto& [entity, transformComp, colliderComp] : components)
 		{
 			colliderComp->collider.pos = transformComp->position;
-			data.push_back({ entity, colliderComp->collider });
+			data.push_back(BVHData(entity, colliderComp->collider));
 		}
 		return data;
 	}
 
-	std::shared_ptr<BVHNode> BVH::CreateRootNode(const std::vector<BVHData>& data)
+	void BVH::GenerateBVHTree(ECS::Registry& registry, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth)
 	{
-		std::shared_ptr<BVHNode> rootNode= std::make_shared<BVHNode>();
-
-		AABBCollider rootBound = GenerateBound(data);
-
-		rootNode->collider = rootBound;
-		
-		return rootNode;
-	}
-
-	void BVH::GenerateBVHTree(ECS::Registry& DEBUG_registry, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth)
-	{
-		// Base case: If the components are few, make this a leaf node
-		if (data.size() == 1 )
+		if (!data.size() || !node)
 		{
-			node->leftChild = std::make_shared<BVHNode>();
-			node->leftChild->entityHandles = data[0].handle;
-			node->leftChild->collider = data[0].collider;
 			return;
 		}
 
@@ -129,24 +99,26 @@ namespace Behemoth::Collision
 		std::vector<BVHData> leftComponents(data.begin(), data.begin() + bestPosition);
 		std::vector<BVHData> rightComponents(data.begin() + bestPosition, data.end());
 
-		// Recursively build left and right subtrees
-		std::shared_ptr<BVHNode> leftChild = std::make_shared<BVHNode>();
-		std::shared_ptr<BVHNode> rightChild = std::make_shared<BVHNode>();
-
 		// Assign children to current node
-		node->leftChild = leftChild;
-		node->rightChild = rightChild;
-		
-		leftChild->collider		= GenerateBound(leftComponents);
-		rightChild->collider	= GenerateBound(rightComponents);
+		if (leftComponents.size() > 1)
+		{
+			node->leftChild = GenerateNode(registry, GenerateCollider(leftComponents), true, colors[depth]);
+			GenerateBVHTree(registry, node->leftChild, leftComponents, depth + 1);
+		}
+		else if (leftComponents.size())
+		{
+			node->leftChild = GenerateLeaf(leftComponents[0]);
+		}
 
-		// Left 
-		GenerateDebugBound(DEBUG_registry, leftChild->collider, colors[depth]);
-		// Right
-		GenerateDebugBound(DEBUG_registry, rightChild->collider, colors[depth]);
-
-		GenerateBVHTree(DEBUG_registry, leftChild, leftComponents, depth + 1);
-		GenerateBVHTree(DEBUG_registry, rightChild, rightComponents, depth + 1);
+		if (rightComponents.size() > 1)
+		{
+			node->rightChild = GenerateNode(registry, GenerateCollider(rightComponents), true, colors[depth]);
+			GenerateBVHTree(registry, node->rightChild, rightComponents, depth + 1);
+		}
+		else if (rightComponents.size())
+		{
+			node->rightChild = GenerateLeaf(rightComponents[0]);
+		}
 	}
 
 
@@ -166,8 +138,8 @@ namespace Behemoth::Collision
 		const int numLeft =  leftColliders.size();
 		const int numRight = rightColliders.size();
 
-		AABBCollider leftBound = GenerateBound(leftColliders);
-		AABBCollider rightBound = GenerateBound(rightColliders);
+		AABBCollider leftBound = GenerateCollider(leftColliders);
+		AABBCollider rightBound = GenerateCollider(rightColliders);
 
 		float leftSurfaceArea = GetSurfaceArea(leftBound);
 		float rightSurfaceArea = GetSurfaceArea(rightBound);
@@ -175,7 +147,7 @@ namespace Behemoth::Collision
 		return traversalCost + (numLeft * leftSurfaceArea + numRight * rightSurfaceArea) * intersectCost;
 	}
 
-	AABBCollider BVH::GenerateBound(const std::vector<BVHData>& colliders)
+	AABBCollider BVH::GenerateCollider(const std::vector<BVHData>& colliders)
 	{
 		Math::Vector3 minPos = Math::Vector3(std::numeric_limits<float>::max());
 		Math::Vector3 maxPos = Math::Vector3(std::numeric_limits<float>::lowest());
@@ -197,23 +169,42 @@ namespace Behemoth::Collision
 					maxPos[i] = colliderMax[i];
 				}
 			}
-
 		}
+
 		AABBCollider collider{};
 		collider.pos = (maxPos + minPos) / 2.0f;
 		collider.halfwidthExtents = (maxPos - minPos) / 2.0f;
 		return collider;
 	}
 
-	void BVH::GenerateDebugBound(ECS::Registry& DEBUG_registry, AABBCollider collider, Math::Vector3 color)
+	std::shared_ptr<BVHNode> BVH::GenerateNode(ECS::Registry& registry, AABBCollider collider, bool drawCollider, Math::Vector3 color)
 	{
-		ECS::EntityHandle handle = DEBUG_registry.CreateEntity("BVH immediate leaf ");
-		DEBUG_registry.AddComponent<TransformComponent>(handle);
-		DEBUG_registry.AddComponent<MoveComponent>(handle, collider.pos);
-		DEBUG_registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.halfwidthExtents, true, color);
-		DEBUG_registry.AddComponent<MeshInitalizeComponent>(handle);
-		DEBUG_registry.AddComponent<AABBColliderComponent>(handle, collider.halfwidthExtents);
+		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
+		node->collider = collider;
 
-		DEBUG_ColliderHandles.push_back(handle);
+		ECS::EntityHandle handle = registry.CreateEntity("BVH Collider");
+		colliderHandles.push_back(handle);
+
+		registry.AddComponent<TransformComponent>(handle);
+		registry.AddComponent<MoveComponent>(handle, collider.pos);
+		registry.AddComponent<AABBColliderComponent>(handle, collider.halfwidthExtents);
+		
+		if (drawCollider)
+		{
+			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.halfwidthExtents, true, color);
+			registry.AddComponent<MeshInitalizeComponent>(handle);
+		}
+
+		return node;
+	}
+
+	std::shared_ptr<BVHNode> BVH::GenerateLeaf(const BVHData& colliderData)
+	{
+		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
+		node->collider = colliderData.collider;
+		node->entityHandles = colliderData.handle;
+		node->leftChild = nullptr;
+		node->rightChild = nullptr;
+		return node;
 	}
 }
