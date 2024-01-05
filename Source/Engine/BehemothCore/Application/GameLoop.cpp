@@ -26,6 +26,7 @@
 #include "Systems/Physics/AABBCollisionSystem.h"
 #include "Systems/Physics/SphereCollisionSystem.h"
 #include "Systems/Physics/OBBCollisionSystem.h"
+#include "Systems/Physics/SphereAABBCollisionSystem.h"
 
 #include "Input/Input.h"
 
@@ -68,12 +69,13 @@ void Init()
  	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereCollisionSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::OBBCollisionSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereAABBCollisionSystem>();
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshRenderSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::WireframeRenderSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BoundingVolumeRenderSystem>();
+ 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::WireframeRenderSystem>();
+ 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BoundingVolumeRenderSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
 
 	CreateApplication();

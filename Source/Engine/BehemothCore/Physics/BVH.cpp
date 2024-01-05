@@ -26,6 +26,7 @@ namespace Behemoth::Collision
 		registry.AddComponent<MoveComponent>(rootDebugEntity, root->debugColliderPos);
 		registry.AddComponent<WireframeComponent>(rootDebugEntity, "cube.obj", root->debugColliderScale, true, Math::Vector3(1.0f, 0.0f, 0.0f));
 		registry.AddComponent<MeshInitalizeComponent>(rootDebugEntity);
+		registry.AddComponent<AABBColliderComponent>(rootDebugEntity, root->debugColliderScale);
 
 		GenerateBVHTree(registry, root, data, 1);
 	}
@@ -47,6 +48,7 @@ namespace Behemoth::Collision
 		registry.AddComponent<MoveComponent>(rootDebugEntity, root->debugColliderPos);
 		registry.AddComponent<WireframeComponent>(rootDebugEntity, "cube.obj", root->debugColliderScale, true, Math::Vector3(1.0f, 0.0f, 0.0f));
 		registry.AddComponent<MeshInitalizeComponent>(rootDebugEntity);
+		registry.AddComponent<AABBColliderComponent>(rootDebugEntity, root->debugColliderScale);
 
 		GenerateBVHTree(registry, root, data, 1);
 	}

@@ -76,6 +76,10 @@ namespace Behemoth
 					vertexIndex++;
 				}
 			}
+			else
+			{
+				vertexIndex += numVerticies;
+			}
 
 			if (CullBackFace(cameraPosition, primitive.verticies))
 			{

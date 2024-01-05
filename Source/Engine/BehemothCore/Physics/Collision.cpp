@@ -142,4 +142,31 @@ namespace Behemoth::Collision
 
 		return true;
 	}
+
+	bool CheckSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
+	{
+		float squaredDist = 0;
+
+		for (int axis = 0; axis < 3; axis++)
+		{
+			float diff = 0;
+			float minVal = box.pos[axis] - box.halfwidthExtents[axis];
+			float maxVal = box.pos[axis] + box.halfwidthExtents[axis];
+
+			float spherePos = sphere.pos[axis];
+
+			if (spherePos < minVal)
+			{
+				diff = minVal - spherePos;
+			}
+			else if (spherePos > maxVal)
+			{
+				diff = spherePos - maxVal;
+			}
+
+			squaredDist += diff * diff;
+		}
+
+		return squaredDist <= sphere.radius * sphere.radius;
+	}
 }
