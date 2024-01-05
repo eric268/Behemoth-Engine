@@ -3,38 +3,37 @@
 // stl
 #include <string>
 
+#define NULL_ENTITY 0xFFFFFFFF
+#define NULL_IDENTIFIER 0xFFFF
+#define NULL_VERSION 0xFFFF
+
 namespace ECS
 {
-	using EntityID = std::uint32_t;
-	using EntityIdentifier = std::uint16_t;
-	using EntityVersion = std::uint16_t;
-
-	struct EntityHandle
-	{
-		EntityID ID;
-	};
+	using entity_id = std::uint32_t;
+	using entity_identifier = std::uint16_t;
+	using entity_version = std::uint16_t;
 
 	class Entity
 	{
 	public:
 
-		EntityID GetID() const
+		entity_id GetID() const
 		{
 			return ID;
 		}
 
-		EntityIdentifier GetIdentifier() const
+		entity_identifier GetIdentifier() const
 		{
 			return ID & 0x0000FFFF;
 		}
 
 		inline void IncrementVersion()
 		{
-			EntityVersion version = (ID >> 16) + 1;
+			entity_version version = (ID >> 16) + 1;
 			ID = (version << 16) | (ID & 0x0000FFFF);
 		}
 
-		EntityVersion GetVersion() const
+		entity_version GetVersion() const
 		{
 			return ID >> 16;
 		}
@@ -57,23 +56,23 @@ namespace ECS
 
 		Entity(std::string name) : name(name), ID(0) {}
 
-		static inline EntityIdentifier GetIdentifier(EntityID ID)
+		static inline entity_identifier GetIdentifier(entity_id ID)
 		{
 			return ID & 0x0000FFFF;
 		}
 
-		static inline EntityVersion GetVersion(EntityID ID)
+		static inline entity_version GetVersion(entity_id ID)
 		{
 			return ID >> 16;
 		}
 
 		// Only want to be able to use this in Registry class to point to next recycled entity ID
-		inline void SetIdentifier(const EntityIdentifier newIdentifier)
+		inline void SetIdentifier(const entity_identifier newIdentifier)
 		{
 			ID = (ID & 0xFFFF0000) | newIdentifier;
 		}
 
-		inline void SetID(const std::uint32_t newID)
+		inline void SetID(const entity_id newID)
 		{
 			ID = newID;
 		}
@@ -83,8 +82,16 @@ namespace ECS
 			return ID != 0xFFFFFFFF;
 		}
 
-		EntityID ID;
+		entity_id ID;
 		std::string name;
+	};
+
+	struct EntityHandle
+	{
+		EntityHandle() : ID(NULL_ENTITY) {}
+		EntityHandle(entity_id id) : ID(id) {}
+		EntityHandle(Entity e) : ID(e.GetID()) {}
+		entity_id ID;
 	};
 
 }

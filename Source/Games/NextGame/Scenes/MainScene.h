@@ -14,7 +14,7 @@ public:
 
 	ECS::EntityHandle pointLight;
 
-	ECS::EntityHandle cubes[4];
+	ECS::EntityHandle cubes[8];
 
 	Behemoth::Collision::BVH collisionBVH;
 

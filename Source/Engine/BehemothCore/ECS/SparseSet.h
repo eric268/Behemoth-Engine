@@ -12,8 +12,6 @@
 #include <algorithm>
 
 #define DEFAULT_SPARSE_SIZE 10'000
-#define NULL_ENTITY 0xFFFF
-#define NULL_VERSION 0xFFFF
 
 namespace ECS
 {
@@ -24,16 +22,16 @@ namespace ECS
 	class SparseSet
 	{
 	public:
-		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_ENTITY), index{}
+		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_IDENTIFIER), index{}
 		{
 			Generator::Value<Component>();
 		}
 
 		void RemoveComponent(const Entity& entity)
 		{
-			std::size_t identifier = entity.GetIdentifier();
+			entity_identifier identifier = entity.GetIdentifier();
 
-			if (identifier >= maxSize || sparse[identifier] == NULL_ENTITY)
+			if (identifier >= maxSize || sparse[identifier] == NULL_IDENTIFIER)
 				return;
 
 			std::uint16_t denseIndex = sparse[identifier];
@@ -52,17 +50,18 @@ namespace ECS
 			dense.pop_back();
 			components.pop_back();
 
-			sparse[identifier] = NULL_ENTITY;
+			sparse[identifier] = NULL_IDENTIFIER;
 			index--;
 		}
 
 		void AddComponent(const Entity& entity, const Component& component)
 		{
 			std::size_t identifier = entity.GetIdentifier();
-			std::size_t id = NULL_ENTITY;
 
-			if (identifier >= maxSize || sparse[identifier] != NULL_ENTITY)
+			if (identifier >= maxSize || sparse[identifier] != NULL_IDENTIFIER)
+			{
 				return;
+			}
 
 			sparse[identifier] = index++;
 			dense.push_back(entity);
@@ -71,9 +70,9 @@ namespace ECS
 
 		Component* GetComponent(const Entity& entity)
 		{
-			std::size_t identifier = entity.GetIdentifier();
+			entity_identifier identifier = entity.GetIdentifier();
 
-			if (identifier >= maxSize || sparse[identifier] == NULL_ENTITY)
+			if (identifier >= maxSize || sparse[identifier] == NULL_IDENTIFIER)
 				return nullptr;
 
 			if (entity.GetVersion() != dense[sparse[identifier]].GetVersion())
@@ -92,8 +91,8 @@ namespace ECS
 
 		bool HasEntity(const Entity& entity)
 		{
-			std::uint16_t identifier = entity.GetIdentifier();
-			if (identifier < maxSize && sparse[identifier] != NULL_ENTITY)
+			entity_identifier identifier = entity.GetIdentifier();
+			if (identifier < maxSize && sparse[identifier] != NULL_IDENTIFIER)
 			{
 				if (entity.GetVersion() == dense[sparse[identifier]].GetVersion())
 				{
@@ -115,14 +114,14 @@ namespace ECS
 		}
 
 		std::vector<Entity> dense;
-	private:
 
+	private:
 		friend class Registry;
 
 		void Adjust(Entity lhs, Entity rhs)
 		{
-			const std::size_t leftIdentifier = lhs.GetIdentifier();
-			const std::size_t rightIdentifier = rhs.GetIdentifier();
+			const entity_identifier leftIdentifier = lhs.GetIdentifier();
+			const entity_identifier rightIdentifier = rhs.GetIdentifier();
 
 			std::swap(components[sparse[leftIdentifier]], components[sparse[rightIdentifier]]);
 		}
@@ -147,7 +146,7 @@ namespace ECS
 			}
 		}
 
-		std::vector<std::uint16_t> sparse;
+		std::vector<entity_identifier> sparse;
 		std::vector<Component> components;
 
 		int maxSize;

@@ -37,13 +37,16 @@ namespace ECS
 		Registry(Registry&& obj) = delete;
 		Registry(const Registry& other) = delete;
 
-		void DestroyEntity(EntityHandle entityHandle)
+		bool DestroyEntity(EntityHandle entityHandle)
 		{
 			Entity entity = GetEntityFromHandle(entityHandle);
 			if (entity.IsValid())
 			{
 				DestroyEntity(entity);
+				return true;
 			}
+
+			return false;
 		}
 
 		EntityHandle CreateEntity(std::string name = "Entity")
@@ -174,7 +177,7 @@ namespace ECS
 		using type_index = int;
 		std::vector<Entity> entities;
 		std::size_t available{};
-		std::uint32_t next{};
+		entity_id next{};
 		int IDIndex = 0;
 
 		std::unordered_map<int,int> componentID;
@@ -182,7 +185,7 @@ namespace ECS
 
 		Entity GetEntityFromHandle(EntityHandle handle)
 		{
-			EntityIdentifier identifier = Entity::GetIdentifier(handle.ID);
+			entity_identifier identifier = Entity::GetIdentifier(handle.ID);
 
 			if (identifier >= entities.size() || entities[identifier].GetID() != handle.ID)
 			{
@@ -211,7 +214,7 @@ namespace ECS
 			available++;
 		}
 
-		std::uint32_t RecycleEntity()
+		entity_id RecycleEntity()
 		{
 			assert(available > 0);
 
@@ -261,8 +264,6 @@ namespace ECS
 		std::vector<std::tuple<Entity, T*...>> GetSets(U tuple)
 		{
 			std::vector<std::tuple<Entity, T*...>> group;
-
-			// Need to find a way to get the smallest component set
 
 			auto smallestPool = GetSmallestPool<T...>(tuple);
 
