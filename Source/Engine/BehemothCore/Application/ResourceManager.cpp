@@ -30,7 +30,7 @@ namespace Behemoth
 			return meshMap[id];
 		}
 
-		LOG_ERROR("Failed to copy mesh");
+		LOG_ERROR(MessageType::Error, "Failed to copy mesh");
 		return meshMap[id];
 	}
 

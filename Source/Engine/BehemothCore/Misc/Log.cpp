@@ -18,8 +18,55 @@ std::string TrimFilenamePath(const std::string& fullPath)
 	return fullPath.substr(secondLastSlash + 1); // Return last two segments
 }
 
-void Log(const std::string& message, const std::string& filename, int line)
+std::string GetMessageType(MessageType type)
 {
+	std::string messageType = "";
+
+#ifdef _WIN32
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	switch (type)
+	{
+	case MessageType::General:
+		SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+		messageType = "General: ";
+		break;
+	case MessageType::Warning:
+		SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+		messageType = "Warning: ";
+		break;
+	case MessageType::Error:
+		SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+		messageType = "Error: ";
+		break;
+	}
+	return messageType;
+
+#else
+	switch (type)
+	{
+	case MessageType::General:
+		messageType = "General: ";
+		break;
+	case MessageType::Warning:
+		messageType = "Warning: ";
+		break;
+	case MessageType::Error:
+		messageType = "Error: ";
+		break;
+	}
+	return messageType;
+
+#endif
+}
+
+void Log(MessageType type, const std::string& message, const std::string& filename, int line)
+{
+	std::string messageType = GetMessageType(type);
 	std::string file = TrimFilenamePath(filename);
-	std::cerr << "LOG: " << message << " (File: " << file << ", Line: " << line << ")\n";
+	std::cerr << "LOG " << messageType << message << " (File: " << file << ", Line: " << line << ")\n";
+
+#ifdef _WIN32
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, 7);
+#endif
 }

@@ -12,6 +12,9 @@
 #include <cstddef>
 #include <filesystem>
 #include <limits>
+#include <stack>
+#include <queue>
+#include <deque>
 
 #define NOMINMAX
 #include <windows.h>

@@ -203,6 +203,7 @@
     <ClInclude Include="BehemothCore\Components\RenderComponents.h" />
     <ClInclude Include="BehemothCore\Components\LightComponents.h" />
     <ClInclude Include="BehemothCore\Systems\Render\DebugLineSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -302,5 +303,6 @@
     <ClCompile Include="BehemothCore\Physics\Ray.cpp" />
     <ClCompile Include="BehemothCore\Physics\HitResult.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\DebugLineSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp" />
   </ItemGroup>
 </Project>

@@ -28,6 +28,13 @@ namespace Behemoth::Collision
 
 	struct BVHNode
 	{
+		BVHNode() : entityHandles(NULL_ENTITY) {}
+		bool IsLeaf() 
+		{ 
+			return entityHandles.ID != NULL_ENTITY; 
+		}
+
+		std::string name;
 		AABBCollider collider;
 		std::shared_ptr<BVHNode> leftChild;
 		std::shared_ptr<BVHNode> rightChild;
@@ -80,6 +87,8 @@ namespace Behemoth::Collision
 			Math::Vector3(0.0f, 1.0f, 1.0f),
 			Math::Vector3(1.0f, 1.0f, 1.0f)
 		};
+
+		int DEBUG_ColliderID = 0;
 	};
 }
 

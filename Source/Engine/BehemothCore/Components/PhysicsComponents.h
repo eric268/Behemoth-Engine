@@ -6,12 +6,15 @@
 
 #include <string>
 
+#define GRAVITY = -9.81f
+
 namespace Behemoth
 {
 	// Physics Components
 	struct RigidBodyComponent : public ECS::Component
 	{
-		RigidBodyComponent() {}
+		RigidBodyComponent(bool gravity = true) : affectedByGravity(gravity) {}
+		bool affectedByGravity;
 	};
 
 	struct ColliderComponent : public ECS::Component

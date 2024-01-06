@@ -182,9 +182,10 @@ namespace Behemoth::Collision
 	std::shared_ptr<BVHNode> BVH::GenerateNode(ECS::Registry& registry, AABBCollider collider, bool drawCollider, Math::Vector3 color)
 	{
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
+		std::string name = "BVH Collider: " + std::to_string(DEBUG_ColliderID++);
+		node->name = name;
 		node->collider = collider;
-
-		ECS::EntityHandle handle = registry.CreateEntity("BVH Collider");
+		ECS::EntityHandle handle = registry.CreateEntity(name);
 		colliderHandles.push_back(handle);
 
 		registry.AddComponent<TransformComponent>(handle);

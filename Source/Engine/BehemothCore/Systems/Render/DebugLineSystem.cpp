@@ -23,8 +23,6 @@ namespace Behemoth
 		// Maximum number of lines that we may need to reserve
 		ReserveResources(numDebugLines);
 
-		std::cout << components.size() << std::endl;
-
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 		Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
@@ -45,7 +43,7 @@ namespace Behemoth
 
 			ProcessLine(p1, p2, viewProjMatrix, lineComp->color);
 		}
-		// DestroyExpiredLines(registry, expiredLines);
+		DestroyExpiredLines(registry, expiredLines);
 	}
 
 
@@ -71,16 +69,16 @@ namespace Behemoth
 			{
 				Point intersectionPoint{};
 				float distance = 0.0f;
-
-				Behemoth::Collision::CheckLinePlane(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint);
-
-				if (dist1 < 0)
+				if (Behemoth::Collision::CheckLinePlaneIntersection(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint))
 				{
-					p1 = intersectionPoint;
-				}
-				else
-				{
-					p2 = intersectionPoint;
+					if (dist1 < 0)
+					{
+						p1 = intersectionPoint;
+					}
+					else
+					{
+						p2 = intersectionPoint;
+					}
 				}
 			}
 		}
@@ -101,11 +99,6 @@ namespace Behemoth
 
 		renderVerts[0] = renderVerts[0] / renderVerts[0].w;
 		renderVerts[1] = renderVerts[1] / renderVerts[1].w;
-
-		if (!IsPrimitiveWithinFrustrum(2, renderVerts))
-		{
-			return;
-		}
 
 		Line line = Line(Math::Vector4(renderVerts[0].x, renderVerts[0].y, renderVerts[1].x, renderVerts[1].y), color);
 

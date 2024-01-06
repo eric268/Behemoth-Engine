@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "VelocitySystem.h"
 #include "Components/Components.h"
+#include "Misc/Log.h"
 
 namespace Behemoth
 {
@@ -9,6 +10,11 @@ namespace Behemoth
 		auto components = registry.Get<VelocityComponent, TransformComponent>();
 		for (const auto& [entity, velocityComp, transformComp] : components)
 		{
+			if (registry.GetComponent<StaticComponent>(entity))
+			{
+				// LOG_ERROR()
+			}
+
 			if (Math::Vector3::Equals(velocityComp->velocity, Math::Vector3::Zero()))
 				continue;
 

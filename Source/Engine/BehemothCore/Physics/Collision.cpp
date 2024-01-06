@@ -189,7 +189,7 @@ namespace Behemoth::Collision
 		return std::abs(distance) <= radius;
 	}
 
-	bool CheckLinePlane(const Point& p1, const Point& p2, const Math::Plane& plane, float& dist, Point& intersectionP)
+	bool CheckLinePlaneIntersection(const Point& p1, const Point& p2, const Math::Plane& plane, float& dist, Point& intersectionP)
 	{
 		Math::Vector3 ab = p2 - p1;
 		dist = (plane.distance - Math::Vector3::Dot(plane.normal, p1)) / (Math::Vector3::Dot(plane.normal, ab));
@@ -201,7 +201,7 @@ namespace Behemoth::Collision
 
 		return false;
 	}
-	bool CheckLineAABBCollision(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
+	bool CheckLineAABBIntersection(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
 	{
 		Math::Vector3 boxMin = box.position - box.extents;  // Minimum corner of the AABB
 		Math::Vector3 boxMax = box.position + box.extents;  // Maximum corner of the AABB

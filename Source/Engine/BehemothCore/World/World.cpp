@@ -10,7 +10,7 @@ namespace Behemoth
 	{
 		if (!newScene)
 		{
-			LOG_ERROR("Attempted to change to null scene");
+			LOG_ERROR(MessageType::Error, "Attempted to change to null scene");
 			return;
 		}
 
@@ -32,7 +32,7 @@ namespace Behemoth
 	{
 		if (!currentScene)
 		{
-			LOG_ERROR("Current Scene is null");
+			LOG_ERROR(MessageType::Error, "Current Scene is null");
 			return nullptr;
 		}
 

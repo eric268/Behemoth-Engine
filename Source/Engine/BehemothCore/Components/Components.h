@@ -53,6 +53,12 @@ namespace Behemoth
 		bool isDirty;
 	};
 
+	struct StaticComponent : public ECS::Component
+	{
+	public:
+		StaticComponent() = default;
+	};
+
 	struct MoveComponent : public ECS::Component
 	{
 		MoveComponent() : location(Math::Vector3{}) {}

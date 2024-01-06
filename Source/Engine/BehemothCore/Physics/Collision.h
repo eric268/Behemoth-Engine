@@ -17,8 +17,8 @@ namespace Behemoth::Collision
 	bool CheckOBBPlaneCollision(const OBBCollider& box, const Math::Plane& p);
 
 	// Line segements
-	bool CheckLinePlane(const Point& p1, const Point& p2, const Math::Plane& plane, float& dist, Point& intersectionP);
-	bool CheckLineAABBCollision(const Point& p1, const Point& p2, const AABBCollider& box);
+	bool CheckLinePlaneIntersection(const Point& p1, const Point& p2, const Math::Plane& plane, float& dist, Point& intersectionP);
+	bool CheckLineAABBIntersection(const Point& p1, const Point& p2, const AABBCollider& box);
 
 	// Raycasts
 	bool RayAABBIsColliding(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint);
