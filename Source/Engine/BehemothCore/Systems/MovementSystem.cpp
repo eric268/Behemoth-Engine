@@ -2,6 +2,7 @@
 #include "MovementSystem.h"
 #include "Components/Components.h"
 #include "ECS/Entity.h"
+#include "Misc/Log.h"
 
 namespace Behemoth
 {

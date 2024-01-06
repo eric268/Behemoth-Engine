@@ -100,7 +100,7 @@ private:
 		}
 		else
 		{
-			LOG_ERROR(MessageType::Warning, "Unable to output stopwatch to log");
+			LOG_MESSAGE(MessageType::Warning, "Unable to output stopwatch to log");
 		}
 	}
 

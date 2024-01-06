@@ -37,6 +37,12 @@ namespace ECS
 		Registry(Registry&& obj) = delete;
 		Registry(const Registry& other) = delete;
 
+		std::string GetName(EntityHandle entityHandle)
+		{
+			Entity entity = GetEntityFromHandle(entityHandle);
+			return (entity.IsValid()) ? entity.GetName() : " Null Entity";
+		}
+
 		bool DestroyEntity(EntityHandle entityHandle)
 		{
 			Entity entity = GetEntityFromHandle(entityHandle);

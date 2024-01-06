@@ -10,7 +10,7 @@ namespace Behemoth
 	class CameraSystem
 	{
 	public:
-		CameraSystem() = default;
+		CameraSystem() {};
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:

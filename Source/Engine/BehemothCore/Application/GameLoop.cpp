@@ -32,6 +32,8 @@
 #include "Systems/Physics/OBBCollisionSystem.h"
 #include "Systems/Physics/SphereAABBCollisionSystem.h"
 
+#include "Systems/Physics/RigidBodySystem.h"
+
 #include "Input/Input.h"
 
 #include "NextAPI/App/app.h"
@@ -74,6 +76,8 @@ void Init()
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereCollisionSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::OBBCollisionSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereAABBCollisionSystem>();
+
+	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
 
 	// These systems should always be last and in this order
 	// Maybe make a separate container for them to ensure they are last

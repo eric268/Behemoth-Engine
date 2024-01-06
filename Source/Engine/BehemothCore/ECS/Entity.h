@@ -38,7 +38,8 @@ namespace ECS
 			return ID >> 16;
 		}
 
-		const std::string GetName() const {
+		const std::string GetName() const 
+		{
 			return name;
 		}
 

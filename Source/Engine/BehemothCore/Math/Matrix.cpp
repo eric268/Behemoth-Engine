@@ -261,7 +261,7 @@ namespace Math
 			m._22 = cosTheta;
 			break;
 		default:
-			LOG_ERROR(MessageType::Warning, "Invalid axis passed to rotation");
+			LOG_MESSAGE(MessageType::Warning, "Invalid axis passed to rotation");
 		}
 		return m;
 	}

@@ -75,6 +75,16 @@ namespace Math
 			return data[i];
 		}
 
+		bool operator == (const Vector3& vec) const
+		{
+			return this->x == vec.x && this->y == vec.y && this->z == vec.z;
+		}
+
+		bool operator != (const Vector3& vec) const
+		{
+			return !(*this == vec);
+		}
+
 		Vector3 operator-() const
 		{
 			return Vector3(-x, -y, -z);

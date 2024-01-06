@@ -21,10 +21,12 @@ MainScene::MainScene()
 
 	for (int i = 0; i < 8; i++)
 	{
-		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "cube1");
+		std::string name = "Cube " + std::to_string(i + 1);
+		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
 		registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], Math::Vector3(1.5f, 1.0, 0.5f));
 		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], Math::Vector3(1.5f, 1.0, 0.5f));
 		registry.AddComponent<Behemoth::WireframeComponent>(cubes[i], "cube.obj", Math::Vector3(1.5f, 1.0, 0.5f), false, Math::Vector3(0.0f, 1.0f, 0.0f));
+		registry.AddComponent<Behemoth::RigidBodyComponent>(cubes[i]);
 	}
 
 	registry.AddComponent<Behemoth::MoveComponent>(cubes[0], Math::Vector3(-10.0f, -5.0f, -10.0f));
@@ -35,6 +37,8 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::MoveComponent>(cubes[5], Math::Vector3(10.0f, 0.0f, -12.0f));
 	registry.AddComponent<Behemoth::MoveComponent>(cubes[6], Math::Vector3(-8.0f, -3.0f, -6.0f));
 	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], Math::Vector3(8.0f, 3.0f, -9.0f));
+
+	registry.AddComponent<Behemoth::StaticComponent>(cubes[7]);
 
 // 	ECS::EntityHandle sphereHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "sphere");
 // 	registry.AddComponent<Behemoth::SphereColliderComponent>(sphereHandle, 1.0f);

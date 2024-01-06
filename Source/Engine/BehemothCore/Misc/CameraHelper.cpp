@@ -39,7 +39,7 @@ namespace Behemoth
 			if (camera->isMain)
 				return camera;
 		}
-		LOG_ERROR(MessageType::Error, "Unable to find main camera");
+		LOG_MESSAGE(MessageType::Error, "Unable to find main camera");
 		assert(nullptr);
 
 		return nullptr;
@@ -52,7 +52,7 @@ namespace Behemoth
 			if (camera->isMain)
 				return transformComp;
 		}
-		LOG_ERROR(MessageType::Error, "Unable to find main camera");
+		LOG_MESSAGE(MessageType::Error, "Unable to find main camera");
 		assert(nullptr);
 
 		return nullptr;
@@ -65,7 +65,7 @@ namespace Behemoth
 			if (camera->isMain)
 				return transform->position;
 		}
-		LOG_ERROR(MessageType::Error, "Unable to find main camera");
+		LOG_MESSAGE(MessageType::Error, "Unable to find main camera");
 		assert(nullptr);
 
 		return{};
@@ -78,7 +78,7 @@ namespace Behemoth
 			if (camera->isMain)
 				return entity;
 		}
-		LOG_ERROR(MessageType::Error, "Unable to find main camera");
+		LOG_MESSAGE(MessageType::Error, "Unable to find main camera");
 		assert(nullptr);
 
 		return registry.CreateNullEntity();
