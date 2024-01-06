@@ -94,7 +94,7 @@ void MainScene::Update(const float deltaTime)
 
 		Behemoth::TransformComponent* cameraTransform = Behemoth::CameraHelper::GetMainCameraTransform(registry);
 		float distance = 5.0f;
-		Math::Vector3 startPos = cameraTransform->position + cameraTransform->forwardVector * 0.1f;
+		Math::Vector3 startPos = cameraTransform->position + cameraTransform->forwardVector * 0.5f;
 		Math::Vector3 endPos = cameraTransform->position + cameraTransform->forwardVector * distance;
 
 		ECS::EntityHandle debugLineHandle = registry.CreateEntity("Debug line");

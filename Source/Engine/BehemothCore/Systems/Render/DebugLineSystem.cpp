@@ -6,6 +6,7 @@
 #include "Misc/CameraHelper.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Line.h"
+#include "Physics/Collision.h"
 
 namespace Behemoth
 {
@@ -37,15 +38,14 @@ namespace Behemoth
 			Point p1 = lineComp->startPoint;
 			Point p2 = lineComp->endPoint;
 
-// 			if (CullLineSegement(p1, p2, mainCamera->worldSpaceFrustum))
-// 			{
-// 				continue;
-// 			}
+			if (CullLineSegement(p1, p2, mainCamera->worldSpaceFrustum))
+			{
+				continue;
+			}
 
 			ProcessLine(p1, p2, viewProjMatrix, lineComp->color);
 		}
-
-		DestroyExpiredLines(registry, expiredLines);
+		// DestroyExpiredLines(registry, expiredLines);
 	}
 
 
@@ -53,13 +53,11 @@ namespace Behemoth
 	{
 		for (int i = 0; i < 6; i++)
 		{
-			float multiplier = (i == 1) ? -1.0f : 1.0f;
-
 			const Math::Plane& plane = worldFrustmPlanes[i];
 
 			// Check if endpoints of line are inside frustum, if true do not cull frustum
-			float dist1 = Math::Vector3::Dot(p1, plane.normal) + plane.distance * multiplier;
-			float dist2 = Math::Vector3::Dot(p2, plane.normal) + plane.distance * multiplier;
+			float dist1 = Math::Vector3::Dot(p1, plane.normal) - plane.distance;
+			float dist2 = Math::Vector3::Dot(p2, plane.normal) - plane.distance;
 
 			if (dist1 >= 0 && dist2 >= 0)
 			{
@@ -71,16 +69,18 @@ namespace Behemoth
 			}
 			else
 			{
- 				float t = dist1 / (dist1 - dist2);
-				Point intersection = p1 + (p2 - p1) * t;
+				Point intersectionPoint{};
+				float distance = 0.0f;
+
+				Behemoth::Collision::CheckLinePlane(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint);
 
 				if (dist1 < 0)
 				{
-					p1 = intersection;
+					p1 = intersectionPoint;
 				}
 				else
 				{
-					p2 = intersection;
+					p2 = intersectionPoint;
 				}
 			}
 		}
