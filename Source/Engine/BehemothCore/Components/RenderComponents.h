@@ -43,4 +43,23 @@ namespace Behemoth
 		bool isVisible;
 		Mesh mesh;
 	};
+
+	struct DebugLineComponent : public ECS::Component
+	{
+		using Point = Math::Vector3;
+
+		DebugLineComponent(Point start, Point end, float displayTime, float displayCounter = 0.0f,  Math::Vector3 c = Math::Vector3(0.0f, 1.0f, 0.0f)) : 
+			startPoint(start), 
+			endPoint(end), 
+			lifetime(displayTime), 
+			displayCounter(displayCounter), 
+			color(c) 
+		{}
+
+		float lifetime;
+		float displayCounter;
+		Point startPoint;
+		Point endPoint;
+		Math::Vector3 color;
+	};
 }

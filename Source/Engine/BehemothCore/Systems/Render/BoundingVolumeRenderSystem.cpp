@@ -41,6 +41,6 @@ namespace Behemoth
 		}
 		boundingMatrix = transformMatrix * boundingMatrix;
 
-		ProcessWireframe(boundingVolumeComponent->mesh, cameraPosition, boundingMatrix, viewProjMatrix, Math::Vector3::One(), true);
+		ProcessWireframe(boundingVolumeComponent->mesh, boundingMatrix, viewProjMatrix, Math::Vector3::One(), true);
 	}
 }

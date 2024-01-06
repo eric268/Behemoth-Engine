@@ -12,7 +12,6 @@ namespace Behemoth
 	void WireframeRenderSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		auto components = registry.Get<WireframeComponent, TransformComponent>();
-		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
@@ -37,11 +36,11 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessWireframe(wireframeComp->mesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, wireframeComp->scale, true, wireframeComp->wireframeColor);
+			ProcessWireframe(wireframeComp->mesh, transformComp->transformMatrix, viewProjMatrix, wireframeComp->scale, true, wireframeComp->wireframeColor);
 		}
 	}
 
-	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, const Math::Vector3& scale, bool isDirty, Math::Vector3 color)
+	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, const Math::Vector3& scale, bool isDirty, Math::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
 

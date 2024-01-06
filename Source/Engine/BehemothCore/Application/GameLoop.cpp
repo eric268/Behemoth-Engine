@@ -14,15 +14,19 @@
 #include "Misc/CameraHelper.h"
 #include "Misc/Stopwatch.h"
 #include "Systems/ScalingSystem.h"
+
 #include "Systems/Render/MeshRenderSystem.h"
 #include "Systems/Render/WireframeRenderSystem.h"
 #include "Systems/Render/BoundingVolumeRenderSystem.h"
+#include "Systems/Render/DebugLineSystem.h"
+
 #include "Systems/CameraSystem.h"
 #include "Systems/RotationSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/MeshInitSystem.h"
 #include "Systems/LightingSystem.h"
 #include "Systems/VelocitySystem.h"
+
 #include "Systems/Physics/AABBCollisionSystem.h"
 #include "Systems/Physics/SphereCollisionSystem.h"
 #include "Systems/Physics/OBBCollisionSystem.h"
@@ -75,6 +79,7 @@ void Init()
 	// Maybe make a separate container for them to ensure they are last
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshRenderSystem>();
  	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::WireframeRenderSystem>();
+ 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::DebugLineSystem>();
  	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BoundingVolumeRenderSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
 

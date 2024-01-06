@@ -204,6 +204,7 @@
     <ClInclude Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\SphereCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Render\DebugLineSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\MeshRenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\WireframeRenderSystem.h" />
@@ -246,6 +247,7 @@
     <ClCompile Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\SphereCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Render\DebugLineSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\MeshRenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\RenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp" />
