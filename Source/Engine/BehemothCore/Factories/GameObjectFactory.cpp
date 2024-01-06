@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GameObjectFactory.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
 
 namespace Behemoth
 {

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MeshInitSystem.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
 #include "ECS/Entity.h"
 #include "Renderer/Mesh.h"
 #include "Application/ResourceManager.h"

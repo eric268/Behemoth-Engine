@@ -3,6 +3,7 @@
 #include "Renderer/Renderer.h"
 
 #include "Components/Components.h"
+#include "Components/LightComponents.h"
 #include "Misc/CameraHelper.h"
 
 #define ENABLE_LIGHTING

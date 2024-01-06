@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "RotationSystem.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
 #include "Misc/Log.h"
 #include "ECS/Entity.h"
 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BoundingVolumeRenderSystem.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
 #include "Misc/CameraHelper.h"
 
 namespace Behemoth

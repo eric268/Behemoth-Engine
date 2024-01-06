@@ -19,10 +19,10 @@ namespace Behemoth
 				if (entity.GetIdentifier() == entity2.GetIdentifier())
 					continue;
 
-				AABBComp->collider.pos = transformComp->position;
-				AABBComp2->collider.pos = transformComp2->position;
+				AABBComp->collider.position = transformComp->position;
+				AABBComp2->collider.position = transformComp2->position;
 
-				if (CheckCollision(AABBComp->collider, AABBComp->collider))
+				if (Collision::CheckAABBCollision(AABBComp->collider, AABBComp->collider))
 				{
 					// std::cout << "Colliding\n";
 				}

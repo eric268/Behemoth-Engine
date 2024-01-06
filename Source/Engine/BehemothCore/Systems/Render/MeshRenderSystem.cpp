@@ -3,6 +3,7 @@
 #include "Misc/Log.h"
 #include "Misc/CameraHelper.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
 #include "ECS/Entity.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/MeshLoader.h"

@@ -154,7 +154,9 @@
     <ClInclude Include="BehemothCore\Application\ThreadPool.h" />
     <ClInclude Include="BehemothCore\BehemothCore.h" />
     <ClInclude Include="BehemothCore\Components\Components.h" />
+    <ClInclude Include="BehemothCore\Components\LightComponents.h" />
     <ClInclude Include="BehemothCore\Components\PhysicsComponents.h" />
+    <ClInclude Include="BehemothCore\Components\RenderComponents.h" />
     <ClInclude Include="BehemothCore\ECS\Component.h" />
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h" />
     <ClInclude Include="BehemothCore\ECS\ECSCore.h" />
@@ -185,7 +187,8 @@
     <ClInclude Include="BehemothCore\Physics\Colliders.h" />
     <ClInclude Include="BehemothCore\Physics\Collision.h" />
     <ClInclude Include="BehemothCore\Physics\CollisionMask.h" />
-    <ClInclude Include="BehemothCore\Physics\OBB.h" />
+    <ClInclude Include="BehemothCore\Physics\HitResult.h" />
+    <ClInclude Include="BehemothCore\Physics\Ray.h" />
     <ClInclude Include="BehemothCore\Renderer\Line.h" />
     <ClInclude Include="BehemothCore\Renderer\Mesh.h" />
     <ClInclude Include="BehemothCore\Renderer\MeshLoader.h" />
@@ -227,6 +230,8 @@
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp" />
     <ClCompile Include="BehemothCore\Misc\Log.cpp" />
     <ClCompile Include="BehemothCore\Physics\Collision.cpp" />
+    <ClCompile Include="BehemothCore\Physics\HitResult.cpp" />
+    <ClCompile Include="BehemothCore\Physics\Ray.cpp" />
     <ClCompile Include="BehemothCore\Renderer\Mesh.cpp" />
     <ClCompile Include="BehemothCore\Renderer\MeshLoader.cpp" />
     <ClCompile Include="BehemothCore\Renderer\Primitives.cpp" />

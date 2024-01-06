@@ -3,16 +3,18 @@
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
+#include "Components/RenderComponents.h"
 #include "Misc/Log.h"
 
 namespace Behemoth::Collision
 {
-	BVH::BVH() : root() {}
+	BVH::BVH() : root(), treeType(BVHTreeType::None) {}
 
 	BVH::~BVH() {}
 
-	void BVH::OnConstruction(ECS::Registry& registry)
+	void BVH::OnConstruction(ECS::Registry& registry, BVHTreeType type)
 	{
+		treeType = type;
 		CreateBVHTree(registry);
 	}
 
@@ -46,7 +48,7 @@ namespace Behemoth::Collision
 
 		for (const auto& [entity, transformComp, colliderComp] : components)
 		{
-			colliderComp->collider.pos = transformComp->position;
+			colliderComp->collider.position = transformComp->position;
 			data.push_back(BVHData(entity, colliderComp->collider));
 		}
 		return data;
@@ -70,7 +72,7 @@ namespace Behemoth::Collision
 			// Sort components based on their centroid along the current axis
 			std::sort(data.begin(), data.end(), [axis](const BVHData& a, const BVHData& b) 
 				{
-					return a.collider.pos[axis] < b.collider.pos[axis];
+					return a.collider.position[axis] < b.collider.position[axis];
 				});
 
 			// Apply SAH to find the best split for this axis
@@ -124,9 +126,9 @@ namespace Behemoth::Collision
 
 	float BVH::GetSurfaceArea(const AABBCollider& aabb)
 	{
-		float l = 2.0f * aabb.halfwidthExtents.x;
-		float w = 2.0f * aabb.halfwidthExtents.y;
-		float h = 2.0f * aabb.halfwidthExtents.z;
+		float l = 2.0f * aabb.extents.x;
+		float w = 2.0f * aabb.extents.y;
+		float h = 2.0f * aabb.extents.z;
 		return 2.0f * (l * w + l * h + w * h);
 	}
 
@@ -154,8 +156,8 @@ namespace Behemoth::Collision
 
 		for (const BVHData& data : colliders)
 		{
-			Math::Vector3 colliderMin = data.collider.pos - data.collider.halfwidthExtents;
-			Math::Vector3 colliderMax = data.collider.pos + data.collider.halfwidthExtents;
+			Math::Vector3 colliderMin = data.collider.position - data.collider.extents;
+			Math::Vector3 colliderMax = data.collider.position + data.collider.extents;
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -172,8 +174,8 @@ namespace Behemoth::Collision
 		}
 
 		AABBCollider collider{};
-		collider.pos = (maxPos + minPos) / 2.0f;
-		collider.halfwidthExtents = (maxPos - minPos) / 2.0f;
+		collider.position = (maxPos + minPos) / 2.0f;
+		collider.extents = (maxPos - minPos) / 2.0f;
 		return collider;
 	}
 
@@ -186,12 +188,12 @@ namespace Behemoth::Collision
 		colliderHandles.push_back(handle);
 
 		registry.AddComponent<TransformComponent>(handle);
-		registry.AddComponent<MoveComponent>(handle, collider.pos);
-		registry.AddComponent<AABBColliderComponent>(handle, collider.halfwidthExtents);
+		registry.AddComponent<MoveComponent>(handle, collider.position);
+		registry.AddComponent<AABBColliderComponent>(handle, collider.extents);
 		
 		if (drawCollider)
 		{
-			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.halfwidthExtents, true, color);
+			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.extents, true, color);
 			registry.AddComponent<MeshInitalizeComponent>(handle);
 		}
 

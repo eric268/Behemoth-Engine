@@ -7,6 +7,8 @@
 // Components
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
+#include "Components/RenderComponents.h"
+#include "Components/LightComponents.h"
 
 // ECS
 #include "ECS/ECSCore.h"

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "LightFactories.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
+#include "Components/LightComponents.h"
 
 namespace Behemoth
 {

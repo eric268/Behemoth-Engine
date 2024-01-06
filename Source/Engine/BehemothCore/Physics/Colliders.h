@@ -16,7 +16,7 @@ namespace Behemoth::Collision
 	{
 	};
 
-	struct OBBCollider : public Collider
+	struct OBBCollider
 	{
 		OBBCollider() = default;
 		OBBCollider(Math::Vector3 extent) : halfwidthExtents(extent) {}
@@ -25,51 +25,24 @@ namespace Behemoth::Collision
 		Math::Vector3 halfwidthExtents;
 	};
 
-	struct AABBCollider : public Collider
+	struct AABBCollider
 	{
 		AABBCollider() = default;
-		AABBCollider(Math::Vector3 extents) : halfwidthExtents(extents) {}
-		Math::Vector3 pos;
-		Math::Vector3 halfwidthExtents;
+		AABBCollider(Math::Vector3 extents) : extents(extents) {}
+		Math::Vector3 position;
+		Math::Vector3 extents;
 	};
 
-	struct SphereCollider : public Collider
+	struct SphereCollider
 	{
 		SphereCollider() = default;
 		SphereCollider(float radius) : radius(radius) {}
-		Math::Vector3 pos;
+		Math::Vector3 position;
 		float radius;
 	};
 
-	struct MeshCollider : public Collider
+	struct MeshCollider
 	{
 		Math::Vector3 pos;
-	};
-
-	template <int T>
-	struct GetColliderType;
-
-	template<>
-	struct GetColliderType<AABB>
-	{
-		using Type = AABBCollider;
-	};
-
-	template<>
-	struct GetColliderType<OBB>
-	{
-		using Type = OBBCollider;
-	};
-
-	template<>
-	struct GetColliderType<Sphere>
-	{
-		using Type = SphereCollider;
-	};
-
-	template <>
-	struct GetColliderType<Mesh>
-	{
-		using Type = MeshCollider;	
 	};
 }

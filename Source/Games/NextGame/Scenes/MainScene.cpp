@@ -62,7 +62,7 @@ MainScene::MainScene()
 void MainScene::Init()
 {
 	InitSystems();
-	collisionBVH.OnConstruction(registry);
+	collisionBVH.OnConstruction(registry, Behemoth::Collision::BVHTreeType::None);
 }
 
 void MainScene::OnEvent(Behemoth::Event& e)
@@ -90,7 +90,9 @@ void MainScene::Update(const float deltaTime)
 {
 	if (Behemoth::Input::IsKeyReleased(Behemoth::KeyCode::KC_Space))
 	{
-		collisionBVH.OnReconstruction(registry);
+		// collisionBVH.OnReconstruction(registry);
+
+		Behemoth::CameraComponent* cameraComponet = Behemoth::CameraHelper::GetMainCamera(registry);
 	}
 }
 

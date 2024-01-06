@@ -19,6 +19,13 @@ namespace Behemoth
 
 namespace Behemoth::Collision
 {
+	enum class BVHTreeType
+	{
+		None,
+		Static,
+		Dynamic
+	};
+
 	struct BVHNode
 	{
 		AABBCollider collider;
@@ -42,8 +49,9 @@ namespace Behemoth::Collision
 		BVH();
 		~BVH();
 
-		void OnConstruction(ECS::Registry& registry);
+		void OnConstruction(ECS::Registry& registry, BVHTreeType type);
 		void OnReconstruction(ECS::Registry& registry);
+		inline std::shared_ptr<BVHNode> GetRoot() { return root; }
 
 	private:
 		std::vector<BVHData> GetSceneColliderData(ECS::Registry& registry);
@@ -58,6 +66,7 @@ namespace Behemoth::Collision
 		void CreateBVHTree(ECS::Registry& registry);
 		void DestroyBVHTree(ECS::Registry& registry);
 
+		BVHTreeType treeType;
 		std::shared_ptr<BVHNode> root;
 		std::vector<ECS::EntityHandle> colliderHandles;
 

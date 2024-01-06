@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "WireframeRenderSystem.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
 #include "Misc/CameraHelper.h"
 #include "Renderer/Renderer.h"
 #include "Application/ResourceManager.h"
