@@ -2,6 +2,7 @@
 #include "Math/MathCore.h"
 #include "ECS/Entity.h"
 
+#include "Systems/Render/RenderSystem.h"
 #include <vector>
 
 namespace ECS
@@ -14,7 +15,7 @@ namespace Behemoth
 	class DebugLineComponent;
 	class Line;
 
-	class DebugLineSystem
+	class DebugLineSystem : public RenderSystem
 	{
 	public:
 		using Point = Math::Vector3;
@@ -24,9 +25,9 @@ namespace Behemoth
 
 	private:
 		void ReserveResources(int numLines);
-		bool CullLineSegement(const Point& p1, const Point& p2, const Math::Plane* worldFrustmPlanes);
+		bool CullLineSegement(Point& p1, Point& p2, const Math::Plane* worldFrustmPlanes);
 		void ProcessLine(const Point&, const Point& p2, const Math::Matrix4x4& viewProjMatrix, Math::Vector3 color);
-		void AddLineToRenderer(const Line& line);
+		void AddLineToRenderer(Line& line);
 		void UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle handle, DebugLineComponent* lineComponent);
 		void DestroyExpiredLines(ECS::Registry& registry, std::vector<ECS::EntityHandle>& linesToDestroy);
 	};

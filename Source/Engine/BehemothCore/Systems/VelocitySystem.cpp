@@ -12,7 +12,7 @@ namespace Behemoth
 			if (Math::Vector3::Equals(velocityComp->velocity, Math::Vector3::Zero()))
 				continue;
 
-			Math::Vector3 delta = velocityComp->velocity / deltaTime;
+			Math::Vector3 delta = velocityComp->velocity * deltaTime;
 
 			transformComp->position += delta;
 			transformComp->transformMatrix._41 += delta.x;

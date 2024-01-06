@@ -93,12 +93,14 @@ void Init()
 //------------------------------------------------------------------------
 void Update(float deltaTime)
 {
+	deltaTime *= 0.001f;
+
 	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->GetRegistry();
 	Behemoth::SystemManager::GetInstance().Run(deltaTime, registry);
 
 
-	Behemoth::World::GetInstance().Update(deltaTime);
-	Behemoth::Input::Update(deltaTime);
+	Behemoth::World::GetInstance().Update((deltaTime));
+	Behemoth::Input::Update((deltaTime));
 	// Need to add a check here to ensure that world and active scene are valid
 }
 

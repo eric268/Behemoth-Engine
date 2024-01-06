@@ -62,7 +62,7 @@ MainScene::MainScene()
 void MainScene::Init()
 {
 	InitSystems();
-	collisionBVH.OnConstruction(registry, Behemoth::Collision::BVHTreeType::None);
+	// collisionBVH.OnConstruction(registry, Behemoth::Collision::BVHTreeType::None);
 }
 
 void MainScene::OnEvent(Behemoth::Event& e)
@@ -92,7 +92,13 @@ void MainScene::Update(const float deltaTime)
 	{
 		// collisionBVH.OnReconstruction(registry);
 
-		Behemoth::CameraComponent* cameraComponet = Behemoth::CameraHelper::GetMainCamera(registry);
+		Behemoth::TransformComponent* cameraTransform = Behemoth::CameraHelper::GetMainCameraTransform(registry);
+		float distance = 5.0f;
+		Math::Vector3 startPos = cameraTransform->position + cameraTransform->forwardVector * 0.1f;
+		Math::Vector3 endPos = cameraTransform->position + cameraTransform->forwardVector * distance;
+
+		ECS::EntityHandle debugLineHandle = registry.CreateEntity("Debug line");
+		registry.AddComponent<Behemoth::DebugLineComponent>(debugLineHandle,startPos, endPos, 20.0f);
 	}
 }
 

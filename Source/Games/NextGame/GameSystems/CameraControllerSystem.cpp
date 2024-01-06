@@ -69,7 +69,7 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 		}
 
 		velocity.Normalize();
-		velocity *= 0.75f;
+		velocity *= 1.5f;
 
 		velocityComp->velocity = velocity;
 	}
