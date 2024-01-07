@@ -63,7 +63,7 @@ void Log(MessageType type, const std::string& message, const std::string& filena
 {
 	std::string messageType = GetMessageType(type);
 	std::string file = TrimFilenamePath(filename);
-	std::cerr << "LOG " << messageType << message << " (File: " << file << ", Line: " << line << ")\n";
+	std::cerr << "LOG - " << messageType << message << " (File: " << file << ", Line: " << line << ")\n";
 
 #ifdef _WIN32
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Behemoth::Collision
+namespace Behemoth
 {
 	struct HitResult
 	{

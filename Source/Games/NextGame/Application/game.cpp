@@ -1,10 +1,13 @@
 #include "pch.h"
-#include <iostream>
 #include "World/World.h"
 #include "Scenes/MainScene.h"
+
+#include <iostream>
+#include <memory>
             
     void CreateApplication()
     {
+        Behemoth::World::GetInstance().Init();
         Behemoth::Scene* mainScene = new MainScene();
         Behemoth::World::GetInstance().ChangeScene(mainScene);
     }

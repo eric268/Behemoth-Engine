@@ -19,7 +19,7 @@ namespace Behemoth
 			{
 				sphereComp->collider.position = transformComp1->position;
 				aabbComp->collider.position = transformComp2->position;
-				if (Collision::CheckSphereAABBCollision(sphereComp->collider, aabbComp->collider))
+				if (CheckSphereAABBCollision(sphereComp->collider, aabbComp->collider))
 				{
 					std::cout << "Sphere AABB colliding\n";
 				}

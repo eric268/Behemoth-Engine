@@ -22,7 +22,7 @@ namespace Behemoth
 				AABBComp->collider.position = transformComp->position;
 				AABBComp2->collider.position = transformComp2->position;
 
-				if (Collision::CheckAABBCollision(AABBComp->collider, AABBComp->collider))
+				if (CheckAABBCollision(AABBComp->collider, AABBComp->collider))
 				{
 					// std::cout << "Colliding\n";
 				}

@@ -24,7 +24,7 @@ namespace Behemoth
 				sphereColliderComp2->collider.position = transformComp2->position;
 
 
-				if (Collision::CheckSphereCollision(sphereColliderComp->collider, sphereColliderComp->collider))
+				if (CheckSphereCollision(sphereColliderComp->collider, sphereColliderComp->collider))
 				{
 					std::cout << "Sphere Sphere Collision\n";
 				}

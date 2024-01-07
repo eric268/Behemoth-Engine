@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Entity.h"
+#include "Misc/Log.h"
 
 // stl
 #include <vector>
@@ -18,13 +19,13 @@ namespace ECS
 	template<typename T>
 	concept IsComponent = std::is_convertible_v<T, Component>;
 
-	template<typename Component>
+	template<typename T>
 	class SparseSet
 	{
 	public:
 		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_IDENTIFIER), index{}
 		{
-			Generator::Value<Component>();
+			Generator::Value<T>();
 		}
 
 		void RemoveComponent(const Entity& entity)
@@ -54,9 +55,20 @@ namespace ECS
 			index--;
 		}
 
-		void AddComponent(const Entity& entity, const Component& component)
+		void AddComponent(const Entity& entity, const T& component)
 		{
 			std::size_t identifier = entity.GetIdentifier();
+
+			// If this entity already has this component then remove it and add new one assuming that the newest component is the desired one
+			if (sparse[identifier] == entity.GetIdentifier())
+			{
+				LOG_MESSAGE(MessageType::Warning, entity.GetName() + " already has " + typeid(component).name() + " old component removed, new one added");
+				RemoveComponent(entity);
+
+				// Could also just set the component but worried about not following proper delete process for components. May lead to dangling pointers/references/memory leaks
+// 				components[sparse[identifier]] = component;
+// 				return;
+			}
 
 			if (identifier >= maxSize || sparse[identifier] != NULL_IDENTIFIER)
 			{
@@ -68,7 +80,7 @@ namespace ECS
 			components.push_back(component);
 		}
 
-		Component* GetComponent(const Entity& entity)
+		T* GetComponent(const Entity& entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
@@ -147,7 +159,7 @@ namespace ECS
 		}
 
 		std::vector<entity_identifier> sparse;
-		std::vector<Component> components;
+		std::vector<T> components;
 
 		int maxSize;
 		size_t index;

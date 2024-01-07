@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Math/MathCore.h"
 #include "ECS/Component.h"
 #include "Physics/CollisionMask.h"
@@ -10,6 +11,8 @@
 
 namespace Behemoth
 {
+	class BVHNode;
+
 	// Physics Components
 	struct RigidBodyComponent : public ECS::Component
 	{
@@ -21,10 +24,10 @@ namespace Behemoth
 	struct ColliderComponent : public ECS::Component
 	{
 	protected:
-		ColliderComponent(Collision::CollisionMask collisionType = Collision::CollisionMask::EnvObject, bool enabled = true) :
+		ColliderComponent(CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			collisionType(collisionType),
 			isEnabled(enabled),
-			collisionMask(Behemoth::Collision::CollisionMask::Everything) {}
+			collisionMask(Behemoth::CollisionMask::Everything) {}
 	public:
 		bool isEnabled;
 		std::uint16_t collisionType;
@@ -33,37 +36,37 @@ namespace Behemoth
 
 	struct AABBColliderComponent : public ColliderComponent
 	{
-		AABBColliderComponent(Math::Vector3 extents, Collision::CollisionMask collisionType = Collision::CollisionMask::EnvObject, bool enabled = true) :
+		AABBColliderComponent(Math::Vector3 extents, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
 			collider(extents)
 		{}
 
-		Collision::AABBCollider collider;
+		AABBCollider collider;
 	};
 
 	struct OBBColliderComponent : public ColliderComponent
 	{
-		OBBColliderComponent(Math::Vector3 extent, Collision::CollisionMask collisionType = Collision::CollisionMask::EnvObject, bool enabled = true) :
+		OBBColliderComponent(Math::Vector3 extent, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
 			collider(extent)
 		{}
 		
-		Collision::OBBCollider collider;
+		OBBCollider collider;
 	};
 
 	struct SphereColliderComponent : public ColliderComponent
 	{
-		SphereColliderComponent(float radius, Collision::CollisionMask collisionType = Collision::CollisionMask::EnvObject, bool enabled = true) :
+		SphereColliderComponent(float radius, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
 			collider(radius)
 		{}
 
-		Collision::SphereCollider collider;
+		SphereCollider collider;
 	};
 
 	struct MeshColliderComponent : public ColliderComponent
 	{
-		MeshColliderComponent(std::string& filename, Math::Vector3 scale = Math::Vector3::One(), Behemoth::Collision::CollisionMask collisionType = Behemoth::Collision::CollisionMask::EnvObject, bool enabled = true) :
+		MeshColliderComponent(std::string& filename, Math::Vector3 scale = Math::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
 			modelFileName(filename),
 			// mesh(filename),
@@ -72,5 +75,19 @@ namespace Behemoth
 		Math::Vector3 scale;
 		std::string modelFileName;
 		// Mesh mesh;
+	};
+
+	template<typename ...T>
+	struct RequiredTypes
+	{
+
+	};
+
+	template <typename ... T>
+	struct BVHComponent : public ECS::Component
+	{
+		BVHComponent(std::shared_ptr<BVHNode> root = nullptr) : rootNode(root) {}
+		std::shared_ptr<BVHNode> rootNode;
+		RequiredTypes<T...> types;
 	};
 }

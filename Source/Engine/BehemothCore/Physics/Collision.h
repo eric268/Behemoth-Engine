@@ -3,7 +3,7 @@
 #include "Math/Plane.h"
 #include "Ray.h"
 
-namespace Behemoth::Collision
+namespace Behemoth
 {
 	using Point = Math::Vector3;
 

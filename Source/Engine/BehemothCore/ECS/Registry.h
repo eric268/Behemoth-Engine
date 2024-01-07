@@ -93,6 +93,8 @@ namespace ECS
 			}
 			else
 			{
+				std::string message = std::string("Failed to add ") + typeid(T).name() + " to entity: " + entity.name;
+				LOG_MESSAGE(MessageType::Error, message);
 				return nullptr;
 			}
 		}

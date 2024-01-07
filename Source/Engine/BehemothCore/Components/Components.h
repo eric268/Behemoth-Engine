@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ECS/Component.h"
 #include "Input/InputCodes.h"
 #include "Renderer/Mesh.h"

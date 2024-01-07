@@ -33,7 +33,7 @@ namespace Behemoth
 					}
 				}
 
-				if (Collision::CheckOBBCollision(OBBComp->collider, OBBComp2->collider))
+				if (CheckOBBCollision(OBBComp->collider, OBBComp2->collider))
 				{
 					std::cout << "Colliding\n";
 				}

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CameraControllerSystem.h"
 #include "GameComponents/CameraControllerComponent.h"
+#include "Components/Components.h"
 
 
 void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)

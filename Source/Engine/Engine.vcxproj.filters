@@ -204,6 +204,8 @@
     <ClInclude Include="BehemothCore\Components\LightComponents.h" />
     <ClInclude Include="BehemothCore\Systems\Render\DebugLineSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h" />
+    <ClInclude Include="BehemothCore\Misc\VariadicTypedef.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\BVHCollisionSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -304,5 +306,7 @@
     <ClCompile Include="BehemothCore\Physics\HitResult.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\DebugLineSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp" />
+    <ClCompile Include="BehemothCore\World\Scene.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\BVHCollisionSystem.cpp" />
   </ItemGroup>
 </Project>

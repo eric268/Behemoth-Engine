@@ -69,7 +69,7 @@ namespace Behemoth
 			{
 				Point intersectionPoint{};
 				float distance = 0.0f;
-				if (Behemoth::Collision::CheckLinePlaneIntersection(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint))
+				if (Behemoth::CheckLinePlaneIntersection(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint))
 				{
 					if (dist1 < 0)
 					{

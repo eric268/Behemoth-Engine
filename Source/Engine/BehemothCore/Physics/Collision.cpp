@@ -3,8 +3,9 @@
 #include "Math/MathCore.h"
 #include "Colliders.h"
 #include "ECS/ECSCore.h"
+#include "Physics/Colliders.h"
 
-namespace Behemoth::Collision
+namespace Behemoth
 {
 	bool CheckAABBCollision(const AABBCollider& box1, const AABBCollider& box2)
 	{

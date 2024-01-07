@@ -13,26 +13,6 @@
 #include "Systems/SystemManager.h"
 #include "Misc/CameraHelper.h"
 #include "Misc/Stopwatch.h"
-#include "Systems/ScalingSystem.h"
-
-#include "Systems/Render/MeshRenderSystem.h"
-#include "Systems/Render/WireframeRenderSystem.h"
-#include "Systems/Render/BoundingVolumeRenderSystem.h"
-#include "Systems/Render/DebugLineSystem.h"
-
-#include "Systems/CameraSystem.h"
-#include "Systems/RotationSystem.h"
-#include "Systems/MovementSystem.h"
-#include "Systems/MeshInitSystem.h"
-#include "Systems/LightingSystem.h"
-#include "Systems/VelocitySystem.h"
-
-#include "Systems/Physics/AABBCollisionSystem.h"
-#include "Systems/Physics/SphereCollisionSystem.h"
-#include "Systems/Physics/OBBCollisionSystem.h"
-#include "Systems/Physics/SphereAABBCollisionSystem.h"
-
-#include "Systems/Physics/RigidBodySystem.h"
 
 #include "Input/Input.h"
 
@@ -61,33 +41,9 @@ void OnEvent(Behemoth::Event& e)
 
 void Init()
 {
+	CreateApplication();
 	Behemoth::EventManager::GetInstance().OnEventDelegate = OnEvent;
 	Behemoth::EventManager::GetInstance().BindEventCallbacks();
-
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MovementSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::VelocitySystem>();
-
-
- 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereCollisionSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::OBBCollisionSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereAABBCollisionSystem>();
-
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
-
-	// These systems should always be last and in this order
-	// Maybe make a separate container for them to ensure they are last
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshRenderSystem>();
- 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::WireframeRenderSystem>();
- 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::DebugLineSystem>();
- 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BoundingVolumeRenderSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
-
-	CreateApplication();
 }
 
 
@@ -101,7 +57,6 @@ void Update(float deltaTime)
 
 	ECS::Registry& registry = Behemoth::World::GetInstance().GetActiveScene()->GetRegistry();
 	Behemoth::SystemManager::GetInstance().Run(deltaTime, registry);
-
 
 	Behemoth::World::GetInstance().Update((deltaTime));
 	Behemoth::Input::Update((deltaTime));

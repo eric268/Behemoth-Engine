@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Behemoth::Collision
+namespace Behemoth
 {
 	enum CollisionMask
 	{

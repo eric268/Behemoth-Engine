@@ -1,9 +1,9 @@
 #pragma once
 #include "Math/MathCore.h"
 
-namespace Behemoth::Collision
+namespace Behemoth
 {
-	enum ColliderType
+	enum class ColliderType
 	{
 		None = 0,
 		AABB,

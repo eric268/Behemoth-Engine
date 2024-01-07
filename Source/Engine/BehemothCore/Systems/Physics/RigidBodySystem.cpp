@@ -11,6 +11,11 @@ namespace Behemoth
 	{
 		for (const auto& [entity, rigidBodyComp, velocityComp] : registry.Get<RigidBodyComponent, VelocityComponent>())
 		{
+			if (!rigidBodyComp->affectedByGravity)
+			{
+				continue;
+			}
+			
 			velocityComp->velocity.y += deltaTime * GRAVITY;
 		}
 	}
