@@ -4,13 +4,12 @@
 #include "Event/KeyboardEvents.h"
 #include "Event/MouseEvents.h"
 #include "InputCodes.h"
+#include "InputMapping.h"
 
 #include "NextAPI/App/SimpleController.h"
 
 namespace Behemoth
 {
-#include "Input.h" // Or whatever the name of your header file is
-
 	// Initialize the static members of Input.
 	std::bitset<NUM_KC> Input::currentKeyState;
 	std::bitset<NUM_KC> Input::prevKeyState;
