@@ -1,6 +1,6 @@
 #pragma once
 #include "Math/MathCore.h"
-#include "CollisionMask.h"
+#include "Collision/CollisionMask.h"
 
 namespace Behemoth
 {

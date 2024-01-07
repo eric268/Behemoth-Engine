@@ -3,7 +3,7 @@
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "ECS/Entity.h"
-#include "Renderer/Mesh.h"
+#include "Geometry/Mesh.h"
 #include "Application/ResourceManager.h"
 #include "Misc/Log.h"
 

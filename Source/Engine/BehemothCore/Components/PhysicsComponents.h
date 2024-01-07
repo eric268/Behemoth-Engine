@@ -2,8 +2,8 @@
 
 #include "Math/MathCore.h"
 #include "ECS/Component.h"
-#include "Physics/CollisionMask.h"
-#include "Physics/Colliders.h"
+#include "Physics/Collision/CollisionMask.h"
+#include "Physics/Collision/Colliders.h"
 
 #include <string>
 

@@ -5,7 +5,7 @@
 #include "Misc/CameraHelper.h"
 #include "Renderer/Renderer.h"
 #include "Application/ResourceManager.h"
-#include "Renderer/Line.h"
+#include "Geometry/Line.h"
 
 namespace Behemoth
 {

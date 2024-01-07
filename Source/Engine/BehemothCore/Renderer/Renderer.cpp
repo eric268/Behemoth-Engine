@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Renderer.h"
-#include "Primitives.h"
+#include "Geometry/Primitives.h"
 
 #include "NextAPI/App/app.h"
 

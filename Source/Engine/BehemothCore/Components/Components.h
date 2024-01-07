@@ -2,7 +2,8 @@
 
 #include "ECS/Component.h"
 #include "Input/InputCodes.h"
-#include "Renderer/Mesh.h"
+#include "Geometry/Mesh.h"
+#include "Geometry/Plane.h"
 
 #include <functional>
 #include <unordered_map>
@@ -24,7 +25,7 @@ namespace Behemoth
 			{}
 
 		~CameraComponent() = default;
-		Math::Plane worldSpaceFrustum[6];
+		Plane worldSpaceFrustum[6];
 		Math::Matrix4x4 viewMatrix;
 		Math::Matrix4x4 perspectiveMatrix;
 		Math::Matrix4x4 inverseTransposeViewMatrix;

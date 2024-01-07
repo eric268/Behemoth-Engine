@@ -14,6 +14,7 @@ namespace Behemoth
 {
 	class DebugLineComponent;
 	class Line;
+	class Plane;
 
 	class DebugLineSystem : public RenderSystem
 	{
@@ -25,7 +26,7 @@ namespace Behemoth
 
 	private:
 		void ReserveResources(int numLines);
-		bool CullLineSegement(Point& p1, Point& p2, const Math::Plane* worldFrustmPlanes);
+		bool CullLineSegement(Point& p1, Point& p2, const Plane* worldFrustmPlanes);
 		void ProcessLine(const Point&, const Point& p2, const Math::Matrix4x4& viewProjMatrix, Math::Vector3 color);
 		void AddLineToRenderer(Line& line);
 		void UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle handle, DebugLineComponent* lineComponent);

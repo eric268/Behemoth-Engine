@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Math/MathCore.h"
-#include "Line.h"
+#include "Geometry/Line.h"
 
 // stl
 #include <vector>

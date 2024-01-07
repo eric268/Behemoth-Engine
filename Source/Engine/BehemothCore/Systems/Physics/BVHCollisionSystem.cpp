@@ -2,7 +2,7 @@
 #include "BVHCollisionSystem.h"
 #include "Components/PhysicsComponents.h"
 #include "Components/Components.h"
-#include "Physics/Collision.h"
+#include "Physics/Collision/BroadCollision.h"
 #include "ECS/Registry.h"
 #include "ECS/Entity.h"
 #include "Physics/BVH.h"
@@ -76,7 +76,7 @@ namespace Behemoth
 				continue;
 			}
 
-			if (handle.ID != currentNode->entityHandles.ID && Behemoth::CheckLineAABBIntersection(p1, p2, currentNode->collider))
+			if (handle.ID != currentNode->entityHandles.ID && Behemoth::BroadLineAABBIntersection(p1, p2, currentNode->collider))
 			{
 				if (currentNode->IsLeaf())
 				{
@@ -114,7 +114,7 @@ namespace Behemoth
 				continue;
 			}
 
-			if (handle.ID != currentNode->entityHandles.ID && Behemoth::CheckAABBCollision(collider, currentNode->collider))
+			if (handle.ID != currentNode->entityHandles.ID && Behemoth::BroadAABBCollision(collider, currentNode->collider))
 			{
 				if (currentNode->IsLeaf())
 				{

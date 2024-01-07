@@ -4,7 +4,7 @@
 #include "ECS/Entity.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
-#include "Physics/Collision.h"
+#include "Physics/Collision/BroadCollision.h"
 
 namespace Behemoth
 {
@@ -19,7 +19,7 @@ namespace Behemoth
 			{
 				sphereComp->collider.position = transformComp1->position;
 				aabbComp->collider.position = transformComp2->position;
-				if (CheckSphereAABBCollision(sphereComp->collider, aabbComp->collider))
+				if (BroadSphereAABBCollision(sphereComp->collider, aabbComp->collider))
 				{
 					std::cout << "Sphere AABB colliding\n";
 				}

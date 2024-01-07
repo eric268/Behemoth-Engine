@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "RenderSystem.h"
-#include "Renderer/Primitives.h"
+#include "Geometry/Primitives.h"
 #include "Components/Components.h"
 
 namespace Behemoth

@@ -2,7 +2,7 @@
 
 #include "ECS/Component.h"
 #include "Input/InputCodes.h"
-#include "Renderer/Mesh.h"
+#include "Geometry/Mesh.h"
 
 #include <functional>
 #include <unordered_map>

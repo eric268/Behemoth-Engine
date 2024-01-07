@@ -2,8 +2,9 @@
 
 namespace Behemoth
 {
-	struct HitResult
+	class NarrowCollision
 	{
 
 	};
 }
+

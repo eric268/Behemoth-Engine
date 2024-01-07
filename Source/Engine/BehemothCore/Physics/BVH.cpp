@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "BVH.h"
 
-#include "Physics/Colliders.h"
+#include "Physics/Collision/Colliders.h"
 #include "Components/RenderComponents.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
 #include "Misc/Log.h"
-#include "Collision.h"
+#include "Collision/BroadCollision.h"
 
 namespace Behemoth
 {

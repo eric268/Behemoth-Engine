@@ -1,13 +1,14 @@
 #include "pch.h"
-#include "Collision.h"
+#include "BroadCollision.h"
 #include "Math/MathCore.h"
 #include "Colliders.h"
 #include "ECS/ECSCore.h"
-#include "Physics/Colliders.h"
+#include "Physics/Collision/Colliders.h"
+#include "Geometry/Plane.h"
 
 namespace Behemoth
 {
-	bool CheckAABBCollision(const AABBCollider& box1, const AABBCollider& box2)
+	bool BroadAABBCollision(const AABBCollider& box1, const AABBCollider& box2)
 	{
 		Math::Vector3 minPos1 = box1.position - box1.extents;
 		Math::Vector3 maxPos1 = box1.position + box1.extents;
@@ -25,7 +26,7 @@ namespace Behemoth
 
 		return true;
 	}
-	bool CheckAABBPlaneCollision(const AABBCollider& collider, const Math::Plane& p)
+	bool BroadAABBPlaneCollision(const AABBCollider& collider, const Plane& p)
 	{
 		// Compute the projection interval radius of b onto L(t) = b.c + t * p.n
 		float radius = collider.extents[0] * std::abs(p.normal[0]) + collider.extents[1] * std::abs(p.normal[1]) + collider.extents[2] * std::abs(p.normal[2]);
@@ -36,13 +37,13 @@ namespace Behemoth
 		return std::abs(distance) <= radius;
 	}
 
-	bool CheckSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
+	bool BroadSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
 	{
 		float distance = Math::Vector3::SquaredDistance(sphere1.position, sphere2.position);
 		float rad = sphere1.radius + sphere2.radius;
 		return distance <= (rad * rad);
 	}
-	bool CheckSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
+	bool BroadSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
 	{
 		float squaredDist = 0;
 		float squaredRad = sphere.radius * sphere.radius;
@@ -71,7 +72,7 @@ namespace Behemoth
 	}
 
 	// Real-Time Collision Detection-Morgan Kaufmann (2005)
-	bool CheckOBBCollision(const OBBCollider& box1, const OBBCollider& box2)
+	bool BroadOBBCollision(const OBBCollider& box1, const OBBCollider& box2)
 	{
 		float rBox1, rBox2;
 
@@ -180,7 +181,7 @@ namespace Behemoth
 
 		return true;
 	}
-	bool CheckOBBPlaneCollision(const OBBCollider& box, const Math::Plane& p)
+	bool BroadOBBPlaneCollision(const OBBCollider& box, const Plane& p)
 	{
 		float radius = box.halfwidthExtents[0] * std::abs(Math::Vector3::Dot(p.normal, box.orientation[0])) +
 					   box.halfwidthExtents[1] * std::abs(Math::Vector3::Dot(p.normal, box.orientation[1])) +
@@ -190,7 +191,7 @@ namespace Behemoth
 		return std::abs(distance) <= radius;
 	}
 
-	bool CheckLinePlaneIntersection(const Point& p1, const Point& p2, const Math::Plane& plane, float& dist, Point& intersectionP)
+	bool BroadLinePlaneIntersection(const Point& p1, const Point& p2, const Plane& plane, float& dist, Point& intersectionP)
 	{
 		Math::Vector3 ab = p2 - p1;
 		dist = (plane.distance - Math::Vector3::Dot(plane.normal, p1)) / (Math::Vector3::Dot(plane.normal, ab));
@@ -202,7 +203,7 @@ namespace Behemoth
 
 		return false;
 	}
-	bool CheckLineAABBIntersection(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
+	bool BroadLineAABBIntersection(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
 	{
 		Math::Vector3 boxMin = box.position - box.extents;  // Minimum corner of the AABB
 		Math::Vector3 boxMax = box.position + box.extents;  // Maximum corner of the AABB
@@ -259,17 +260,17 @@ namespace Behemoth
 	}
 
 	// Primitive Collision
-	Point GetClosestPointOnPlane(Point point, const Math::Plane& plane)
+	Point GetClosestPointOnPlane(Point point, const Plane& plane)
 	{
 		float t = Math::Vector3::Dot(plane.normal, point);
 		return point - plane.normal * t;
 	}
-	float GetDistBetweenPointPlane(const Point point, const Math::Plane& plane)
+	float GetDistBetweenPointPlane(const Point point, const Plane& plane)
 	{
 		return Math::Vector3::Dot(plane.normal, point) - plane.distance;
 	}
 
-	bool RayAABBIsColliding(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint)
+	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint)
 	{
 		Math::Vector3 min = collider.position - collider.extents;
 		Math::Vector3 max = collider.position + collider.extents;
@@ -309,7 +310,7 @@ namespace Behemoth
 		collisionPoint = ray.origin + ray.direction * minDist;
 		return true;
 	}
-	bool RaySphereIsColliding(const Ray& ray, const SphereCollider& sphere)
+	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere)
 	{
 		Math::Vector3 rayToSphere = ray.origin - sphere.position;
 		float sqDistToSphere = Math::Vector3::Dot(rayToSphere, rayToSphere) - sphere.radius * sphere.radius;

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MainScene.h"
 
-#include "Physics/Collision.h"
+#include "Physics/Collision/BroadCollision.h"
 
 #include "Components/Components.h"
 #include "Components/LightComponents.h"

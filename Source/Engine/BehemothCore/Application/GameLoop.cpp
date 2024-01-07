@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "ECS/ECSCore.h"
-#include "Renderer/Primitives.h"
+#include "Geometry/Primitives.h"
 #include "Misc/Log.h"
 #include "ResourceManager.h"
 #include "Renderer/Renderer.h"

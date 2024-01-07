@@ -5,8 +5,9 @@
 #include "Components/Components.h"
 #include "Misc/CameraHelper.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/Line.h"
-#include "Physics/Collision.h"
+#include "Geometry/Line.h"
+#include "Physics/Collision/BroadCollision.h"
+#include "Geometry/Plane.h"
 
 namespace Behemoth
 {
@@ -47,11 +48,11 @@ namespace Behemoth
 	}
 
 
-	bool DebugLineSystem::CullLineSegement(Point& p1, Point& p2, const Math::Plane* worldFrustmPlanes)
+	bool DebugLineSystem::CullLineSegement(Point& p1, Point& p2, const Plane* worldFrustmPlanes)
 	{
 		for (int i = 0; i < 6; i++)
 		{
-			const Math::Plane& plane = worldFrustmPlanes[i];
+			const Plane& plane = worldFrustmPlanes[i];
 
 			// Check if endpoints of line are inside frustum, if true do not cull frustum
 			float dist1 = Math::Vector3::Dot(p1, plane.normal) - plane.distance;
@@ -69,7 +70,7 @@ namespace Behemoth
 			{
 				Point intersectionPoint{};
 				float distance = 0.0f;
-				if (Behemoth::CheckLinePlaneIntersection(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint))
+				if (Behemoth::BroadLinePlaneIntersection(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint))
 				{
 					if (dist1 < 0)
 					{

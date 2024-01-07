@@ -3,7 +3,7 @@
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
-#include "Physics/Collision.h"
+#include "Physics/Collision/BroadCollision.h"
 
 namespace Behemoth
 {
@@ -24,7 +24,7 @@ namespace Behemoth
 				sphereColliderComp2->collider.position = transformComp2->position;
 
 
-				if (CheckSphereCollision(sphereColliderComp->collider, sphereColliderComp->collider))
+				if (BroadSphereCollision(sphereColliderComp->collider, sphereColliderComp->collider))
 				{
 					std::cout << "Sphere Sphere Collision\n";
 				}

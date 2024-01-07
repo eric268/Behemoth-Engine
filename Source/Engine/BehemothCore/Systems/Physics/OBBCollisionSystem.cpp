@@ -3,7 +3,7 @@
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
-#include "Physics/Collision.h"
+#include "Physics/Collision/BroadCollision.h"
 
 namespace Behemoth
 {
@@ -33,7 +33,7 @@ namespace Behemoth
 					}
 				}
 
-				if (CheckOBBCollision(OBBComp->collider, OBBComp2->collider))
+				if (BroadOBBCollision(OBBComp->collider, OBBComp2->collider))
 				{
 					std::cout << "Colliding\n";
 				}

@@ -3,7 +3,7 @@
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
-#include "Physics/Collision.h"
+#include "Physics/Collision/BroadCollision.h"
 
 
 namespace Behemoth
@@ -22,7 +22,7 @@ namespace Behemoth
 				AABBComp->collider.position = transformComp->position;
 				AABBComp2->collider.position = transformComp2->position;
 
-				if (CheckAABBCollision(AABBComp->collider, AABBComp->collider))
+				if (BroadAABBCollision(AABBComp->collider, AABBComp->collider))
 				{
 					// std::cout << "Colliding\n";
 				}

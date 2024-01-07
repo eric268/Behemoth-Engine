@@ -6,7 +6,7 @@
 #include "Components/RenderComponents.h"
 #include "ECS/Entity.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/MeshLoader.h"
+#include "Geometry/MeshLoader.h"
 #include "Application/ResourceManager.h"
 
 namespace Behemoth

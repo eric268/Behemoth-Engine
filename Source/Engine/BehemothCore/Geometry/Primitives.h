@@ -12,9 +12,7 @@ namespace Behemoth
 	enum PrimitiveType
 	{
 		TRIANGLE = 3,
-		QUAD = 4,
-		NUM_PRIMITIVE_TYPES
-
+		QUAD = 4
 	};
 
 	class Primitives
