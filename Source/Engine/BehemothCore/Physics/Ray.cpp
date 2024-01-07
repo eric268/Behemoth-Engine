@@ -4,6 +4,6 @@
 namespace Behemoth
 {
 	Ray::Ray() {}
-	Ray::Ray(Math::Vector3 position, Math::Vector3 direction) : origin(position), direction(direction) {}
+	Ray::Ray(BMath::Vector3 position, BMath::Vector3 direction) : origin(position), direction(direction) {}
 
 }

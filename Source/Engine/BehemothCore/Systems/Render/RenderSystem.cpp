@@ -5,7 +5,7 @@
 
 namespace Behemoth
 {
-	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVerticies, Math::Vector4 primitiveVerts[])
+	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVerticies, BMath::Vector4 primitiveVerts[])
 	{
 		// Only want to cull primitives that are entirely outside of view frustum since OpenGL render pipeline will clip
 		// the quads if portions are outside the frustum. Me doing that, potentially creating temporary primitives will
@@ -29,7 +29,7 @@ namespace Behemoth
 	{
 		for (const auto& p : cameraComponent->worldSpaceFrustum)
 		{
-			float distance = Math::Vector3::Dot(p.normal, boundingTransformComp->position) - p.distance;
+			float distance = BMath::Vector3::Dot(p.normal, boundingTransformComp->position) - p.distance;
 			if (distance < -boundingRadius)
 				return false;
 		}
@@ -37,7 +37,7 @@ namespace Behemoth
 		return true;
 	}
 
-	void RenderSystem::TransformVertex(const Primitives& primitive, const Math::Matrix4x4& transformMatrix, Math::Vector4 vertex[], const int numVerticies)
+	void RenderSystem::TransformVertex(const Primitives& primitive, const BMath::Matrix4x4& transformMatrix, BMath::Vector4 vertex[], const int numVerticies)
 	{
 		for (int j = 0; j < numVerticies; j++)
 		{
@@ -45,7 +45,7 @@ namespace Behemoth
 		}
 	}
 
-	void RenderSystem::ProcessVertex(const Math::Matrix4x4& viewProjMatrix, Math::Vector4 vertex[], int numVerticies)
+	void RenderSystem::ProcessVertex(const BMath::Matrix4x4& viewProjMatrix, BMath::Vector4 vertex[], int numVerticies)
 	{
 		for (int j = 0; j < numVerticies; j++)
 		{

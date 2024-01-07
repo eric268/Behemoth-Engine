@@ -8,10 +8,10 @@ namespace Behemoth
 	{
 	public:
 		Plane();
-		Plane(Math::Vector3 n, float d) : normal(n), distance(d) {}
-		Math::Vector3 normal;
+		Plane(BMath::Vector3 n, float d) : normal(n), distance(d) {}
+		BMath::Vector3 normal;
 		float distance;
 
-		static Plane TransformPlane(const Plane& plane, const Math::Matrix4x4 m);
+		static Plane TransformPlane(const Plane& plane, const BMath::Matrix4x4 m);
 	};
 }

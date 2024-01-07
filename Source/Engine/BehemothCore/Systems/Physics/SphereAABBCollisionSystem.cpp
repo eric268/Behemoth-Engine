@@ -17,7 +17,7 @@ namespace Behemoth
 		{
 			for (const auto& [entity2, transformComp2, aabbComp] : components2)
 			{
-				sphereComp->collider.position = transformComp1->position;
+				sphereComp->collider.positionOffset = transformComp1->position;
 				aabbComp->collider.position = transformComp2->position;
 				if (BroadSphereAABBCollision(sphereComp->collider, aabbComp->collider))
 				{

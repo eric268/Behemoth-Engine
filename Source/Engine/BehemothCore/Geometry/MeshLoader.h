@@ -16,11 +16,11 @@ namespace Behemoth
 
 	private:
 		void ParseFaceData(std::string& faceData, int& vertexIndex, int& uvIndex, int& normalIndex);
-		bool IsNonPlanarQuad(const Math::Vector3& v1, const Math::Vector3& v2, const Math::Vector3& v3, const Math::Vector3& v4);
+		bool IsNonPlanarQuad(const BMath::Vector3& v1, const BMath::Vector3& v2, const BMath::Vector3& v3, const BMath::Vector3& v4);
 
-		std::vector<Math::Vector3> vertexPositions;
-		std::vector<Math::Vector3> vertexNormals;
-		std::vector<Math::Vector2> vertexUVs;
+		std::vector<BMath::Vector3> vertexPositions;
+		std::vector<BMath::Vector3> vertexNormals;
+		std::vector<BMath::Vector2> vertexUVs;
 	};
 }
 

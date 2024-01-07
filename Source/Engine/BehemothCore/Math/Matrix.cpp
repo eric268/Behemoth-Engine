@@ -8,7 +8,7 @@
 
 #include <xmmintrin.h> 
 
-namespace Math
+namespace BMath
 {
 	// Matrix2x2
 	Matrix2x2 Matrix2x2::Identity()

@@ -60,7 +60,7 @@ namespace ECS
 			std::size_t identifier = entity.GetIdentifier();
 
 			// If this entity already has this component then remove it and add new one assuming that the newest component is the desired one
-			if (sparse[identifier] == entity.GetIdentifier())
+			if (sparse[identifier] != NULL_IDENTIFIER && dense[sparse[identifier]].GetIdentifier() == entity.GetIdentifier())
 			{
 				LOG_MESSAGE(MessageType::Warning, entity.GetName() + " already has " + typeid(component).name() + " old component removed, new one added");
 				RemoveComponent(entity);
@@ -72,6 +72,7 @@ namespace ECS
 
 			if (identifier >= maxSize || sparse[identifier] != NULL_IDENTIFIER)
 			{
+				LOG_MESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
 				return;
 			}
 
@@ -85,7 +86,9 @@ namespace ECS
 			entity_identifier identifier = entity.GetIdentifier();
 
 			if (identifier >= maxSize || sparse[identifier] == NULL_IDENTIFIER)
+			{
 				return nullptr;
+			}
 
 			if (entity.GetVersion() != dense[sparse[identifier]].GetVersion())
 			{

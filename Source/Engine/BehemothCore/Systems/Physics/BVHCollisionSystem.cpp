@@ -58,7 +58,7 @@ namespace Behemoth
 		}
 	}
 
-	bool BVHCollisionSystem::CheckLineCollision(ECS::EntityHandle handle, Math::Vector3 p1, Math::Vector3 p2, std::shared_ptr<BVHNode> root)
+	bool BVHCollisionSystem::CheckLineCollision(ECS::EntityHandle handle, BMath::Vector3 p1, BMath::Vector3 p2, std::shared_ptr<BVHNode> root)
 	{
 		using node = std::shared_ptr<Behemoth::BVHNode>;
 

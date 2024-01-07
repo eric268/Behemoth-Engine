@@ -5,8 +5,8 @@ namespace Behemoth
 {
 	struct ContactData
 	{
-		Math::Vector3 collisionPoint;
-		Math::Vector3 collisionNormal;
+		BMath::Vector3 collisionPoint;
+		BMath::Vector3 collisionNormal;
 		float penetrationDepth;
 	};
 

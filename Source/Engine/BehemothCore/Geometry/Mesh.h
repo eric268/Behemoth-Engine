@@ -11,9 +11,9 @@ namespace Behemoth
 {
 	struct VertexData
 	{
-		Math::Vector3 vertex;
-		Math::Vector3 normal;
-		Math::Vector2 uv;
+		BMath::Vector3 vertex;
+		BMath::Vector3 normal;
+		BMath::Vector2 uv;
 	};
 
 	struct MeshData
@@ -27,16 +27,16 @@ namespace Behemoth
 	struct MaterialData
 	{
 		std::string textureFileName;
-		Math::Vector2 uvScale;
-		Math::Vector3 diffuse;
-		Math::Vector3 specular;
+		BMath::Vector2 uvScale;
+		BMath::Vector3 diffuse;
+		BMath::Vector3 specular;
 		float shininess;
 	};
 
 	class Mesh
 	{
 	public:
-		Mesh(const std::string& modelPath, const std::string& texturePath = "", const Math::Vector2 uv = {1.0f, 1.0f});
+		Mesh(const std::string& modelPath, const std::string& texturePath = "", const BMath::Vector2 uv = {1.0f, 1.0f});
 		void GenerateMesh(const MeshData& meshData, const std::vector<VertexData>& vertexData);
 
 		MaterialData materialData;

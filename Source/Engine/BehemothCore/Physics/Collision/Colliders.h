@@ -19,30 +19,30 @@ namespace Behemoth
 	struct OBBCollider
 	{
 		OBBCollider() = default;
-		OBBCollider(Math::Vector3 extent) : halfwidthExtents(extent) {}
-		Math::Vector3 pos;
-		Math::Vector3 orientation[3];
-		Math::Vector3 halfwidthExtents;
+		OBBCollider(BMath::Vector3 extent) : halfwidthExtents(extent) {}
+		BMath::Vector3 pos;
+		BMath::Vector3 orientation[3];
+		BMath::Vector3 halfwidthExtents;
 	};
 
 	struct AABBCollider
 	{
 		AABBCollider() = default;
-		AABBCollider(Math::Vector3 extents) : extents(extents) {}
-		Math::Vector3 position;
-		Math::Vector3 extents;
+		AABBCollider(BMath::Vector3 extents) : extents(extents) {}
+		BMath::Vector3 position;
+		BMath::Vector3 extents;
 	};
 
 	struct SphereCollider
 	{
 		SphereCollider() = default;
 		SphereCollider(float radius) : radius(radius) {}
-		Math::Vector3 position;
+		BMath::Vector3 positionOffset;
 		float radius;
 	};
 
 	struct MeshCollider
 	{
-		Math::Vector3 pos;
+		BMath::Vector3 pos;
 	};
 }

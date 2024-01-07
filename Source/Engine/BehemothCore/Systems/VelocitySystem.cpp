@@ -10,17 +10,17 @@ namespace Behemoth
 		auto components = registry.Get<VelocityComponent, TransformComponent>();
 		for (const auto& [entity, velocityComp, transformComp] : components)
 		{
-			if (registry.GetComponent<StaticComponent>(entity) && velocityComp->velocity != Math::Vector3::Zero())
+			if (registry.GetComponent<StaticComponent>(entity) && velocityComp->velocity != BMath::Vector3::Zero())
 			{
-				velocityComp->velocity = Math::Vector3::Zero();
+				velocityComp->velocity = BMath::Vector3::Zero();
 				LOG_MESSAGE(MessageType::Warning, "Attempting to move static entity named: " + registry.GetName(entity));
 				continue;
 			}
 
-			if (Math::Vector3::Equals(velocityComp->velocity, Math::Vector3::Zero()))
+			if (BMath::Vector3::Equals(velocityComp->velocity, BMath::Vector3::Zero()))
 				continue;
 
-			Math::Vector3 delta = velocityComp->velocity * deltaTime;
+			BMath::Vector3 delta = velocityComp->velocity * deltaTime;
 
 			transformComp->position += delta;
 			transformComp->transformMatrix._41 += delta.x;

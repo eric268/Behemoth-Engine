@@ -11,7 +11,7 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry) override;
 
 	private:
-		void ProcessBoundingVolume(BoundingVolumeComponent* boundingVolumeComponent, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix);
+		void ProcessBoundingVolume(BoundingVolumeComponent* boundingVolumeComponent, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix);
 	};
 }
 

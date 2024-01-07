@@ -219,6 +219,7 @@
     <ClInclude Include="BehemothCore\World\Scene.h" />
     <ClInclude Include="BehemothCore\World\World.h" />
     <ClInclude Include="BehemothCore\pch.h" />
+    <ClInclude Include="BehemothCore\Math\Quaternion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp" />
@@ -266,6 +267,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\BVHCollisionSystem.cpp" />
+    <ClCompile Include="BehemothCore\Math\Quaternion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NextAPI\NextAPI.vcxproj">

@@ -25,8 +25,8 @@ namespace Behemoth
 		ReserveResources(numDebugLines);
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
-		Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+		BMath::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
 
 		std::vector<ECS::EntityHandle> expiredLines;
 
@@ -55,8 +55,8 @@ namespace Behemoth
 			const Plane& plane = worldFrustmPlanes[i];
 
 			// Check if endpoints of line are inside frustum, if true do not cull frustum
-			float dist1 = Math::Vector3::Dot(p1, plane.normal) - plane.distance;
-			float dist2 = Math::Vector3::Dot(p2, plane.normal) - plane.distance;
+			float dist1 = BMath::Vector3::Dot(p1, plane.normal) - plane.distance;
+			float dist2 = BMath::Vector3::Dot(p2, plane.normal) - plane.distance;
 
 			if (dist1 >= 0 && dist2 >= 0)
 			{
@@ -91,17 +91,17 @@ namespace Behemoth
 	{
 		Renderer::GetInstance().ReserveLines(numLines);
 	}
-	void DebugLineSystem::ProcessLine(const Point& p1, const Point& p2, const Math::Matrix4x4& viewProjMatrix, Math::Vector3 color)
+	void DebugLineSystem::ProcessLine(const Point& p1, const Point& p2, const BMath::Matrix4x4& viewProjMatrix, BMath::Vector3 color)
 	{
-		Math::Vector4 renderVerts[2];
+		BMath::Vector4 renderVerts[2];
 
-		renderVerts[0] = viewProjMatrix * Math::Vector4(p1, 1.0f);
-		renderVerts[1] = viewProjMatrix * Math::Vector4(p2, 1.0f);
+		renderVerts[0] = viewProjMatrix * BMath::Vector4(p1, 1.0f);
+		renderVerts[1] = viewProjMatrix * BMath::Vector4(p2, 1.0f);
 
 		renderVerts[0] = renderVerts[0] / renderVerts[0].w;
 		renderVerts[1] = renderVerts[1] / renderVerts[1].w;
 
-		Line line = Line(Math::Vector4(renderVerts[0].x, renderVerts[0].y, renderVerts[1].x, renderVerts[1].y), color);
+		Line line = Line(BMath::Vector4(renderVerts[0].x, renderVerts[0].y, renderVerts[1].x, renderVerts[1].y), color);
 
 		AddLineToRenderer(line);
 	}

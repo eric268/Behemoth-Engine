@@ -20,8 +20,8 @@ namespace Behemoth
 					continue;
 				}
 
-				sphereColliderComp->collider.position = transformComp->position;
-				sphereColliderComp2->collider.position = transformComp2->position;
+				sphereColliderComp->collider.positionOffset = transformComp->position;
+				sphereColliderComp2->collider.positionOffset = transformComp2->position;
 
 
 				if (BroadSphereCollision(sphereColliderComp->collider, sphereColliderComp->collider))

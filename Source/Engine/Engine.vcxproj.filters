@@ -207,6 +207,7 @@
     <ClInclude Include="BehemothCore\Misc\VariadicTypedef.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\BVHCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\NarrowCollision.h" />
+    <ClInclude Include="BehemothCore\Math\Quaternion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -310,5 +311,6 @@
     <ClCompile Include="BehemothCore\World\Scene.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\BVHCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Physics\Collision\NarrowCollision.cpp" />
+    <ClCompile Include="BehemothCore\Math\Quaternion.cpp" />
   </ItemGroup>
 </Project>

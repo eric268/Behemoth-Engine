@@ -20,7 +20,7 @@ namespace Behemoth
 	public:
 		Primitives();
 		Primitives(std::string& path, std::string& textureName);
-		Primitives(const std::string& path, const std::string& textureName, PrimitiveType type, Math::Vector4 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]);
+		Primitives(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[]);
 		~Primitives();
 
 		Primitives(const Primitives& obj);
@@ -31,28 +31,28 @@ namespace Behemoth
 
 		void Draw();
 
-		Math::Vector4 verticies[4];
-		Math::Vector3 normals[4];
-		Math::Vector2 uv[4];
+		BMath::Vector4 verticies[4];
+		BMath::Vector3 normals[4];
+		BMath::Vector2 uv[4];
 
 		PrimitiveType primitiveType;
 
 		double depth;
-		Math::Vector3 diffuse;
-		Math::Vector3 specular;
+		BMath::Vector3 diffuse;
+		BMath::Vector3 specular;
 		float shininess;
 
-		void SetSpriteUVs(PrimitiveType type, Math::Vector2 uv[]);
-		void SetSpriteVerticies(const int numVerticies, const Math::Vector4 vert[]);
-		void SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[]);
-		void SetPrimitiveVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector3 normal[], Math::Vector2 uv[]);
+		void SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[]);
+		void SetSpriteVerticies(const int numVerticies, const BMath::Vector4 vert[]);
+		void SetSpriteVerticies(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[]);
+		void SetPrimitiveVerticies(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector3 normal[], BMath::Vector2 uv[]);
 
-		inline void SetLighting(Math::Vector3 c)
+		inline void SetLighting(BMath::Vector3 c)
 		{
 			color = c;
 			sprite->SetColor(c.x, c.y, c.z);
 		}
-		inline void AddLighting(Math::Vector3 light)
+		inline void AddLighting(BMath::Vector3 light)
 		{
 			color += light;
 			sprite->SetColor(color.x, color.y, color.z);
@@ -60,17 +60,17 @@ namespace Behemoth
 
 	private:
 
-		inline void CopyVertexData(const Math::Vector4* verticies, const Math::Vector3* normals, const Math::Vector2* uv) 
+		inline void CopyVertexData(const BMath::Vector4* verticies, const BMath::Vector3* normals, const BMath::Vector2* uv) 
 		{
-			std::memcpy(this->verticies, verticies, sizeof(Math::Vector4) * 4);
-			std::memcpy(this->normals, normals, sizeof(Math::Vector3) * 4);
-			std::memcpy(this->uv, uv, sizeof(Math::Vector2) * 4);
+			std::memcpy(this->verticies, verticies, sizeof(BMath::Vector4) * 4);
+			std::memcpy(this->normals, normals, sizeof(BMath::Vector3) * 4);
+			std::memcpy(this->uv, uv, sizeof(BMath::Vector2) * 4);
 		}
 
 		CSimpleSprite* sprite;
 		std::string textureName;
 
-		Math::Vector3 color;
+		BMath::Vector3 color;
 	};
 }
 

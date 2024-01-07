@@ -36,7 +36,7 @@ namespace Behemoth
 
 	struct AABBColliderComponent : public ColliderComponent
 	{
-		AABBColliderComponent(Math::Vector3 extents, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+		AABBColliderComponent(BMath::Vector3 extents, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
 			collider(extents)
 		{}
@@ -46,7 +46,7 @@ namespace Behemoth
 
 	struct OBBColliderComponent : public ColliderComponent
 	{
-		OBBColliderComponent(Math::Vector3 extent, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+		OBBColliderComponent(BMath::Vector3 extent, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
 			collider(extent)
 		{}
@@ -66,13 +66,13 @@ namespace Behemoth
 
 	struct MeshColliderComponent : public ColliderComponent
 	{
-		MeshColliderComponent(std::string& filename, Math::Vector3 scale = Math::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
+		MeshColliderComponent(std::string& filename, BMath::Vector3 scale = BMath::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
 			modelFileName(filename),
 			// mesh(filename),
 			scale(scale) {}
 
-		Math::Vector3 scale;
+		BMath::Vector3 scale;
 		std::string modelFileName;
 		// Mesh mesh;
 	};

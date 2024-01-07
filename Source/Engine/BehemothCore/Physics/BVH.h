@@ -90,7 +90,7 @@ namespace Behemoth
 
 
 		AABBCollider GenerateCollider(const std::vector<BVHData>& colliders);
-		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, bool drawCollider = true, Math::Vector3 color = Math::Vector3(1.0f, 1.0f, 1.0f));
+		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, bool drawCollider = true, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
 		std::shared_ptr<BVHNode> GenerateLeaf(const BVHData& colliderData);
 
 		void GenerateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth);
@@ -102,15 +102,15 @@ namespace Behemoth
 
 		std::shared_ptr<BVHNode> root;
 
-		Math::Vector3 colors[7] =
+		BMath::Vector3 colors[7] =
 		{
-			Math::Vector3(1.0f, 0.0f, 0.0f),
-			Math::Vector3(0.0f, 1.0f, 0.0f),
-			Math::Vector3(0.0f, 0.0f, 1.0f),
-			Math::Vector3(1.0f, 0.0f, 1.0f),
-			Math::Vector3(1.0f, 1.0f, 0.0f),
-			Math::Vector3(0.0f, 1.0f, 1.0f),
-			Math::Vector3(1.0f, 1.0f, 1.0f)
+			BMath::Vector3(1.0f, 0.0f, 0.0f),
+			BMath::Vector3(0.0f, 1.0f, 0.0f),
+			BMath::Vector3(0.0f, 0.0f, 1.0f),
+			BMath::Vector3(1.0f, 0.0f, 1.0f),
+			BMath::Vector3(1.0f, 1.0f, 0.0f),
+			BMath::Vector3(0.0f, 1.0f, 1.0f),
+			BMath::Vector3(1.0f, 1.0f, 1.0f)
 		};
 
 		int DEBUG_ColliderID = 0;

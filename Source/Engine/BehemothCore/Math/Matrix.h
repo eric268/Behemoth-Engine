@@ -5,7 +5,7 @@
 #include <memory>
 #include <cassert>
 
-namespace Math
+namespace BMath
 {
 
 	// Want to make this a pure virtual class eventually

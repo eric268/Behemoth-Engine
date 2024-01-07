@@ -13,39 +13,39 @@ namespace Behemoth
 		sprite{nullptr},
 		depth(0.0),
 		textureName(""),
-		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
-		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
+		diffuse(BMath::Vector3(0.8f, 0.8f, 0.8f)),
+		specular(BMath::Vector3(1.0f, 1.0f, 1.0f)),
 		shininess(32.0f)
 	{
-		verticies[0] = Math::Vector4();
-		verticies[1] = Math::Vector4();
-		verticies[2] = Math::Vector4();
+		verticies[0] = BMath::Vector4();
+		verticies[1] = BMath::Vector4();
+		verticies[2] = BMath::Vector4();
 	}
 
 	Primitives::Primitives(std::string& path, std::string& textureName) :
 		depth(0.0),
 		textureName(textureName),
 		sprite{ new CSimpleSprite(path.c_str())},
-		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
-		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
+		diffuse(BMath::Vector3(0.8f, 0.8f, 0.8f)),
+		specular(BMath::Vector3(1.0f, 1.0f, 1.0f)),
 		shininess(32.0f)
 	{
-		verticies[0] = Math::Vector4();
-		verticies[1] = Math::Vector4();
-		verticies[2] = Math::Vector4();
-		SetLighting(Math::Vector3::Zero());
+		verticies[0] = BMath::Vector4();
+		verticies[1] = BMath::Vector4();
+		verticies[2] = BMath::Vector4();
+		SetLighting(BMath::Vector3::Zero());
 	}
 
-	Primitives::Primitives(const std::string& path, const std::string& textureName, PrimitiveType type, Math::Vector4 verticies[], Math::Vector3 normals[], Math::Vector2 uv[]) :
+	Primitives::Primitives(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[]) :
 		textureName(textureName),
 		sprite{ new CSimpleSprite(path.c_str()) },
 		primitiveType(type),
 		depth(0.0),
-		diffuse(Math::Vector3(0.8f, 0.8f, 0.8f)),
-		specular(Math::Vector3(1.0f, 1.0f, 1.0f)),
+		diffuse(BMath::Vector3(0.8f, 0.8f, 0.8f)),
+		specular(BMath::Vector3(1.0f, 1.0f, 1.0f)),
 		shininess(32.0f)
 	{
-		SetLighting(Math::Vector3::Zero());
+		SetLighting(BMath::Vector3::Zero());
 		CopyVertexData(verticies, normals, uv);
 		SetSpriteUVs(type, uv);
 	}
@@ -140,7 +140,7 @@ namespace Behemoth
 		
 	}
 
-	void Primitives::SetSpriteVerticies(const int numVerticies, const Math::Vector4 vert[])
+	void Primitives::SetSpriteVerticies(const int numVerticies, const BMath::Vector4 vert[])
 	{
 		if (!sprite)
 		{
@@ -159,7 +159,7 @@ namespace Behemoth
 		}
 	}
 
-	void Primitives::SetSpriteUVs(PrimitiveType type, Math::Vector2 uv[])
+	void Primitives::SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[])
 	{
 		for (int i = 0; i < static_cast<int>(type); i++)
 		{
@@ -172,7 +172,7 @@ namespace Behemoth
 		}
 	}
 
-	void Primitives::SetPrimitiveVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector3 normal[], Math::Vector2 uv[])
+	void Primitives::SetPrimitiveVerticies(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector3 normal[], BMath::Vector2 uv[])
 	{
 		primitiveType = type;
 		for (int i = 0; i < static_cast<int>(type); i++)
@@ -184,7 +184,7 @@ namespace Behemoth
 		// SetSpriteUVs(type, uv);
 	}
 
-	void Primitives::SetSpriteVerticies(PrimitiveType type, Math::Vector4 vert[], Math::Vector2 uv[])
+	void Primitives::SetSpriteVerticies(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[])
 	{
 		if (!sprite)
 		{

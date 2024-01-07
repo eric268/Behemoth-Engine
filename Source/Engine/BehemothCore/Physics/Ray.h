@@ -8,10 +8,10 @@ namespace Behemoth
 	{
 	public:
 		Ray();
-		Ray(Math::Vector3 position, Math::Vector3 direction);
+		Ray(BMath::Vector3 position, BMath::Vector3 direction);
 
-		Math::Vector3 origin;
-		Math::Vector3 direction;
+		BMath::Vector3 origin;
+		BMath::Vector3 direction;
 	};
 
 }

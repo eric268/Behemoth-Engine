@@ -2,7 +2,7 @@
 #include "MathCore.h"
 
 
-namespace Math
+namespace BMath
 {
 	// -------------------------------------------------------------
 	// -------------------------------------------------------------
@@ -156,7 +156,7 @@ namespace Math
 
 	Vector3 Vector3::Reflect(const Vector3& lightDir, const Vector3& normal)
 	{
-		return Math::Vector3::Normalize(lightDir - (normal *  Vector3::Dot(normal, lightDir) * 2.0f));
+		return BMath::Vector3::Normalize(lightDir - (normal *  Vector3::Dot(normal, lightDir) * 2.0f));
 	}
 
 

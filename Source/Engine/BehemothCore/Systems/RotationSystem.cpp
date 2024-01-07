@@ -13,14 +13,19 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-			if (rotationComp->axis == RotationComponent::None || rotationComp->speed == 0.0f)
-			{
-				continue;
-			}
+// 			if (rotationComp->axis == RotationComponent::None || rotationComp->speed == 0.0f)
+// 			{
+// 				continue;
+// 			}
 
-			const Math::Matrix4x4 rotationMatrix = Math::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
+			const BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
+			rotationComp->quat = BMath::Quaternion();
+			transformComp->transformMatrix = transformComp->transformMatrix * rotationMatrix;
+			transformComp->isDirty = true;
 
-			RotateTransformMatrix(transformComp, rotationMatrix);
+			// const BMath::Matrix4x4 rotationMatrix = BMath::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
+
+			// RotateTransformMatrix(transformComp, rotationMatrix);
 
 			// If this entity has a camera component we need to update the view matrix as well after a rotation
 			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
@@ -38,9 +43,9 @@ namespace Behemoth
 		}
 	}
 
-	void RotationSystem::RotateTransformMatrix(TransformComponent* transformComponent, const Math::Matrix4x4& rotationMatrix)
+	void RotationSystem::RotateTransformMatrix(TransformComponent* transformComponent, const BMath::Matrix4x4& rotationMatrix)
 	{
-		Math::Matrix4x4 rotatedTransformMatrix = rotationMatrix * transformComponent->transformMatrix;
+		BMath::Matrix4x4 rotatedTransformMatrix = rotationMatrix * transformComponent->transformMatrix;
 		for (int col = 0; col < 3; col++)
 		{
 			for (int row = 0; row < 3; row++)
@@ -50,27 +55,27 @@ namespace Behemoth
 		}
 		transformComponent->forwardVector = GetForwardVector(transformComponent->transformMatrix);
 		transformComponent->rightVector = GetRightVector(transformComponent->transformMatrix);
-		transformComponent->upVector = Math::Vector3::Up();
+		transformComponent->upVector = BMath::Vector3::Up();
 		transformComponent->isDirty = true;
 	}
 
-	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const Math::Matrix4x4& rotationMatrix)
+	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4& rotationMatrix)
 	{
 		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				Math::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[j], rotationMatrix);
+				BMath::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[j], rotationMatrix, 0.0f);
 			}
 		}
 	}
 
-	Math::Vector3 RotationSystem::GetForwardVector(const Math::Matrix4x4& transformMatrix)
+	BMath::Vector3 RotationSystem::GetForwardVector(const BMath::Matrix4x4& transformMatrix)
 	{
-		return  Math::Vector3(-transformMatrix._13, -transformMatrix._23, -transformMatrix._33).Normalize();
+		return  BMath::Vector3(-transformMatrix._13, -transformMatrix._23, -transformMatrix._33).Normalize();
 	}
-	Math::Vector3 RotationSystem::GetRightVector(const Math::Matrix4x4& transformMatrix)
+	BMath::Vector3 RotationSystem::GetRightVector(const BMath::Matrix4x4& transformMatrix)
 	{
-		return Math::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();
+		return BMath::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();
 	}
 }

@@ -31,19 +31,19 @@ namespace Behemoth
 
 			if (prefix == "v")
 			{
-				Math::Vector3 vertex;
+				BMath::Vector3 vertex;
 				iss >> vertex.x >> vertex.y >> vertex.z;
 				vertexPositions.push_back(vertex);
 			}
 			else if (prefix == "vt")
 			{
-				Math::Vector2 uv;
+				BMath::Vector2 uv;
 				iss >> uv.x >> uv.y;
 				vertexUVs.push_back(uv);
 			}
 			else if (prefix == "vn")
 			{
-				Math::Vector3 normal;
+				BMath::Vector3 normal;
 				iss >> normal.x >> normal.y >> normal.z;
 				vertexNormals.push_back(normal);
 			}
@@ -118,14 +118,14 @@ namespace Behemoth
 		iss >> vertexIndex >> uvIndex >> normalIndex;
 	}
 
-	bool MeshLoader::IsNonPlanarQuad(const Math::Vector3& v1, const Math::Vector3& v2, const Math::Vector3& v3, const Math::Vector3& v4)
+	bool MeshLoader::IsNonPlanarQuad(const BMath::Vector3& v1, const BMath::Vector3& v2, const BMath::Vector3& v3, const BMath::Vector3& v4)
 	{
-		Math::Vector3 vec1 = v2 - v1;
-		Math::Vector3 vec2 = v3 - v1;
-		Math::Vector3 vec3 = v4 - v1;
+		BMath::Vector3 vec1 = v2 - v1;
+		BMath::Vector3 vec2 = v3 - v1;
+		BMath::Vector3 vec3 = v4 - v1;
 
-		Math::Vector3 normal = Math::Vector3::Cross(vec1, vec2);
-		float dotProduct = Math::Vector3::Dot(normal, vec3);
+		BMath::Vector3 normal = BMath::Vector3::Cross(vec1, vec2);
+		float dotProduct = BMath::Vector3::Dot(normal, vec3);
 		return std::fabs(dotProduct) > 1e-5;
 	}
 }

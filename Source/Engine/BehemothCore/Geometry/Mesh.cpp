@@ -5,15 +5,15 @@
 #include <iostream>
 namespace Behemoth
 {
-	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath, const Math::Vector2 uv) :
+	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath, const BMath::Vector2 uv) :
 		meshData{},
 		materialData{}
 	{
 		meshData.modelFileName = modelPath;
 		materialData.textureFileName = texturePath;
 		materialData.uvScale = uv;
-		materialData.diffuse = Math::Vector3(0.8f, 0.8f, 0.8f);
-		materialData.specular = Math::Vector3(1.0f, 1.0f, 1.0f);
+		materialData.diffuse = BMath::Vector3(0.8f, 0.8f, 0.8f);
+		materialData.specular = BMath::Vector3(1.0f, 1.0f, 1.0f);
 		materialData.shininess = 32.0f;
 	}
 
@@ -33,9 +33,9 @@ namespace Behemoth
 
 		for (int i = vertexOffset; i < totalVerticies + vertexOffset; i += numVerticies)
 		{
-			Math::Vector4 v[4];
-			Math::Vector3 n[4];
-			Math::Vector2 uv[4];
+			BMath::Vector4 v[4];
+			BMath::Vector3 n[4];
+			BMath::Vector2 uv[4];
 
 			for (int j = 0; j < numVerticies; j++)
 			{

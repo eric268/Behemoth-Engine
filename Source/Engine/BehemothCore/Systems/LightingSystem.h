@@ -19,21 +19,21 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const Math::Vector3& cameraPos);
-		void CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const Math::Vector3& cameraPos, const Math::Vector3& lightPos, const Math::Matrix4x4& viewMatrix);
-		Math::Vector3 GetPrimitivePosition(Primitives* primitive);
+		void CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos);
+		void CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4& viewMatrix);
+		BMath::Vector3 GetPrimitivePosition(Primitives* primitive);
 
-		Math::Vector3 CalculateDiffuseLighting(const Math::Vector3& surfaceNormal,
-											   const Math::Vector3& lightDir, 
-											   const Math::Vector3& primitiveDiffusion, 
-											   const Math::Vector3& lightColor, 
+		BMath::Vector3 CalculateDiffuseLighting(const BMath::Vector3& surfaceNormal,
+											   const BMath::Vector3& lightDir, 
+											   const BMath::Vector3& primitiveDiffusion, 
+											   const BMath::Vector3& lightColor, 
 											   const float lightIntensity);
 
-		Math::Vector3 CalculateSpecularLighting(Primitives* primitive,
-												const Math::Vector3& cameraPos,
-												const Math::Vector3& surfaceNormal,
-											    const Math::Vector3& lightDir, 
-											    const Math::Vector3& lightColor,
+		BMath::Vector3 CalculateSpecularLighting(Primitives* primitive,
+												const BMath::Vector3& cameraPos,
+												const BMath::Vector3& surfaceNormal,
+											    const BMath::Vector3& lightDir, 
+											    const BMath::Vector3& lightColor,
 											    const float lightIntensity);
 	};
 }

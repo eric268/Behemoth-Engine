@@ -7,7 +7,7 @@ namespace Behemoth
 {
 	class Plane;
 
-	using Point = Math::Vector3;
+	using Point = BMath::Vector3;
 
 	bool BroadAABBCollision(const AABBCollider& box1, const AABBCollider& box2);
 	bool BroadAABBPlaneCollision(const AABBCollider& box, const Plane& p);

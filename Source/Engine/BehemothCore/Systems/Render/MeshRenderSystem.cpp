@@ -17,7 +17,7 @@ namespace Behemoth
 		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
 		std::sort(components.begin(), components.end(),
 			[&](std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple1, std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple2)
@@ -26,7 +26,7 @@ namespace Behemoth
 			});
 
 		// ** Order of multiplication matters here **
-		Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
 
 		for (const auto& [entity, meshComp, transformComp] : components)
 		{
@@ -48,7 +48,7 @@ namespace Behemoth
 	}
 
 
-	void MeshRenderSystem::ProcessMesh(Mesh& mesh, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix, bool isDirty)
+	void MeshRenderSystem::ProcessMesh(Mesh& mesh, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix, bool isDirty)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -73,7 +73,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * Math::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
+					primitive.verticies[j] = transformMatrix * BMath::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
 					vertexIndex++;
 				}
 			}
@@ -87,8 +87,8 @@ namespace Behemoth
 				continue;
 			}
 
-			Math::Vector4 renderVerts[4];
-			memcpy(renderVerts, primitive.verticies, sizeof(Math::Vector4) * 4);
+			BMath::Vector4 renderVerts[4];
+			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
 
 			ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
 
@@ -101,15 +101,15 @@ namespace Behemoth
 		}
 	}
 
-	bool MeshRenderSystem::CullBackFace(const Math::Vector3& cameraLocation, const Math::Vector4 primitiveVerts[])
+	bool MeshRenderSystem::CullBackFace(const BMath::Vector3& cameraLocation, const BMath::Vector4 primitiveVerts[])
 	{
-		Math::Vector3 normal = Math::Vector3(Math::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
-		const Math::Vector3 cam = cameraLocation - Math::Vector3(primitiveVerts[0]);
-		return (Math::Vector3::Dot(normal, cam)) <= 0;
+		BMath::Vector3 normal = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
+		const BMath::Vector3 cam = cameraLocation - BMath::Vector3(primitiveVerts[0]);
+		return (BMath::Vector3::Dot(normal, cam)) <= 0;
 	}
 
 
-	void MeshRenderSystem::AddPrimitiveToRenderer(Primitives& primitive, const int numVerticies, const Math::Vector4 vertex[])
+	void MeshRenderSystem::AddPrimitiveToRenderer(Primitives& primitive, const int numVerticies, const BMath::Vector4 vertex[])
 	{
 		primitive.depth = GetPrimitiveDepth(numVerticies, vertex);
 		primitive.SetSpriteVerticies(numVerticies, vertex);
@@ -122,7 +122,7 @@ namespace Behemoth
 		Renderer::GetInstance().ReservePrimitives(numPrimitives);
 	}
 
-	float MeshRenderSystem::GetPrimitiveDepth(const int numVerticies, const Math::Vector4 vertex[])
+	float MeshRenderSystem::GetPrimitiveDepth(const int numVerticies, const BMath::Vector4 vertex[])
 	{
 		float depth = 0.0f;
 		for (int j = 0; j < numVerticies; j++)

@@ -19,7 +19,7 @@ namespace Behemoth
 	class DebugLineSystem : public RenderSystem
 	{
 	public:
-		using Point = Math::Vector3;
+		using Point = BMath::Vector3;
 
 		DebugLineSystem() = default;
 		void Run(const float deltaTime, ECS::Registry& registry);
@@ -27,7 +27,7 @@ namespace Behemoth
 	private:
 		void ReserveResources(int numLines);
 		bool CullLineSegement(Point& p1, Point& p2, const Plane* worldFrustmPlanes);
-		void ProcessLine(const Point&, const Point& p2, const Math::Matrix4x4& viewProjMatrix, Math::Vector3 color);
+		void ProcessLine(const Point&, const Point& p2, const BMath::Matrix4x4& viewProjMatrix, BMath::Vector3 color);
 		void AddLineToRenderer(Line& line);
 		void UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle handle, DebugLineComponent* lineComponent);
 		void DestroyExpiredLines(ECS::Registry& registry, std::vector<ECS::EntityHandle>& linesToDestroy);

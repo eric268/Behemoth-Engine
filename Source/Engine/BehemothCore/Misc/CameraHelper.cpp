@@ -7,11 +7,11 @@
 
 #include <cassert>
 
-using namespace Math;
+using namespace BMath;
 
 namespace Behemoth
 {
-	Math::Matrix4x4 CameraHelper::LookAt(const Math::Vector3& eye, const Math::Vector3& target, const Math::Vector3& up)
+	BMath::Matrix4x4 CameraHelper::LookAt(const BMath::Vector3& eye, const BMath::Vector3& target, const BMath::Vector3& up)
 	{
 		const Vector3 zAxis = Vector3::Normalize(eye - target);
 		const Vector3 xAxis = Vector3::Normalize(Vector3::Cross(up, zAxis));
@@ -58,7 +58,7 @@ namespace Behemoth
 		return nullptr;
 	}
 
-	Math::Vector3 CameraHelper::GetMainCameraPostition(ECS::Registry& registry)
+	BMath::Vector3 CameraHelper::GetMainCameraPostition(ECS::Registry& registry)
 	{
 		for (const auto& [entity, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
 		{

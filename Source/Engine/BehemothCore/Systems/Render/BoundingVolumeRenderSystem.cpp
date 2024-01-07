@@ -12,10 +12,10 @@ namespace Behemoth
 		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		Math::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
 		// ** Order of multiplication matters here **
-		Math::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
 
 		for (const auto& [entity, boundingVolumeComp, transformComp] : components)
 		{
@@ -31,16 +31,16 @@ namespace Behemoth
 		}
 	}
 
-	void BoundingVolumeRenderSystem::ProcessBoundingVolume(BoundingVolumeComponent* boundingVolumeComponent, const Math::Vector3 cameraPosition, const Math::Matrix4x4& transformMatrix, const Math::Matrix4x4& viewProjMatrix)
+	void BoundingVolumeRenderSystem::ProcessBoundingVolume(BoundingVolumeComponent* boundingVolumeComponent, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix)
 	{
 		// Scale the sphere mesh by bounding radius
-		Math::Matrix4x4 boundingMatrix = Math::Matrix4x4::Identity();
+		BMath::Matrix4x4 boundingMatrix = BMath::Matrix4x4::Identity();
 		for (int i = 0; i < 3; i++)
 		{
 			boundingMatrix.data[i][i] = boundingVolumeComponent->volumeRadius;
 		}
 		boundingMatrix = transformMatrix * boundingMatrix;
 
-		ProcessWireframe(boundingVolumeComponent->mesh, boundingMatrix, viewProjMatrix, Math::Vector3::One(), true);
+		ProcessWireframe(boundingVolumeComponent->mesh, boundingMatrix, viewProjMatrix, BMath::Vector3::One(), true);
 	}
 }

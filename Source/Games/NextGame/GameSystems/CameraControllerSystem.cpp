@@ -10,9 +10,9 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 
 	for (auto& [entity, transformComp, velocityComp, rotationComp, controllerComp] : components)
 	{
-		rotationComp->speed = 0;
+		// rotationComp->speed = 0;
 
-		Math::Vector3 velocity = Math::Vector3::Zero();
+		BMath::Vector3 velocity = BMath::Vector3::Zero();
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->forward))
 		{
@@ -43,31 +43,31 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 			velocity -= transformComp->upVector;
 		}
 
-		if (controllerComp->enableRotation)
-		{
-			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_I))
-			{
-				rotationComp->speed = 1.0f;
-				rotationComp->axis = Behemoth::RotationComponent::X_AXIS;
-			}
-
-			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_K))
-			{
-				rotationComp->speed = -1.0f;
-				rotationComp->axis = Behemoth::RotationComponent::X_AXIS;
-			}
-
-			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_J))
-			{
-				rotationComp->speed = -1.0f;
-				rotationComp->axis = Behemoth::RotationComponent::Y_AXIS;
-			}
-			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_L))
-			{
-				rotationComp->speed = 1.0f;
-				rotationComp->axis = Behemoth::RotationComponent::Y_AXIS;
-			}
-		}
+// 		if (controllerComp->enableRotation)
+// 		{
+// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_I))
+// 			{
+// 				rotationComp->speed = 1.0f;
+// 				rotationComp->axis = Behemoth::RotationComponent::X_AXIS;
+// 			}
+// 
+// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_K))
+// 			{
+// 				rotationComp->speed = -1.0f;
+// 				rotationComp->axis = Behemoth::RotationComponent::X_AXIS;
+// 			}
+// 
+// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_J))
+// 			{
+// 				rotationComp->speed = -1.0f;
+// 				rotationComp->axis = Behemoth::RotationComponent::Y_AXIS;
+// 			}
+// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_L))
+// 			{
+// 				rotationComp->speed = 1.0f;
+// 				rotationComp->axis = Behemoth::RotationComponent::Y_AXIS;
+// 			}
+// 		}
 
 		velocity.Normalize();
 		velocity *= controllerComp->movementSpeed;

@@ -11,7 +11,7 @@ namespace Behemoth
 {
 	struct MeshComponent : public ECS::Component
 	{
-		MeshComponent(const std::string& modelName, const std::string& textureName, const Math::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
+		MeshComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
 			modelFileName(modelName),
 			textureFileName(textureName),
 			mesh(modelName, textureName, uvScale),
@@ -27,11 +27,11 @@ namespace Behemoth
 
 	struct WireframeComponent : public ECS::Component
 	{
-		WireframeComponent(const std::string& modelName, Math::Vector3 scale = Math::Vector3::One(), bool visible = false, Math::Vector3 color = Math::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), scale(scale), isVisible(visible), mesh(modelName), wireframeColor(color) {}
+		WireframeComponent(const std::string& modelName, BMath::Vector3 scale = BMath::Vector3::One(), bool visible = false, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), scale(scale), isVisible(visible), mesh(modelName), wireframeColor(color) {}
 		std::string modelFileName;
-		Math::Vector3 scale;
+		BMath::Vector3 scale;
 		bool isVisible;
-		Math::Vector3 wireframeColor;
+		BMath::Vector3 wireframeColor;
 		Mesh mesh;
 	};
 
@@ -46,9 +46,9 @@ namespace Behemoth
 
 	struct DebugLineComponent : public ECS::Component
 	{
-		using Point = Math::Vector3;
+		using Point = BMath::Vector3;
 
-		DebugLineComponent(Point start, Point end, float displayTime, float displayCounter = 0.0f,  Math::Vector3 c = Math::Vector3(0.0f, 1.0f, 0.0f)) : 
+		DebugLineComponent(Point start, Point end, float displayTime, float displayCounter = 0.0f,  BMath::Vector3 c = BMath::Vector3(0.0f, 1.0f, 0.0f)) : 
 			startPoint(start), 
 			endPoint(end), 
 			lifetime(displayTime), 
@@ -60,6 +60,6 @@ namespace Behemoth
 		float displayCounter;
 		Point startPoint;
 		Point endPoint;
-		Math::Vector3 color;
+		BMath::Vector3 color;
 	};
 }

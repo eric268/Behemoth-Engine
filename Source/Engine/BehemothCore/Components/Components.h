@@ -4,6 +4,7 @@
 #include "Input/InputCodes.h"
 #include "Geometry/Mesh.h"
 #include "Geometry/Plane.h"
+#include "Math/Quaternion.h"
 
 #include <functional>
 #include <unordered_map>
@@ -13,8 +14,8 @@ namespace Behemoth
 	struct CameraComponent : public ECS::Component
 	{
 		CameraComponent(bool main = false) :
-			viewMatrix(Math::Matrix4x4::Identity()),
-			perspectiveMatrix(Math::Matrix4x4::Identity()),
+			viewMatrix(BMath::Matrix4x4::Identity()),
+			perspectiveMatrix(BMath::Matrix4x4::Identity()),
 			FOV(75.0f),
 			nearClippingPlane(0.1f),
 			farClippingPlane(1000.0f),
@@ -26,9 +27,9 @@ namespace Behemoth
 
 		~CameraComponent() = default;
 		Plane worldSpaceFrustum[6];
-		Math::Matrix4x4 viewMatrix;
-		Math::Matrix4x4 perspectiveMatrix;
-		Math::Matrix4x4 inverseTransposeViewMatrix;
+		BMath::Matrix4x4 viewMatrix;
+		BMath::Matrix4x4 perspectiveMatrix;
+		BMath::Matrix4x4 inverseTransposeViewMatrix;
 		float FOV;
 		float nearClippingPlane;
 		float farClippingPlane;
@@ -45,14 +46,14 @@ namespace Behemoth
 
 	struct TransformComponent : public ECS::Component
 	{
-		TransformComponent() : transformMatrix(Math::Matrix4x4::Identity()), isDirty(true), forwardVector(Math::Vector3::Forward()), rightVector(Math::Vector3::Right()), upVector(Math::Vector3::Up()) {}
+		TransformComponent() : transformMatrix(BMath::Matrix4x4::Identity()), isDirty(true), forwardVector(BMath::Vector3::Forward()), rightVector(BMath::Vector3::Right()), upVector(BMath::Vector3::Up()) {}
 
-		Math::Matrix4x4 transformMatrix;
-		Math::Vector3 forwardVector;
-		Math::Vector3 rightVector;
-		Math::Vector3 upVector;
-		Math::Vector3 position;
-		Math::Vector3 scale;
+		BMath::Matrix4x4 transformMatrix;
+		BMath::Vector3 forwardVector;
+		BMath::Vector3 rightVector;
+		BMath::Vector3 upVector;
+		BMath::Vector3 position;
+		BMath::Vector3 scale;
 		bool isDirty;
 	};
 
@@ -64,18 +65,18 @@ namespace Behemoth
 
 	struct MoveComponent : public ECS::Component
 	{
-		MoveComponent() : location(Math::Vector3{}) {}
-		MoveComponent(Math::Vector3 vec) : location(vec) {}
+		MoveComponent() : location(BMath::Vector3{}) {}
+		MoveComponent(BMath::Vector3 vec) : location(vec) {}
 
-		Math::Vector3 location;
+		BMath::Vector3 location;
 	};
 
 	struct VelocityComponent : public ECS::Component
 	{
-		VelocityComponent() : velocity(Math::Vector3{}) {}
-		VelocityComponent(Math::Vector3 vel) : velocity(vel) {}
+		VelocityComponent() : velocity(BMath::Vector3{}) {}
+		VelocityComponent(BMath::Vector3 vel) : velocity(vel) {}
 
-		Math::Vector3 velocity;
+		BMath::Vector3 velocity;
 	};
 
 	struct RotationComponent : public ECS::Component
@@ -91,16 +92,30 @@ namespace Behemoth
 		RotationComponent() : axis(None), speed(0.0f) {}
 		RotationComponent(Axis a, float s) : axis(a), speed(s) {}
 		RotationComponent(int a, float s) : axis(static_cast<Axis>(a)), speed(s) {}
+		RotationComponent(BMath::Quaternion q) : quat(q) {}
 
 		Axis axis;
 		float speed;
+
+		BMath::Quaternion quat;
+		BMath::Vector3 eulerAngles;
 	};
 
 	struct ScalingComponent : public ECS::Component
 	{
-		ScalingComponent() : scalingVector(Math::Vector3(1.0f, 1.0f, 1.0f)) {}
-		ScalingComponent(Math::Vector3 vec) : scalingVector(vec) {}
+		ScalingComponent() : scalingVector(BMath::Vector3(1.0f, 1.0f, 1.0f)) {}
+		ScalingComponent(BMath::Vector3 vec) : scalingVector(vec) {}
 
-		Math::Vector3 scalingVector;
+		BMath::Vector3 scalingVector;
+	};
+
+	struct ChildComponent : public ECS::Component
+	{
+		std::uint32_t parentID;
+	};
+
+	struct ParentComponent : public ECS::Component
+	{
+		std::vector<std::uint32_t> childrenIDs;
 	};
 }

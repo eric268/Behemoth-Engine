@@ -31,7 +31,7 @@ namespace Behemoth
 		void CheckStaticCollision(ECS::Registry& registry, DynamicEntities& entities);
 		void CheckDynamicCollision(ECS::Registry& registry, DynamicEntities& entities);
 
-		bool CheckLineCollision(ECS::EntityHandle handle, Math::Vector3 p1, Math::Vector3 p2, std::shared_ptr<BVHNode> root);
+		bool CheckLineCollision(ECS::EntityHandle handle, BMath::Vector3 p1, BMath::Vector3 p2, std::shared_ptr<BVHNode> root);
 		bool CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root);
 	};
 }

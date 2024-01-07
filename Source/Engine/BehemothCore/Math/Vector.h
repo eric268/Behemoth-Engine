@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-namespace Math
+namespace BMath
 {
 	class Vector2;
 	class Vector3;

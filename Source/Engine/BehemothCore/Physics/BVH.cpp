@@ -119,13 +119,13 @@ namespace Behemoth
 
 	AABBCollider BVHFactory::GenerateCollider(const std::vector<BVHData>& colliders)
 	{
-		Math::Vector3 minPos = Math::Vector3(std::numeric_limits<float>::max());
-		Math::Vector3 maxPos = Math::Vector3(std::numeric_limits<float>::lowest());
+		BMath::Vector3 minPos = BMath::Vector3(std::numeric_limits<float>::max());
+		BMath::Vector3 maxPos = BMath::Vector3(std::numeric_limits<float>::lowest());
 
 		for (const BVHData& data : colliders)
 		{
-			Math::Vector3 colliderMin = data.collider.position - data.collider.extents;
-			Math::Vector3 colliderMax = data.collider.position + data.collider.extents;
+			BMath::Vector3 colliderMin = data.collider.position - data.collider.extents;
+			BMath::Vector3 colliderMax = data.collider.position + data.collider.extents;
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -147,7 +147,7 @@ namespace Behemoth
 		return collider;
 	}
 
-	std::shared_ptr<BVHNode> BVHFactory::GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, bool drawCollider, Math::Vector3 color)
+	std::shared_ptr<BVHNode> BVHFactory::GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, bool drawCollider, BMath::Vector3 color)
 	{
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
 		std::string name = "BVH Collider: " + std::to_string(DEBUG_ColliderID++);
