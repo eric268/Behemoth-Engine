@@ -48,11 +48,19 @@ namespace Behemoth
 	{
 		using Point = BMath::Vector3;
 
-		DebugLineComponent(Point start, Point end, float displayTime, float displayCounter = 0.0f,  BMath::Vector3 c = BMath::Vector3(0.0f, 1.0f, 0.0f)) : 
+		DebugLineComponent() :
+			startPoint(BMath::Vector3()),
+			endPoint(BMath::Vector3()),
+			lifetime(2.0f),
+			displayCounter(0.0f),
+			color(BMath::Vector3(0.0f, 1.0f, 0.0f))
+		{}
+
+		DebugLineComponent(Point start, Point end, float displayTime, BMath::Vector3 c = BMath::Vector3(0.0f, 1.0f, 0.0f)) :
 			startPoint(start), 
 			endPoint(end), 
 			lifetime(displayTime), 
-			displayCounter(displayCounter), 
+			displayCounter(0.0f), 
 			color(c) 
 		{}
 

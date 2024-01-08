@@ -113,7 +113,9 @@ namespace BMath
 		const float mag = Magnitude(vec);
 
 		if (mag == 0)
+		{
 			return Vector3::Zero();
+		}
 
 		return Vector3(vec.x / mag, vec.y / mag, vec.z / mag);
 	}

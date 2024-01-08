@@ -2,8 +2,10 @@
 #include "RotationSystem.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
-#include "Misc/Log.h"
-#include "ECS/Entity.h"
+#include "Misc/Log.h""
+#include "Misc/BColors.h"
+
+#include "Geometry/Primitives.h"
 
 namespace Behemoth
 {
@@ -13,19 +15,14 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-// 			if (rotationComp->axis == RotationComponent::None || rotationComp->speed == 0.0f)
-// 			{
-// 				continue;
-// 			}
+//  			if (rotationComp->quat == BMath::Quaternion::Identity())
+//  			{
+//  				continue;
+//  			}
 
-			const BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
-			rotationComp->quat = BMath::Quaternion();
-			transformComp->transformMatrix = transformComp->transformMatrix * rotationMatrix;
-			transformComp->isDirty = true;
-
-			// const BMath::Matrix4x4 rotationMatrix = BMath::Matrix4x4::GetRotationMatrix(rotationComp->axis, rotationComp->speed);
-
-			// RotateTransformMatrix(transformComp, rotationMatrix);
+			BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
+			rotationComp->quat = BMath::Quaternion::Identity();
+			RotateTransformMatrix(transformComp, rotationMatrix);
 
 			// If this entity has a camera component we need to update the view matrix as well after a rotation
 			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
@@ -63,10 +60,7 @@ namespace Behemoth
 	{
 		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
 		{
-			for (int j = 0; j < 3; j++)
-			{
-				BMath::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[j], rotationMatrix, 0.0f);
-			}
+			BMath::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[0], rotationMatrix, 0.0f);
 		}
 	}
 

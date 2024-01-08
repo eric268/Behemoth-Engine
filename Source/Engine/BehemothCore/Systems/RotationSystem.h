@@ -1,10 +1,14 @@
 #pragma once
 #include "ECS/System.h"
+#include "ECS/Entity.h"
 
 namespace Behemoth
 {
 	class TransformComponent;
 	class MeshComponent;
+
+	// Debug
+	class Primitives;
 
 	class RotationSystem
 	{

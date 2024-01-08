@@ -81,22 +81,8 @@ namespace Behemoth
 
 	struct RotationComponent : public ECS::Component
 	{
-		enum Axis
-		{
-			None,
-			X_AXIS,
-			Y_AXIS,
-			Z_AXIS
-		};
-
-		RotationComponent() : axis(None), speed(0.0f) {}
-		RotationComponent(Axis a, float s) : axis(a), speed(s) {}
-		RotationComponent(int a, float s) : axis(static_cast<Axis>(a)), speed(s) {}
+		RotationComponent() : quat() {}
 		RotationComponent(BMath::Quaternion q) : quat(q) {}
-
-		Axis axis;
-		float speed;
-
 		BMath::Quaternion quat;
 		BMath::Vector3 eulerAngles;
 	};

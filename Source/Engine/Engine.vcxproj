@@ -181,6 +181,7 @@
     <ClInclude Include="BehemothCore\Math\Matrix.h" />
     <ClInclude Include="BehemothCore\Geometry\Plane.h" />
     <ClInclude Include="BehemothCore\Math\Vector.h" />
+    <ClInclude Include="BehemothCore\Misc\BColors.h" />
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h" />
     <ClInclude Include="BehemothCore\Misc\Log.h" />
     <ClInclude Include="BehemothCore\Misc\Stopwatch.h" />

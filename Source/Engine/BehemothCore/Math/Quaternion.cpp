@@ -3,11 +3,11 @@
 
 namespace BMath
 {
-	Quaternion::Quaternion() : x(0), y(0), z(0), w(1) {}
+	Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {}
 	Quaternion::Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {}
-	Quaternion::Quaternion(float angle, BMath::Vector3 axis) : x(0), y(0), z(0), w(1)
+	Quaternion::Quaternion(const float angle, const BMath::Vector3& axis) : w(1), x(0), y(0), z(0)
 	{
-		*this = SetFromAxisAngle(angle, axis);
+		SetFromAxisAngle(angle, axis);
 	}
 
 	Quaternion& Quaternion::Normalize()
@@ -39,37 +39,81 @@ namespace BMath
 		return resultQ;
 	}
 
+	bool Quaternion::Equals(const Quaternion& q, const float e) const
+	{
+		return  std::abs(x - q.x) <= e &&
+				std::abs(w - q.w) <= e &&
+				std::abs(y - q.y) <= e &&
+				std::abs(z - q.z) <= e;
+	}
+
+	bool Quaternion::Equals(const Quaternion& q1, const Quaternion& q2, float e)
+	{
+		return  std::abs(q1.x - q2.x) <= e &&
+				std::abs(q1.w - q2.w) <= e &&
+				std::abs(q1.y - q2.y) <= e &&
+				std::abs(q1.z - q2.z) <= e;
+	}
+
+	Quaternion& Quaternion::Conjugate()
+	{ 
+		x = -x;
+		y = -y;
+		z = -z;
+		return *this;
+	}
+
 	// Multiplication with another quaternion
 	Quaternion Quaternion::operator*(const Quaternion& q) const
 	{
 		return Quaternion(
-			w * q.w - x * q.x - y * q.y - z * q.z, // new w
-			w * q.x + x * q.w + y * q.z - z * q.y, // new x
-			w * q.y - x * q.z + y * q.w + z * q.x, // new y
-			w * q.z + x * q.y - y * q.x + z * q.w  // new z
+			w * q.w - x * q.x - y * q.y - z * q.z,
+			w * q.x + x * q.w + y * q.z - z * q.y,
+			w * q.y - x * q.z + y * q.w + z * q.x,
+			w * q.z + x * q.y - y * q.x + z * q.w
 		);
 	}
 
 	Quaternion& Quaternion::operator*=(const Quaternion& q)
 	{
-		this->w = this->w * q.w - x * q.x - y * q.y - z * q.z; // new w
-		this->x = this->w * q.x + x * q.w + y * q.z - z * q.y; // new x
-		this->y = this->w * q.y - x * q.z + y * q.w + z * q.x; // new y
-		this->z = this->w * q.z + x * q.y - y * q.x + z * q.w; // new z	
+		float newW = w * q.w - x * q.x - y * q.y - z * q.z;
+		float newX = w * q.x + x * q.w + y * q.z - z * q.y;
+		float newY = w * q.y - x * q.z + y * q.w + z * q.x;
+		float newZ = w * q.z + x * q.y - y * q.x + z * q.w;
+
+		w = newW;
+		x = newX;
+		y = newY;
+		z = newZ;
+
+		return *this;
+	}
+
+	bool Quaternion::operator==(const Quaternion& q) const
+	{
+		return w == q.w && x == q.x && y == q.y && z == q.z;
+	}
+
+	Quaternion& Quaternion::operator= (const Quaternion& q)
+	{
+		w = q.w;
+		x = q.x;
+		y = q.y;
+		z = q.z;
 		return *this;
 	}
 
 
-
 	// Directly set the quaternion from an axis-angle representation (axis must be normalized)
-	Quaternion& Quaternion::SetFromAxisAngle(const float& angle, BMath::Vector3 axis)
+	Quaternion& Quaternion::SetFromAxisAngle(const float angle, const BMath::Vector3& axis)
 	{
+		BMath::Vector3 normalizedAxis = BMath::Vector3::Normalize(axis);
 		float halfAngle = angle / 2;
 		float sinHalfAngle = sin(halfAngle);
 		w = cos(halfAngle);
-		x = axis.x * sinHalfAngle;
-		y = axis.y * sinHalfAngle;
-		z = axis.z * sinHalfAngle;
+		x = normalizedAxis.x * sinHalfAngle;
+		y = normalizedAxis.y * sinHalfAngle;
+		z = normalizedAxis.z * sinHalfAngle;
 		Normalize(); // Ensure it's a unit quaternion
 		return *this;
 	}

@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+
 namespace BMath
 {
 	class Vector2;
@@ -25,7 +26,7 @@ namespace BMath
 	public:
 		Vector3();
 		Vector3(const float x, const float y, const float z);
-		Vector3(const float val);
+		explicit Vector3(const float val);
 		explicit Vector3(Vector4 vec);
 
 		union

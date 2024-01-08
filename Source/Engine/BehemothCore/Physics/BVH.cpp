@@ -7,6 +7,7 @@
 #include "Components/PhysicsComponents.h"
 #include "Misc/Log.h"
 #include "Collision/BroadCollision.h"
+#include "Misc/BColors.h"
 
 namespace Behemoth
 {
@@ -72,7 +73,7 @@ namespace Behemoth
 		// Assign children to current node
 		if (leftComponents.size() > 1)
 		{
-			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), true, colors[depth]);
+			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), true, BColors::GetColor(BColors::Blue));
 			GenerateBVHTree(registry, entityHandles, node->leftChild, leftComponents, depth + 1);
 		}
 		else if (leftComponents.size())
@@ -82,7 +83,7 @@ namespace Behemoth
 
 		if (rightComponents.size() > 1)
 		{
-			node->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), true, colors[depth]);
+			node->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), true, BColors::GetColor(BColors::Green));
 			GenerateBVHTree(registry, entityHandles, node->rightChild, rightComponents, depth + 1);
 		}
 		else if (rightComponents.size())

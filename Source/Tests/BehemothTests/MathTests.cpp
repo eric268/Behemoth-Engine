@@ -79,7 +79,7 @@ TEST(CrossProd, BMath)
 	EXPECT_TRUE(BMath::Vector3::Equals(result, ans));
 }
 
-TEST(TransposeM4x4, BMath)
+TEST(Transpose_M4x4, BMath)
 {
 	BMath::Matrix4x4 m1 =
 	{
@@ -102,7 +102,7 @@ TEST(TransposeM4x4, BMath)
 	EXPECT_TRUE(BMath::Matrix4x4::Equals(result, ans));
 }
 
-TEST(InverseM4x4, BMath)
+TEST(Inverse_M4x4, BMath)
 {
 	BMath::Matrix4x4 m1 =
 	{
@@ -125,7 +125,7 @@ TEST(InverseM4x4, BMath)
 	EXPECT_TRUE(BMath::Matrix4x4::Equals(result, ans));
 }
 
-TEST(InverseM4x4_2, BMath)
+TEST(Inverse_M4x4_2, BMath)
 {
 	BMath::Matrix4x4 m1 =
 	{
@@ -146,4 +146,37 @@ TEST(InverseM4x4_2, BMath)
 	};
 
 	EXPECT_TRUE(BMath::Matrix4x4::Equals(result, ans));
+}
+
+TEST(Quaternion_Axis_Angle, BMath)
+{
+	BMath::Quaternion q1(0.785f, BMath::Vector3(1.0f, 1.0f, 1.0f));
+	BMath::Quaternion q2(0.392f, BMath::Vector3(0.0f, 0.707f, 0.707f));
+
+	BMath::Quaternion a1(0.924f, 0.221f, 0.221f, 0.221f);
+	BMath::Quaternion a2(0.981, 0.0f, 0.138f, 0.138f);
+
+	EXPECT_TRUE(BMath::Quaternion::Equals(q1, a1) && BMath::Quaternion::Equals(q2, a2));
+}
+
+TEST(Quaternion_Mult, BMath)
+{	
+	BMath::Quaternion q(0.98f, 0.13f, 0.14f, 0.0f);
+	BMath::Quaternion q2(0.92f, 0.0f, 0.0f,  0.38f);
+
+	BMath::Quaternion result = q * q2;
+	BMath::Quaternion ans(0.9016f, 0.1728f, 0.0794f, 0.3724f);
+
+
+	EXPECT_TRUE(BMath::Quaternion::Equals(result, ans));
+}
+
+TEST(Quaternion_Mult_2, BMath)
+{
+	BMath::Quaternion q(0.88f, BMath::Vector3(1.0f, 1.5f, 0.3f));
+	BMath::Quaternion q2(0.15f, BMath::Vector3(0.17f, 0.27f, 0.99f));
+
+	BMath::Quaternion result = q * q2;
+	BMath::Quaternion ans(0.8879f, 0.2667f, 0.3504f, 0.1343f);
+	EXPECT_TRUE(BMath::Quaternion::Equals(result, ans));
 }

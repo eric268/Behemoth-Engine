@@ -50,6 +50,7 @@ namespace Behemoth
 	void LightingSystem::CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
+		
 		const BMath::Vector3 lightDir = BMath::Vector3::Normalize(light->direction);
 		const BMath::Vector3 primitivePos = GetPrimitivePosition(primitive);
 
@@ -62,11 +63,10 @@ namespace Behemoth
 	void LightingSystem::CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4& viewMatrix)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
+
 		BMath::Vector3 lightDir = lightPos - GetPrimitivePosition(primitive);
 		float distance = BMath::Vector3::Magnitude(lightDir);
 		lightDir.Normalize();
-		// std::cout << "Distance: " << std::to_string(distance) << std::endl;
-		// std::cout << "Direction X: " << std::to_string(lightDir.x ) << " Y: " << std::to_string(lightDir.y) << " Z: " << std::to_string(lightDir.y) << std::endl;
 
 		BMath::Vector3 diffuse = CalculateDiffuseLighting(normal, lightDir, primitive->diffuse, light->color, light->intensity);
 		BMath::Vector3 specular = CalculateSpecularLighting(primitive, cameraPos, normal, lightDir, light->color, light->intensity);

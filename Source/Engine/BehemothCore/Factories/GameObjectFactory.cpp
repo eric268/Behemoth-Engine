@@ -12,7 +12,7 @@ namespace Behemoth
 		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<MeshInitalizeComponent>(entity);
 		registry.AddComponent<VelocityComponent>(entity);
-		registry.AddComponent<RotationComponent>(entity, 1.0f, 45.0f);
+		registry.AddComponent<RotationComponent>(entity);
 		registry.AddComponent<BoundingVolumeComponent>(entity, 1.5f, false);
 
 		return entity;

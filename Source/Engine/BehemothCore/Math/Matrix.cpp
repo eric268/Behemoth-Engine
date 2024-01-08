@@ -181,6 +181,19 @@ namespace BMath
 		return det;
 	}
 
+// 	Vector4 Matrix4x4::operator*(const Vector4 v) const
+// 	{
+// 		// Perform the dot product for each column of the matrix
+// 		Vector4 vec{};
+// 
+// 		vec.x = data[0][0] * v.x + data[1][0] * v.y + data[2][0] * v.z + data[3][0] * v.w;
+// 		vec.y = data[0][1] * v.x + data[1][1] * v.y + data[2][1] * v.z + data[3][1] * v.w;
+// 		vec.z = data[0][2] * v.x + data[1][2] * v.y + data[2][2] * v.z + data[3][2] * v.w;
+// 		vec.w = data[0][3] * v.x + data[1][3] * v.y + data[2][3] * v.z + data[3][3] * v.w;
+// 
+// 		return vec;
+// 	}
+
 	Vector4 Matrix4x4::operator*(const Vector4 v) const
 	{
 		// Perform the dot product for each row of the matrix

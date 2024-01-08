@@ -2,7 +2,7 @@
 
 #include "ECS/Registry.h"
 #include "ECS/Entity.h"
-
+#include "Misc/BColors.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
 
@@ -63,7 +63,7 @@ namespace Behemoth
 		std::shared_ptr<BVHNode> CreateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
 		{
 			std::vector<BVHData> data = GetSceneColliderData<T...>(registry);
-			root = GenerateNode(registry,entityHandles, GenerateCollider(data), true, colors[0]);
+			root = GenerateNode(registry, entityHandles, GenerateCollider(data), true, BColors::GetColor(BColors::Red));
 			GenerateBVHTree(registry, entityHandles, root, data, 1);
 			return root;
 		}
@@ -101,17 +101,6 @@ namespace Behemoth
 		void DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles);
 
 		std::shared_ptr<BVHNode> root;
-
-		BMath::Vector3 colors[7] =
-		{
-			BMath::Vector3(1.0f, 0.0f, 0.0f),
-			BMath::Vector3(0.0f, 1.0f, 0.0f),
-			BMath::Vector3(0.0f, 0.0f, 1.0f),
-			BMath::Vector3(1.0f, 0.0f, 1.0f),
-			BMath::Vector3(1.0f, 1.0f, 0.0f),
-			BMath::Vector3(0.0f, 1.0f, 1.0f),
-			BMath::Vector3(1.0f, 1.0f, 1.0f)
-		};
 
 		int DEBUG_ColliderID = 0;
 	};

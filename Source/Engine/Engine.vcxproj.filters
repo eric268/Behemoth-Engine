@@ -208,6 +208,7 @@
     <ClInclude Include="BehemothCore\Systems\Physics\BVHCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\NarrowCollision.h" />
     <ClInclude Include="BehemothCore\Math\Quaternion.h" />
+    <ClInclude Include="BehemothCore\Misc\BColors.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">

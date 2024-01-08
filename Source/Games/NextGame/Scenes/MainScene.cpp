@@ -26,41 +26,41 @@ MainScene::MainScene()
 
 	Behemoth::GameObjectFactory gameObjectFactory{};
 
-// 	for (int i = 0; i < 4; i++)
-// 	{
-// 		std::string name = "Cube " + std::to_string(i + 1);
-// 		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
-// 		registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
-// 		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
-// 		registry.AddComponent<Behemoth::WireframeComponent>(cubes[i], "cube.obj", BMath::Vector3(1.5f, 1.0, 0.5f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
-// 		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
-// 	}
-// 
-// 	for (int i = 4; i < 8; i++)
-// 	{
-// 		std::string name = "Cube " + std::to_string(i + 1);
-// 		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
-// 		registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
-// 		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
-// 		registry.AddComponent<Behemoth::WireframeComponent>(cubes[i], "cube.obj", BMath::Vector3(1.5f, 1.0, 0.5f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
-// 		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
-// 	}
-// 
-// 	// static 
-// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[0], BMath::Vector3(-8.0f, -5.0f, -10.0f));
-//  	registry.AddComponent<Behemoth::MoveComponent>(cubes[1], BMath::Vector3(-11.0f, 3.0f, -7.0f));
-// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[2], BMath::Vector3(-14.0f, -4.0f, -3.0f));
-// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[3], BMath::Vector3(-10.0f, 4.0f, -12.0f));
-// 
-// 	//dynamic
-// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[4], BMath::Vector3( 8.0f, -5.0f, -5.0f));
-// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[5], BMath::Vector3( 11.0f, 0.0f, -12.0f));
-// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[6], BMath::Vector3( 14.0f, -3.0f, -6.0f));
-// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
+	for (int i = 0; i < 4; i++)
+	{
+		std::string name = "Cube " + std::to_string(i + 1);
+		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
+		registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
+		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
+		registry.AddComponent<Behemoth::WireframeComponent>(cubes[i], "cube.obj", BMath::Vector3(1.5f, 1.0, 0.5f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
+		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
+	}
+
+	for (int i = 4; i < 8; i++)
+	{
+		std::string name = "Cube " + std::to_string(i + 1);
+		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
+		registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
+		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
+		registry.AddComponent<Behemoth::WireframeComponent>(cubes[i], "cube.obj", BMath::Vector3(1.5f, 1.0, 0.5f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
+		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
+	}
+
+	// static 
+	registry.AddComponent<Behemoth::MoveComponent>(cubes[0], BMath::Vector3(-8.0f, -5.0f, -10.0f));
+ 	registry.AddComponent<Behemoth::MoveComponent>(cubes[1], BMath::Vector3(-11.0f, 3.0f, -7.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(cubes[2], BMath::Vector3(-14.0f, -4.0f, -3.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(cubes[3], BMath::Vector3(-10.0f, 4.0f, -12.0f));
+
+	//dynamic
+	registry.AddComponent<Behemoth::MoveComponent>(cubes[4], BMath::Vector3( 8.0f, -5.0f, -5.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(cubes[5], BMath::Vector3( 11.0f, 0.0f, -12.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(cubes[6], BMath::Vector3( 14.0f, -3.0f, -6.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
 
 
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
-	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, 1.0f);
+	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
 	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle, "cube.obj", BMath::Vector3(1.0f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
 	registry.AddComponent<CameraControllerComponent>(playerHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -5.0f));
@@ -120,23 +120,27 @@ void MainScene::Update(const float deltaTime)
 		registry.AddComponent<Behemoth::DebugLineComponent>(debugLineHandle, startPos, endPos, 20.0f);
 	}
 
-	if (auto comp = registry.GetComponent<Behemoth::RotationComponent>(playerHandle))
-	{
-		BMath::Vector3 rot;
-		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_T))
-		{
-			rot.x = 1.0f;
-		}
-		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Y))
-		{
-			rot.y = 1.0f;
-		}
-		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_U))
-		{
-			rot.z = 1.0f;
-		}
-		comp->quat = BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot);
-	}
+// 	if (auto comp = registry.GetComponent<Behemoth::RotationComponent>(playerHandle))
+// 	{
+// 		BMath::Vector3 rot;
+// 		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_T))
+// 		{
+// 			rot.x = 1.0f;
+// 		}
+// 		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Y))
+// 		{
+// 			rot.y = 1.0f;
+// 		}
+// 		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_U))
+// 		{
+// 			rot.z = 1.0f;
+// 		}
+// 
+// 		if (rot != BMath::Vector3::Zero())
+// 		{
+// 			comp->quat = BMath::Quaternion(BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot));
+// 		}
+// 	}
 }
 
 void MainScene::Shutdown()
