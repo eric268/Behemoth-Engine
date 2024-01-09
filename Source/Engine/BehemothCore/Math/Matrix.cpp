@@ -10,6 +10,7 @@
 
 namespace BMath
 {
+	Matrix2x2::Matrix2x2() : Matrix(2), _11(0.0f), _12(0.0f), _21(0.0f), _22(0.0f) {}
 	// Matrix2x2
 	Matrix2x2 Matrix2x2::Identity()
 	{
@@ -20,6 +21,13 @@ namespace BMath
 		}
 		return m;
 	}
+
+	float Matrix2x2::Determinant(const Matrix2x2& m) 
+	{
+		return m.data[0][0] * m.data[1][1] - m.data[0][1] * m.data[1][0];
+	}
+
+
 
 	// Matrix3x3
 	Matrix3x3::Matrix3x3() : Matrix(3)
@@ -47,9 +55,40 @@ namespace BMath
 		return Vector3(data[0][col], data[1][col], data[2][col]);
 	}
 
+
+
 	Vector3 Matrix3x3::GetRow(int row)
 	{
 		return Vector3(data[row][0], data[row][1], data[row][2]);
+	}
+
+	Vector3 Matrix3x3::operator*(const Vector3 v) const
+	{
+		Vector3 vec{};
+
+		for (int i = 0; i < 3; i++)
+		{
+			vec.data[i] = v.x * data[i][0] + v.y * data[i][1] + v.z * data[i][2];
+		}
+
+		return vec;
+		
+	}
+
+	Matrix3x3 Matrix3x3::operator*(const Matrix3x3& m) const
+	{
+		Matrix3x3 result{};
+
+		for (int col = 0; col < 3; col++)
+		{
+			for (int row = 0; row < 3; row++)
+			{
+				result.data[col][row] = data[col][0] * m.data[0][row] +
+					data[col][1] * m.data[1][row] +
+					data[col][2] * m.data[2][row];
+			}
+		}
+		return result;
 	}
 
 	float Matrix3x3::Determinant(const Matrix3x3& m)
@@ -60,6 +99,77 @@ namespace BMath
 		return x - y + z;
 
 	}
+
+	Matrix2x2 Matrix3x3::GetSubMatrix(const Matrix3x3& m, int skipCol, int skipRow)
+	{
+		Matrix2x2 m2{};
+		int subRow = 0, subCol = 0;
+
+		for (int col = 0; col < 3; col++)
+		{
+			if (col == skipCol)
+				continue;
+
+			subRow = 0;
+			for (int row = 0; row < 3; row++)
+			{
+				if (row == skipRow)
+					continue;
+
+				m2.data[subCol][subRow] = m.data[col][row];
+				subRow++;
+			}
+			subCol++;
+		}
+		return m2;
+	}
+
+	Matrix3x3 Matrix3x3::Inverse(const Matrix3x3& m)
+	{
+		Matrix3x3 m2{};
+
+		float det = Matrix3x3::Determinant(m);
+		if (det == 0.0f)
+			return {};
+
+		for (int col = 0; col < 3; col++)
+		{
+			for (int row = 0; row < 3; row++)
+			{
+				m2.data[col][row] = Matrix2x2::Determinant(GetSubMatrix(m, col, row));
+				m2.data[col][row] *= ((col + row) % 2 == 0) ? 1.0f : -1.0f;
+
+			}
+		}
+
+		m2 = Matrix3x3::Transpose(m2);
+
+		for (int col = 0; col < 3; col++)
+		{
+			for (int row = 0; row < 3; row++)
+			{
+				m2.data[col][row] /= det;
+			}
+		}
+
+		return m2;
+	}
+
+	Matrix3x3 Matrix3x3::Transpose(const Matrix3x3& m)
+	{
+		Matrix3x3 m2{};
+		for (int col = 0; col < 3; col++)
+		{
+			for (int row = 0; row < 3; row++)
+			{
+				m2.data[col][row] = m.data[row][col];
+
+			}
+		}
+		return m2;
+		
+	}
+
 
 	//Matrix 4x4
 	Matrix4x4::Matrix4x4() : Matrix(4)
@@ -77,7 +187,7 @@ namespace BMath
 
 	Matrix4x4 Matrix4x4::Zero()
 	{
-		Matrix4x4 m;
+		Matrix4x4 m{};
 		return m;
 	}
 
@@ -134,6 +244,7 @@ namespace BMath
 		}
 		return m2;
 	}
+
 	Matrix4x4 Matrix4x4::Inverse(const Matrix4x4& m)
 	{
 		Matrix4x4 m2{};
@@ -161,7 +272,7 @@ namespace BMath
 				m2.data[col][row] /= det;
 			}
 		}
-		
+
 		return m2;
 	}
 
@@ -170,13 +281,13 @@ namespace BMath
 		Matrix3x3 m2{};
 		int subRow = 0, subCol = 0;
 
-		for (int col = 0; col < 4; col++) 
+		for (int col = 0; col < 4; col++)
 		{
 			if (col == skipCol)
 				continue;
 
 			subRow = 0;
-			for (int row = 0; row < 4; row++) 
+			for (int row = 0; row < 4; row++)
 			{
 				if (row == skipRow)
 					continue;
@@ -201,18 +312,19 @@ namespace BMath
 		return det;
 	}
 
-// 	Vector4 Matrix4x4::operator*(const Vector4 v) const
-// 	{
-// 		// Perform the dot product for each column of the matrix
-// 		Vector4 vec{};
-// 
-// 		vec.x = data[0][0] * v.x + data[1][0] * v.y + data[2][0] * v.z + data[3][0] * v.w;
-// 		vec.y = data[0][1] * v.x + data[1][1] * v.y + data[2][1] * v.z + data[3][1] * v.w;
-// 		vec.z = data[0][2] * v.x + data[1][2] * v.y + data[2][2] * v.z + data[3][2] * v.w;
-// 		vec.w = data[0][3] * v.x + data[1][3] * v.y + data[2][3] * v.z + data[3][3] * v.w;
-// 
-// 		return vec;
-// 	}
+	// 	Vector4 Matrix4x4::operator*(const Vector4 v) const
+	// 	{
+	// 		// Perform the dot product for each column of the matrix
+	// 		Vector4 vec{};
+	// 
+	// 		vec.x = data[0][0] * v.x + data[1][0] * v.y + data[2][0] * v.z + data[3][0] * v.w;
+	// 		vec.y = data[0][1] * v.x + data[1][1] * v.y + data[2][1] * v.z + data[3][1] * v.w;
+	// 		vec.z = data[0][2] * v.x + data[1][2] * v.y + data[2][2] * v.z + data[3][2] * v.w;
+	// 		vec.w = data[0][3] * v.x + data[1][3] * v.y + data[2][3] * v.z + data[3][3] * v.w;
+	// 
+	// 		return vec;
+	// 	}
+
 
 	Vector4 Matrix4x4::operator*(const Vector4 v) const
 	{

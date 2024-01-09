@@ -46,11 +46,21 @@ namespace BMath
 	class Matrix2x2 : public Matrix
 	{
 	public:
-		Matrix2x2() : Matrix(2) {};
+		Matrix2x2();
 		~Matrix2x2() = default;
 
 		static Matrix2x2 Identity();
-		float data[2][2];
+		static float  Determinant(const Matrix2x2& m);
+
+		union
+		{
+			float data[2][2];
+			struct
+			{
+				float _11, _21;
+				float _12, _22;
+			};
+		};
 
 	private:
 	};
@@ -75,8 +85,13 @@ namespace BMath
 
 		static Matrix3x3 Identity();
 		static float Determinant(const Matrix3x3& m);
+		static Matrix3x3 Inverse(const Matrix3x3& m);
+		static Matrix3x3 Transpose(const Matrix3x3& m);
+		static Matrix2x2 GetSubMatrix(const Matrix3x3& m, int skipCol, int skipRow);
 		Vector3 GetColumn(int col);
 		Vector3 GetRow(int row);
+		Vector3 operator*(const Vector3 v) const;
+		Matrix3x3 operator*(const Matrix3x3& m) const;
 
 	private:
 	};

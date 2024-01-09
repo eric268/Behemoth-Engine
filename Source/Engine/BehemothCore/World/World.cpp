@@ -4,6 +4,7 @@
 #include "Misc/Log.h"
 #include "Systems/SystemManager.h"
 #include "Systems/ScalingSystem.h"
+#include "Misc/Stopwatch.h"
 
 #include "Systems/Render/MeshRenderSystem.h"
 #include "Systems/Render/WireframeRenderSystem.h"

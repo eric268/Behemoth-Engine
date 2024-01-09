@@ -66,7 +66,6 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
 	registry.AddComponent<Behemoth::ParentComponent>(playerHandle);
-	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(2.0f, 2.0f, 1.0f));
 
 	ECS::EntityHandle childTest = registry.CreateEntity("Child entity");
 	registry.AddComponent<Behemoth::TransformComponent>(childTest);
@@ -75,14 +74,31 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::MeshComponent>(childTest, "cube.obj", "brick.png");
 	registry.AddComponent<Behemoth::VelocityComponent>(childTest);
 	registry.AddComponent<Behemoth::MoveComponent>(childTest, BMath::Vector3(3.0f, 0.0f, 0.0f));
+	registry.AddComponent<Behemoth::RotationComponent>(childTest);
+	registry.AddComponent<Behemoth::ParentComponent>(childTest);
+	registry.AddComponent<Behemoth::ScalingComponent>(childTest, BMath::Vector3(0.5f, 0.5f, 0.5f));
+
+	ECS::EntityHandle childTest2 = registry.CreateEntity("Child entity #2");
+	registry.AddComponent<Behemoth::TransformComponent>(childTest2);
+	registry.AddComponent<Behemoth::ChildComponent>(childTest2, childTest);
+	registry.AddComponent<Behemoth::MeshInitalizeComponent>(childTest2);
+	registry.AddComponent<Behemoth::MeshComponent>(childTest2, "cube.obj", "brick.png");
+	registry.AddComponent<Behemoth::VelocityComponent>(childTest2);
+	registry.AddComponent<Behemoth::MoveComponent>(childTest2, BMath::Vector3(3.0f, 0.0f, 0.0f));
+	registry.AddComponent<Behemoth::RotationComponent>(childTest2);
+	registry.AddComponent<Behemoth::ScalingComponent>(childTest2, BMath::Vector3(1.5, 0.5, 0.5));
 
 	if (auto parentComp = registry.GetComponent<Behemoth::ParentComponent>(playerHandle))
 	{
 		parentComp->childHandles.push_back(childTest);
 	}
+
+	if (auto parentComp = registry.GetComponent<Behemoth::ParentComponent>(childTest))
+	{
+		parentComp->childHandles.push_back(childTest2);
+	}
+
 	
-
-
 	Behemoth::PointLightFactory pointLightFactory{};
 	pointLight = pointLightFactory.CreatePointLight(registry, "Point Light 1");
 	Behemoth::MoveComponent* pointLightMovementComp = registry.GetComponent<Behemoth::MoveComponent>(pointLight);
@@ -126,15 +142,14 @@ void MainScene::Update(const float deltaTime)
 {
 	if (Behemoth::Input::IsKeyReleased(Behemoth::KeyCode::KC_Space))
 	{
-// 		Behemoth::TransformComponent* cameraTransform = Behemoth::CameraHelper::GetMainCameraTransform(registry);
-// 		float distance = 50.0f;
-// 		BMath::Vector3 startPos = cameraTransform->worldPosition + cameraTransform->forwardVector * 0.5f;
-// 		BMath::Vector3 endPos = cameraTransform->worldPosition + cameraTransform->forwardVector * distance;
-// 
-// 		ECS::EntityHandle debugLineHandle = registry.CreateEntity("Debug line");
-// 		registry.AddComponent<Behemoth::DebugLineComponent>(debugLineHandle, startPos, endPos, 20.0f);
+		Behemoth::TransformComponent* cameraTransform = Behemoth::CameraHelper::GetMainCameraTransform(registry);
+		float distance = 50.0f;
+		BMath::Vector3 startPos = cameraTransform->worldPosition + cameraTransform->forwardVector * 0.5f;
+		BMath::Vector3 endPos = cameraTransform->worldPosition + cameraTransform->forwardVector * distance;
 
-		registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(0.5, 0.5, 0.5));
+		ECS::EntityHandle debugLineHandle = registry.CreateEntity("Debug line");
+		registry.AddComponent<Behemoth::DebugLineComponent>(debugLineHandle, startPos, endPos, 20.0f);
+
 	}
 
 	if (auto comp = registry.GetComponent<Behemoth::RotationComponent>(playerHandle))
