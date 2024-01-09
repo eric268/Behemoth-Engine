@@ -15,6 +15,7 @@ public:
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
+	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle pointLight;
 	ECS::EntityHandle cubes[8];
 	ECS::EntityHandle playerHandle;

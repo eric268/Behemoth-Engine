@@ -8,24 +8,20 @@ namespace Behemoth
 {
 	void ScalingSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto scalingComponents = registry.GetComponent<ScalingComponent>();
-
-		if (!scalingComponents->size())
-			return;
-
 		auto components = registry.Get<ScalingComponent, TransformComponent>();
-		for (const auto& [entity, scalingComp, transformComp] : components)
+
+		// Iterate over the container backwards because we want to remove all of these components once the scaling is completed
+		for (int i = components.size() - 1; i >= 0; i--)
 		{
+			auto& [entity, scalingComp, transformComp] = components[i];
+
 			BMath::Vector3 oldScale = TransformHelper::ExtractScale(transformComp->localTransform);
 			UpdateLocalScale(transformComp, oldScale, scalingComp->scalingVector);
 			UpdateWorldScale(registry, entity, transformComp, oldScale, scalingComp->scalingVector);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 			transformComp->isDirty = true;
-		}
 
-		for (int i = scalingComponents->dense.size() - 1; i >= 0; i--)
-		{
-			scalingComponents->RemoveComponent(scalingComponents->dense[i]);
+			registry.RemoveComponent<ScalingComponent>(entity);
 		}
 	}
 

@@ -20,7 +20,7 @@ namespace Behemoth
 
 	ECS::EntityHandle GameObjectFactory::AddChildObject(ECS::Registry& registry, ECS::EntityHandle parentHandle, std::string modelFilePath, std::string texturePath, std::string entityName)
 	{
-		if (parentHandle.ID == NULL_ENTITY || !registry.IsValidHandle(parentHandle))
+		if (!registry.IsValidHandle(parentHandle))
 		{
 			LOG_MESSAGE(MessageType::Error, "Invalid parent handle found");
 			return NULL_ENTITY;
@@ -31,6 +31,8 @@ namespace Behemoth
 		if (!parentComp)
 		{
 			registry.AddComponent<ParentComponent>(parentHandle);
+
+			// Ensure that component has been added successfully
 			parentComp = registry.GetComponent<ParentComponent>(parentHandle);
 			if (!parentComp)
 			{
@@ -42,7 +44,6 @@ namespace Behemoth
 		ECS::EntityHandle childHandle = CreateGameObject(registry, modelFilePath, texturePath, entityName);
 		registry.AddComponent<ChildComponent>(childHandle, parentHandle);
 		parentComp->childHandles.push_back(childHandle);
-
 		return childHandle;
 	}
 }

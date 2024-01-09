@@ -17,9 +17,9 @@ MainScene::MainScene()
 	std::cout << "Main Scene constructed\n";
 
 	Behemoth::CameraFactory cameraFactory{};
-	ECS::EntityHandle mainCameraEntity = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	/*registry.AddComponent<CameraControllerComponent>(mainCameraEntity, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);*/
-	registry.AddComponent<Behemoth::MoveComponent>(mainCameraEntity, BMath::Vector3(0, 0, 0));
+	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
+	registry.AddComponent<CameraControllerComponent>(mainCameraHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
+	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0, 0, 0));
 
 	Behemoth::DirectionalLightFactory dirLightFactory{};
 	ECS::EntityHandle dirLight = dirLightFactory.CreateDirectionalLight(registry);
@@ -60,21 +60,17 @@ MainScene::MainScene()
 // 
 
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
-	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
-	registry.AddComponent<CameraControllerComponent>(playerHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
+	// registry.AddComponent<CameraControllerComponent>(playerHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
+	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle);
 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
-	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle);
 
 	ECS::EntityHandle debugWireframe = gameObjectFactory.AddChildObject(registry, playerHandle, "cube.obj", "brick.png", "Debug wire frame");
 	registry.AddComponent<Behemoth::WireframeComponent>(debugWireframe, "cube.obj", true, BMath::Vector3(0.0f, 1.0f, 0.0f));
 	registry.AddComponent<Behemoth::AABBColliderComponent>(debugWireframe);
-	registry.AddComponent<Behemoth::ScalingComponent>(debugWireframe, BMath::Vector3(2.5f));
-	registry.AddComponent<Behemoth::MoveComponent>(debugWireframe, BMath::Vector3(5.0f, 0.0f, 0.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(debugWireframe, BMath::Vector3(3.0f, 0.0f, 0.0f));
 	registry.AddComponent<CameraControllerComponent>(debugWireframe, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
-	
-	// ECS::EntityHandle testChild = gameObjectFactory.AddChildObject(registry, playerHandle, "cube.obj", "brick.png", "test Child");
-
+	registry.AddComponent<Behemoth::ScalingComponent>(debugWireframe, BMath::Vector3(2.0f));
 	
 	Behemoth::PointLightFactory pointLightFactory{};
 	pointLight = pointLightFactory.CreatePointLight(registry, "Point Light 1");
@@ -148,6 +144,24 @@ void MainScene::Update(const float deltaTime)
 		if (rot != BMath::Vector3::Zero())
 		{
 			comp->quat = BMath::Quaternion(BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot));
+		}
+	}
+
+	if (auto cameraComp = registry.GetComponent<Behemoth::RotationComponent>(mainCameraHandle))
+	{
+		BMath::Vector3 rot;
+		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Z))
+		{
+			rot.y = -1.0f;
+		}
+		else if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_C))
+		{
+			rot.y = 1.0f;
+		}
+
+		if (rot != BMath::Vector3::Zero())
+		{
+			cameraComp->quat = BMath::Quaternion(BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot));
 		}
 	}
 }

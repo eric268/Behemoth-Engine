@@ -99,6 +99,7 @@ namespace Behemoth
 				continue;
 			}
 
+			primitive.depth = GetPrimitiveDepth(numVerticies, renderVerts);
 			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts);
 		}
 	}
@@ -113,7 +114,6 @@ namespace Behemoth
 
 	void MeshRenderSystem::AddPrimitiveToRenderer(Primitives& primitive, const int numVerticies, const BMath::Vector4 vertex[])
 	{
-		primitive.depth = GetPrimitiveDepth(numVerticies, vertex);
 		primitive.SetSpriteVerticies(numVerticies, vertex);
 		Renderer::GetInstance().AddPrimitive(&primitive);
 	}
