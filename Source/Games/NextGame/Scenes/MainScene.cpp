@@ -18,8 +18,8 @@ MainScene::MainScene()
 
 	Behemoth::CameraFactory cameraFactory{};
 	ECS::EntityHandle mainCameraEntity = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	registry.AddComponent<CameraControllerComponent>(mainCameraEntity, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
-	registry.AddComponent<Behemoth::MoveComponent>(mainCameraEntity, BMath::Vector3(0, 0, 5));
+	/*registry.AddComponent<CameraControllerComponent>(mainCameraEntity, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);*/
+	registry.AddComponent<Behemoth::MoveComponent>(mainCameraEntity, BMath::Vector3(0, 0, 0));
 
 	Behemoth::DirectionalLightFactory dirLightFactory{};
 	ECS::EntityHandle dirLight = dirLightFactory.CreateDirectionalLight(registry);
@@ -63,9 +63,10 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
 	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle, "cube.obj", BMath::Vector3(1.0f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
 	registry.AddComponent<CameraControllerComponent>(playerHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -5.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 3.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
 	registry.AddComponent<Behemoth::ParentComponent>(playerHandle);
+
 
 	ECS::EntityHandle childTest = registry.CreateEntity("Child entity");
 	registry.AddComponent<Behemoth::TransformComponent>(childTest);
@@ -73,10 +74,11 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(childTest);
 	registry.AddComponent<Behemoth::MeshComponent>(childTest, "cube.obj", "brick.png");
 	registry.AddComponent<Behemoth::VelocityComponent>(childTest);
-	registry.AddComponent<Behemoth::MoveComponent>(childTest, BMath::Vector3(3.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::RotationComponent>(childTest);
 	registry.AddComponent<Behemoth::ParentComponent>(childTest);
+	registry.AddComponent<Behemoth::MoveComponent>(childTest, BMath::Vector3(3.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::ScalingComponent>(childTest, BMath::Vector3(0.5f, 0.5f, 0.5f));
+
 
 	ECS::EntityHandle childTest2 = registry.CreateEntity("Child entity #2");
 	registry.AddComponent<Behemoth::TransformComponent>(childTest2);
@@ -84,9 +86,10 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(childTest2);
 	registry.AddComponent<Behemoth::MeshComponent>(childTest2, "cube.obj", "brick.png");
 	registry.AddComponent<Behemoth::VelocityComponent>(childTest2);
-	registry.AddComponent<Behemoth::MoveComponent>(childTest2, BMath::Vector3(3.0f, 0.0f, 0.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(childTest2, BMath::Vector3(-3.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RotationComponent>(childTest2);
-	registry.AddComponent<Behemoth::ScalingComponent>(childTest2, BMath::Vector3(1.5, 0.5, 0.5));
+	registry.AddComponent<CameraControllerComponent>(childTest2, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
+
 
 	if (auto parentComp = registry.GetComponent<Behemoth::ParentComponent>(playerHandle))
 	{

@@ -14,8 +14,8 @@ namespace Behemoth
 		// Will need to get the sparse set container no matter what since the .Get<>() returns a tuple and iterating backwards is difficult
 		// This way we can do a very quick and easy check to see if there are any meshes that need to be initialized
 		// most likely this check will fail and exit early so want to do this before calling .Get on the registry
-
 		auto components = registry.Get<MeshInitalizeComponent>();
+
 		for (const auto& [entity, meshComp] : components)
 		{
 			MeshComponent* meshComponent = registry.GetComponent<MeshComponent>(entity);
