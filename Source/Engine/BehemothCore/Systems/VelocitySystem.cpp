@@ -19,8 +19,10 @@ namespace Behemoth
 				continue;
 			}
 
- 			if (BMath::Vector3::Equals(velocityComp->velocity, BMath::Vector3::Zero()) && !transformComp->parentIsDirty)
+			if (BMath::Vector3::Equals(velocityComp->velocity, BMath::Vector3::Zero()) && !transformComp->parentIsDirty)
+			{
 				continue;
+			}
 
 			BMath::Vector3 deltaPosition = velocityComp->velocity * deltaTime;
 			UpdateLocalTransform(transformComp, deltaPosition);

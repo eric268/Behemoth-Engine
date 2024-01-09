@@ -95,9 +95,9 @@ namespace Behemoth
 
 	float BVHFactory::GetSurfaceArea(const AABBCollider& aabb)
 	{
-		float l = 2.0f * aabb.extents.x;
-		float w = 2.0f * aabb.extents.y;
-		float h = 2.0f * aabb.extents.z;
+		float l = 2.0f * aabb.worldExtents.x;
+		float w = 2.0f * aabb.worldExtents.y;
+		float h = 2.0f * aabb.worldExtents.z;
 		return 2.0f * (l * w + l * h + w * h);
 	}
 
@@ -125,8 +125,8 @@ namespace Behemoth
 
 		for (const BVHData& data : colliders)
 		{
-			BMath::Vector3 colliderMin = data.collider.worldPosition - data.collider.extents;
-			BMath::Vector3 colliderMax = data.collider.worldPosition + data.collider.extents;
+			BMath::Vector3 colliderMin = data.collider.worldPosition - data.collider.worldExtents;
+			BMath::Vector3 colliderMax = data.collider.worldPosition + data.collider.worldExtents;
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -144,7 +144,7 @@ namespace Behemoth
 
 		AABBCollider collider{};
 		collider.worldPosition = (maxPos + minPos) / 2.0f;
-		collider.extents = (maxPos - minPos) / 2.0f;
+		collider.worldExtents = (maxPos - minPos) / 2.0f;
 		return collider;
 	}
 
@@ -159,11 +159,11 @@ namespace Behemoth
 
 		registry.AddComponent<TransformComponent>(handle);
 		registry.AddComponent<MoveComponent>(handle, collider.worldPosition);
-		registry.AddComponent<AABBColliderComponent>(handle, collider.extents);
+		registry.AddComponent<AABBColliderComponent>(handle, collider.worldExtents);
 		
 		if (drawCollider)
 		{
-			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.extents, true, color);
+			registry.AddComponent<WireframeComponent>(handle, "cube.obj", /*collider.worldExtents,*/ true, color);
 			registry.AddComponent<MeshInitalizeComponent>(handle);
 		}
 

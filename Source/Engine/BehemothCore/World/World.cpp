@@ -63,13 +63,13 @@ namespace Behemoth
 
 	void World::Init()
 	{
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
 
 		// Keep these in this order
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MovementSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::VelocitySystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
 
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();

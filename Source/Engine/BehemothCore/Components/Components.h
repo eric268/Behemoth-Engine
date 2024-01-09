@@ -48,14 +48,18 @@ namespace Behemoth
 
 	struct TransformComponent : public ECS::Component
 	{
-		TransformComponent() : 
-			worldTransform(BMath::Matrix4x4::Identity()), 
-			localTransform(BMath::Matrix4x4::Identity()), 
+		TransformComponent() :
+			worldTransform(BMath::Matrix4x4::Identity()),
+			localTransform(BMath::Matrix4x4::Identity()),
+			forwardVector(BMath::Vector3::Forward()),
+			rightVector(BMath::Vector3::Right()),
+			upVector(BMath::Vector3::Up()),
+			worldPosition(BMath::Vector3(0.0f)),
+			localPosition(BMath::Vector3(0.0f)),
+			worldScale(BMath::Vector3(1.0f)),
+			localScale(BMath::Vector3(1.0f)),
 			isDirty(true),
-			parentIsDirty(false),
-			forwardVector(BMath::Vector3::Forward()), 
-			rightVector(BMath::Vector3::Right()), 
-			upVector(BMath::Vector3::Up()) 
+			parentIsDirty(false)
 		{}
 
 		BMath::Matrix4x4 worldTransform;
@@ -65,8 +69,8 @@ namespace Behemoth
 		BMath::Vector3 upVector;
 		BMath::Vector3 worldPosition;
 		BMath::Vector3 localPosition;
-		BMath::Vector3 localScale;
 		BMath::Vector3 worldScale;
+		BMath::Vector3 localScale;
 		bool isDirty;
 		bool parentIsDirty;
 	};

@@ -61,45 +61,19 @@ MainScene::MainScene()
 
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
 	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
-	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle, "cube.obj", BMath::Vector3(1.0f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
 	registry.AddComponent<CameraControllerComponent>(playerHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 3.0f, -5.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
-	registry.AddComponent<Behemoth::ParentComponent>(playerHandle);
+	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle);
 
-
-	ECS::EntityHandle childTest = registry.CreateEntity("Child entity");
-	registry.AddComponent<Behemoth::TransformComponent>(childTest);
-	registry.AddComponent<Behemoth::ChildComponent>(childTest, playerHandle);
-	registry.AddComponent<Behemoth::MeshInitalizeComponent>(childTest);
-	registry.AddComponent<Behemoth::MeshComponent>(childTest, "cube.obj", "brick.png");
-	registry.AddComponent<Behemoth::VelocityComponent>(childTest);
-	registry.AddComponent<Behemoth::RotationComponent>(childTest);
-	registry.AddComponent<Behemoth::ParentComponent>(childTest);
-	registry.AddComponent<Behemoth::MoveComponent>(childTest, BMath::Vector3(3.0f, 0.0f, 0.0f));
-	registry.AddComponent<Behemoth::ScalingComponent>(childTest, BMath::Vector3(0.5f, 0.5f, 0.5f));
-
-
-	ECS::EntityHandle childTest2 = registry.CreateEntity("Child entity #2");
-	registry.AddComponent<Behemoth::TransformComponent>(childTest2);
-	registry.AddComponent<Behemoth::ChildComponent>(childTest2, childTest);
-	registry.AddComponent<Behemoth::MeshInitalizeComponent>(childTest2);
-	registry.AddComponent<Behemoth::MeshComponent>(childTest2, "cube.obj", "brick.png");
-	registry.AddComponent<Behemoth::VelocityComponent>(childTest2);
-	registry.AddComponent<Behemoth::MoveComponent>(childTest2, BMath::Vector3(-3.0f, 0.0f, -5.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(childTest2);
-	registry.AddComponent<CameraControllerComponent>(childTest2, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
-
-
-	if (auto parentComp = registry.GetComponent<Behemoth::ParentComponent>(playerHandle))
-	{
-		parentComp->childHandles.push_back(childTest);
-	}
-
-	if (auto parentComp = registry.GetComponent<Behemoth::ParentComponent>(childTest))
-	{
-		parentComp->childHandles.push_back(childTest2);
-	}
+	ECS::EntityHandle debugWireframe = gameObjectFactory.AddChildObject(registry, playerHandle, "cube.obj", "brick.png", "Debug wire frame");
+	registry.AddComponent<Behemoth::WireframeComponent>(debugWireframe, "cube.obj", true, BMath::Vector3(0.0f, 1.0f, 0.0f));
+	registry.AddComponent<Behemoth::AABBColliderComponent>(debugWireframe);
+	registry.AddComponent<Behemoth::ScalingComponent>(debugWireframe, BMath::Vector3(2.5f));
+	registry.AddComponent<Behemoth::MoveComponent>(debugWireframe, BMath::Vector3(5.0f, 0.0f, 0.0f));
+	registry.AddComponent<CameraControllerComponent>(debugWireframe, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
+	
+	// ECS::EntityHandle testChild = gameObjectFactory.AddChildObject(registry, playerHandle, "cube.obj", "brick.png", "test Child");
 
 	
 	Behemoth::PointLightFactory pointLightFactory{};

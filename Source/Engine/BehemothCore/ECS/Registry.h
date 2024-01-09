@@ -55,6 +55,12 @@ namespace ECS
 			return false;
 		}
 
+		bool IsValidHandle(EntityHandle entityHandle)
+		{
+			Entity entity = GetEntityFromHandle(entityHandle);
+			return entity.IsValid();
+		}
+
 		EntityHandle CreateEntity(std::string name = "Entity")
 		{
 			Entity e(name);
@@ -118,6 +124,17 @@ namespace ECS
 			size_t index = Generator::Value<T>();
 			auto set = GetComponent<T>();
 			set->AddComponent(entity, component);;
+		}
+
+		template<IsComponent T>
+		void RemoveComponent(EntityHandle handle)
+		{
+			Entity entity = GetEntityFromHandle(handle);
+			if (entity.IsValid())
+			{
+				auto set = GetComponent<T>();
+				set->RemoveComponent(entity);
+			}
 		}
 
 

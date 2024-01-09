@@ -19,12 +19,15 @@ namespace Behemoth
 				if (entity.GetIdentifier() == entity2.GetIdentifier())
 					continue;
 
-				AABBComp->collider.worldPosition = transformComp->worldPosition + AABBComp->localPositionOffset;
-				AABBComp2->collider.worldPosition = transformComp2->worldPosition + AABBComp2->localPositionOffset;
+				AABBComp->collider.worldPosition = transformComp->worldPosition;
+				AABBComp2->collider.worldPosition = transformComp2->worldPosition;
+
+				AABBComp->collider.worldExtents = transformComp->worldScale;
+				AABBComp2->collider.worldExtents = transformComp2->worldScale;
 
 				if (BroadAABBCollision(AABBComp->collider, AABBComp->collider))
 				{
-					// std::cout << "Colliding\n";
+					std::cout << "Colliding\n";
 				}
 			}
 		}

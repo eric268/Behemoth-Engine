@@ -36,7 +36,7 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessWireframe(wireframeComp->mesh, transformComp->worldTransform, viewProjMatrix, wireframeComp->scale, true, wireframeComp->wireframeColor);
+			ProcessWireframe(wireframeComp->mesh, transformComp->worldTransform, viewProjMatrix, transformComp->worldScale, true, wireframeComp->wireframeColor);
 		}
 	}
 
@@ -67,7 +67,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = scaledTransformMatrix * BMath::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
+					primitive.verticies[j] = transformMatrix * BMath::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
 					vertexIndex++;
 				}
 			}

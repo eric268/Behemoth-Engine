@@ -8,7 +8,7 @@ namespace Behemoth
 	void Scene::CreateScene()
 	{
 		Initalize();
-		ConstructBVH();
+		// ConstructBVH();
 	}
 
 	void Scene::ConstructBVH()

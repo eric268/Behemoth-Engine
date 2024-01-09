@@ -87,11 +87,20 @@ namespace Behemoth
 
 	void TransformHelper::NotifyChildrenTransformChange(ECS::Registry& registry, ECS::EntityHandle handle)
 	{
+
 		if (auto parentComp = registry.GetComponent<ParentComponent>(handle))
 		{
-			for (const auto& childHandle : parentComp->childHandles)
+			for (int i = parentComp->childHandles.size() - 1; i >= 0; i--)
 			{
-				if (TransformComponent* childTransformComp = registry.GetComponent<TransformComponent>(childHandle))
+				// First check to ensure child still exists, if not then remove child from parent component container
+				ChildComponent* childComp = registry.GetComponent<ChildComponent>(parentComp->childHandles[i]);
+				if (!childComp)
+				{
+					parentComp->childHandles.erase(parentComp->childHandles.begin() + i);
+					continue;
+				}
+
+				if (TransformComponent* childTransformComp = registry.GetComponent<TransformComponent>(parentComp->childHandles[i]))
 				{
 					childTransformComp->parentIsDirty = true;
 				}

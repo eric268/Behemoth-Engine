@@ -10,11 +10,11 @@ namespace Behemoth
 {
 	bool BroadAABBCollision(const AABBCollider& box1, const AABBCollider& box2)
 	{
-		BMath::Vector3 minPos1 = box1.worldPosition - box1.extents;
-		BMath::Vector3 maxPos1 = box1.worldPosition + box1.extents;
+		BMath::Vector3 minPos1 = box1.worldPosition - box1.worldExtents;
+		BMath::Vector3 maxPos1 = box1.worldPosition + box1.worldExtents;
 
-		BMath::Vector3 minPos2 = box2.worldPosition - box2.extents;
-		BMath::Vector3 maxPos2 = box2.worldPosition + box2.extents;
+		BMath::Vector3 minPos2 = box2.worldPosition - box2.worldExtents;
+		BMath::Vector3 maxPos2 = box2.worldPosition + box2.worldExtents;
 
 
 		if (maxPos1.x < minPos2.x || minPos1.x > maxPos2.x)
@@ -29,7 +29,7 @@ namespace Behemoth
 	bool BroadAABBPlaneCollision(const AABBCollider& collider, const Plane& p)
 	{
 		// Compute the projection interval radius of b onto L(t) = b.c + t * p.n
-		float radius = collider.extents[0] * std::abs(p.normal[0]) + collider.extents[1] * std::abs(p.normal[1]) + collider.extents[2] * std::abs(p.normal[2]);
+		float radius = collider.worldExtents[0] * std::abs(p.normal[0]) + collider.worldExtents[1] * std::abs(p.normal[1]) + collider.worldExtents[2] * std::abs(p.normal[2]);
 
 		float distance = BMath::Vector3::Dot(p.normal, collider.worldPosition) - p.distance;
 
@@ -40,19 +40,20 @@ namespace Behemoth
 	bool BroadSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
 	{
 		float distance = BMath::Vector3::SquaredDistance(sphere1.worldPosition, sphere2.worldPosition);
-		float rad = sphere1.radius + sphere2.radius;
+		float rad = sphere1.worldRadius + sphere2.worldRadius;
 		return distance <= (rad * rad);
 	}
+
 	bool BroadSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
 	{
 		float squaredDist = 0;
-		float squaredRad = sphere.radius * sphere.radius;
+		float squaredRad = sphere.worldRadius * sphere.worldRadius;
 
 		for (int axis = 0; axis < 3; axis++)
 		{
 			float diff = 0;
-			float minVal = box.worldPosition[axis] - box.extents[axis];
-			float maxVal = box.worldPosition[axis] + box.extents[axis];
+			float minVal = box.worldPosition[axis] - box.worldExtents[axis];
+			float maxVal = box.worldPosition[axis] + box.worldExtents[axis];
 
 			float spherePos = sphere.worldPosition[axis];
 
@@ -81,12 +82,12 @@ namespace Behemoth
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				R.data[i][j] = BMath::Vector3::Dot(box1.orientation[i], box2.orientation[j]);
+				R.data[i][j] = BMath::Vector3::Dot(box1.worldOrientation[i], box2.worldOrientation[j]);
 			}
 		}
 
 		BMath::Vector3 t = box2.worldPosition - box1.worldPosition;
-		t = BMath::Vector3(BMath::Vector3::Dot(t, box1.orientation[0]), BMath::Vector3::Dot(t, box1.orientation[1]), BMath::Vector3::Dot(t, box1.orientation[2]));
+		t = BMath::Vector3(BMath::Vector3::Dot(t, box1.worldOrientation[0]), BMath::Vector3::Dot(t, box1.worldOrientation[1]), BMath::Vector3::Dot(t, box1.worldOrientation[2]));
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -98,8 +99,8 @@ namespace Behemoth
 
 		for (int i = 0; i < 3; i++)
 		{
-			rBox1 = box1.halfwidthExtents[i];
-			rBox2 = box2.halfwidthExtents[0] * AbsR.data[i][0] + box2.halfwidthExtents[1] * AbsR.data[i][1] + box2.halfwidthExtents[2] * AbsR.data[i][2];
+			rBox1 = box1.worldExtents[i];
+			rBox2 = box2.worldExtents[0] * AbsR.data[i][0] + box2.worldExtents[1] * AbsR.data[i][1] + box2.worldExtents[2] * AbsR.data[i][2];
 			if (std::abs(t[i]) > (rBox1 + rBox2))
 			{
 				return false;
@@ -108,72 +109,72 @@ namespace Behemoth
 
 		for (int i = 0; i < 3; i++)
 		{
-			rBox1 = box1.halfwidthExtents[0] * AbsR.data[0][i] + box1.halfwidthExtents[1] * AbsR.data[1][i] + box1.halfwidthExtents[2] * AbsR.data[2][i];
-			rBox2 = box2.halfwidthExtents[i];
+			rBox1 = box1.worldExtents[0] * AbsR.data[0][i] + box1.worldExtents[1] * AbsR.data[1][i] + box1.worldExtents[2] * AbsR.data[2][i];
+			rBox2 = box2.worldExtents[i];
 			if (std::abs(t[0] * R.data[0][i] + t[1] * R.data[1][i] + t[2] * R.data[2][i]) > (rBox1 + rBox2))
 			{
 				return false;
 			}
 		}
 
-		rBox1 = box1.halfwidthExtents[1] * AbsR.data[2][0] + box1.halfwidthExtents[2] * AbsR.data[1][0];
-		rBox2 = box2.halfwidthExtents[1] * AbsR.data[0][2] + box2.halfwidthExtents[2] * AbsR.data[0][1];
+		rBox1 = box1.worldExtents[1] * AbsR.data[2][0] + box1.worldExtents[2] * AbsR.data[1][0];
+		rBox2 = box2.worldExtents[1] * AbsR.data[0][2] + box2.worldExtents[2] * AbsR.data[0][1];
 		if (std::abs(t[2] + R.data[1][0] - t[1] * R.data[2][0] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[1] * AbsR.data[2][1] + box1.halfwidthExtents[2] * AbsR.data[1][1];
-		rBox2 = box2.halfwidthExtents[0] * AbsR.data[0][2] + box2.halfwidthExtents[2] * AbsR.data[0][0];
+		rBox1 = box1.worldExtents[1] * AbsR.data[2][1] + box1.worldExtents[2] * AbsR.data[1][1];
+		rBox2 = box2.worldExtents[0] * AbsR.data[0][2] + box2.worldExtents[2] * AbsR.data[0][0];
 		if (std::abs(t[2] + R.data[1][1] - t[1] * R.data[2][1] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[1] * AbsR.data[2][2] + box1.halfwidthExtents[2] * AbsR.data[1][2];
-		rBox2 = box2.halfwidthExtents[0] * AbsR.data[0][1] + box2.halfwidthExtents[1] * AbsR.data[0][0];
+		rBox1 = box1.worldExtents[1] * AbsR.data[2][2] + box1.worldExtents[2] * AbsR.data[1][2];
+		rBox2 = box2.worldExtents[0] * AbsR.data[0][1] + box2.worldExtents[1] * AbsR.data[0][0];
 		if (std::abs(t[2] + R.data[1][2] - t[1] * R.data[2][2] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[0] * AbsR.data[2][0] + box1.halfwidthExtents[2] * AbsR.data[0][0];
-		rBox2 = box2.halfwidthExtents[1] * AbsR.data[1][2] + box2.halfwidthExtents[2] * AbsR.data[1][1];
+		rBox1 = box1.worldExtents[0] * AbsR.data[2][0] + box1.worldExtents[2] * AbsR.data[0][0];
+		rBox2 = box2.worldExtents[1] * AbsR.data[1][2] + box2.worldExtents[2] * AbsR.data[1][1];
 		if (std::abs(t[0] + R.data[2][0] - t[2] * R.data[0][0] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[0] * AbsR.data[2][1] + box1.halfwidthExtents[2] * AbsR.data[0][1];
-		rBox2 = box2.halfwidthExtents[0] * AbsR.data[1][2] + box2.halfwidthExtents[2] * AbsR.data[1][0];
+		rBox1 = box1.worldExtents[0] * AbsR.data[2][1] + box1.worldExtents[2] * AbsR.data[0][1];
+		rBox2 = box2.worldExtents[0] * AbsR.data[1][2] + box2.worldExtents[2] * AbsR.data[1][0];
 		if (std::abs(t[0] + R.data[2][1] - t[2] * R.data[0][1] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[0] * AbsR.data[2][2] + box1.halfwidthExtents[2] * AbsR.data[0][2];
-		rBox2 = box2.halfwidthExtents[0] * AbsR.data[1][1] + box2.halfwidthExtents[1] * AbsR.data[1][0];
+		rBox1 = box1.worldExtents[0] * AbsR.data[2][2] + box1.worldExtents[2] * AbsR.data[0][2];
+		rBox2 = box2.worldExtents[0] * AbsR.data[1][1] + box2.worldExtents[1] * AbsR.data[1][0];
 		if (std::abs(t[0] + R.data[2][2] - t[2] * R.data[0][2] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[0] * AbsR.data[1][0] + box1.halfwidthExtents[1] * AbsR.data[0][0];
-		rBox2 = box2.halfwidthExtents[1] * AbsR.data[2][2] + box2.halfwidthExtents[2] * AbsR.data[2][1];
+		rBox1 = box1.worldExtents[0] * AbsR.data[1][0] + box1.worldExtents[1] * AbsR.data[0][0];
+		rBox2 = box2.worldExtents[1] * AbsR.data[2][2] + box2.worldExtents[2] * AbsR.data[2][1];
 		if (std::abs(t[1] + R.data[0][0] - t[0] * R.data[1][0] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[0] * AbsR.data[1][1] + box1.halfwidthExtents[1] * AbsR.data[0][1];
-		rBox2 = box2.halfwidthExtents[0] * AbsR.data[2][2] + box2.halfwidthExtents[2] * AbsR.data[2][0];
+		rBox1 = box1.worldExtents[0] * AbsR.data[1][1] + box1.worldExtents[1] * AbsR.data[0][1];
+		rBox2 = box2.worldExtents[0] * AbsR.data[2][2] + box2.worldExtents[2] * AbsR.data[2][0];
 		if (std::abs(t[1] + R.data[0][1] - t[0] * R.data[1][1] > rBox1 + rBox2))
 		{
 			return false;
 		}
 
-		rBox1 = box1.halfwidthExtents[0] * AbsR.data[1][2] + box1.halfwidthExtents[1] * AbsR.data[0][2];
-		rBox2 = box2.halfwidthExtents[0] * AbsR.data[2][1] + box2.halfwidthExtents[1] * AbsR.data[2][0];
+		rBox1 = box1.worldExtents[0] * AbsR.data[1][2] + box1.worldExtents[1] * AbsR.data[0][2];
+		rBox2 = box2.worldExtents[0] * AbsR.data[2][1] + box2.worldExtents[1] * AbsR.data[2][0];
 		if (std::abs(t[1] + R.data[0][2] - t[0] * R.data[1][2] > rBox1 + rBox2))
 		{
 			return false;
@@ -183,9 +184,9 @@ namespace Behemoth
 	}
 	bool BroadOBBPlaneCollision(const OBBCollider& box, const Plane& p)
 	{
-		float radius = box.halfwidthExtents[0] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[0])) +
-					   box.halfwidthExtents[1] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[1])) +
-					   box.halfwidthExtents[2] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[2]));
+		float radius = box.worldExtents[0] * std::abs(BMath::Vector3::Dot(p.normal, box.worldOrientation[0])) +
+					   box.worldExtents[1] * std::abs(BMath::Vector3::Dot(p.normal, box.worldOrientation[1])) +
+					   box.worldExtents[2] * std::abs(BMath::Vector3::Dot(p.normal, box.worldOrientation[2]));
 
 		float distance = BMath::Vector3::Dot(p.normal, box.worldPosition);
 		return std::abs(distance) <= radius;
@@ -205,8 +206,8 @@ namespace Behemoth
 	}
 	bool BroadLineAABBIntersection(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
 	{
-		BMath::Vector3 boxMin = box.worldPosition - box.extents;  // Minimum corner of the AABB
-		BMath::Vector3 boxMax = box.worldPosition + box.extents;  // Maximum corner of the AABB
+		BMath::Vector3 boxMin = box.worldPosition - box.worldExtents;  // Minimum corner of the AABB
+		BMath::Vector3 boxMax = box.worldPosition + box.worldExtents;  // Maximum corner of the AABB
 
 		Point boxCenter = (boxMin + boxMax) * 0.5f;  // Center point of the AABB
 		BMath::Vector3 boxExtentsHalf = boxMax - boxCenter; // Half extents of the AABB
@@ -272,8 +273,8 @@ namespace Behemoth
 
 	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint)
 	{
-		BMath::Vector3 min = collider.worldPosition - collider.extents;
-		BMath::Vector3 max = collider.worldPosition + collider.extents;
+		BMath::Vector3 min = collider.worldPosition - collider.worldExtents;
+		BMath::Vector3 max = collider.worldPosition + collider.worldExtents;
 
 		minDist = 0.0f;
 		float maxDist = std::numeric_limits<float>::max();
@@ -313,7 +314,7 @@ namespace Behemoth
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere)
 	{
 		BMath::Vector3 rayToSphere = ray.origin - sphere.worldPosition;
-		float sqDistToSphere = BMath::Vector3::Dot(rayToSphere, rayToSphere) - sphere.radius * sphere.radius;
+		float sqDistToSphere = BMath::Vector3::Dot(rayToSphere, rayToSphere) - sphere.worldRadius * sphere.worldRadius;
 
 		if (sqDistToSphere <= 0.0f)
 		{
@@ -339,8 +340,8 @@ namespace Behemoth
 	Point ClosestPBetweenPointAABB(const Point p, const AABBCollider& collider)
 	{
 		Point result{};
-		BMath::Vector3 min = collider.worldPosition - collider.extents;
-		BMath::Vector3 max = collider.worldPosition + collider.extents;
+		BMath::Vector3 min = collider.worldPosition - collider.worldExtents;
+		BMath::Vector3 max = collider.worldPosition + collider.worldExtents;
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -363,8 +364,8 @@ namespace Behemoth
 	float GetSqDistBetweenPointAABB(const Point p, const AABBCollider & collider)
 	{
 		float squaredDist = 0.0f;
-		BMath::Vector3 min = collider.worldPosition - collider.extents;
-		BMath::Vector3 max = collider.worldPosition + collider.extents;
+		BMath::Vector3 min = collider.worldPosition - collider.worldExtents;
+		BMath::Vector3 max = collider.worldPosition + collider.worldExtents;
 
 		for (int i = 0; i < 3; i++)
 		{

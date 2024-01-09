@@ -20,14 +20,22 @@ namespace Behemoth
 					continue;
 				}
 
-				// OBBComp->collider.worldTransform = transformComp->worldTransform * OBBComp->localTransformOffset;
-				// OBBComp2->collider.worldTransform = transformComp2->worldTransform * OBBComp2->localTransformOffset;
+				OBBComp->collider.worldPosition = transformComp->worldPosition;
+				OBBComp2->collider.worldPosition = transformComp2->worldPosition;
+
+				for (int i = 0; i < 3; i++)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						OBBComp->collider.worldOrientation[i][j] = transformComp->worldTransform.data[i][j] / transformComp->worldScale[i];
+						OBBComp2->collider.worldOrientation[i][j] = transformComp2->worldTransform.data[i][j] / transformComp2->worldScale[i];
+					}
+				}
 
 				if (BroadOBBCollision(OBBComp->collider, OBBComp2->collider))
 				{
 					std::cout << "Colliding\n";
 				}
-				
 			}
 		}
 	}

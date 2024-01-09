@@ -27,11 +27,11 @@ namespace Behemoth
 
 	struct WireframeComponent : public ECS::Component
 	{
-		WireframeComponent(const std::string& modelName, BMath::Vector3 scale = BMath::Vector3::One(), bool visible = false, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), scale(scale), isVisible(visible), mesh(modelName), wireframeColor(color) {}
+		WireframeComponent(const std::string& modelName, /*BMath::Vector3 scale = BMath::Vector3::One(),*/ bool visible = false, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), /*scale(scale),*/ isVisible(visible), mesh(modelName), wireframeColor(color) {}
 		std::string modelFileName;
-		BMath::Vector3 scale;
 		bool isVisible;
 		BMath::Vector3 wireframeColor;
+/*		BMath::Vector3 scale;*/
 		Mesh mesh;
 	};
 

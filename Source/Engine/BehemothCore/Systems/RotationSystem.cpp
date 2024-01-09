@@ -28,12 +28,10 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-//   			if (rotationComp->quat == BMath::Quaternion::Identity())
-//   			{
-//   				continue;
-// 	  		}
-
-
+  			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
+  			{
+  				continue;
+	  		}
 
 			BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 			rotationComp->quat = BMath::Quaternion::Identity();

@@ -19,28 +19,23 @@ namespace Behemoth
 	struct OBBCollider
 	{
 		OBBCollider() = default;
-		OBBCollider(BMath::Vector3 extent) : halfwidthExtents(extent) {}
 		BMath::Vector3 worldPosition;
-		BMath::Vector3 orientation[3];
-		BMath::Vector3 halfwidthExtents;
+		BMath::Vector3 worldOrientation[3];
+		BMath::Vector3 worldExtents;
 	};
 
 	struct AABBCollider
 	{
 		AABBCollider() = default;
-		AABBCollider(BMath::Vector3 extents) : extents(extents) {}
 		BMath::Vector3 worldPosition;
-		BMath::Vector3 localOffset;
-		BMath::Vector3 extents;
+		BMath::Vector3 worldExtents;
 	};
 
 	struct SphereCollider
 	{
 		SphereCollider() = default;
-		SphereCollider(float radius) : radius(radius) {}
 		BMath::Vector3 worldPosition;
-		BMath::Vector3 localOffset;
-		float radius;
+		float worldRadius;
 	};
 
 	// Made up of multiple OBB colliders
