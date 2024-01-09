@@ -36,32 +36,40 @@ namespace Behemoth
 
 	struct AABBColliderComponent : public ColliderComponent
 	{
-		AABBColliderComponent(BMath::Vector3 extents, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+		AABBColliderComponent(BMath::Vector3 extents, BMath::Vector3 offset = BMath::Vector3::Zero(), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
+			localPositionOffset(offset),
 			collider(extents)
 		{}
 
 		AABBCollider collider;
+		BMath::Vector3 localPositionOffset;
+		BMath::Vector3 localScale;
 	};
 
 	struct OBBColliderComponent : public ColliderComponent
 	{
-		OBBColliderComponent(BMath::Vector3 extent, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+		OBBColliderComponent(BMath::Vector3 extent, BMath::Matrix4x4 offset = BMath::Matrix4x4::Identity(), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
+			localTransformOffset(offset),
 			collider(extent)
 		{}
 		
 		OBBCollider collider;
+		BMath::Matrix4x4 localTransformOffset;
 	};
 
 	struct SphereColliderComponent : public ColliderComponent
 	{
-		SphereColliderComponent(float radius, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+		SphereColliderComponent(float radius, BMath::Vector3 offset = BMath::Vector3::Zero(), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			ColliderComponent(collisionType, enabled),
+			localPositionOffset(offset),
 			collider(radius)
 		{}
 
 		SphereCollider collider;
+		BMath::Vector3 localPositionOffset;
+		BMath::Vector3 localScale;
 	};
 
 	struct MeshColliderComponent : public ColliderComponent

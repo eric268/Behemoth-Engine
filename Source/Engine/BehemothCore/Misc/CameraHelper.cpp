@@ -63,7 +63,7 @@ namespace Behemoth
 		for (const auto& [entity, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
 		{
 			if (camera->isMain)
-				return transform->position;
+				return transform->worldPosition;
 		}
 		LOG_MESSAGE(MessageType::Error, "Unable to find main camera");
 		assert(nullptr);

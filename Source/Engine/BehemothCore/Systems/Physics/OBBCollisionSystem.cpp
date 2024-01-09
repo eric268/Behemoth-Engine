@@ -20,18 +20,8 @@ namespace Behemoth
 					continue;
 				}
 
-				OBBComp->collider.pos = transformComp->position;
-				OBBComp2->collider.pos = transformComp2->position;
-
-
-				for (int i = 0; i < 3; i++)
-				{
-					for (int j = 0; j < 3; j++)
-					{
-						OBBComp->collider.orientation[i][j] = transformComp->transformMatrix.data[i][j] / transformComp->scale[i];
-						OBBComp2->collider.orientation[i][j] = transformComp2->transformMatrix.data[i][j] / transformComp2->scale[i];
-					}
-				}
+				// OBBComp->collider.worldTransform = transformComp->worldTransform * OBBComp->localTransformOffset;
+				// OBBComp2->collider.worldTransform = transformComp2->worldTransform * OBBComp2->localTransformOffset;
 
 				if (BroadOBBCollision(OBBComp->collider, OBBComp2->collider))
 				{

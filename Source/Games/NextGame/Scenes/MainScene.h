@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BehemothCore.h"
+#include "BehemothEngine.h"
 #include "Physics/BVH.h"
 
 class MainScene : public Behemoth::Scene

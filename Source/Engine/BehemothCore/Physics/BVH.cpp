@@ -41,7 +41,7 @@ namespace Behemoth
 			// Sort components based on their centroid along the current axis
 			std::sort(data.begin(), data.end(), [axis](const BVHData& a, const BVHData& b) 
 				{
-					return a.collider.position[axis] < b.collider.position[axis];
+					return a.collider.worldPosition[axis] < b.collider.worldPosition[axis];
 				});
 
 			// Apply SAH to find the best split for this axis
@@ -125,8 +125,8 @@ namespace Behemoth
 
 		for (const BVHData& data : colliders)
 		{
-			BMath::Vector3 colliderMin = data.collider.position - data.collider.extents;
-			BMath::Vector3 colliderMax = data.collider.position + data.collider.extents;
+			BMath::Vector3 colliderMin = data.collider.worldPosition - data.collider.extents;
+			BMath::Vector3 colliderMax = data.collider.worldPosition + data.collider.extents;
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -143,7 +143,7 @@ namespace Behemoth
 		}
 
 		AABBCollider collider{};
-		collider.position = (maxPos + minPos) / 2.0f;
+		collider.worldPosition = (maxPos + minPos) / 2.0f;
 		collider.extents = (maxPos - minPos) / 2.0f;
 		return collider;
 	}
@@ -158,7 +158,7 @@ namespace Behemoth
 		entityHandles.push_back(handle);
 
 		registry.AddComponent<TransformComponent>(handle);
-		registry.AddComponent<MoveComponent>(handle, collider.position);
+		registry.AddComponent<MoveComponent>(handle, collider.worldPosition);
 		registry.AddComponent<AABBColliderComponent>(handle, collider.extents);
 		
 		if (drawCollider)

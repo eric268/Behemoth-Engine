@@ -9,7 +9,7 @@ namespace Behemoth
 		AABB,
 		OBB,
 		Sphere,
-		Mesh
+		CompoundCollider
 	};
 
 	struct Collider
@@ -20,7 +20,7 @@ namespace Behemoth
 	{
 		OBBCollider() = default;
 		OBBCollider(BMath::Vector3 extent) : halfwidthExtents(extent) {}
-		BMath::Vector3 pos;
+		BMath::Vector3 worldPosition;
 		BMath::Vector3 orientation[3];
 		BMath::Vector3 halfwidthExtents;
 	};
@@ -29,7 +29,8 @@ namespace Behemoth
 	{
 		AABBCollider() = default;
 		AABBCollider(BMath::Vector3 extents) : extents(extents) {}
-		BMath::Vector3 position;
+		BMath::Vector3 worldPosition;
+		BMath::Vector3 localOffset;
 		BMath::Vector3 extents;
 	};
 
@@ -37,12 +38,14 @@ namespace Behemoth
 	{
 		SphereCollider() = default;
 		SphereCollider(float radius) : radius(radius) {}
-		BMath::Vector3 positionOffset;
+		BMath::Vector3 worldPosition;
+		BMath::Vector3 localOffset;
 		float radius;
 	};
 
-	struct MeshCollider
+	// Made up of multiple OBB colliders
+	struct CompoundCollider
 	{
-		BMath::Vector3 pos;
+		std::vector<OBBCollider> compoundColliders;
 	};
 }

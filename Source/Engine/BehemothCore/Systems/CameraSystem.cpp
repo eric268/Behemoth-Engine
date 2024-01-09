@@ -43,10 +43,10 @@ namespace Behemoth
 		cameraComponent->perspectiveMatrix._43 = (-2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
 		cameraComponent->perspectiveMatrix._34 = -1.0f;
 
-		BMath::Vector3 target = transformComponent->position + transformComponent->forwardVector;
+		BMath::Vector3 target = transformComponent->worldPosition + transformComponent->forwardVector;
 
 
-		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->position, target, BMath::Vector3::Up());
+		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->worldPosition, target, BMath::Vector3::Up());
 		cameraComponent->inverseTransposeViewMatrix = BMath::Matrix4x4::Inverse(cameraComponent->viewMatrix);
 	}
 

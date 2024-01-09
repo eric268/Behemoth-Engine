@@ -40,7 +40,7 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessMesh(meshComp->mesh, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix, transformComp->isDirty);
+			ProcessMesh(meshComp->mesh, mainCameraPosition, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty);
 			transformComp->isDirty = false;
 		}
 

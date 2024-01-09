@@ -75,6 +75,8 @@ namespace BMath
 
 		static Matrix3x3 Identity();
 		static float Determinant(const Matrix3x3& m);
+		Vector3 GetColumn(int col);
+		Vector3 GetRow(int row);
 
 	private:
 	};
@@ -98,6 +100,8 @@ namespace BMath
 			};
 		};
 
+		Vector4 GetColumn(int col);
+		Vector4 GetRow(int row);
 		static Matrix4x4 Zero();
 		static Matrix4x4 Identity();
 		static bool Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon = 1e-2);
@@ -106,6 +110,7 @@ namespace BMath
 		static Matrix4x4 Inverse(const Matrix4x4& m);
 		static Matrix3x3 GetSubMatrix(const Matrix4x4& m, int skipRow, int skipCol);
 		static float Determinant(const Matrix4x4& m);
+	
 
 		// Matrix4x4& operator= (const Matrix4x4& m);
 		Matrix4x4 operator*(const Matrix4x4& m) const;

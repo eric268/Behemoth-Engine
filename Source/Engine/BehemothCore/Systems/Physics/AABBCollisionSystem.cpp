@@ -19,8 +19,8 @@ namespace Behemoth
 				if (entity.GetIdentifier() == entity2.GetIdentifier())
 					continue;
 
-				AABBComp->collider.position = transformComp->position;
-				AABBComp2->collider.position = transformComp2->position;
+				AABBComp->collider.worldPosition = transformComp->worldPosition + AABBComp->localPositionOffset;
+				AABBComp2->collider.worldPosition = transformComp2->worldPosition + AABBComp2->localPositionOffset;
 
 				if (BroadAABBCollision(AABBComp->collider, AABBComp->collider))
 				{

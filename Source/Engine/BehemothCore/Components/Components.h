@@ -5,6 +5,7 @@
 #include "Geometry/Mesh.h"
 #include "Geometry/Plane.h"
 #include "Math/Quaternion.h"
+#include "ECS/Entity.h"
 
 #include <functional>
 #include <unordered_map>
@@ -46,15 +47,27 @@ namespace Behemoth
 
 	struct TransformComponent : public ECS::Component
 	{
-		TransformComponent() : transformMatrix(BMath::Matrix4x4::Identity()), isDirty(true), forwardVector(BMath::Vector3::Forward()), rightVector(BMath::Vector3::Right()), upVector(BMath::Vector3::Up()) {}
+		TransformComponent() : 
+			worldTransform(BMath::Matrix4x4::Identity()), 
+			localTransform(BMath::Matrix4x4::Identity()), 
+			isDirty(true),
+			parentIsDirty(false),
+			forwardVector(BMath::Vector3::Forward()), 
+			rightVector(BMath::Vector3::Right()), 
+			upVector(BMath::Vector3::Up()) 
+		{}
 
-		BMath::Matrix4x4 transformMatrix;
+		BMath::Matrix4x4 worldTransform;
+		BMath::Matrix4x4 localTransform;
 		BMath::Vector3 forwardVector;
 		BMath::Vector3 rightVector;
 		BMath::Vector3 upVector;
-		BMath::Vector3 position;
-		BMath::Vector3 scale;
+		BMath::Vector3 worldPosition;
+		BMath::Vector3 localPosition;
+		BMath::Vector3 localScale;
+		BMath::Vector3 worldScale;
 		bool isDirty;
+		bool parentIsDirty;
 	};
 
 	struct StaticComponent : public ECS::Component
@@ -97,11 +110,11 @@ namespace Behemoth
 
 	struct ChildComponent : public ECS::Component
 	{
-		std::uint32_t parentID;
+		ECS::EntityHandle parentHandle;
 	};
 
 	struct ParentComponent : public ECS::Component
 	{
-		std::vector<std::uint32_t> childrenIDs;
+		std::vector<ECS::EntityHandle> childHandles;
 	};
 }

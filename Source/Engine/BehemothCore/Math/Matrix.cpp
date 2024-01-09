@@ -42,6 +42,16 @@ namespace BMath
 		return m;
 	}
 
+	Vector3 Matrix3x3::GetColumn(int col)
+	{
+		return Vector3(data[0][col], data[1][col], data[2][col]);
+	}
+
+	Vector3 Matrix3x3::GetRow(int row)
+	{
+		return Vector3(data[row][0], data[row][1], data[row][2]);
+	}
+
 	float Matrix3x3::Determinant(const Matrix3x3& m)
 	{
 		const float x = m.data[0][0] * (m.data[1][1] * m.data[2][2] - m.data[1][2] * m.data[2][1]);
@@ -79,6 +89,16 @@ namespace BMath
 			m.data[i][i] = 1;
 		}
 		return m;
+	}
+
+	Vector4 Matrix4x4::GetColumn(int col)
+	{
+		return Vector4(data[0][col], data[1][col], data[2][col], data[3][col]);
+	}
+
+	Vector4 Matrix4x4::GetRow(int row)
+	{
+		return Vector4(data[row][0], data[row][1], data[row][2], data[row][3]);
 	}
 
 	bool Matrix4x4::Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon)
@@ -196,7 +216,6 @@ namespace BMath
 
 	Vector4 Matrix4x4::operator*(const Vector4 v) const
 	{
-		// Perform the dot product for each row of the matrix
 		Vector4 vec{};
 
 		for (int i = 0; i < 4; i++) 

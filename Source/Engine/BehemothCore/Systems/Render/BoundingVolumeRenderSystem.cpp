@@ -27,7 +27,7 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessBoundingVolume(boundingVolumeComp, mainCameraPosition, transformComp->transformMatrix, viewProjMatrix);
+			ProcessBoundingVolume(boundingVolumeComp, mainCameraPosition, transformComp->worldTransform, viewProjMatrix);
 		}
 	}
 

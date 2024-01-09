@@ -29,7 +29,7 @@ namespace Behemoth
 	{
 		for (const auto& p : cameraComponent->worldSpaceFrustum)
 		{
-			float distance = BMath::Vector3::Dot(p.normal, boundingTransformComp->position) - p.distance;
+			float distance = BMath::Vector3::Dot(p.normal, boundingTransformComp->worldPosition) - p.distance;
 			if (distance < -boundingRadius)
 				return false;
 		}

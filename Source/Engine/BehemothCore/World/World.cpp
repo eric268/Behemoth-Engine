@@ -21,7 +21,7 @@
 #include "Systems/Physics/SphereCollisionSystem.h"
 #include "Systems/Physics/OBBCollisionSystem.h"
 #include "Systems/Physics/SphereAABBCollisionSystem.h"
-#include "Systems/Physics/BVHCollisionSystem.h"
+#include "Systems/Physics/BroadCollisionSystem.h"
 
 #include "Systems/Physics/RigidBodySystem.h"
 
@@ -74,7 +74,7 @@ namespace Behemoth
 		// 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereCollisionSystem>();
 		// 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::OBBCollisionSystem>();
 		// 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereAABBCollisionSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BVHCollisionSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BroadCollisionSystem>();
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
 

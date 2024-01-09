@@ -48,7 +48,7 @@
     <ClInclude Include="BehemothCore\Application\ThreadPool.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\BehemothCore.h" />
+    <ClInclude Include="BehemothCore\BehemothEngine.h" />
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h">
       <Filter>ECS</Filter>
     </ClInclude>
@@ -199,16 +199,17 @@
     <ClInclude Include="BehemothCore\Physics\BVH.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Physics\Ray.h" />
-    <ClInclude Include="BehemothCore\Physics\Collision\CollisionResults.h" />
+    <ClInclude Include="BehemothCore\Physics\Collision\CollisionData.h" />
     <ClInclude Include="BehemothCore\Components\RenderComponents.h" />
     <ClInclude Include="BehemothCore\Components\LightComponents.h" />
     <ClInclude Include="BehemothCore\Systems\Render\DebugLineSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h" />
     <ClInclude Include="BehemothCore\Misc\VariadicTypedef.h" />
-    <ClInclude Include="BehemothCore\Systems\Physics\BVHCollisionSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\BroadCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\NarrowCollision.h" />
     <ClInclude Include="BehemothCore\Math\Quaternion.h" />
     <ClInclude Include="BehemothCore\Misc\BColors.h" />
+    <ClInclude Include="BehemothCore\Misc\TransformHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -306,12 +307,13 @@
     <ClCompile Include="BehemothCore\Physics\BVH.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Physics\Ray.cpp" />
-    <ClCompile Include="BehemothCore\Physics\Collision\CollisionResults.cpp" />
+    <ClCompile Include="BehemothCore\Physics\Collision\CollisionData.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\DebugLineSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp" />
     <ClCompile Include="BehemothCore\World\Scene.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Physics\BVHCollisionSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\BroadCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Physics\Collision\NarrowCollision.cpp" />
     <ClCompile Include="BehemothCore\Math\Quaternion.cpp" />
+    <ClCompile Include="BehemothCore\Misc\TransformHelper.cpp" />
   </ItemGroup>
 </Project>

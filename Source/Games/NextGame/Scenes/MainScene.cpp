@@ -23,8 +23,8 @@ MainScene::MainScene()
 
 	Behemoth::DirectionalLightFactory dirLightFactory{};
 	ECS::EntityHandle dirLight = dirLightFactory.CreateDirectionalLight(registry);
-
-	Behemoth::GameObjectFactory gameObjectFactory{};
+ 
+ 	Behemoth::GameObjectFactory gameObjectFactory{};
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -58,7 +58,6 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::MoveComponent>(cubes[6], BMath::Vector3( 14.0f, -3.0f, -6.0f));
 	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
 
-
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
 	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
 	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle, "cube.obj", BMath::Vector3(1.0f), false, BMath::Vector3(0.0f, 1.0f, 0.0f));
@@ -78,7 +77,6 @@ MainScene::MainScene()
 	{
 		pointLightComponent->intensity = 2.0f;
 	}
-
 }
 
 void MainScene::Initalize()
@@ -93,7 +91,7 @@ void MainScene::OnEvent(Behemoth::Event& e)
 	//  Maybe move this to world because in essentially any scene I would want this
 
 	 dispatcher.Dispatch<Behemoth::WindowResizeEvent>([&](Behemoth::WindowResizeEvent keyEvent)
-		 {
+	 {
 			 ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
 
 			 if (cameraEntity.GetIdentifier() != NULL_ENTITY)
@@ -104,7 +102,7 @@ void MainScene::OnEvent(Behemoth::Event& e)
 					 cameraComponent->isDirty = true;
 				 }
 			 }
-		 });
+	 });
 }
 
 void MainScene::Update(const float deltaTime)
@@ -113,34 +111,34 @@ void MainScene::Update(const float deltaTime)
 	{
 		Behemoth::TransformComponent* cameraTransform = Behemoth::CameraHelper::GetMainCameraTransform(registry);
 		float distance = 50.0f;
-		BMath::Vector3 startPos = cameraTransform->position + cameraTransform->forwardVector * 0.5f;
-		BMath::Vector3 endPos = cameraTransform->position + cameraTransform->forwardVector * distance;
+		BMath::Vector3 startPos = cameraTransform->worldPosition + cameraTransform->forwardVector * 0.5f;
+		BMath::Vector3 endPos = cameraTransform->worldPosition + cameraTransform->forwardVector * distance;
 
 		ECS::EntityHandle debugLineHandle = registry.CreateEntity("Debug line");
 		registry.AddComponent<Behemoth::DebugLineComponent>(debugLineHandle, startPos, endPos, 20.0f);
 	}
 
-// 	if (auto comp = registry.GetComponent<Behemoth::RotationComponent>(playerHandle))
-// 	{
-// 		BMath::Vector3 rot;
-// 		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_T))
-// 		{
-// 			rot.x = 1.0f;
-// 		}
-// 		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Y))
-// 		{
-// 			rot.y = 1.0f;
-// 		}
-// 		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_U))
-// 		{
-// 			rot.z = 1.0f;
-// 		}
-// 
-// 		if (rot != BMath::Vector3::Zero())
-// 		{
-// 			comp->quat = BMath::Quaternion(BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot));
-// 		}
-// 	}
+	if (auto comp = registry.GetComponent<Behemoth::RotationComponent>(playerHandle))
+	{
+		BMath::Vector3 rot;
+		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_T))
+		{
+			rot.x = 1.0f;
+		}
+		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Y))
+		{
+			rot.y = 1.0f;
+		}
+		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_U))
+		{
+			rot.z = 1.0f;
+		}
+
+		if (rot != BMath::Vector3::Zero())
+		{
+			comp->quat = BMath::Quaternion(BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot));
+		}
+	}
 }
 
 void MainScene::Shutdown()

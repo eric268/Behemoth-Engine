@@ -80,7 +80,7 @@ namespace Behemoth
 				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, AABBColliderComponent* colliderComp, auto* ...args)
 					{
 
-						colliderComp->collider.position = transformComp->position;
+						colliderComp->collider.worldPosition = transformComp->worldPosition;
 						data.push_back(BVHData(entity, colliderComp->collider));
 
 					}, componentTuple);

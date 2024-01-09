@@ -21,7 +21,8 @@ namespace Behemoth
 		BMath::Vector3 GetForwardVector(const BMath::Matrix4x4& transformMatrix);
 		BMath::Vector3 GetRightVector(const BMath::Matrix4x4& transformMatrix);
 
-		void RotateTransformMatrix(TransformComponent* transformComponent, const BMath::Matrix4x4& rotationMatrix);
+		void ApplyRotation(BMath::Matrix4x4& transform, const BMath::Matrix4x4& rotationMatrix);
+		void UpdateWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComponent, const BMath::Matrix4x4& rotationMatrix);
 		void RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4& rotationMatrix);
 	};
 }

@@ -36,7 +36,7 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessWireframe(wireframeComp->mesh, transformComp->transformMatrix, viewProjMatrix, wireframeComp->scale, true, wireframeComp->wireframeColor);
+			ProcessWireframe(wireframeComp->mesh, transformComp->worldTransform, viewProjMatrix, wireframeComp->scale, true, wireframeComp->wireframeColor);
 		}
 	}
 

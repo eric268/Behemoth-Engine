@@ -4,7 +4,7 @@
 #include "Components/RenderComponents.h"
 #include "Misc/Log.h""
 #include "Misc/BColors.h"
-
+#include "Misc/TransformHelper.h"
 #include "Geometry/Primitives.h"
 
 namespace Behemoth
@@ -15,14 +15,19 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-//  			if (rotationComp->quat == BMath::Quaternion::Identity())
-//  			{
-//  				continue;
-//  			}
+ 			if (rotationComp->quat == BMath::Quaternion::Identity())
+ 			{
+ 				continue;
+ 			}
 
 			BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 			rotationComp->quat = BMath::Quaternion::Identity();
-			RotateTransformMatrix(transformComp, rotationMatrix);
+
+			// Ensure local transform is updated first
+			ApplyRotation(transformComp->localTransform, rotationMatrix);
+			UpdateWorldRotation(registry, entity, transformComp, rotationMatrix);
+			TransformHelper::NotifyChildrenTransformChange(registry, entity);
+			transformComp->isDirty = true;
 
 			// If this entity has a camera component we need to update the view matrix as well after a rotation
 			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
@@ -40,21 +45,35 @@ namespace Behemoth
 		}
 	}
 
-	void RotationSystem::RotateTransformMatrix(TransformComponent* transformComponent, const BMath::Matrix4x4& rotationMatrix)
+	void RotationSystem::ApplyRotation(BMath::Matrix4x4& transform, const BMath::Matrix4x4& rotationMatrix)
 	{
-		BMath::Matrix4x4 rotatedTransformMatrix = rotationMatrix * transformComponent->transformMatrix;
+		BMath::Matrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
 		for (int col = 0; col < 3; col++)
 		{
 			for (int row = 0; row < 3; row++)
 			{
-				transformComponent->transformMatrix.data[col][row] = rotatedTransformMatrix.data[col][row];
+				transform.data[col][row] = rotatedTransformMatrix.data[col][row];
 			}
 		}
-		transformComponent->forwardVector = GetForwardVector(transformComponent->transformMatrix);
-		transformComponent->rightVector = GetRightVector(transformComponent->transformMatrix);
-		transformComponent->upVector = BMath::Vector3::Up();
-		transformComponent->isDirty = true;
 	}
+
+	void RotationSystem::UpdateWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, const BMath::Matrix4x4& rotationMatrix)
+	{
+		if (transformComp->parentIsDirty)
+		{
+			transformComp->worldTransform = TransformHelper::GetWorldTransform(registry, handle, transformComp->localTransform);
+			transformComp->parentIsDirty = false;
+		}
+		else
+		{
+			ApplyRotation(transformComp->worldTransform, rotationMatrix);
+		}
+
+		transformComp->forwardVector = GetForwardVector(transformComp->worldTransform);
+		transformComp->rightVector = GetRightVector(transformComp->worldTransform);
+		transformComp->upVector = BMath::Vector3::Up();
+	}
+
 
 	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4& rotationMatrix)
 	{
