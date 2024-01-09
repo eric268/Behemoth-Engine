@@ -20,6 +20,7 @@ namespace Behemoth
 			UpdateLocalScale(transformComp, oldScale, scalingComp->scalingVector);
 			UpdateWorldScale(registry, entity, transformComp, oldScale, scalingComp->scalingVector);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
+			transformComp->isDirty = true;
 		}
 
 		for (int i = scalingComponents->dense.size() - 1; i >= 0; i--)

@@ -84,18 +84,19 @@ namespace ECS
 		}
 
 		template<IsComponent T, typename ... Args>
-		T* AddComponent(EntityHandle handle, Args&& ... parameters)
+		bool AddComponent(EntityHandle handle, Args&& ... parameters)
 		{
 			Entity entity = GetEntityFromHandle(handle);
 			if (entity.IsValid())
 			{
-				return AddComponent<T>(entity, std::forward<Args>(parameters)...);
+				AddComponent<T>(entity, std::forward<Args>(parameters)...);
+				return true;
 			}
 			else
 			{
 				std::string message = std::string("Failed to add ") + typeid(T).name() + " to entity: " + entity.name;
 				LOG_MESSAGE(MessageType::Error, message);
-				return nullptr;
+				return false;
 			}
 		}
 
@@ -111,13 +112,12 @@ namespace ECS
 		}
 
 		template<IsComponent T, typename ... Args>
-		T* AddComponent(Entity entity, Args&& ... parameters)
+		void AddComponent(Entity entity, Args&& ... parameters)
 		{
 			T component(std::forward<Args>(parameters)...);
 			size_t index = Generator::Value<T>();
 			auto set = GetComponent<T>();
-			set->AddComponent(entity, component);
-			return &component;
+			set->AddComponent(entity, component);;
 		}
 
 

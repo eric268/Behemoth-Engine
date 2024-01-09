@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <unordered_map>
+#include <vector>
 
 namespace Behemoth
 {
@@ -78,9 +79,10 @@ namespace Behemoth
 
 	struct MoveComponent : public ECS::Component
 	{
-		MoveComponent() : location(BMath::Vector3{}) {}
-		MoveComponent(BMath::Vector3 vec) : location(vec) {}
+		MoveComponent() : location(BMath::Vector3{}), localMove(true) {}
+		MoveComponent(BMath::Vector3 vec, bool isLocal = true) : location(vec), localMove(isLocal) {}
 
+		bool localMove;
 		BMath::Vector3 location;
 	};
 
@@ -110,11 +112,13 @@ namespace Behemoth
 
 	struct ChildComponent : public ECS::Component
 	{
+		explicit ChildComponent(ECS::EntityHandle handle) : parentHandle(handle) {}
 		ECS::EntityHandle parentHandle;
 	};
 
 	struct ParentComponent : public ECS::Component
 	{
+		ParentComponent() : childHandles(std::vector<ECS::EntityHandle>()) {}
 		std::vector<ECS::EntityHandle> childHandles;
 	};
 }

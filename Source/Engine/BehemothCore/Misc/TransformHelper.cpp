@@ -15,7 +15,7 @@ namespace Behemoth
 			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
 			if (parentTransform)
 			{
-				worldTransform = parentTransform->worldTransform * localTransform;
+				worldTransform =  parentTransform->worldTransform * localTransform;
 			}
 			else
 			{
@@ -89,11 +89,11 @@ namespace Behemoth
 	{
 		if (auto parentComp = registry.GetComponent<ParentComponent>(handle))
 		{
-			for (const ECS::EntityHandle& handle : parentComp->childHandles)
+			for (const auto& childHandle : parentComp->childHandles)
 			{
-				if (auto childTransformComp = registry.GetComponent<TransformComponent>(handle))
+				if (TransformComponent* childTransformComp = registry.GetComponent<TransformComponent>(childHandle))
 				{
-					childTransformComp->parentIsDirty;
+					childTransformComp->parentIsDirty = true;
 				}
 			}
 		}
