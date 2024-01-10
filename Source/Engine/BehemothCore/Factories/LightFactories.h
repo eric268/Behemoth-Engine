@@ -7,20 +7,11 @@
 
 namespace Behemoth
 {
-	class DirectionalLightFactory
+	class LightFactory
 	{
 	public:
-		DirectionalLightFactory() = default;
+		LightFactory() = default;
 		ECS::EntityHandle CreateDirectionalLight(ECS::Registry& registry, const std::string& name = "Directional Light");
-
-	private:
-
-	};
-
-	class PointLightFactory
-	{
-	public:
-		PointLightFactory() = default;
 		ECS::EntityHandle CreatePointLight(ECS::Registry& registry, const std::string& name = "Point Light");
 
 	private:

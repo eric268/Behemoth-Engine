@@ -2,10 +2,12 @@
 
 #include "Math/MathCore.h"
 #include "ECS/Component.h"
+#include "ECS/Entity.h"
 #include "Physics/Collision/CollisionMask.h"
 #include "Physics/Collision/Colliders.h"
 
 #include <string>
+#include <vector>
 
 #define GRAVITY -9.81
 
@@ -24,61 +26,74 @@ namespace Behemoth
 	struct ColliderComponent : public ECS::Component
 	{
 	protected:
-		ColliderComponent(BMath::Vector3 offset = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			localOffset(offset),
+		ColliderComponent(CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
 			collisionType(collisionType),
 			isEnabled(enabled),
 			collisionMask(Behemoth::CollisionMask::Everything) {}
 	public:
 		bool isEnabled;
-		BMath::Vector3 localOffset;
 		std::uint16_t collisionType;
 		std::uint16_t collisionMask;
 	};
 
 	struct AABBColliderComponent : public ColliderComponent
 	{
-		AABBColliderComponent(BMath::Vector3 offset = BMath::Vector3(1.0f), BMath::Vector3 extents = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(offset, collisionType, enabled)
+		AABBColliderComponent(BMath::Vector3 extents = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+			ColliderComponent(collisionType, enabled),
+			extents(extents)
 		{}
 
-/*		BMath::Vector3 localExtents;*/
+		BMath::Vector3 extents;
 		AABBCollider collider;
 	};
 
 	struct OBBColliderComponent : public ColliderComponent
 	{
-		OBBColliderComponent(BMath::Vector3 offset = BMath::Vector3(1.0f), BMath::Vector3 extent = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(offset, collisionType, enabled)
+		OBBColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+			ColliderComponent(collisionType, enabled),
+			extents(extents)
 		{}
 
-// 		BMath::Vector3 localeExtents;
-// 		BMath::Quaternion localOrientation;
+		BMath::Vector3 extents;
 		OBBCollider collider;
 	};
 
 	struct SphereColliderComponent : public ColliderComponent
 	{
-		SphereColliderComponent(BMath::Vector3 offset = BMath::Vector3(1.0f), float radius = 1.0f, CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(offset, collisionType, enabled)
+		SphereColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
+			ColliderComponent(collisionType, enabled),
+			extents(extents)
 		{}
 
-		// float localRadius;
+		BMath::Vector3 extents;
 		SphereCollider collider;
 	};
 
-// 	struct MeshColliderComponent : public ColliderComponent
-// 	{
-// 		MeshColliderComponent(BMath::Vector3 offset = BMath::Vector3(1.0f), std::string& filename, BMath::Vector3 scale = BMath::Vector3::One(), Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
-// 			ColliderComponent(offset, collisionType, enabled),
-// 			modelFileName(filename),
-// 			// mesh(filename),
-// 			scale(scale) {}
-// 
-// 		BMath::Vector3 scale;
-// 		std::string modelFileName;
-// 		// Mesh mesh;
-// 	};
+	struct NarrowCollider : public ColliderComponent
+	{
+		NarrowCollider(Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
+			ColliderComponent(collisionType, enabled)
+		{}
+
+		std::vector<ECS::EntityHandle> colliderHandles;
+		std::vector<OBBCollider> boxColliders;
+		std::vector<SphereCollider> sphereColliders;
+	};
+
+	struct BroadCollisionPair : public ECS::Component
+	{
+		ECS::EntityHandle handle1;
+	};
+
+	struct CollisionDataComponent : public ECS::Component
+	{
+		BMath::Vector3 collisionPoint;
+		BMath::Vector3 collisionNormal;
+		float penetrationDepth;
+		ECS::EntityHandle handle1;
+		ECS::EntityHandle handle2;
+		BMath::Vector3 relativeVelocity;
+	};
 
 	template<typename ...T>
 	struct RequiredTypes

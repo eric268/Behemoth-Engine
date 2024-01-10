@@ -26,6 +26,21 @@ namespace Behemoth
 		return worldTransform;
 	}
 
+	BMath::Matrix4x4 TransformHelper::GetTransformNoRotation(const BMath::Matrix4x4& m, const BMath::Vector3& scale)
+	{
+		BMath::Matrix4x4 result = BMath::Matrix4x4::Identity();
+
+		result._11 = scale[0];
+		result._22 = scale[1];
+		result._33 = scale[2];
+
+		result._41 = m._41;
+		result._42 = m._42;
+		result._43 = m._43;
+
+		return result;
+	}
+
 	BMath::Matrix3x3 TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4& transformMatrix)
 	{
 		BMath::Matrix3x3 m{};

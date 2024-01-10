@@ -1,11 +1,11 @@
 #pragma once
 #include "Components/PhysicsComponents.h"
-#include "Geometry/Plane.h"
-#include "Physics/Ray.h"
 
 namespace Behemoth
 {
+	class Ray;
 	class Plane;
+	class CollisionData;
 
 	using Point = BMath::Vector3;
 

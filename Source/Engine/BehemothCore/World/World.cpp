@@ -75,7 +75,7 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
 
 
-		//  Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
 		// 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereCollisionSystem>();
 		// 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::OBBCollisionSystem>();
 		// 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereAABBCollisionSystem>();

@@ -6,6 +6,7 @@
 #include "Renderer/Renderer.h"
 #include "Application/ResourceManager.h"
 #include "Geometry/Line.h"
+#include "Misc/TransformHelper.h"
 
 namespace Behemoth
 {
@@ -35,12 +36,12 @@ namespace Behemoth
 			{
 				continue;
 			}
-
-			ProcessWireframe(wireframeComp->mesh, transformComp->worldTransform, viewProjMatrix, transformComp->worldScale, true, wireframeComp->wireframeColor);
+			const BMath::Matrix4x4 wireframeTranform = GetWireframeTransform(transformComp->worldTransform, transformComp->worldScale, wireframeComp->scale, wireframeComp->allowRotation);
+			ProcessWireframe(wireframeComp->mesh, wireframeTranform, viewProjMatrix, true, wireframeComp->wireframeColor);
 		}
 	}
 
-	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix, const BMath::Vector3& scale, bool isDirty, BMath::Vector3 color)
+	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix, bool isDirty, BMath::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -51,8 +52,6 @@ namespace Behemoth
 			cachedMeshName = meshData.modelFileName;
 			cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
 		}
-
-		const BMath::Matrix4x4 scaledTransformMatrix = GetScaledTransformMatrix(transformMatrix, scale);
 
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
@@ -70,6 +69,10 @@ namespace Behemoth
 					primitive.verticies[j] = transformMatrix * BMath::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
 					vertexIndex++;
 				}
+			}
+			else
+			{
+				vertexIndex += numVerticies;
 			}
 
 			BMath::Vector4 renderVerts[4];
@@ -101,30 +104,13 @@ namespace Behemoth
 		Renderer::GetInstance().ReserveLines(numPrimitives * 4);
 	}
 
-	BMath::Matrix4x4 WireframeRenderSystem::GetScaledTransformMatrix(const BMath::Matrix4x4& transformMatrix, const BMath::Vector3& scale)
+	BMath::Matrix4x4 WireframeRenderSystem::GetWireframeTransform(const BMath::Matrix4x4& ownerTransform, const BMath::Vector3& ownerWorldScale, const BMath::Vector3& wireframeScale, const bool allowRotation)
 	{
-		BMath::Matrix4x4 scaledTransformMatrix = transformMatrix;
-
-		for (int col = 0; col < 3; col++)
-		{
-			float length = sqrt(scaledTransformMatrix.data[col][0]  * scaledTransformMatrix.data[col][0]  +
-									scaledTransformMatrix.data[col][1]  * scaledTransformMatrix.data[col][1]  +
-									scaledTransformMatrix.data[col][2]  * scaledTransformMatrix.data[col][2]);
-
-			if (length != 0)
-			{
-				for (int row = 0; row < 3; row++)
-				{
-					scaledTransformMatrix.data[col][row] /= length;
-				}
-			}
-		}
-
-		// Apply new scale
+		BMath::Matrix4x4 scaledMatrix = BMath::Matrix4x4::Identity();
 		for (int i = 0; i < 3; i++)
 		{
-			scaledTransformMatrix.data[i][i] = scale[i];
+			scaledMatrix.data[i][i] = wireframeScale[i];
 		}
-		return scaledTransformMatrix;
+		return (allowRotation) ? ownerTransform * scaledMatrix : TransformHelper::GetTransformNoRotation(ownerTransform, ownerWorldScale * wireframeScale);
 	}
 }

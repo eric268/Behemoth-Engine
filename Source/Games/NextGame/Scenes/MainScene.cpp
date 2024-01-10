@@ -18,11 +18,11 @@ MainScene::MainScene()
 
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	registry.AddComponent<CameraControllerComponent>(mainCameraHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
+	// registry.AddComponent<CameraControllerComponent>(mainCameraHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0, 0, 0));
 
-	Behemoth::DirectionalLightFactory dirLightFactory{};
-	ECS::EntityHandle dirLight = dirLightFactory.CreateDirectionalLight(registry);
+	Behemoth::LightFactory lightFactory{};
+	ECS::EntityHandle dirLight = lightFactory.CreateDirectionalLight(registry);
  
  	Behemoth::GameObjectFactory gameObjectFactory{};
 
@@ -60,20 +60,22 @@ MainScene::MainScene()
 // 
 
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
-	// registry.AddComponent<CameraControllerComponent>(playerHandle, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle);
+	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
+	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(0.5f));
+	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(2.0f));
+	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle,"cube.obj", BMath::Vector3(2.0f));
 
-	ECS::EntityHandle debugWireframe = gameObjectFactory.AddChildObject(registry, playerHandle, "cube.obj", "brick.png", "Debug wire frame");
-	registry.AddComponent<Behemoth::WireframeComponent>(debugWireframe, "cube.obj", true, BMath::Vector3(0.0f, 1.0f, 0.0f));
-	registry.AddComponent<Behemoth::AABBColliderComponent>(debugWireframe);
-	registry.AddComponent<Behemoth::MoveComponent>(debugWireframe, BMath::Vector3(3.0f, 0.0f, 0.0f));
-	registry.AddComponent<CameraControllerComponent>(debugWireframe, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
-	registry.AddComponent<Behemoth::ScalingComponent>(debugWireframe, BMath::Vector3(2.0f));
+// 	ECS::EntityHandle debugWireframe = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Cube 1");
+// 	registry.AddComponent<Behemoth::WireframeComponent>(debugWireframe, "cube.obj");
+// 	registry.AddComponent<Behemoth::AABBColliderComponent>(debugWireframe);
+// 	registry.AddComponent<Behemoth::MoveComponent>(debugWireframe, BMath::Vector3(3.0f, 0.0f, -5.0f));
+// 	registry.AddComponent<CameraControllerComponent>(debugWireframe, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
+// 	registry.AddComponent<Behemoth::ScalingComponent>(debugWireframe, BMath::Vector3(0.5f));
+
 	
-	Behemoth::PointLightFactory pointLightFactory{};
-	pointLight = pointLightFactory.CreatePointLight(registry, "Point Light 1");
+	pointLight = lightFactory.CreatePointLight(registry, "Point Light 1");
 	Behemoth::MoveComponent* pointLightMovementComp = registry.GetComponent<Behemoth::MoveComponent>(pointLight);
 	if (pointLightMovementComp)
 		pointLightMovementComp->location = BMath::Vector3(0.0f, 0, 0.0f);

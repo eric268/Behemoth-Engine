@@ -115,8 +115,8 @@ namespace BMath
 			};
 		};
 
-		Vector4 GetColumn(int col);
-		Vector4 GetRow(int row);
+		Vector4 GetColumn(int col) const;
+		Vector4 GetRow(int row) const;
 		static Matrix4x4 Zero();
 		static Matrix4x4 Identity();
 		static bool Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon = 1e-2);

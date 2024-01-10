@@ -13,19 +13,20 @@ namespace Behemoth
 		auto components = registry.Get<TransformComponent, AABBColliderComponent>();
 		for (const auto& [entity, transformComp, AABBComp] : components)
 		{
-			for (int i = 0; i < components.size(); i++)
+			for (const auto& [entity2, transformComp2, AABBComp2] : components)
 			{
-				auto& [entity2, transformComp2, AABBComp2] = components[i];
 				if (entity.GetIdentifier() == entity2.GetIdentifier())
+				{
 					continue;
+				}
 
 				AABBComp->collider.worldPosition = transformComp->worldPosition;
 				AABBComp2->collider.worldPosition = transformComp2->worldPosition;
 
-				AABBComp->collider.worldExtents = transformComp->worldScale;
-				AABBComp2->collider.worldExtents = transformComp2->worldScale;
+				AABBComp->collider.worldExtents = transformComp->worldScale * AABBComp->extents;
+				AABBComp2->collider.worldExtents = transformComp2->worldScale * AABBComp2->extents;
 
-				if (BroadAABBCollision(AABBComp->collider, AABBComp->collider))
+				if (BroadAABBCollision(AABBComp->collider, AABBComp2->collider))
 				{
 					std::cout << "Colliding\n";
 				}

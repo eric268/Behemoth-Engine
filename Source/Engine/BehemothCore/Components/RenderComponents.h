@@ -27,12 +27,20 @@ namespace Behemoth
 
 	struct WireframeComponent : public ECS::Component
 	{
-		WireframeComponent(const std::string& modelName, /*BMath::Vector3 scale = BMath::Vector3::One(),*/ bool visible = false, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f)) : modelFileName(modelName), /*scale(scale),*/ isVisible(visible), mesh(modelName), wireframeColor(color) {}
+		WireframeComponent(const std::string& modelName, BMath::Vector3 scale = BMath::Vector3::One(), bool allowRotation = true,  bool visible = true, BMath::Vector3 color = BMath::Vector3(0.0f, 1.0f, 0.0f)) : 
+			mesh(modelName), 
+			modelFileName(modelName), 
+			scale(scale), 
+			allowRotation(allowRotation),
+			isVisible(visible), 
+			wireframeColor(color) {}
+
+		Mesh mesh;
 		std::string modelFileName;
+		BMath::Vector3 scale;
+		bool allowRotation = true;
 		bool isVisible;
 		BMath::Vector3 wireframeColor;
-/*		BMath::Vector3 scale;*/
-		Mesh mesh;
 	};
 
 	struct BoundingVolumeComponent : public ECS::Component

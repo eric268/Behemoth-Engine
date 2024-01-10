@@ -201,12 +201,12 @@ namespace BMath
 		return m;
 	}
 
-	Vector4 Matrix4x4::GetColumn(int col)
+	Vector4 Matrix4x4::GetColumn(int col) const 
 	{
 		return Vector4(data[0][col], data[1][col], data[2][col], data[3][col]);
 	}
 
-	Vector4 Matrix4x4::GetRow(int row)
+	Vector4 Matrix4x4::GetRow(int row) const
 	{
 		return Vector4(data[row][0], data[row][1], data[row][2], data[row][3]);
 	}

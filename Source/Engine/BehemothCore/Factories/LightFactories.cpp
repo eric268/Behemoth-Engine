@@ -6,14 +6,14 @@
 
 namespace Behemoth
 {
-	ECS::EntityHandle DirectionalLightFactory::CreateDirectionalLight(ECS::Registry& registry, const std::string& name)
+	ECS::EntityHandle LightFactory::CreateDirectionalLight(ECS::Registry& registry, const std::string& name)
 	{
 		ECS::EntityHandle entity = registry.CreateEntity(name);
 		registry.AddComponent<DirectionalLightComponent>(entity);
 		return entity;
 	}
 
-	ECS::EntityHandle PointLightFactory::CreatePointLight(ECS::Registry& registry, const std::string& name)
+	ECS::EntityHandle LightFactory::CreatePointLight(ECS::Registry& registry, const std::string& name)
 	{
 		ECS::EntityHandle entity = registry.CreateEntity(name);
 
