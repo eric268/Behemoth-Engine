@@ -2,6 +2,7 @@
 #include "GameObjectFactory.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
+#include "Components/PhysicsComponents.h"
 
 namespace Behemoth
 {
@@ -9,11 +10,10 @@ namespace Behemoth
 	{
 		ECS::EntityHandle entity = registry.CreateEntity(entityName);
 		registry.AddComponent<MeshComponent>(entity, modelFilePath, texturePath);
-		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<MeshInitalizeComponent>(entity);
+		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<VelocityComponent>(entity);
 		registry.AddComponent<RotationComponent>(entity);
-		registry.AddComponent<BoundingVolumeComponent>(entity, 1.5f, false);
 
 		return entity;
 	}

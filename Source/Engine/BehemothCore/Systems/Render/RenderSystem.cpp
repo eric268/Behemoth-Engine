@@ -2,6 +2,7 @@
 #include "RenderSystem.h"
 #include "Geometry/Primitives.h"
 #include "Components/Components.h"
+#include "Components/RenderComponents.h"
 
 namespace Behemoth
 {
@@ -25,15 +26,16 @@ namespace Behemoth
 		return numVerticiesOutsideFrustrum != numVerticies;
 	}
 
-	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* boundingTransformComp, const float boundingRadius)
+	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* entityTransform, const BoundingVolumeComponent* boundingComp)
 	{
 		for (const auto& p : cameraComponent->worldSpaceFrustum)
 		{
-			float distance = BMath::Vector3::Dot(p.normal, boundingTransformComp->worldPosition) - p.distance;
-			if (distance < -boundingRadius)
+			float distance = BMath::Vector3::Dot(p.normal, entityTransform->worldPosition + boundingComp->localPosition) - p.distance;
+			if (distance < -boundingComp->radius)
+			{
 				return false;
+			}
 		}
-
 		return true;
 	}
 

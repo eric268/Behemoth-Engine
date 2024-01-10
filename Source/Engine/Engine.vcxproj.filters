@@ -204,12 +204,13 @@
     <ClInclude Include="BehemothCore\Components\LightComponents.h" />
     <ClInclude Include="BehemothCore\Systems\Render\DebugLineSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h" />
-    <ClInclude Include="BehemothCore\Misc\VariadicTypedef.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\BroadCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\NarrowCollision.h" />
     <ClInclude Include="BehemothCore\Math\Quaternion.h" />
     <ClInclude Include="BehemothCore\Misc\BColors.h" />
     <ClInclude Include="BehemothCore\Misc\TransformHelper.h" />
+    <ClInclude Include="BehemothCore\Physics\BoundingGenerator.h" />
+    <ClInclude Include="BehemothCore\Geometry\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -315,5 +316,6 @@
     <ClCompile Include="BehemothCore\Physics\Collision\NarrowCollision.cpp" />
     <ClCompile Include="BehemothCore\Math\Quaternion.cpp" />
     <ClCompile Include="BehemothCore\Misc\TransformHelper.cpp" />
+    <ClCompile Include="BehemothCore\Physics\BoundingGenerator.cpp" />
   </ItemGroup>
 </Project>

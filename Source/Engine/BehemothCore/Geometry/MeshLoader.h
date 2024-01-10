@@ -8,6 +8,8 @@
 
 namespace Behemoth
 {
+	class AABBCollider;
+
 	class MeshLoader
 	{
 	public:

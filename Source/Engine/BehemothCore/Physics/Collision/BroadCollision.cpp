@@ -39,14 +39,14 @@ namespace Behemoth
 
 	bool BroadSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
 	{
-		float distance = BMath::Vector3::SquaredDistance(sphere1.worldPosition, sphere2.worldPosition);
-		float rad = sphere1.worldRadius + sphere2.worldRadius;
+		float distance = BMath::Vector3::SquaredDistance(sphere1.position, sphere2.position);
+		float rad = sphere1.radius + sphere2.radius;
 		return distance <= (rad * rad);
 	}
 	bool BroadSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
 	{
 		float squaredDist = 0;
-		float squaredRad = sphere.worldRadius * sphere.worldRadius;
+		float squaredRad = sphere.radius * sphere.radius;
 
 		for (int axis = 0; axis < 3; axis++)
 		{
@@ -54,7 +54,7 @@ namespace Behemoth
 			float minVal = box.worldPosition[axis] - box.worldExtents[axis];
 			float maxVal = box.worldPosition[axis] + box.worldExtents[axis];
 
-			float spherePos = sphere.worldPosition[axis];
+			float spherePos = sphere.position[axis];
 
 			if (spherePos < minVal)
 			{
@@ -312,8 +312,8 @@ namespace Behemoth
 	}
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere)
 	{
-		BMath::Vector3 rayToSphere = ray.origin - sphere.worldPosition;
-		float sqDistToSphere = BMath::Vector3::Dot(rayToSphere, rayToSphere) - sphere.worldRadius * sphere.worldRadius;
+		BMath::Vector3 rayToSphere = ray.origin - sphere.position;
+		float sqDistToSphere = BMath::Vector3::Dot(rayToSphere, rayToSphere) - sphere.radius * sphere.radius;
 
 		if (sqDistToSphere <= 0.0f)
 		{

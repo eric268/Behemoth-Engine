@@ -2,6 +2,7 @@
 
 #include "Math/MathCore.h"
 #include "Geometry/Primitives.h"
+#include "VertexData.h"
 
 //stl
 #include <string>
@@ -9,19 +10,13 @@
 
 namespace Behemoth
 {
-	struct VertexData
-	{
-		BMath::Vector3 vertex;
-		BMath::Vector3 normal;
-		BMath::Vector2 uv;
-	};
-
 	struct MeshData
 	{
 		std::string modelFileName;
 		std::uint32_t totalPrimitives;
 		std::uint32_t triangleVertexCount;
 		std::uint32_t quadVertexCount;
+		float maxVertexDistance;
 	};
 
 	struct MaterialData

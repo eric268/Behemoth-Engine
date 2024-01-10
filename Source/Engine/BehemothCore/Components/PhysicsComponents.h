@@ -26,31 +26,47 @@ namespace Behemoth
 	struct ColliderComponent : public ECS::Component
 	{
 	protected:
-		ColliderComponent(CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			collisionType(collisionType),
+		ColliderComponent(bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::StaticType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject) :
 			isEnabled(enabled),
-			collisionMask(Behemoth::CollisionMask::Everything) {}
+			collisionType(collisionType),
+			collisionLayer(collisionLayer) {}
 	public:
 		bool isEnabled;
-		std::uint16_t collisionType;
-		std::uint16_t collisionMask;
+		BMask::CollisionType collisionType;
+		BMask::CollisionLayer collisionLayer;
 	};
+
 
 	struct AABBColliderComponent : public ColliderComponent
 	{
-		AABBColliderComponent(BMath::Vector3 extents = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(collisionType, enabled),
+		AABBColliderComponent(BMath::Vector3 extents = BMath::Vector3(1.0f), bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::StaticType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject) :
+			ColliderComponent(enabled, collisionType, collisionLayer),
 			extents(extents)
 		{}
+
+		AABBColliderComponent(const AABBCollider& collider, BMath::Vector3 extents = BMath::Vector3(1.0f), bool enabled = true) :
+			ColliderComponent(enabled, collisionType, collisionLayer),
+			collider(collider),
+			extents(extents) {}
 
 		BMath::Vector3 extents;
 		AABBCollider collider;
 	};
 
+	struct BroadColliderComponent : public ColliderComponent
+	{
+		BroadColliderComponent(bool enabled = true) :
+			ColliderComponent(enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider) {}
+
+		AABBCollider collider;
+		BMath::Vector3 extents;
+	};
+
+
 	struct OBBColliderComponent : public ColliderComponent
 	{
-		OBBColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(collisionType, enabled),
+		OBBColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), bool enabled = true,  BMask::CollisionType collisionType = BMask::CollisionType::DynamicType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything) :
+			ColliderComponent(enabled, collisionType, collisionLayer),
 			extents(extents)
 		{}
 
@@ -60,8 +76,8 @@ namespace Behemoth
 
 	struct SphereColliderComponent : public ColliderComponent
 	{
-		SphereColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), CollisionMask collisionType = CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(collisionType, enabled),
+		SphereColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::StaticType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject) :
+			ColliderComponent(enabled, collisionType, collisionLayer),
 			extents(extents)
 		{}
 
@@ -71,8 +87,8 @@ namespace Behemoth
 
 	struct NarrowCollider : public ColliderComponent
 	{
-		NarrowCollider(Behemoth::CollisionMask collisionType = Behemoth::CollisionMask::EnvObject, bool enabled = true) :
-			ColliderComponent(collisionType, enabled)
+		NarrowCollider(bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::DynamicType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything) :
+			ColliderComponent(enabled, collisionType, collisionLayer)
 		{}
 
 		std::vector<ECS::EntityHandle> colliderHandles;

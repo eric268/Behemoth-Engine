@@ -34,8 +34,8 @@ namespace Behemoth
 	struct SphereCollider
 	{
 		SphereCollider() = default;
-		BMath::Vector3 worldPosition;
-		float worldRadius;
+		BMath::Vector3 position;
+		float radius;
 	};
 
 	// Made up of multiple OBB colliders

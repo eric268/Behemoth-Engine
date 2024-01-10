@@ -43,7 +43,13 @@ namespace Behemoth
 
 	struct MeshInitalizeComponent : public ECS::Component
 	{
-		MeshInitalizeComponent() = default;
+		MeshInitalizeComponent(bool initBoundingVolume = true, bool initBroadCollider = true) : 
+			initBoundingVolume(initBoundingVolume), 
+			initBroadCollider(initBroadCollider) 
+		{}
+
+		bool initBoundingVolume;
+		bool initBroadCollider;
 	};
 
 	struct TransformComponent : public ECS::Component

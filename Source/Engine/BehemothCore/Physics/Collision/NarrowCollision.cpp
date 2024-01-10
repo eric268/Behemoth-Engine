@@ -11,13 +11,13 @@ namespace Behemoth
 
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData)
 	{
-		BMath::Vector3 positionOne = sphere1.worldPosition;
-		BMath::Vector3 positionTwo = sphere2.worldPosition;
+		BMath::Vector3 positionOne = sphere1.position;
+		BMath::Vector3 positionTwo = sphere2.position;
 
 		BMath::Vector3 midline = positionOne - positionTwo;
 		float size = BMath::Vector3::Magnitude(midline);
 
-		if (size <= 0.0f || size > sphere1.worldRadius + sphere2.worldRadius)
+		if (size <= 0.0f || size > sphere1.radius + sphere2.radius)
 		{
 			return false;
 		}
@@ -25,14 +25,14 @@ namespace Behemoth
 		BMath::Vector3 normal = midline / size;
 		contactData.collisionNormal = normal;
 		contactData.collisionPoint = positionOne + midline * 0.5f;
-		contactData.penetrationDepth = (sphere1.worldRadius + sphere2.worldRadius - size);
+		contactData.penetrationDepth = (sphere1.radius + sphere2.radius - size);
 		return true;
 	}
 
 	bool NarrowSpherePlaneCollision(const SphereCollider& sphere, const Plane& plane, ContactData& contactData)
 	{
-		BMath::Vector3 spherePosition = sphere.worldPosition;
-		float distanceFromPlane = BMath::Vector3::Dot(plane.normal, spherePosition) - sphere.worldRadius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
+		BMath::Vector3 spherePosition = sphere.position;
+		float distanceFromPlane = BMath::Vector3::Dot(plane.normal, spherePosition) - sphere.radius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
 	
 		if (distanceFromPlane >= 0.0f)
 		{
@@ -41,7 +41,7 @@ namespace Behemoth
 
 		contactData.collisionNormal = plane.normal;
 		contactData.penetrationDepth = -distanceFromPlane;
-		contactData.collisionPoint = spherePosition - plane.normal * (distanceFromPlane + sphere.worldRadius);
+		contactData.collisionPoint = spherePosition - plane.normal * (distanceFromPlane + sphere.radius);
 		return true;
 	}
 
@@ -96,7 +96,7 @@ namespace Behemoth
 
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::Vector3 spherePosition = sphere.worldPosition;
+		BMath::Vector3 spherePosition = sphere.position;
 		BMath::Vector3 boxPosition = box.worldPosition;
 
 		BMath::Vector3 translatedCenter = spherePosition - boxPosition;
@@ -115,9 +115,9 @@ namespace Behemoth
 			invRotatedCenter.z / box.worldExtents.z
 		);
 
-		if (std::abs(relCenter.x) - sphere.worldRadius > box.worldExtents.x ||
-			std::abs(relCenter.y) - sphere.worldRadius > box.worldExtents.y ||
-			std::abs(relCenter.z) - sphere.worldRadius > box.worldExtents.z)
+		if (std::abs(relCenter.x) - sphere.radius > box.worldExtents.x ||
+			std::abs(relCenter.y) - sphere.radius > box.worldExtents.y ||
+			std::abs(relCenter.z) - sphere.radius > box.worldExtents.z)
 		{
 			return false;
 		}
@@ -138,7 +138,7 @@ namespace Behemoth
 
 		distance = BMath::Vector3::SquaredMagnitude((closestPoint - relCenter));
 		
-		if (distance > sphere.worldRadius * sphere.worldRadius)
+		if (distance > sphere.radius * sphere.radius)
 		{
 			return false;
 		}
@@ -146,7 +146,7 @@ namespace Behemoth
 		contactData.collisionNormal = closestPoint - spherePosition;
 		contactData.collisionNormal.Normalize();
 		contactData.collisionPoint = closestPoint;
-		contactData.penetrationDepth = sphere.worldRadius - std::sqrt(distance);
+		contactData.penetrationDepth = sphere.radius - std::sqrt(distance);
 
 		return true;
 	}

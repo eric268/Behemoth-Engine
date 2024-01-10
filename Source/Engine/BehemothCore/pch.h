@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <filesystem>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -11,11 +10,13 @@
 #include <memory>
 #include <cmath>
 #include <cstddef>
-#include <filesystem>
 #include <limits>
 #include <stack>
 #include <queue>
 #include <deque>
+#include <filesystem>
+#include <fstream>
+#include <sstream>
 
 #define NOMINMAX
 #include <windows.h>

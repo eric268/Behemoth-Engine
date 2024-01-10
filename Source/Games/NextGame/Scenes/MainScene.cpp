@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "MainScene.h"
 
-#include "Physics/Collision/BroadCollision.h"
-
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
 #include "Components/PhysicsComponents.h"
 #include "Components/RenderComponents.h"
+
+#include "Physics/Collision/BroadCollision.h"
+#include "Physics/Collision/CollisionMask.h"
 
 #include "GameSystems/CameraControllerSystem.h"
 #include "GameComponents/CameraControllerComponent.h"
@@ -61,18 +62,16 @@ MainScene::MainScene()
 
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
 	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
-	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -5.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -10.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
-	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(0.5f));
-	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(2.0f));
-	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle,"cube.obj", BMath::Vector3(2.0f));
+	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.6f));
+	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
 
 // 	ECS::EntityHandle debugWireframe = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Cube 1");
 // 	registry.AddComponent<Behemoth::WireframeComponent>(debugWireframe, "cube.obj");
-// 	registry.AddComponent<Behemoth::AABBColliderComponent>(debugWireframe);
+// 	registry.AddComponent<Behemoth::AABBColliderComponent>(debugWireframe, BMath::Vector3(1.0f));
 // 	registry.AddComponent<Behemoth::MoveComponent>(debugWireframe, BMath::Vector3(3.0f, 0.0f, -5.0f));
 // 	registry.AddComponent<CameraControllerComponent>(debugWireframe, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-// 	registry.AddComponent<Behemoth::ScalingComponent>(debugWireframe, BMath::Vector3(0.5f));
 
 	
 	pointLight = lightFactory.CreatePointLight(registry, "Point Light 1");

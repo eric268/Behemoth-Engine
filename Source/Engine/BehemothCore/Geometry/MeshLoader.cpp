@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "MeshLoader.h"
 #include "Misc/Log.h"
-
-#include <fstream>
-#include <sstream>
-#include <algorithm>
+#include "Physics/Collision/Colliders.h"
 
 
 namespace Behemoth
@@ -21,6 +18,8 @@ namespace Behemoth
 		std::vector<VertexData> quad;
 		std::vector<std::pair<int, VertexData>> verticies;
 
+		float furthestPoint = -std::numeric_limits<float>::max();
+
 		std::string line;
 
 		while (std::getline(file, line))
@@ -34,6 +33,19 @@ namespace Behemoth
 				BMath::Vector3 vertex;
 				iss >> vertex.x >> vertex.y >> vertex.z;
 				vertexPositions.push_back(vertex);
+
+				if (vertex.x > furthestPoint)
+				{
+					furthestPoint = vertex.x;
+				}
+				if (vertex.y > furthestPoint)
+				{
+					furthestPoint = vertex.y;
+				}
+				if (vertex.z > furthestPoint)
+				{
+					furthestPoint = vertex.z;
+				}
 			}
 			else if (prefix == "vt")
 			{
@@ -108,6 +120,7 @@ namespace Behemoth
 			data.push_back(std::move(quad[i]));
 		}
 
+		meshData.maxVertexDistance = furthestPoint;
 		return true;
 	}
 

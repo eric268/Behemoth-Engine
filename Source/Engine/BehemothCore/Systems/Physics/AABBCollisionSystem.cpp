@@ -26,7 +26,7 @@ namespace Behemoth
 				AABBComp->collider.worldExtents = transformComp->worldScale * AABBComp->extents;
 				AABBComp2->collider.worldExtents = transformComp2->worldScale * AABBComp2->extents;
 
-				if (BroadAABBCollision(AABBComp->collider, AABBComp2->collider))
+				if (AABBComp->collisionType & AABBComp2->collisionLayer && BroadAABBCollision(AABBComp->collider, AABBComp2->collider))
 				{
 					std::cout << "Colliding\n";
 				}

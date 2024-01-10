@@ -45,11 +45,13 @@ namespace Behemoth
 
 	struct BoundingVolumeComponent : public ECS::Component
 	{
-		BoundingVolumeComponent() : mesh("sphere.obj"), volumeRadius(1.0f), isVisible(false) {}
-		BoundingVolumeComponent(float radius, bool visible) : mesh("sphere.obj"), volumeRadius(radius), isVisible(visible) {}
-		float volumeRadius;
-		bool isVisible;
+		BoundingVolumeComponent() : mesh("sphere.obj"), localPosition(BMath::Vector3::Zero()), radius(1.0f), isVisible(false) {}
+		BoundingVolumeComponent(bool visible = false) : mesh("sphere.obj"), localPosition(BMath::Vector3::Zero()), radius(1.0f), isVisible(visible) {}
+		
 		Mesh mesh;
+		BMath::Vector3 localPosition;
+		float radius;
+		bool isVisible;
 	};
 
 	struct DebugLineComponent : public ECS::Component
