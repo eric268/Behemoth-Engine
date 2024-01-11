@@ -1,9 +1,16 @@
 #pragma once
-#include "ECS/System.h"
+#include "ECS/Entity.h"
+
+namespace ECS
+{
+	class Registry;
+}
 
 namespace Behemoth
 {
 	class Mesh;
+	class MeshComponent;
+	class MeshInitComponent;
 
 	class MeshInitSystem
 	{
@@ -14,6 +21,8 @@ namespace Behemoth
 
 	private:
 		void InitMesh(Mesh& mesh);
+		void GenerateAABBBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle);
+		void GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle);
 	};
 
 }

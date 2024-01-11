@@ -3,7 +3,7 @@
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "Components/PhysicsComponents.h"
-#include "ECS/Entity.h"
+#include "ECS/Registry.h"
 #include "Geometry/Mesh.h"
 #include "Application/ResourceManager.h"
 #include "Misc/Log.h"
@@ -27,26 +27,13 @@ namespace Behemoth
 				// Make function for this
 				if (meshInitComp->initBoundingVolume)
 				{
-					registry.AddComponent<BoundingVolumeComponent>(entity, true);
-					BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
-					if (boundingVolume)
-					{
-						InitMesh(boundingVolume->mesh);
-						SphereCollider collider = ResourceManager::GetInstance().GetMeshSphereBounds(meshComponent->modelFileName);
-						boundingVolume->radius = collider.radius;
-						boundingVolume->localPosition = collider.position;
-					}
+					GenerateAABBBoundingVolume(registry, meshComponent, entity);
 				}
 
 				// Make function for this
 				if (meshInitComp->initBroadCollider)
 				{
-					registry.AddComponent<BroadColliderComponent>(entity);
-					BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(entity);
-					if (broadCollider)
-					{
-						broadCollider->collider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComponent->modelFileName);
-					}
+					GenerateSphereBoundingVolume(registry, meshComponent, entity);
 				}
 			}
 
@@ -78,6 +65,28 @@ namespace Behemoth
 		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVerticies(mesh.meshData.modelFileName);
 		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(mesh.meshData.modelFileName);
 		mesh.GenerateMesh(meshData, vertexData );
+	}
+
+	void MeshInitSystem::GenerateAABBBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
+	{
+		registry.AddComponent<BoundingVolumeComponent>(handle, true);
+		BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(handle);
+		if (boundingVolume)
+		{
+			InitMesh(boundingVolume->mesh);
+			SphereCollider collider = ResourceManager::GetInstance().GetMeshSphereBounds(meshComp->modelFileName);
+			boundingVolume->radius = collider.radius;
+			boundingVolume->localPosition = collider.position;
+		}
+	}
+	void MeshInitSystem::GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
+	{
+		registry.AddComponent<BroadColliderComponent>(handle);
+		BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(handle);
+		if (broadCollider)
+		{
+			broadCollider->collider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName);
+		}
 	}
 
 }
