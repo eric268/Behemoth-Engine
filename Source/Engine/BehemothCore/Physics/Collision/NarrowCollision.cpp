@@ -151,6 +151,7 @@ namespace Behemoth
 		return true;
 	}
 
+	// https://github.com/idmillington/cyclone-physics/blob/master/src/collide_fine.cpp#L311
 	bool NarrowOBBOBBCollision(const OBBCollider& box1, const OBBCollider& box2, ContactData& contactData)
 	{
 		float rBox1, rBox2;
@@ -314,6 +315,8 @@ namespace Behemoth
 			SetSATBestPen(bestIndex, smallestPenetration, absDistance, (rBox1 + rBox2), 15);
 		}
 
+		int bestSingleAxis = bestIndex;
+
 		const BMath::Vector3 centerPosition = box2.worldPosition - box1.worldPosition;
 		if (bestIndex < 3)
 		{
@@ -327,6 +330,89 @@ namespace Behemoth
 		}
 		else
 		{
+			bestIndex -= 6;
+
+			int axisOneIndex = bestIndex / 3;
+			int axisTwoIndex = bestIndex % 3;
+			BMath::Vector3 box1Axis = box1.worldOrientation[axisOneIndex];
+			BMath::Vector3 box2Axis = box1.worldOrientation[axisTwoIndex];
+
+			BMath::Vector3 axis = BMath::Vector3::Cross(box1Axis, box2Axis).Normalize();
+
+			if (BMath::Vector3::Dot(axis, centerPosition) > 0)
+			{
+				axis *= 1.0f;
+			}
+
+			BMath::Vector3 ptOnOneEdge = box1.worldExtents;
+			BMath::Vector3 ptOnTwoEdge = box1.worldExtents;
+
+			for (int i = 0; i < 3; i++)
+			{
+				if (i == axisOneIndex)
+				{
+					ptOnOneEdge[i] = 0;
+				}
+				else if (BMath::Vector3::Dot(box1.worldOrientation[i], axis) > 0)
+				{
+					ptOnOneEdge[i] = -ptOnOneEdge[i];
+				}
+
+				if (i == axisTwoIndex)
+				{
+					ptOnTwoEdge[i] = 0;
+				}
+				else if (BMath::Vector3::Dot(box2.worldOrientation[i], axis) < 0)
+				{
+					ptOnTwoEdge[i] = -ptOnTwoEdge[i];
+				}
+			}
+
+
+			BMath::Matrix4x4 box1Transform {};
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					box1Transform.data[i][j] = box1.worldOrientation[i][j] * box1.worldExtents[i];
+				}
+			}
+
+			box1Transform._41 = box1.worldPosition.x;
+			box1Transform._42 = box1.worldPosition.y;
+			box1Transform._43 = box1.worldPosition.z;
+
+
+			BMath::Matrix4x4 box2Transform {};
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					box2Transform.data[i][j] = box2.worldOrientation[i][j] * box2.worldExtents[i];
+				}
+			}
+
+			box2Transform._41 = box2.worldPosition.x;
+			box2Transform._42 = box2.worldPosition.y;
+			box2Transform._43 = box2.worldPosition.z;
+
+			ptOnOneEdge = BMath::Vector3(box1Transform * BMath::Vector4(ptOnOneEdge, 1.0f));
+			ptOnTwoEdge = BMath::Vector3(box2Transform * BMath::Vector4(ptOnTwoEdge, 1.0f));
+
+			BMath::Vector3 vertex = CalculateOBBContactPoint(
+				ptOnOneEdge,
+				box1Axis,
+				box1.worldExtents[axisOneIndex],
+				ptOnTwoEdge,
+				box2Axis, box2.worldExtents[axisTwoIndex],
+				bestSingleAxis > 2);
+
+			contactData.penetrationDepth = smallestPenetration;
+			contactData.collisionNormal = axis;
+			contactData.collisionPoint = vertex;
+
 			return true;
 		}
 	}
@@ -387,4 +473,52 @@ namespace Behemoth
 		contactData.collisionPoint = BMath::Vector3(transform * BMath::Vector4(collidingVertex, 1.0f));
 		contactData.penetrationDepth = pen;
 	}
+
+	BMath::Vector3 CalculateOBBContactPoint(
+		const BMath::Vector3& pOne,
+		const BMath::Vector3& dOne,
+		float oneSize,
+		const BMath::Vector3& pTwo,
+		const BMath::Vector3& dTwo,
+		float twoSize,
+		const bool useOne)
+	{
+		BMath::Vector3 toSt, cOne, cTwo;
+		float dpStaOne, dpStaTwo, dpOneTwo, smOne, smTwo;
+		float denom, mua, mub;
+
+		smOne = BMath::Vector3::SquaredMagnitude(dOne);
+		smTwo = BMath::Vector3::SquaredMagnitude(dTwo);
+
+		dpOneTwo = BMath::Vector3::Dot(dTwo, dOne);
+
+		toSt = pOne - pTwo;
+		dpStaOne = BMath::Vector3::Dot(dOne, toSt);
+		dpStaTwo = BMath::Vector3::Dot(dTwo, toSt);
+
+		denom = smOne * smTwo - dpOneTwo * dpOneTwo;
+
+		// 0 denominator means parrel edge lines
+		if (std::abs(denom) < EPSILON)
+		{
+			return useOne ? pOne : pTwo;
+		}
+
+		mua = (dpOneTwo * dpStaTwo - smTwo * dpStaOne) / denom;
+		mub = (smOne * dpStaTwo - dpOneTwo * dpStaOne) / denom;
+
+		if (mua > oneSize || mua < -oneSize || mub > twoSize || mub < -twoSize)
+		{
+			return useOne ? pOne : pTwo;
+		}
+		else
+		{
+			cOne = pOne + dOne * mua;
+			cTwo = pTwo + dTwo * mub;
+
+			return cOne * 0.5f + cTwo * 0.5f;
+		}
+
+	}
+
 }
