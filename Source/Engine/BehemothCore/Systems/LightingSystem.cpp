@@ -6,7 +6,7 @@
 #include "Components/LightComponents.h"
 #include "Misc/CameraHelper.h"
 
-// #define ENABLE_LIGHTING
+#define ENABLE_LIGHTING
 
 // stl
 #include <algorithm>
@@ -20,7 +20,13 @@ namespace Behemoth
  		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
+		// Should only be one ambient light
+		auto ambientLightComponent = registry.Get<AmbientLightComponent>();
+
+		// Should only be one directional light
 		auto directionalComponent = registry.Get<DirectionalLightComponent>();
+
+
 		auto pointLightComponents = registry.Get<PointLightComponent, TransformComponent>();
 
 		for (int i = 0; i < Renderer::GetInstance().primitivesToDraw.size(); i++)
@@ -30,6 +36,11 @@ namespace Behemoth
 
 #ifdef ENABLE_LIGHTING
 			primitive->SetLighting(BMath::Vector3::Zero());
+
+			for (const auto& [ambientEntity, ambientLight] : ambientLightComponent)
+			{
+				CalculateAmbientLights(primitive, ambientLight);
+			}
 
 			// Should only be one directional light but for now continue with possibility of multiple
 			for (const auto& [dirEntity, dirLight] : directionalComponent)
@@ -45,6 +56,12 @@ namespace Behemoth
 			primitive->SetLighting(BMath::Vector3(1.0f, 1.0f, 1.0f));
 #endif
 		}
+	}
+
+	void LightingSystem::CalculateAmbientLights(Primitives* primitive, const AmbientLightComponent* light)
+	{
+		BMath::Vector3 ambientLight = light->color * light->intensity;
+		primitive->AddLighting(ambientLight);
 	}
 
 	void LightingSystem::CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos)

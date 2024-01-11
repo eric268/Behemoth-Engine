@@ -266,7 +266,8 @@ namespace BMath
 			return Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
 		}
 
-		Vector4 operator-(const Vector4 vec) const;
+		Vector4 operator-(const Vector4& vec) const;
+		Vector4 operator+(const Vector4& vec) const;
 
 	private:
 

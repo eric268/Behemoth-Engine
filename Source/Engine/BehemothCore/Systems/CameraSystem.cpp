@@ -63,22 +63,28 @@ namespace Behemoth
 	{
 		auto m =  cameraComponent->projMatrix * cameraComponent->viewMatrix;
 
-		cameraComponent->worldSpaceFrustum[0].normal = BMath::Vector3(m.data[3][0] + m.data[0][0], m.data[3][1] + m.data[0][1], m.data[3][2] + m.data[0][2]);
+		// cameraComponent->worldSpaceFrustum[0].normal = BMath::Vector3(m.data[3][0] + m.data[0][0], m.data[3][1] + m.data[0][1], m.data[3][2] + m.data[0][2]).Normalize();
+		cameraComponent->worldSpaceFrustum[0].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(0)).Normalize();
 		cameraComponent->worldSpaceFrustum[0].distance = (m.data[3][3] + m.data[0][3]);
 
-		cameraComponent->worldSpaceFrustum[1].normal = BMath::Vector3(m.data[3][0] - m.data[0][0], m.data[3][1] - m.data[0][1], m.data[3][2] - m.data[0][2]);
+		// cameraComponent->worldSpaceFrustum[1].normal = BMath::Vector3(m.data[3][0] - m.data[0][0], m.data[3][1] - m.data[0][1], m.data[3][2] - m.data[0][2]).Normalize();
+		cameraComponent->worldSpaceFrustum[1].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(0)).Normalize();
 		cameraComponent->worldSpaceFrustum[1].distance = (m.data[3][3] - m.data[0][3]);
 
-		cameraComponent->worldSpaceFrustum[2].normal = BMath::Vector3(m.data[3][0] + m.data[1][0], m.data[3][1] + m.data[1][1], m.data[3][2] + m.data[1][2]);
+		// cameraComponent->worldSpaceFrustum[2].normal = BMath::Vector3(m.data[3][0] + m.data[1][0], m.data[3][1] + m.data[1][1], m.data[3][2] + m.data[1][2]).Normalize();
+		cameraComponent->worldSpaceFrustum[2].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(1)).Normalize();
 		cameraComponent->worldSpaceFrustum[2].distance = (m.data[3][3] + m.data[1][3]);
 
-		cameraComponent->worldSpaceFrustum[3].normal = BMath::Vector3(m.data[3][0] - m.data[1][0], m.data[3][1] - m.data[1][1], m.data[3][2] - m.data[1][2]);
+		// cameraComponent->worldSpaceFrustum[3].normal = BMath::Vector3(m.data[3][0] - m.data[1][0], m.data[3][1] - m.data[1][1], m.data[3][2] - m.data[1][2]).Normalize();
+		cameraComponent->worldSpaceFrustum[3].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(1)).Normalize();
 		cameraComponent->worldSpaceFrustum[3].distance = (m.data[3][3] - m.data[1][3]);
 
-		cameraComponent->worldSpaceFrustum[4].normal = BMath::Vector3(m.data[3][0] + m.data[2][0], m.data[3][1] + m.data[2][1], m.data[3][2] + m.data[2][2]);
+		// cameraComponent->worldSpaceFrustum[4].normal = BMath::Vector3(m.data[3][0] + m.data[2][0], m.data[3][1] + m.data[2][1], m.data[3][2] + m.data[2][2]).Normalize();
+		cameraComponent->worldSpaceFrustum[4].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(2)).Normalize();
 		cameraComponent->worldSpaceFrustum[4].distance = (m.data[3][3] + m.data[2][3]);
 
-		cameraComponent->worldSpaceFrustum[5].normal = BMath::Vector3(m.data[3][0] - m.data[2][0], m.data[3][1] - m.data[2][1], m.data[3][2] - m.data[2][2]);
+		// cameraComponent->worldSpaceFrustum[5].normal = BMath::Vector3(m.data[3][0] - m.data[2][0], m.data[3][1] - m.data[2][1], m.data[3][2] - m.data[2][2]).Normalize();
+		cameraComponent->worldSpaceFrustum[5].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(2)).Normalize();
 		cameraComponent->worldSpaceFrustum[5].distance = (m.data[3][3] - m.data[2][3]);
 
 // 		float thetaY = DEGREE_TO_RAD(cameraComponent->FOV);

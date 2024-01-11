@@ -78,7 +78,7 @@ namespace Behemoth
 	}
 	void MeshInitSystem::GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
 	{
-		registry.AddComponent<BoundingVolumeComponent>(handle, true);
+		registry.AddComponent<BoundingVolumeComponent>(handle, false);
 		BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(handle);
 		if (boundingVolume)
 		{

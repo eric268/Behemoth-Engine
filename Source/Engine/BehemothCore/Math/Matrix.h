@@ -130,7 +130,6 @@ namespace BMath
 		// Matrix4x4& operator= (const Matrix4x4& m);
 		Matrix4x4 operator*(const Matrix4x4& m) const;
 		Matrix4x4 operator*=(const Matrix4x4& m) const;
-
 		Vector4 operator*(const Vector4 vec) const;
 
 	private:

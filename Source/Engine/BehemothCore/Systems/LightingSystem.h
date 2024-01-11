@@ -8,6 +8,7 @@
 namespace Behemoth
 {
 	class MeshComponent;
+	class AmbientLightComponent;
 	class DirectionalLightComponent;
 	class PointLightComponent;
 	class TransformComponent;
@@ -19,6 +20,7 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
+		void CalculateAmbientLights(Primitives* primitive, const AmbientLightComponent* light);
 		void CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos);
 		void CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4& viewMatrix);
 		BMath::Vector3 GetPrimitivePosition(Primitives* primitive);

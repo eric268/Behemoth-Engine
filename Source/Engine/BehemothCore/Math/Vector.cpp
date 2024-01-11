@@ -172,9 +172,14 @@ namespace BMath
 	Vector4::Vector4(const float x, const float y, const float z, const float w) : x(x), y(y), z(z), w(w) {}
 	Vector4::Vector4(Vector3 vec, float w) : x(vec.x), y(vec.y), z(vec.z), w(w) {}
 
-	Vector4 Vector4::operator-(const Vector4 vec) const
+	Vector4 Vector4::operator-(const Vector4& vec) const
 	{
 		return Vector4(x - vec.x, y - vec.y, z - vec.z, w - vec.w);
+	}
+
+	Vector4 Vector4::operator+(const Vector4& vec) const
+	{
+		return Vector4(x + vec.x, y + vec.y, z + vec.z, w + vec.w);
 	}
 
 	bool Vector4::Equals(const Vector4& vec1, const Vector4& vec2, float epsilon)
