@@ -64,36 +64,18 @@ MainScene::MainScene()
 
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Player");
 	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
-	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -10.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(3.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
-	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
-	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.5f));
+	registry.AddComponent<Behemoth::SphereColliderComponent>(playerHandle, 1.0f);
+	// registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0f));
 
+	ECS::EntityHandle collisionTest = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Collision Test");
+	registry.AddComponent<CameraControllerComponent>(collisionTest, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_I, Behemoth::KeyCode::KC_K, Behemoth::KeyCode::KC_J, Behemoth::KeyCode::KC_L, Behemoth::KeyCode::KC_O, Behemoth::KeyCode::KC_U);
+	registry.AddComponent<Behemoth::MoveComponent>(collisionTest, BMath::Vector3(-3.0f, 0.0f, -5.0f));
+	registry.AddComponent<Behemoth::RigidBodyComponent>(collisionTest, false);
+	registry.AddComponent<Behemoth::SphereColliderComponent>(collisionTest, 1.0f);
+	// registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0f));
 
-
-// 	ECS::EntityHandle plane2 = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Player");
-// 	BMath::Quaternion q2(DEGREE_TO_RAD(45.0f), BMath::Vector3(0.707, 0, -0.707));
-// 	registry.AddComponent<Behemoth::RotationComponent>(plane2, q2);
-// 	registry.AddComponent<Behemoth::ScalingComponent>(plane2, BMath::Vector3(1.0f));
-// 	registry.AddComponent<Behemoth::MoveComponent>(plane2, BMath::Vector3(0.0f, 0.0f, -5.0f));
-
-// 	ECS::EntityHandle debugWireframe = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Cube 1");
-// 	registry.AddComponent<Behemoth::WireframeComponent>(debugWireframe, "cube.obj");
-// 	registry.AddComponent<Behemoth::AABBColliderComponent>(debugWireframe, BMath::Vector3(1.0f));
-// 	registry.AddComponent<Behemoth::MoveComponent>(debugWireframe, BMath::Vector3(3.0f, 0.0f, -5.0f));
-// 	registry.AddComponent<CameraControllerComponent>(debugWireframe, 3.0f, 1.0f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-
-	
-// 	pointLight = lightFactory.CreatePointLight(registry, "Point Light 1");
-// 	Behemoth::MoveComponent* pointLightMovementComp = registry.GetComponent<Behemoth::MoveComponent>(pointLight);
-// 	if (pointLightMovementComp)
-// 		pointLightMovementComp->location = BMath::Vector3(0.0f, 0, 0.0f);
-// 
-// 	Behemoth::PointLightComponent* pointLightComponent = registry.GetComponent<Behemoth::PointLightComponent>(pointLight);
-// 	if (pointLightComponent)
-// 	{
-// 		pointLightComponent->intensity = 2.0f;
-// 	}
 }
 
 void MainScene::Initalize()

@@ -3,7 +3,8 @@
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
-#include "Physics/Collision/BroadCollision.h"
+#include "Physics/Collision/NarrowCollision.h"
+#include "Physics/Collision/CollisionData.h"
 
 namespace Behemoth
 {
@@ -21,12 +22,20 @@ namespace Behemoth
 				}
 
 				sphereColliderComp->collider.position = transformComp->worldPosition;
+				sphereColliderComp->collider.radius = sphereColliderComp->radius * std::max(transformComp->worldScale[0], std::max(transformComp->worldScale[1], transformComp->worldScale[2]));
+
 				sphereColliderComp2->collider.position = transformComp2->worldPosition;
+				sphereColliderComp2->collider.radius = sphereColliderComp2->radius * std::max(transformComp2->worldScale[0], std::max(transformComp2->worldScale[1], transformComp2->worldScale[2]));
 
-
-				if (BroadSphereCollision(sphereColliderComp->collider, sphereColliderComp->collider))
+				ContactData contactData{};
+				if ((sphereColliderComp->collisionType & sphereColliderComp2->collisionLayer) && NarrowSphereSphereCollision(sphereColliderComp->collider, sphereColliderComp2->collider, contactData))
 				{
-					std::cout << "Sphere Sphere Collision\n";
+					BMath::Vector3 offset = contactData.collisionNormal * contactData.penetrationDepth;
+					LOG_MESSAGE(MessageType::General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
+					BMath::Vector3 newLocation = BMath::Vector3(transformComp->localTransform._41 + offset.x, transformComp->localTransform._42 + offset.y, transformComp->localTransform._43 + offset.z);
+					registry.AddComponent<MoveComponent>(entity, offset);
+
+					transformComp->isDirty = true;
 				}
 			}
 		}

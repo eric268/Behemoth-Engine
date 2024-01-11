@@ -13,7 +13,7 @@ namespace Behemoth
 
 		for (auto& [entity, cameraComp, transformComp] : components)
 		{
-			// if (cameraComp->isDirty)
+			if (cameraComp->isDirty)
 			{
 				UpdatePerspectiveMatrix(cameraComp, transformComp);
 				UpdateFrustrum(cameraComp);

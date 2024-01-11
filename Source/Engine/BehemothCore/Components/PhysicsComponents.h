@@ -76,12 +76,11 @@ namespace Behemoth
 
 	struct SphereColliderComponent : public ColliderComponent
 	{
-		SphereColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::StaticType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject) :
+		SphereColliderComponent(float radius = 1.0f, bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::StaticType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject) :
 			ColliderComponent(enabled, collisionType, collisionLayer),
-			extents(extents)
+			radius(radius)
 		{}
-
-		BMath::Vector3 extents;
+		float radius;
 		SphereCollider collider;
 	};
 

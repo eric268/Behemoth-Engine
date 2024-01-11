@@ -5,7 +5,6 @@
 #include "ECS/ECSCore.h"
 #include "Physics/Collision/Colliders.h"
 #include "Geometry/Plane.h"
-#include "Physics/Collision/CollisionData.h"
 #include "Physics/Ray.h"
 
 namespace Behemoth
@@ -43,6 +42,7 @@ namespace Behemoth
 		float rad = sphere1.radius + sphere2.radius;
 		return distance <= (rad * rad);
 	}
+
 	bool BroadSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
 	{
 		float squaredDist = 0;

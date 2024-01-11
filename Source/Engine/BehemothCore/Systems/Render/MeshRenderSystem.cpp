@@ -39,10 +39,8 @@ namespace Behemoth
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolume))
 			{
-				LOG_MESSAGE(MessageType::Warning, "Cull");
 				continue;
 			}
-			LOG_MESSAGE(MessageType::General, "Render");
 
 			ProcessMesh(meshComp->mesh, mainCameraPosition, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty);
 			transformComp->isDirty = false;

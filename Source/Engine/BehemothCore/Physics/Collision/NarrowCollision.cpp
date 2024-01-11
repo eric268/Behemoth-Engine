@@ -8,7 +8,6 @@
 
 namespace Behemoth
 {
-
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData)
 	{
 		BMath::Vector3 positionOne = sphere1.position;
