@@ -26,7 +26,7 @@ namespace Behemoth
 			});
 
 		// ** Order of multiplication matters here **
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
 		for (const auto& [entity, meshComp, transformComp] : components)
 		{
@@ -37,7 +37,7 @@ namespace Behemoth
 			}
 
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
-			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, transformComp, boundingVolume))
+			if (boundingVolume && !IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolume))
 			{
 				LOG_MESSAGE(MessageType::Warning, "Cull");
 				continue;

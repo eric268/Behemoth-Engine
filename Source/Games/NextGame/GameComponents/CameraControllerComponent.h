@@ -22,8 +22,8 @@ struct CameraControllerComponent : ECS::Component
         bool enableRot, 
         Behemoth::KeyCode f, 
         Behemoth::KeyCode b, 
-        Behemoth::KeyCode r, 
         Behemoth::KeyCode l, 
+        Behemoth::KeyCode r, 
         Behemoth::KeyCode u, 
         Behemoth::KeyCode d) 
         : 

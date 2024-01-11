@@ -21,6 +21,7 @@ MainScene::MainScene()
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
 	registry.AddComponent<CameraControllerComponent>(mainCameraHandle, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0, 0, 0));
+	// registry.AddComponent<Behemoth::RotationComponent>(mainCameraHandle, BMath::Quaternion(DEGREE_TO_RAD(55.0f), BMath::Vector3(1, 0, 0)));
 
 	Behemoth::LightFactory lightFactory{};
 	ECS::EntityHandle dirLight = lightFactory.CreateDirectionalLight(registry);
@@ -61,11 +62,10 @@ MainScene::MainScene()
 // 
 
 	playerHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Player");
-	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
+	// registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, -10.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
 	registry.AddComponent<Behemoth::AABBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
-	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle, "cube.obj");
 
 
 // 	ECS::EntityHandle plane2 = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Player");
@@ -160,11 +160,11 @@ void MainScene::Update(const float deltaTime)
 		BMath::Vector3 rot;
 		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_Z))
 		{
-			rot.y = -1.0f;
+			rot.x = -1.0f;
 		}
 		else if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_C))
 		{
-			rot.y = 1.0f;
+			rot.x = 1.0f;
 		}
 
 		if (rot != BMath::Vector3::Zero())

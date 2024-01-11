@@ -36,6 +36,10 @@ namespace ECS
 		Registry() = default;
 		Registry(Registry&& obj) = delete;
 		Registry(const Registry& other) = delete;
+		~Registry()
+		{
+			std::cout << "Registry destructor called\n";
+		}
 
 		std::string GetName(EntityHandle entityHandle)
 		{

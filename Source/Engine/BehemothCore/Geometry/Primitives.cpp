@@ -52,6 +52,7 @@ namespace Behemoth
 
 	Primitives::~Primitives()
 	{
+		std::cout << "Primitive destructor called\n";
 		delete sprite;
 	}
 

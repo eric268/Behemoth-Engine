@@ -15,7 +15,7 @@ namespace Behemoth
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
 		// ** Order of multiplication matters here **
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
 		for (const auto& [entity, boundingVolumeComp, transformComp] : components)
 		{
@@ -24,7 +24,7 @@ namespace Behemoth
 				continue;
 			}
 
-			if (!IsBoundingVolumeInFrustrum(mainCamera, transformComp, boundingVolumeComp))
+			if (!IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolumeComp))
 			{
 				continue;
 			}

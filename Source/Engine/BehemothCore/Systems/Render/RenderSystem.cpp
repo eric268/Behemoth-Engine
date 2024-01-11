@@ -28,10 +28,12 @@ namespace Behemoth
 
 	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* entityTransform, const BoundingVolumeComponent* boundingComp)
 	{
+
 		for (const auto& p : cameraComponent->worldSpaceFrustum)
 		{
-			float distance = BMath::Vector3::Dot(entityTransform->worldPosition, p.normal) + p.distance;
-			if (distance < -boundingComp->radius )
+			// std::cout << p.normal.x << " " << p.normal.y << " " << p.normal.z << std::endl;
+			float distance = BMath::Vector3::Dot(entityTransform->worldPosition + boundingComp->localPosition, p.normal) + p.distance;
+			if (distance < -boundingComp->radius ) // add scale of the mesh here later
 			{
 				 return false;
 			}

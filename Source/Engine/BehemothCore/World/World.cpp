@@ -108,6 +108,8 @@ namespace Behemoth
 
 		currentScene->Shutdown();
 		delete currentScene;
+
+		// Clear all resource managers
 	}
 
 	void World::OnEvent(Event& e)

@@ -17,7 +17,7 @@ namespace Behemoth
 	{
 		CameraComponent(bool main = false) :
 			viewMatrix(BMath::Matrix4x4::Identity()),
-			perspectiveMatrix(BMath::Matrix4x4::Identity()),
+			projMatrix(BMath::Matrix4x4::Identity()),
 			FOV(90.0f),
 			nearClippingPlane(0.1f),
 			farClippingPlane(1000.0f),
@@ -30,7 +30,7 @@ namespace Behemoth
 		~CameraComponent() = default;
 		Plane worldSpaceFrustum[6];
 		BMath::Matrix4x4 viewMatrix;
-		BMath::Matrix4x4 perspectiveMatrix;
+		BMath::Matrix4x4 projMatrix;
 		BMath::Matrix4x4 inverseTransposeViewMatrix;
 		float FOV;
 		float nearClippingPlane;

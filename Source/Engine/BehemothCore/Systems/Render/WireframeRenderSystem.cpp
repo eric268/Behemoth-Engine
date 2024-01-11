@@ -24,7 +24,7 @@ namespace Behemoth
 			});
 
 		// ** Order of multiplication matters here **
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
 		for (const auto& [entity, wireframeComp, transformComp] : components)
 		{

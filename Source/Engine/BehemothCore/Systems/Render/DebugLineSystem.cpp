@@ -26,7 +26,7 @@ namespace Behemoth
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->perspectiveMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
 		std::vector<ECS::EntityHandle> expiredLines;
 
