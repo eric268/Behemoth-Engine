@@ -69,7 +69,16 @@ namespace Behemoth
 
 	void MeshInitSystem::GenerateAABBBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
 	{
-		registry.AddComponent<BoundingVolumeComponent>(handle, true);
+		registry.AddComponent<BroadColliderComponent>(handle);
+		BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(handle);
+		if (broadCollider)
+		{
+			broadCollider->collider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName);
+		}
+	}
+	void MeshInitSystem::GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
+	{
+		registry.AddComponent<BoundingVolumeComponent>(handle, false);
 		BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(handle);
 		if (boundingVolume)
 		{
@@ -77,15 +86,6 @@ namespace Behemoth
 			SphereCollider collider = ResourceManager::GetInstance().GetMeshSphereBounds(meshComp->modelFileName);
 			boundingVolume->radius = collider.radius;
 			boundingVolume->localPosition = collider.position;
-		}
-	}
-	void MeshInitSystem::GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
-	{
-		registry.AddComponent<BroadColliderComponent>(handle);
-		BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(handle);
-		if (broadCollider)
-		{
-			broadCollider->collider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName);
 		}
 	}
 

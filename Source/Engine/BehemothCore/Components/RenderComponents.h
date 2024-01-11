@@ -47,6 +47,7 @@ namespace Behemoth
 	{
 		BoundingVolumeComponent() : mesh("sphere.obj"), localPosition(BMath::Vector3::Zero()), radius(1.0f), isVisible(false) {}
 		BoundingVolumeComponent(bool visible = false) : mesh("sphere.obj"), localPosition(BMath::Vector3::Zero()), radius(1.0f), isVisible(visible) {}
+		BoundingVolumeComponent(BMath::Vector3 pos, float radius, bool visible = false) : mesh("sphere.obj"), localPosition(pos), radius(radius), isVisible(visible) {}
 		
 		Mesh mesh;
 		BMath::Vector3 localPosition;

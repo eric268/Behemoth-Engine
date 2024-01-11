@@ -13,7 +13,7 @@ namespace Behemoth
 
 		for (auto& [entity, cameraComp, transformComp] : components)
 		{
-			if (cameraComp->isDirty)
+			// if (cameraComp->isDirty)
 			{
 				UpdatePerspectiveMatrix(cameraComp, transformComp);
 				UpdateFrustrum(cameraComp);
@@ -47,40 +47,40 @@ namespace Behemoth
 
 
 		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->worldPosition, target, BMath::Vector3::Up());
-		cameraComponent->inverseTransposeViewMatrix = BMath::Matrix4x4::Inverse(cameraComponent->viewMatrix);
+		// cameraComponent->inverseTransposeViewMatrix =BMath::Matrix4x4::Inverse(cameraComponent->viewMatrix);
+		 cameraComponent->inverseTransposeViewMatrix = BMath::Matrix4x4::Transpose(BMath::Matrix4x4::Inverse(cameraComponent->viewMatrix));
 	}
 
 	void CameraSystem::UpdateFrustrum(CameraComponent* cameraComponent)
 	{
 		float thetaY = DEGREE_TO_RAD(cameraComponent->FOV);
-		float aspectRatio = cameraComponent->windowHeight / cameraComponent->windowWidth;
-		float thetaX = 2.0f * std::atan(std::tan(DEGREE_TO_RAD(cameraComponent->FOV) * 0.5f) * aspectRatio);
+		float aspectRatio = cameraComponent->windowWidth / cameraComponent->windowHeight;
+		float thetaX = 2.0f * std::atan(std::tan(thetaY * 0.5f) / aspectRatio);
 
 		thetaY *= 0.5f;
 		thetaX *= 0.5f;
 
-		float dist = 0.0f;
+  		// Rotate around y axis
+ 		BMath::Vector3 leftNormal = BMath::Vector3(std::sin(thetaX), 0.0f, -std::cos(thetaX)).Normalize();
+ 		cameraComponent->worldSpaceFrustum[0] = Plane::TransformPlane(Plane(leftNormal, cameraComponent->nearClippingPlane), cameraComponent->inverseTransposeViewMatrix);
 
-		BMath::Vector3 nearNormal = BMath::Vector3(0.0f, 0.0f, -1.0f);
-		cameraComponent->worldSpaceFrustum[0] = Plane::TransformPlane(Plane(nearNormal, cameraComponent->nearClippingPlane), cameraComponent->inverseTransposeViewMatrix);
+ 		// Rotate around y axis
+ 		BMath::Vector3 rightNormal = BMath::Vector3(-std::sin(thetaX), 0.0f, -std::cos(thetaX)).Normalize();
+ 		cameraComponent->worldSpaceFrustum[1] = Plane::TransformPlane(Plane(rightNormal, cameraComponent->nearClippingPlane), cameraComponent->inverseTransposeViewMatrix);
 
-		BMath::Vector3 farNormal = BMath::Vector3(0.0f, 0.0f, 1.0f);
-		cameraComponent->worldSpaceFrustum[1] = Plane::TransformPlane(Plane(farNormal, -cameraComponent->farClippingPlane), cameraComponent->inverseTransposeViewMatrix);
+ 		// Rotate around x axis
+ 		BMath::Vector3 bottomNormal = BMath::Vector3(0.0f, std::cos(thetaY), -std::sin(thetaY)).Normalize();
+ 		cameraComponent->worldSpaceFrustum[2] = Plane::TransformPlane(Plane(bottomNormal, cameraComponent->nearClippingPlane), cameraComponent->inverseTransposeViewMatrix);
 
-		// Rotate around y axis
-		BMath::Vector3 leftNormal = BMath::Vector3(-std::sin(thetaX), 0.0f, -std::cos(thetaX)).Normalize();
-		cameraComponent->worldSpaceFrustum[2] = Plane::TransformPlane(Plane(leftNormal, dist), cameraComponent->inverseTransposeViewMatrix);
-		
-		// Rotate around y axis
-		BMath::Vector3 rightNormal = BMath::Vector3(std::sin(thetaX), 0.0f, -std::cos(thetaX)).Normalize();
-		cameraComponent->worldSpaceFrustum[3] = Plane::TransformPlane(Plane(rightNormal, dist), cameraComponent->inverseTransposeViewMatrix);
+ 		// Rotate around x axis
+ 		BMath::Vector3 topNormal = BMath::Vector3(0.0f, -std::cos(thetaY), -std::sin(thetaY)).Normalize();
+ 		cameraComponent->worldSpaceFrustum[3] = Plane::TransformPlane(Plane(topNormal, cameraComponent->nearClippingPlane), cameraComponent->inverseTransposeViewMatrix);
 
-		// Rotate around x axis
-		BMath::Vector3 bottomNormal = BMath::Vector3(0.0f, -std::cos(thetaY), -std::sin(thetaY)).Normalize();
-		cameraComponent->worldSpaceFrustum[4] = Plane::TransformPlane(Plane(bottomNormal, dist), cameraComponent->inverseTransposeViewMatrix);
 
-		// Rotate around x axis
-		BMath::Vector3 topNormal = BMath::Vector3(0.0f, std::cos(thetaY), -std::sin(thetaY)).Normalize();
-		cameraComponent->worldSpaceFrustum[5] = Plane::TransformPlane(Plane(topNormal, dist), cameraComponent->inverseTransposeViewMatrix);
+ 		BMath::Vector3 nearNormal = BMath::Vector3(0.0f, 0.0f, -1.0f);
+ 		cameraComponent->worldSpaceFrustum[4] = Plane::TransformPlane(Plane(nearNormal, cameraComponent->nearClippingPlane), cameraComponent->inverseTransposeViewMatrix);
+
+ 		BMath::Vector3 farNormal = BMath::Vector3(0.0f, 0.0f, 1.0f);
+ 		cameraComponent->worldSpaceFrustum[5] = Plane::TransformPlane(Plane(farNormal, cameraComponent->farClippingPlane), cameraComponent->inverseTransposeViewMatrix);
 	}
 }

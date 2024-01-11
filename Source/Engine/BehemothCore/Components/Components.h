@@ -18,7 +18,7 @@ namespace Behemoth
 		CameraComponent(bool main = false) :
 			viewMatrix(BMath::Matrix4x4::Identity()),
 			perspectiveMatrix(BMath::Matrix4x4::Identity()),
-			FOV(75.0f),
+			FOV(90.0f),
 			nearClippingPlane(0.1f),
 			farClippingPlane(1000.0f),
 			windowWidth(0.0f),
