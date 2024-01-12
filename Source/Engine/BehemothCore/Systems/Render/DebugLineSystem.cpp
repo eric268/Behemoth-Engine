@@ -55,8 +55,8 @@ namespace Behemoth
 			const Plane& plane = worldFrustmPlanes[i];
 
 			// Check if endpoints of line are inside frustum, if true do not cull frustum
-			float dist1 = BMath::Vector3::Dot(p1, plane.normal) + plane.distance;
-			float dist2 = BMath::Vector3::Dot(p2, plane.normal) + plane.distance;
+			float dist1 = BMath::Vector3::Dot(p1, plane.normal) + plane.d;
+			float dist2 = BMath::Vector3::Dot(p2, plane.normal) + plane.d;
 
 			if (dist1 >= 0 && dist2 >= 0)
 			{

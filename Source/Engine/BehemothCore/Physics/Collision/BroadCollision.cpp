@@ -31,7 +31,7 @@ namespace Behemoth
 	{
 		float radius = collider.worldExtents[0] * std::abs(p.normal[0]) + collider.worldExtents[1] * std::abs(p.normal[1]) + collider.worldExtents[2] * std::abs(p.normal[2]);
 
-		float distance = BMath::Vector3::Dot(p.normal, collider.worldPosition) - p.distance;
+		float distance = BMath::Vector3::Dot(p.normal, collider.worldPosition) - p.d;
 
 		return std::abs(distance) <= radius;
 	}
@@ -74,7 +74,7 @@ namespace Behemoth
 	bool BroadLinePlaneIntersection(const Point& p1, const Point& p2, const Plane& plane, float& dist, Point& intersectionP)
 	{
 		BMath::Vector3 ab = p2 - p1;
-		dist = (plane.distance - BMath::Vector3::Dot(plane.normal, p1)) / (BMath::Vector3::Dot(plane.normal, ab));
+		dist = (plane.d - BMath::Vector3::Dot(plane.normal, p1)) / (BMath::Vector3::Dot(plane.normal, ab));
 		if (dist >= 0.0f && dist <= 1.0f)
 		{
 			intersectionP = p1 + ab * dist;

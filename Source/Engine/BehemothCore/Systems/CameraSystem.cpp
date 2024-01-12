@@ -53,22 +53,22 @@ namespace Behemoth
 		auto m =  cameraComponent->projMatrix * cameraComponent->viewMatrix;
 
 		cameraComponent->worldSpaceFrustum[0].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(0)).Normalize();
-		cameraComponent->worldSpaceFrustum[0].distance = (m.data[3][3] + m.data[0][3]);
+		cameraComponent->worldSpaceFrustum[0].d = (m.data[3][3] + m.data[0][3]);
 
 		cameraComponent->worldSpaceFrustum[1].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(0)).Normalize();
-		cameraComponent->worldSpaceFrustum[1].distance = (m.data[3][3] - m.data[0][3]);
+		cameraComponent->worldSpaceFrustum[1].d = (m.data[3][3] - m.data[0][3]);
 
 		cameraComponent->worldSpaceFrustum[2].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(1)).Normalize();
-		cameraComponent->worldSpaceFrustum[2].distance = (m.data[3][3] + m.data[1][3]);
+		cameraComponent->worldSpaceFrustum[2].d = (m.data[3][3] + m.data[1][3]);
 
 		cameraComponent->worldSpaceFrustum[3].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(1)).Normalize();
-		cameraComponent->worldSpaceFrustum[3].distance = (m.data[3][3] - m.data[1][3]);
+		cameraComponent->worldSpaceFrustum[3].d = (m.data[3][3] - m.data[1][3]);
 
 		cameraComponent->worldSpaceFrustum[4].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(2)).Normalize();
-		cameraComponent->worldSpaceFrustum[4].distance = (m.data[3][3] + m.data[2][3]);
+		cameraComponent->worldSpaceFrustum[4].d = cameraComponent->nearClippingPlane;
 
 		cameraComponent->worldSpaceFrustum[5].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(2)).Normalize();
-		cameraComponent->worldSpaceFrustum[5].distance = (m.data[3][3] - m.data[2][3]) + 100.0f;
+		cameraComponent->worldSpaceFrustum[5].d = cameraComponent->farClippingPlane;
 
 	}
 	float CameraSystem::GetDistance(const BMath::Matrix4x4& m, int index)
