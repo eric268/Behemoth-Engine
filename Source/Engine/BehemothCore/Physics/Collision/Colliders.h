@@ -19,9 +19,9 @@ namespace Behemoth
 	struct OBBCollider
 	{
 		OBBCollider() = default;
-		BMath::Vector3 worldPosition;
-		BMath::Vector3 worldOrientation[3];
-		BMath::Vector3 worldExtents;
+		BMath::Vector3 position;
+		BMath::Vector3 orientation[3];
+		BMath::Vector3 extents;
 	};
 
 	struct AABBCollider

@@ -36,12 +36,12 @@ namespace Behemoth
 		const float farPlane = cameraComponent->farClippingPlane;
 		const float nearPlane = cameraComponent->nearClippingPlane;
 
-// 		cameraComponent->perspectiveMatrix = BMath::Matrix4x4::Zero();
-// 		cameraComponent->perspectiveMatrix._11 = fovScale / aspectRatio;
-// 		cameraComponent->perspectiveMatrix._22 = fovScale;
-// 		cameraComponent->perspectiveMatrix._33 = (farPlane ) / (farPlane - nearPlane);
-// 		cameraComponent->perspectiveMatrix._43 = (-farPlane * nearPlane) / (farPlane - nearPlane);
-// 		cameraComponent->perspectiveMatrix._34 = 1.0f;
+// 		cameraComponent->projMatrix = BMath::Matrix4x4::Zero();
+// 		cameraComponent->projMatrix._11 = fovScale / aspectRatio;
+// 		cameraComponent->projMatrix._22 = fovScale;
+// 		cameraComponent->projMatrix._33 = (farPlane) / (farPlane - nearPlane); // maybe switch these two
+// 		cameraComponent->projMatrix._43 = (-farPlane * nearPlane) / (farPlane - nearPlane); // maybe switch these two
+// 		cameraComponent->projMatrix._34 = 1.0f;
 
 		cameraComponent->projMatrix = BMath::Matrix4x4::Zero();
 		cameraComponent->projMatrix._11 = fovScale / aspectRatio;

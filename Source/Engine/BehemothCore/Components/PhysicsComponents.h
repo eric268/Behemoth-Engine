@@ -67,7 +67,7 @@ namespace Behemoth
 	{
 		OBBColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), bool enabled = true,  BMask::CollisionType collisionType = BMask::CollisionType::DynamicType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything) :
 			ColliderComponent(enabled, collisionType, collisionLayer),
-			extents(extents)
+			extents(extent)
 		{}
 
 		BMath::Vector3 extents;

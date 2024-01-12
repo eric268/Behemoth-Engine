@@ -62,19 +62,21 @@ MainScene::MainScene()
 // 	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
 // 
 
-	playerHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Player");
+	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
 	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(3.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
-	registry.AddComponent<Behemoth::SphereColliderComponent>(playerHandle, 1.0f);
-	// registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::OBBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::WireframeComponent>(playerHandle,"cube.obj", BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0f));
 
-	ECS::EntityHandle collisionTest = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Collision Test");
-	registry.AddComponent<CameraControllerComponent>(collisionTest, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_I, Behemoth::KeyCode::KC_K, Behemoth::KeyCode::KC_J, Behemoth::KeyCode::KC_L, Behemoth::KeyCode::KC_O, Behemoth::KeyCode::KC_U);
+	ECS::EntityHandle collisionTest = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Collision Test");
+	registry.AddComponent<CameraControllerComponent>(collisionTest, 5.0f, 1.0f, false, Behemoth::KeyCode::KC_I, Behemoth::KeyCode::KC_K, Behemoth::KeyCode::KC_J, Behemoth::KeyCode::KC_L, Behemoth::KeyCode::KC_O, Behemoth::KeyCode::KC_P);
 	registry.AddComponent<Behemoth::MoveComponent>(collisionTest, BMath::Vector3(-3.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(collisionTest, false);
-	registry.AddComponent<Behemoth::SphereColliderComponent>(collisionTest, 1.0f);
-	// registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::OBBColliderComponent>(collisionTest, BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::WireframeComponent>(collisionTest,"cube.obj", BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0f));
 
 }
 

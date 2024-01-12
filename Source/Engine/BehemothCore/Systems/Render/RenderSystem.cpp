@@ -65,6 +65,7 @@ namespace Behemoth
 			// Invert w so only perform 1 divide instead of 4
 			float w = 1.0f / vertex[j].w;
 			vertex[j] *= w;
+
 		}
 	}
 }

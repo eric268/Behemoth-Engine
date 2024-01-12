@@ -11,7 +11,7 @@ namespace Behemoth
 {
 	struct AmbientLightComponent : public ECS::Component 
 	{
-		AmbientLightComponent() : color(BMath::Vector3(0.25f, 0.25f, 0.25f)), intensity(0.25f) {}
+		AmbientLightComponent() : color(BMath::Vector3(0.25f, 0.25f, 0.25f)), intensity(0.3f) {}
 		AmbientLightComponent(BMath::Vector3 color, float intensity) : color(color), intensity(intensity) {}
 
 		BMath::Vector3 color;

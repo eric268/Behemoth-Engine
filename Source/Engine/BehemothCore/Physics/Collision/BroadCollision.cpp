@@ -139,123 +139,140 @@ namespace Behemoth
 		return true;
 	}
 
-	// Real-Time Collision Detection-Morgan Kaufmann (2005)
+	// float-Time Collision Detection-Morgan Kaufmann (2005)
 	bool BroadOBBCollision(const OBBCollider& box1, const OBBCollider& box2)
 	{
 		float rBox1, rBox2;
-
-		BMath::Matrix3x3 R, AbsR;
+		BMath::Matrix3x3 rotationMatrix, absRotationMatrix;
+		// Compute rotation matrix expressing b in a’s coordinate frame
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				R.data[i][j] = BMath::Vector3::Dot(box1.worldOrientation[i], box2.worldOrientation[j]);
+				rotationMatrix.data[i][j] = BMath::Vector3::Dot(box1.orientation[i], box2.orientation[j]);
 			}
 		}
 
-		BMath::Vector3 t = box2.worldPosition - box1.worldPosition;
-		t = BMath::Vector3(BMath::Vector3::Dot(t, box1.worldOrientation[0]), BMath::Vector3::Dot(t, box1.worldOrientation[1]), BMath::Vector3::Dot(t, box1.worldOrientation[2]));
 
+		// Compute translation vector t
+		BMath::Vector3 dirVec = box2.position - box1.position;
+
+		dirVec = BMath::Vector3(BMath::Vector3::Dot(dirVec, box1.orientation[0]), BMath::Vector3::Dot(dirVec, box1.orientation[1]), BMath::Vector3::Dot(dirVec, box1.orientation[2]));
+		// Compute common subexpressions. Add in an epsilon term to
+		// counteract arithmetic errors when two edges are parallel and
+		// their cross product is (near) null (see text for details)
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				AbsR.data[i][j] = std::abs(R.data[i][j]) + EPSILON;
+				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + EPSILON;
 			}
 		}
-
-		for (int i = 0; i < 3; i++)
+		// Test axes L = A0, L = A1, L = A2
+		for (int i = 0; i < 3; i++) 
 		{
-			rBox1 = box1.worldExtents[i];
-			rBox2 = box2.worldExtents[0] * AbsR.data[i][0] + box2.worldExtents[1] * AbsR.data[i][1] + box2.worldExtents[2] * AbsR.data[i][2];
-			if (std::abs(t[i]) > (rBox1 + rBox2))
+			rBox1 = box1.extents[i];
+			rBox2 = box2.extents[0] * absRotationMatrix.data[i][0] + box2.extents[1] * absRotationMatrix.data[i][1] + box2.extents[2] * absRotationMatrix.data[i][2];
+			if (std::abs(dirVec[i]) > rBox1 + rBox2)
+			{
+				return false;
+			}
+		}
+		// Test axes L = B0, L = B1, L = B2
+
+		for (int i = 0; i < 3; i++) 
+		{
+			rBox1 = box1.extents[0] * absRotationMatrix.data[0][i] + box1.extents[1] * absRotationMatrix.data[1][i] + box1.extents[2] * absRotationMatrix.data[2][i];
+			rBox2 = box2.extents[i];
+
+			if (std::abs(dirVec[0] * rotationMatrix.data[0][i] + dirVec[1] * rotationMatrix.data[1][i] + dirVec[2] * rotationMatrix.data[2][i]) > rBox1 + rBox2)
 			{
 				return false;
 			}
 		}
 
-		for (int i = 0; i < 3; i++)
-		{
-			rBox1 = box1.worldExtents[0] * AbsR.data[0][i] + box1.worldExtents[1] * AbsR.data[1][i] + box1.worldExtents[2] * AbsR.data[2][i];
-			rBox2 = box2.worldExtents[i];
-			if (std::abs(t[0] * R.data[0][i] + t[1] * R.data[1][i] + t[2] * R.data[2][i]) > (rBox1 + rBox2))
-			{
-				return false;
-			}
-		}
-
-		rBox1 = box1.worldExtents[1] * AbsR.data[2][0] + box1.worldExtents[2] * AbsR.data[1][0];
-		rBox2 = box2.worldExtents[1] * AbsR.data[0][2] + box2.worldExtents[2] * AbsR.data[0][1];
-		if (std::abs(t[2] + R.data[1][0] - t[1] * R.data[2][0] > rBox1 + rBox2))
+		// Test axis L = A0 x B0
+		rBox1 = box1.extents[1] * absRotationMatrix.data[2][0] + box1.extents[2] * absRotationMatrix.data[1][0];
+		rBox2 = box2.extents[1] * absRotationMatrix.data[0][2] + box2.extents[2] * absRotationMatrix.data[0][1];
+		if (std::abs(dirVec[2] * rotationMatrix.data[1][0] - dirVec[1] * rotationMatrix.data[2][0]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[1] * AbsR.data[2][1] + box1.worldExtents[2] * AbsR.data[1][1];
-		rBox2 = box2.worldExtents[0] * AbsR.data[0][2] + box2.worldExtents[2] * AbsR.data[0][0];
-		if (std::abs(t[2] + R.data[1][1] - t[1] * R.data[2][1] > rBox1 + rBox2))
+		// Test axis L = A0 x B1
+		rBox1 = box1.extents[1] * absRotationMatrix.data[2][1] + box1.extents[2] * absRotationMatrix.data[1][1];
+		rBox2 = box2.extents[0] * absRotationMatrix.data[0][2] + box2.extents[2] * absRotationMatrix.data[0][0];
+		if (std::abs(dirVec[2] * rotationMatrix.data[1][1] - dirVec[1] * rotationMatrix.data[2][1]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[1] * AbsR.data[2][2] + box1.worldExtents[2] * AbsR.data[1][2];
-		rBox2 = box2.worldExtents[0] * AbsR.data[0][1] + box2.worldExtents[1] * AbsR.data[0][0];
-		if (std::abs(t[2] + R.data[1][2] - t[1] * R.data[2][2] > rBox1 + rBox2))
+		// Test axis L = A0 x B2
+		rBox1 = box1.extents[1] * absRotationMatrix.data[2][2] + box1.extents[2] * absRotationMatrix.data[1][2];
+		rBox2 = box2.extents[0] * absRotationMatrix.data[0][1] + box2.extents[1] * absRotationMatrix.data[0][0];
+		if (std::abs(dirVec[2] * rotationMatrix.data[1][2] - dirVec[1] * rotationMatrix.data[2][2]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[0] * AbsR.data[2][0] + box1.worldExtents[2] * AbsR.data[0][0];
-		rBox2 = box2.worldExtents[1] * AbsR.data[1][2] + box2.worldExtents[2] * AbsR.data[1][1];
-		if (std::abs(t[0] + R.data[2][0] - t[2] * R.data[0][0] > rBox1 + rBox2))
+		// Test axis L = A1 x B0
+		rBox1 = box1.extents[0] * absRotationMatrix.data[2][0] + box1.extents[2] * absRotationMatrix.data[0][0];
+		rBox2 = box2.extents[1] * absRotationMatrix.data[1][2] + box2.extents[2] * absRotationMatrix.data[1][1];
+		if (std::abs(dirVec[0] * rotationMatrix.data[2][0] - dirVec[2] * rotationMatrix.data[0][0]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[0] * AbsR.data[2][1] + box1.worldExtents[2] * AbsR.data[0][1];
-		rBox2 = box2.worldExtents[0] * AbsR.data[1][2] + box2.worldExtents[2] * AbsR.data[1][0];
-		if (std::abs(t[0] + R.data[2][1] - t[2] * R.data[0][1] > rBox1 + rBox2))
+		// Test axis L = A1 x B1
+		rBox1 = box1.extents[0] * absRotationMatrix.data[2][1] + box1.extents[2] * absRotationMatrix.data[0][1];
+		rBox2 = box2.extents[0] * absRotationMatrix.data[1][2] + box2.extents[2] * absRotationMatrix.data[1][0];
+		if (std::abs(dirVec[0] * rotationMatrix.data[2][1] - dirVec[2] * rotationMatrix.data[0][1]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[0] * AbsR.data[2][2] + box1.worldExtents[2] * AbsR.data[0][2];
-		rBox2 = box2.worldExtents[0] * AbsR.data[1][1] + box2.worldExtents[1] * AbsR.data[1][0];
-		if (std::abs(t[0] + R.data[2][2] - t[2] * R.data[0][2] > rBox1 + rBox2))
+		// Test axis L = A1 x B2
+		rBox1 = box1.extents[0] * absRotationMatrix.data[2][2] + box1.extents[2] * absRotationMatrix.data[0][2];
+		rBox2 = box2.extents[0] * absRotationMatrix.data[1][1] + box2.extents[1] * absRotationMatrix.data[1][0];
+		if (std::abs(dirVec[0] * rotationMatrix.data[2][2] - dirVec[2] * rotationMatrix.data[0][2]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[0] * AbsR.data[1][0] + box1.worldExtents[1] * AbsR.data[0][0];
-		rBox2 = box2.worldExtents[1] * AbsR.data[2][2] + box2.worldExtents[2] * AbsR.data[2][1];
-		if (std::abs(t[1] + R.data[0][0] - t[0] * R.data[1][0] > rBox1 + rBox2))
+		// Test axis L = A2 x B0
+		rBox1 = box1.extents[0] * absRotationMatrix.data[1][0] + box1.extents[1] * absRotationMatrix.data[0][0];
+		rBox2 = box2.extents[1] * absRotationMatrix.data[2][2] + box2.extents[2] * absRotationMatrix.data[2][1];
+		if (std::abs(dirVec[1] * rotationMatrix.data[0][0] - dirVec[0] * rotationMatrix.data[1][0]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[0] * AbsR.data[1][1] + box1.worldExtents[1] * AbsR.data[0][1];
-		rBox2 = box2.worldExtents[0] * AbsR.data[2][2] + box2.worldExtents[2] * AbsR.data[2][0];
-		if (std::abs(t[1] + R.data[0][1] - t[0] * R.data[1][1] > rBox1 + rBox2))
+		// Test axis L = A2 x B1
+		rBox1 = box1.extents[0] * absRotationMatrix.data[1][1] + box1.extents[1] * absRotationMatrix.data[0][1];
+		rBox2 = box2.extents[0] * absRotationMatrix.data[2][2] + box2.extents[2] * absRotationMatrix.data[2][0];
+		if (std::abs(dirVec[1] * rotationMatrix.data[0][1] - dirVec[0] * rotationMatrix.data[1][1]) > rBox1 + rBox2)
+		{
+			return false;
+		}
+		// Test axis L = A2 x B2
+		rBox1 = box1.extents[0] * absRotationMatrix.data[1][2] + box1.extents[1] * absRotationMatrix.data[0][2];
+		rBox2 = box2.extents[0] * absRotationMatrix.data[2][1] + box2.extents[1] * absRotationMatrix.data[2][0];
+		if (std::abs(dirVec[1] * rotationMatrix.data[0][2] - dirVec[0] * rotationMatrix.data[1][2]) > rBox1 + rBox2)
 		{
 			return false;
 		}
 
-		rBox1 = box1.worldExtents[0] * AbsR.data[1][2] + box1.worldExtents[1] * AbsR.data[0][2];
-		rBox2 = box2.worldExtents[0] * AbsR.data[2][1] + box2.worldExtents[1] * AbsR.data[2][0];
-		if (std::abs(t[1] + R.data[0][2] - t[0] * R.data[1][2] > rBox1 + rBox2))
-		{
-			return false;
-		}
-
+		// Since no separating axis is found, the OBBs must be intersecting
 		return true;
 	}
+
 	bool BroadOBBPlaneCollision(const OBBCollider& box, const Plane& p)
 	{
-		float radius = box.worldExtents[0] * std::abs(BMath::Vector3::Dot(p.normal, box.worldOrientation[0])) +
-			box.worldExtents[1] * std::abs(BMath::Vector3::Dot(p.normal, box.worldOrientation[1])) +
-			box.worldExtents[2] * std::abs(BMath::Vector3::Dot(p.normal, box.worldOrientation[2]));
+		float radius = box.extents[0] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[0])) +
+			box.extents[1] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[1])) +
+			box.extents[2] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[2]));
 
-		float distance = BMath::Vector3::Dot(p.normal, box.worldPosition);
+		float distance = BMath::Vector3::Dot(p.normal, box.position);
 		return std::abs(distance) <= radius;
 	}
 
