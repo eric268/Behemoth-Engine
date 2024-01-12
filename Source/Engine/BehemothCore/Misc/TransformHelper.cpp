@@ -19,7 +19,7 @@ namespace Behemoth
 			}
 			else
 			{
-				LOG_MESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
+				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
 			}
 		}
 

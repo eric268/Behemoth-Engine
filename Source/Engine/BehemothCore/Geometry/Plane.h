@@ -18,5 +18,10 @@ namespace Behemoth
 		{ 
 			return -(normal.x * point.x + normal.y * point.y + normal.z * point.z);
 		}
+
+		// Point Plane
+		static BMath::Vector3 GetClosestPointOnPlane(const BMath::Vector3 point, const Plane& plane);
+		static float GetDistBetweenPointPlane(const BMath::Vector3 point, const Plane& plane);
+		static float DistToOrigin(const BMath::Vector3 point, const Plane& plane);
 	};
 }

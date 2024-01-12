@@ -6,10 +6,10 @@
 
 namespace Behemoth
 {
-	ECS::EntityHandle GameObjectFactory::CreateGameObject(ECS::Registry& registry, std::string modelFilePath, std::string texturePath, std::string entityName)
+	ECS::EntityHandle GameObjectFactory::CreateGameObject(ECS::Registry& registry, std::string modelFilePath, std::string texturePath, std::string entityName, BMath::Vector2 uvScale)
 	{
 		ECS::EntityHandle entity = registry.CreateEntity(entityName);
-		registry.AddComponent<MeshComponent>(entity, modelFilePath, texturePath);
+		registry.AddComponent<MeshComponent>(entity, modelFilePath, texturePath, uvScale);
 		registry.AddComponent<MeshInitalizeComponent>(entity);
 		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<VelocityComponent>(entity);
@@ -22,7 +22,7 @@ namespace Behemoth
 	{
 		if (!registry.IsValidHandle(parentHandle))
 		{
-			LOG_MESSAGE(MessageType::Error, "Invalid parent handle found");
+			LOGMESSAGE(MessageType::Error, "Invalid parent handle found");
 			return NULL_ENTITY;
 		}
 
@@ -36,7 +36,7 @@ namespace Behemoth
 			parentComp = registry.GetComponent<ParentComponent>(parentHandle);
 			if (!parentComp)
 			{
-				LOG_MESSAGE(MessageType::Error, "Error adding parent component to entity: " + registry.GetName(parentHandle));
+				LOGMESSAGE(MessageType::Error, "Error adding parent component to entity: " + registry.GetName(parentHandle));
 				return NULL_ENTITY;
 			}
 		}

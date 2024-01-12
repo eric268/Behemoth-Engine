@@ -36,6 +36,11 @@ namespace Behemoth
 		BMask::CollisionLayer collisionLayer;
 	};
 
+	struct PlaneColliderComponent : public ColliderComponent
+	{
+
+	};
+
 
 	struct AABBColliderComponent : public ColliderComponent
 	{

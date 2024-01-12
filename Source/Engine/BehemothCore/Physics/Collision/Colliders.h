@@ -1,5 +1,6 @@
 #pragma once
 #include "Math/MathCore.h"
+#include "Geometry/Plane.h"
 
 namespace Behemoth
 {
@@ -31,9 +32,15 @@ namespace Behemoth
 		BMath::Vector3 worldExtents;
 	};
 
+	struct PlaneCollider
+	{
+		PlaneCollider() = default;
+
+	};
+
 	struct SphereCollider
 	{
-		SphereCollider() = default;
+		SphereCollider() : radius(1.0f) {}
 		BMath::Vector3 position;
 		float radius;
 	};

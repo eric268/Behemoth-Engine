@@ -26,12 +26,12 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->right))
 		{
-			velocity -= transformComp->rightVector;
+			velocity += transformComp->rightVector;
 		}
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->left))
 		{
-			velocity += transformComp->rightVector;
+			velocity -= transformComp->rightVector;
 		}
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->up))

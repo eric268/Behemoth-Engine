@@ -19,7 +19,7 @@ namespace Behemoth
 				primitiveVerts[i].y < -primitiveVerts[i].w ||
 				primitiveVerts[i].y >  primitiveVerts[i].w ||
 				primitiveVerts[i].z > primitiveVerts[i].w ||
-				primitiveVerts[i].z <= 0.0f)
+				primitiveVerts[i].z <= -1.0f)
 				numVerticiesOutsideFrustrum++;
 		}
 
@@ -28,8 +28,6 @@ namespace Behemoth
 
 	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* entityTransform, const BoundingVolumeComponent* boundingComp)
 	{
-// 		int index = 0;
-// 		entityTransform->worldScale[index++ / 2.0f]
 		float maxScale = std::max(entityTransform->worldScale[0], std::max(entityTransform->worldScale[1], entityTransform->worldScale[2]));
 		for (const auto& p : cameraComponent->worldSpaceFrustum)
 		{

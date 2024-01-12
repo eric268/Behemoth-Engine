@@ -19,7 +19,7 @@ namespace Behemoth
 		}
 		if (maxDistance)
 		{
-			LOG_MESSAGE(MessageType::Error, "Error calculating AABB bounding volume");
+			LOGMESSAGE(MessageType::Error, "Error calculating AABB bounding volume");
 			return false;
 		}
 
@@ -53,7 +53,7 @@ namespace Behemoth
 
 		if (radius <= 0.0f)
 		{
-			LOG_MESSAGE(MessageType::Error, "Error calculating sphere bounding volume");
+			LOGMESSAGE(MessageType::Error, "Error calculating sphere bounding volume");
 			return false;
 		}
 

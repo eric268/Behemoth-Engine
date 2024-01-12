@@ -20,7 +20,6 @@ namespace Behemoth
 
 	bool NarrowOBBOBBCollision(const OBBCollider box1, const OBBCollider box2, ContactData& contactData);
 
-
 	void SetSATBestPen(int& bestIndex, real& bestPen, real absDistance, real combinedBoxes, int index);
 	void OBBVertexFaceCollision(const OBBCollider& box1, const OBBCollider& box2, const BMath::Vector3& toCenter, ContactData& contactData, int bestIndex, real pen);
 
@@ -47,6 +46,12 @@ namespace Behemoth
 		const OBBCollider& box2,
 		BMath::Vector3 axis,
 		const BMath::Vector3& toCenter);
+
+
+// 	bool DEBUG_boxAndBox(
+// 		const OBBCollider& one,
+// 		const OBBCollider& two,
+// 		ContactData data);
 
 }
 

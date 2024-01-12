@@ -32,7 +32,7 @@ namespace Behemoth
 			return meshMap[id];
 		}
 
-		LOG_MESSAGE(MessageType::Error, "Failed to copy mesh");
+		LOGMESSAGE(MessageType::Error, "Failed to copy mesh");
 		return meshMap[id];
 	}
 
@@ -90,12 +90,12 @@ namespace Behemoth
 			}
 			else
 			{
-				LOG_MESSAGE(MessageType::Error, "Error loading broad collider for " + filepath);
+				LOGMESSAGE(MessageType::Error, "Error loading broad collider for " + filepath);
 				return {};
 			}
 		}
 
-		LOG_MESSAGE(MessageType::Error, "Error finding broad collider data for " + filepath);
+		LOGMESSAGE(MessageType::Error, "Error finding broad collider data for " + filepath);
 		return {};
 	}
 
@@ -117,12 +117,12 @@ namespace Behemoth
 			}
 			else
 			{
-				LOG_MESSAGE(MessageType::Error, "Error loading broad collider for " + filepath);
+				LOGMESSAGE(MessageType::Error, "Error loading broad collider for " + filepath);
 				return {};
 			}
 		}
 
-		LOG_MESSAGE(MessageType::Error, "Error finding broad collider for " + filepath);
+		LOGMESSAGE(MessageType::Error, "Error finding broad collider for " + filepath);
 		return {};
 	}
 }

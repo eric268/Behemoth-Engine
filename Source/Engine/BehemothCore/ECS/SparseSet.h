@@ -62,7 +62,7 @@ namespace ECS
 			// If this entity already has this component then remove it and add new one assuming that the newest component is the desired one
 			if (sparse[identifier] != NULL_IDENTIFIER && dense[sparse[identifier]].GetIdentifier() == entity.GetIdentifier())
 			{
-				LOG_MESSAGE(MessageType::Warning, entity.GetName() + " already has " + typeid(component).name() + " old component removed, new one added");
+				LOGMESSAGE(MessageType::Warning, entity.GetName() + " already has " + typeid(component).name() + " old component removed, new one added");
 				RemoveComponent(entity);
 
 				// Could also just set the component but worried about not following proper delete process for components. May lead to dangling pointers/references/memory leaks
@@ -72,7 +72,7 @@ namespace ECS
 
 			if (identifier >= maxSize || sparse[identifier] != NULL_IDENTIFIER)
 			{
-				LOG_MESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
+				LOGMESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
 				return;
 			}
 

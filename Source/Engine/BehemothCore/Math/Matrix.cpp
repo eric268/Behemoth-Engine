@@ -201,14 +201,14 @@ namespace BMath
 		return m;
 	}
 
-	Vector4 Matrix4x4::GetColumn(int col) const 
+	Vector4 Matrix4x4::GetColumn(int i) const 
 	{
-		return Vector4(data[0][col], data[1][col], data[2][col], data[3][col]);
+		return Vector4(data[0][i], data[1][i], data[2][i], data[3][i]);
 	}
 
-	Vector4 Matrix4x4::GetRow(int row) const
+	Vector4 Matrix4x4::GetRow(int i) const
 	{
-		return Vector4(data[row][0], data[row][1], data[row][2], data[row][3]);
+		return Vector4(data[i][0], data[i][1], data[i][2], data[i][3]);
 	}
 
 	bool Matrix4x4::Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon)
@@ -405,7 +405,7 @@ namespace BMath
 			m._22 = cosTheta;
 			break;
 		default:
-			LOG_MESSAGE(MessageType::Warning, "Invalid axis passed to rotation");
+			LOGMESSAGE(MessageType::Warning, "Invalid axis passed to rotation");
 		}
 		return m;
 	}

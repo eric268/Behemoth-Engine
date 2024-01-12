@@ -135,7 +135,7 @@ namespace Behemoth
 	{
 		if (!sprite)
 		{
-			LOG_MESSAGE(MessageType::Error, "Null primitive attempted to be drawn");
+			LOGMESSAGE(MessageType::Error, "Null primitive attempted to be drawn");
 		}
 		sprite->Draw();
 		
@@ -145,7 +145,7 @@ namespace Behemoth
 	{
 		if (!sprite)
 		{
-			LOG_MESSAGE(MessageType::Error, "Null sprite found");
+			LOGMESSAGE(MessageType::Error, "Null sprite found");
 			return;
 		}
 
@@ -189,7 +189,7 @@ namespace Behemoth
 	{
 		if (!sprite)
 		{
-			LOG_MESSAGE(MessageType::Error, "Null sprite found");
+			LOGMESSAGE(MessageType::Error, "Null sprite found");
 			return;
 		}
 

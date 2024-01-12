@@ -13,18 +13,16 @@ namespace Behemoth
 	{
 		auto components = registry.Get<RotationComponent, TransformComponent>();
 
-		if (doOnce)
-		{
-			doOnce = false;
-			for (int i = 0; i < 12; i++)
-			{
-				entityHandles[i] = registry.CreateEntity("Debug Normals" + std::to_string(i));
-				registry.AddComponent<DebugLineComponent>(entityHandles[i]);
-			}
-		}
-
-		// DEBUG
-		counter = 0;
+// 		if (doOnce)
+// 		{
+// 			doOnce = false;
+// 			for (int i = 0; i < 12; i++)
+// 			{
+// 				entityHandles[i] = registry.CreateEntity("Debug Normals" + std::to_string(i));
+// 				registry.AddComponent<DebugLineComponent>(entityHandles[i]);
+// 			}
+// 		}
+// 		counter = 0;
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{

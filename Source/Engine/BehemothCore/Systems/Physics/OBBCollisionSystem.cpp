@@ -17,7 +17,7 @@ namespace Behemoth
 		{
 			for (const auto& [entity2, OBBComp2, transformComp2] : components)
 			{
-				if (entity == entity2)
+				if (entity == entity2 || registry.GetComponent<StaticComponent>(entity))
 				{
 					continue;
 				}
@@ -40,10 +40,28 @@ namespace Behemoth
 				ContactData contactData{};
 				if ((OBBComp->collisionType & OBBComp2->collisionLayer) && NarrowOBBOBBCollision(OBBComp->collider, OBBComp2->collider, contactData))
 				{
-					LOG_MESSAGE(MessageType::Warning, "Colliding " + registry.GetName(entity));
+					NarrowOBBOBBCollision(OBBComp->collider, OBBComp2->collider, contactData);
+					LOGMESSAGE(Warning, "Colliding " + registry.GetName(entity));
 					BMath::Vector3 offset = contactData.collisionNormal * contactData.penetrationDepth;
-					// LOG_MESSAGE(MessageType::General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
-					registry.AddComponent<MoveComponent>(entity, offset);
+					LOGMESSAGE(General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
+					// registry.AddComponent<MoveComponent>(entity, offset);
+					 offset *= 1.0f;
+
+// 					transformComp->localTransform._41 += offset.x;
+// 					transformComp->localTransform._42 += offset.y;
+// 					transformComp->localTransform._43 += offset.z;
+
+					transformComp->worldTransform._41 += offset.x;
+					transformComp->worldTransform._42 += offset.y;
+					transformComp->worldTransform._43 += offset.z;
+
+					transformComp->worldPosition += offset;
+					// transformComp->localPosition += offset;
+
+					transformComp->isDirty = true;
+
+					VelocityComponent* vel = registry.GetComponent<VelocityComponent>(entity);
+					vel->velocity.y += 9.81 * deltaTime;
 				}
 			}
 		}

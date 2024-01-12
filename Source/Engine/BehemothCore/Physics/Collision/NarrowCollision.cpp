@@ -179,7 +179,7 @@ namespace Behemoth
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + EPSILON;
+				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + 1e-4;
 			}
 		}
 
@@ -430,7 +430,7 @@ namespace Behemoth
 	{
 		real pen = combinedBoxes - absDistance;
 
-		if (pen < 1e-3) // is parallel
+		if (pen < 1e-2) // is parallel
 		{
 			return;
 		}
@@ -583,5 +583,187 @@ namespace Behemoth
 
 		return b1 + b2 - distance;
 	}
+// 
+// 
+// 
+// 
+// 	bool DEBUG_tryAxis(
+// 		const OBBCollider& one,
+// 		const OBBCollider& two,
+// 		BMath::Vector3 axis,
+// 		const BMath::Vector3& toCentre,
+// 		unsigned index,
+// 
+// 		// These values may be updated
+// 		real& smallestPenetration,
+// 		unsigned& smallestCase
+// 	)
+// 	{
+// 		// Make sure we have a normalized axis, and don't check almost parallel axes
+// 		if (BMath::Vector3::SquaredMagnitude(axis) < 0.0001) 
+// 			return true;
+// 		axis.Normalize();
+// 
+// 		real penetration = penetrationOnAxis(one, two, axis, toCentre);
+// 
+// 		if (penetration < 0) return false;
+// 		if (penetration < smallestPenetration) {
+// 			smallestPenetration = penetration;
+// 			smallestCase = index;
+// 		}
+// 		return true;
+// 	}
+// 
+// 	// FOR TESTING ONLY DELETE BEFORE SUBMISSION 
+// #define CHECK_OVERLAP(axis, index) \
+//     if (!DEBUG_tryAxis(one, two, (axis), toCentre, (index), pen, best)) return false;
+// 
+// 	bool DEBUG_boxAndBox(
+// 		const OBBCollider& one,
+// 		const OBBCollider& two,
+// 		ContactData contactData
+// 	)
+// 	{
+// 		//if (!IntersectionTests::boxAndBox(one, two)) return 0;
+// 
+// 		// Find the vector between the two centres
+// 		BMath::Vector3 toCentre = two.orientation[3] - one.orientation[3];
+// 
+// 		// We start assuming there is no contact
+// 		real pen = std::numeric_limits<real>::max();
+// 		unsigned best = 0xffffff;
+// 
+// 		// Now we check each axes, returning if it gives us
+// 		// a separating axis, and keeping track of the axis with
+// 		// the smallest penetration otherwise.
+// 		CHECK_OVERLAP(one.orientation[0], 0);
+// 		CHECK_OVERLAP(one.orientation[1], 1);
+// 		CHECK_OVERLAP(one.orientation[2], 2);
+// 
+// 		CHECK_OVERLAP(two.orientation[0], 3);
+// 		CHECK_OVERLAP(two.orientation[1], 4);
+// 		CHECK_OVERLAP(two.orientation[2], 5);
+// 
+// 		// Store the best axis-major, in case we run into almost
+// 		// parallel edge collisions later
+// 		unsigned bestSingleAxis = best;
+// 
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[0], two.orientation[0]), 6);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[0], two.orientation[1]), 7);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[0], two.orientation[2]), 8);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[1], two.orientation[0]), 9);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[1], two.orientation[1]), 10);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[1], two.orientation[2]), 11);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[2], two.orientation[0]), 12);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[2], two.orientation[1]), 13);
+// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[2], two.orientation[2]), 14);
+// 
+// 		// Make sure we've got a result.
+// 		assert(best != 0xffffff);
+// 
+// 		// We now know there's a collision, and we know which
+// 		// of the axes gave the smallest penetration. We now
+// 		// can deal with it in different ways depending on
+// 		// the case.
+// 		if (best < 3)
+// 		{
+// 			// We've got a vertex of box two on a face of box one.
+// 			OBBVertexFaceCollision(one, two, toCentre, contactData, best, pen);
+// 			return 1;
+// 		}
+// 		else if (best < 6)
+// 		{
+// 			// We've got a vertex of box one on a face of box two.
+// 			// We use the same algorithm as above, but swap around
+// 			// one and two (and therefore also the vector between their
+// 			// centres).
+// 			OBBVertexFaceCollision(two, one, toCentre * -1.0f, contactData, best - 3, pen);
+// 			return 1;
+// 		}
+// 		else
+// 		{
+// 			// We've got an edge-edge contact. Find out which axes
+// 			best -= 6;
+// 			unsigned oneAxisIndex = best / 3;
+// 			unsigned twoAxisIndex = best % 3;
+// 			BMath::Vector3 oneAxis = one.orientation[oneAxisIndex];
+// 			BMath::Vector3 twoAxis = two.orientation[twoAxisIndex];
+// 			BMath::Vector3 axis = BMath::Vector3::Cross(oneAxis, twoAxis);
+// 			axis.Normalize();
+// 
+// 			// The axis should point from box one to box two.
+// 			if (BMath::Vector3::Dot(axis, toCentre) > 0) axis = axis * -1.0f;
+// 
+// 			// We have the axes, but not the edges: each axis has 4 edges parallel
+// 			// to it, we need to find which of the 4 for each object. We do
+// 			// that by finding the point in the centre of the edge. We know
+// 			// its component in the direction of the box's collision axis is zero
+// 			// (its a mid-point) and we determine which of the extremes in each
+// 			// of the other axes is closest.
+// 			BMath::Vector3 ptOnOneEdge = one.extents;
+// 			BMath::Vector3 ptOnTwoEdge = two.extents;
+// 			for (unsigned i = 0; i < 3; i++)
+// 			{
+// 				if (i == oneAxisIndex) ptOnOneEdge[i] = 0;
+// 				else if (BMath::Vector3::Dot(one.orientation[i], axis) > 0) ptOnOneEdge[i] = -ptOnOneEdge[i];
+// 
+// 				if (i == twoAxisIndex) ptOnTwoEdge[i] = 0;
+// 				else if (BMath::Vector3::Dot(two.orientation[i], axis) < 0) ptOnTwoEdge[i] = -ptOnTwoEdge[i];
+// 			}
+// 
+// 			// Move them into world coordinates (they are already oriented
+// 			// correctly, since they have been derived from the axes).
+// 			BMath::Matrix4x4 box1Transform {};
+// 
+// 			for (int i = 0; i < 3; i++)
+// 			{
+// 				for (int j = 0; j < 3; j++)
+// 				{
+// 					box1Transform.data[i][j] = one.orientation[i][j] * one.extents[i];
+// 				}
+// 			}
+// 
+// 			box1Transform._41 = one.position.x;
+// 			box1Transform._42 = one.position.y;
+// 			box1Transform._43 = one.position.z;
+// 
+// 
+// 			BMath::Matrix4x4 box2Transform {};
+// 
+// 			for (int i = 0; i < 3; i++)
+// 			{
+// 				for (int j = 0; j < 3; j++)
+// 				{
+// 					box2Transform.data[i][j] = two.orientation[i][j] * two.extents[i];
+// 				}
+// 			}
+// 
+// 			box2Transform._41 = two.position.x;
+// 			box2Transform._42 = two.position.y;
+// 			box2Transform._43 = two.position.z;
+// 
+// 			ptOnOneEdge = BMath::Vector3(box1Transform * BMath::Vector4(ptOnOneEdge, 1.0f));
+// 			ptOnTwoEdge = BMath::Vector3(box2Transform * BMath::Vector4(ptOnTwoEdge, 1.0f));
+// 
+// 			// So we have a point and a direction for the colliding edges.
+// 			// We need to find out point of closest approach of the two
+// 			// line-segments.
+// 			BMath::Vector3 vertex = CalculateOBBContactPoint(
+// 				ptOnOneEdge, oneAxis, one.extents[oneAxisIndex],
+// 				ptOnTwoEdge, twoAxis, two.extents[twoAxisIndex],
+// 				bestSingleAxis > 2
+// 			);
+// 
+// 			// We can fill the contact.
+// 		
+// 
+// 			contactData.penetrationDepth= pen;
+// 			contactData.collisionNormal = axis;
+// 			contactData.collisionPoint = vertex;
+// 
+// 			return 1;
+// 		}
+// 		return 0;
+// 	}
 
 }

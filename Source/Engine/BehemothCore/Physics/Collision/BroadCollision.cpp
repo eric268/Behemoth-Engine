@@ -276,16 +276,6 @@ namespace Behemoth
 		return std::abs(distance) <= radius;
 	}
 
-	// Primitive Collision
-	Point GetClosestPointOnPlane(Point point, const Plane& plane)
-	{
-		float t = BMath::Vector3::Dot(plane.normal, point);
-		return point - plane.normal * t;
-	}
-	float GetDistBetweenPointPlane(const Point point, const Plane& plane)
-	{
-		return BMath::Vector3::Dot(plane.normal, point) - plane.distance;
-	}
 
 	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint)
 	{

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-enum class MessageType
+enum MessageType
 {
 	General,
 	Warning,
@@ -14,4 +14,4 @@ void Log(MessageType type, const std::string& message, const std::string& filena
 std::string TrimFilenamePath(const std::string& fullPath);
 
 
-#define LOG_MESSAGE(type, message) Log(type, message, __FILE__, __LINE__)
+#define LOGMESSAGE(type, message) Log(type, message, __FILE__, __LINE__)

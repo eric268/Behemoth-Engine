@@ -31,7 +31,7 @@ namespace Behemoth
 				if ((sphereColliderComp->collisionType & sphereColliderComp2->collisionLayer) && NarrowSphereSphereCollision(sphereColliderComp->collider, sphereColliderComp2->collider, contactData))
 				{
 					BMath::Vector3 offset = contactData.collisionNormal * contactData.penetrationDepth;
-					LOG_MESSAGE(MessageType::General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
+					LOGMESSAGE(MessageType::General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
 					BMath::Vector3 newLocation = BMath::Vector3(transformComp->localTransform._41 + offset.x, transformComp->localTransform._42 + offset.y, transformComp->localTransform._43 + offset.z);
 					registry.AddComponent<MoveComponent>(entity, offset);
 

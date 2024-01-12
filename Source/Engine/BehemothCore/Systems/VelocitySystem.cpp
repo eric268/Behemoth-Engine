@@ -15,7 +15,7 @@ namespace Behemoth
 			if (registry.GetComponent<StaticComponent>(entity) && velocityComp->velocity != BMath::Vector3::Zero())
 			{
 				velocityComp->velocity = BMath::Vector3::Zero();
-				LOG_MESSAGE(MessageType::Warning, "Attempting to move static entity named: " + registry.GetName(entity));
+				LOGMESSAGE(MessageType::Warning, "Attempting to move static entity named: " + registry.GetName(entity));
 				continue;
 			}
 

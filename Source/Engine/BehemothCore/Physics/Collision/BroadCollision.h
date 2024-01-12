@@ -26,11 +26,6 @@ namespace Behemoth
 	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint);
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere);
 
-
-	// Point Plane
-	Point GetClosestPointOnPlane(const Point point, const Plane& plane);
-	float GetDistBetweenPointPlane(const Point point, const Plane& plane);
-
 	// Point AABB
 	Point ClosestPBetweenPointAABB(const Point p, const AABBCollider& collider);
 	float GetSqDistBetweenPointAABB(const Point p, const AABBCollider& collider);

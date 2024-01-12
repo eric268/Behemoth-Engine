@@ -11,7 +11,7 @@ namespace Behemoth
 		std::ifstream file(modelPath, std::ios::in);
 		if (!file.is_open())
 		{
-			LOG_MESSAGE(MessageType::Warning, modelPath + " not found");
+			LOGMESSAGE(MessageType::Warning, modelPath + " not found");
 			return false;
 		}
 		std::vector<VertexData> triangle;
