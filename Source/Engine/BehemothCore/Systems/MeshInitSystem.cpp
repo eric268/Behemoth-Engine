@@ -7,6 +7,7 @@
 #include "Geometry/Mesh.h"
 #include "Application/ResourceManager.h"
 #include "Misc/Log.h"
+#include "Misc/TransformHelper.h"
 
 namespace Behemoth
 {
@@ -25,14 +26,15 @@ namespace Behemoth
 				InitMesh(meshComponent->mesh);
 
 				// Make function for this
-				if (meshInitComp->initBoundingVolume)
+				if (meshInitComp->initBroadCollider)
 				{
-					GenerateAABBBoundingVolume(registry, meshComponent, entity);
+					CalculateRotatedAABB(registry, meshComponent, entity);
 				}
 
 				// Make function for this
-				if (meshInitComp->initBroadCollider)
+				if (meshInitComp->initBoundingVolume)
 				{
+					// Do a check if the cube is rotated, if so 
 					GenerateSphereBoundingVolume(registry, meshComponent, entity);
 				}
 			}
@@ -83,9 +85,12 @@ namespace Behemoth
 			{
 				LOGMESSAGE(Error, "Error getting transform from entity: " + registry.GetName(handle));
 			}
-
-			broadCollider->extents = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName).worldExtents;
-			broadCollider->collider.worldExtents = broadCollider->extents;
+			BMath::Vector3 temp = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName).worldExtents;
+			
+			// temp *= 2.0f * std::sqrt(3) / 2.0f; This is to ensure that the cube stays within the aabb
+			
+			broadCollider->extents = temp;
+			broadCollider->collider.worldExtents = temp;
 		}
 	}
 	void MeshInitSystem::GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
@@ -101,4 +106,45 @@ namespace Behemoth
 		}
 	}
 
+	void MeshInitSystem::CalculateRotatedAABB(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
+	{
+		registry.AddComponent<BroadColliderComponent>(handle);
+		BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(handle);
+		if (broadCollider)
+		{
+			BMath::Vector3 scale = BMath::Vector3::One();
+			AABBCollider baseCollider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName);
+			AABBCollider rotatedCollider{};
+
+			if (TransformComponent* transformComp = registry.GetComponent<TransformComponent>(handle))
+			{
+				scale = transformComp->worldScale;
+				BMath::Matrix3x3 rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
+
+				GetRotatedAABB(baseCollider, rot,  rotatedCollider);
+			}
+			else
+			{
+				LOGMESSAGE(Error, "Error getting transform from entity: " + registry.GetName(handle));
+			}
+
+
+			// temp *= 2.0f * std::sqrt(3) / 2.0f; This is to ensure that the cube stays within the aabb
+
+			broadCollider->extents = rotatedCollider.worldExtents;
+			broadCollider->collider.worldExtents = broadCollider->extents;
+		}
+	}
+
+	void MeshInitSystem::GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3& rotation,  AABBCollider& result)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			result.worldExtents[i] = 0.0f;
+			for (int j = 0; j < 3; j++)
+			{
+				result.worldExtents[i] += std::abs(rotation.data[i][j]) * a.worldExtents[i];
+			}
+		}
+	}
 }
