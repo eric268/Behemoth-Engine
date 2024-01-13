@@ -22,7 +22,7 @@ namespace Behemoth
 	class BroadCollisionSystem
 	{
 	public:
-		using DynamicEntities = std::vector <std::tuple<ECS::Entity, RigidBodyComponent*, VelocityComponent*, TransformComponent*, AABBColliderComponent*>>;
+		using DynamicEntities = std::vector <std::tuple<ECS::Entity, RigidBodyComponent*, VelocityComponent*, TransformComponent*, BroadColliderComponent*>>;
 
 		void Run(const float deltaTime, ECS::Registry& registry);
 
@@ -34,16 +34,16 @@ namespace Behemoth
 
 			for (const auto& [entity, type, velocity, transform, collider] : dynamicEntities)
 			{
-				// collider->collider->worldPosition = transform->worldPosition + collider->localPositionOffset;
-// 
-// 				for (const auto& [entities, bvhRootComp] : bvhComponent)
-// 				{
-// 					// This is for AABB do a seperate one for lines or other collider types
-// 					if (CheckAABBCollision(entity, collider->collider, bvhRootComp->rootNode))
-// 					{
-// 						std::cout << "BVH Collision\n";
-// 					}
-// 				}
+ 				 collider->collider.worldPosition = transform->worldPosition + collider->extents;
+
+				for (const auto& [entities, bvhRootComp] : bvhComponent)
+				{
+					// This is for AABB do a separate one for lines or other collider types
+					if (CheckAABBCollision(entity, collider->collider, bvhRootComp->rootNode))
+					{
+						std::cout << "BVH Collision\n";
+					}
+ 				}
 			}
 		}
 

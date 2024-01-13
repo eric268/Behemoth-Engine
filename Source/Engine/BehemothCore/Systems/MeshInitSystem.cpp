@@ -73,12 +73,24 @@ namespace Behemoth
 		BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(handle);
 		if (broadCollider)
 		{
-			broadCollider->collider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName);
+			BMath::Vector3 scale = BMath::Vector3::One();
+
+			if (TransformComponent* transformComp = registry.GetComponent<TransformComponent>(handle))
+			{
+				scale = transformComp->worldScale;
+			}
+			else
+			{
+				LOGMESSAGE(Error, "Error getting transform from entity: " + registry.GetName(handle));
+			}
+
+			broadCollider->extents = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName).worldExtents;
+			broadCollider->collider.worldExtents = broadCollider->extents;
 		}
 	}
 	void MeshInitSystem::GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
 	{
-		registry.AddComponent<BoundingVolumeComponent>(handle, true);
+		registry.AddComponent<BoundingVolumeComponent>(handle, false);
 		BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(handle);
 		if (boundingVolume)
 		{

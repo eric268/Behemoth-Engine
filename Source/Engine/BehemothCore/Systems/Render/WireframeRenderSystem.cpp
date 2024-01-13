@@ -34,7 +34,7 @@ namespace Behemoth
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, transformComp, boundingVolume))
 			{
-				// continue;
+				continue;
 			}
 			const BMath::Matrix4x4 wireframeTranform = GetWireframeTransform(transformComp->worldTransform, transformComp->worldScale, wireframeComp->scale, wireframeComp->allowRotation);
 			ProcessWireframe(wireframeComp->mesh, wireframeTranform, viewProjMatrix, true, wireframeComp->wireframeColor);

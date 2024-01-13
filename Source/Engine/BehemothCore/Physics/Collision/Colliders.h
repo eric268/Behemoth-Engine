@@ -8,13 +8,22 @@ namespace Behemoth
 	{
 		None = 0,
 		AABB,
-		OBB,
 		Sphere,
-		CompoundCollider
+		OBB
 	};
 
-	struct Collider
+	struct AABBCollider
 	{
+		AABBCollider() = default;
+		BMath::Vector3 worldPosition;
+		BMath::Vector3 worldExtents;
+	};
+
+	struct SphereCollider
+	{
+		SphereCollider() : radius(1.0f) {}
+		BMath::Vector3 position;
+		float radius;
 	};
 
 	struct OBBCollider
@@ -25,29 +34,4 @@ namespace Behemoth
 		BMath::Vector3 extents;
 	};
 
-	struct AABBCollider
-	{
-		AABBCollider() = default;
-		BMath::Vector3 worldPosition;
-		BMath::Vector3 worldExtents;
-	};
-
-	struct PlaneCollider
-	{
-		PlaneCollider() = default;
-
-	};
-
-	struct SphereCollider
-	{
-		SphereCollider() : radius(1.0f) {}
-		BMath::Vector3 position;
-		float radius;
-	};
-
-	// Made up of multiple OBB colliders
-	struct CompoundCollider
-	{
-		std::vector<OBBCollider> compoundColliders;
-	};
 }

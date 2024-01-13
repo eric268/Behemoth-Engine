@@ -74,7 +74,8 @@ namespace Behemoth
 	bool BroadLinePlaneIntersection(const Point& p1, const Point& p2, const Plane& plane, float& dist, Point& intersectionP)
 	{
 		BMath::Vector3 ab = p2 - p1;
-		dist = (plane.d - BMath::Vector3::Dot(plane.normal, p1)) / (BMath::Vector3::Dot(plane.normal, ab));
+		dist = (plane.d -BMath::Vector3::Dot(plane.normal, p1)) / (BMath::Vector3::Dot(plane.normal, ab));
+		
 		if (dist >= 0.0f && dist <= 1.0f)
 		{
 			intersectionP = p1 + ab * dist;

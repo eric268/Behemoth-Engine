@@ -33,9 +33,10 @@ namespace Behemoth
 	struct BVHData
 	{
 		BVHData() : handle(), collider() {}
-		BVHData(ECS::EntityHandle handle, AABBCollider collider) : handle(handle), collider(collider) {}
+		BVHData(ECS::EntityHandle handle, AABBCollider collider, BMath::Vector3 scale) : handle(handle), collider(collider), entityScale(scale) {}
 		ECS::EntityHandle handle;
 		AABBCollider collider;
+		BMath::Vector3 entityScale;
 	};
 
 	class BVHFactory
@@ -71,17 +72,17 @@ namespace Behemoth
 		template <typename ...T>
 		std::vector<BVHData> GetSceneColliderData(ECS::Registry& registry)
 		{
-			auto components = registry.Get<TransformComponent, AABBColliderComponent, T...>();
+			auto components = registry.Get<TransformComponent, BroadColliderComponent, T...>();
 			std::vector<BVHData> data;
 			data.reserve(components.size());
 
 			for (auto& componentTuple : components)
 			{
-				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, AABBColliderComponent* colliderComp, auto* ...args)
+				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, BroadColliderComponent* colliderComp, auto* ...args)
 					{
 
 						colliderComp->collider.worldPosition = transformComp->worldPosition;
-						data.push_back(BVHData(entity, colliderComp->collider));
+						data.push_back(BVHData(entity, colliderComp->collider, transformComp->worldScale));
 
 					}, componentTuple);
  			}

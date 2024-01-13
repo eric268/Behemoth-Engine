@@ -45,7 +45,7 @@ namespace Behemoth
 					BMath::Vector3 offset = contactData.collisionNormal * contactData.penetrationDepth;
 					LOGMESSAGE(General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
 					// registry.AddComponent<MoveComponent>(entity, offset);
-					 offset *= 1.0f;
+					 offset *= 1.1f;
 
 // 					transformComp->localTransform._41 += offset.x;
 // 					transformComp->localTransform._42 += offset.y;

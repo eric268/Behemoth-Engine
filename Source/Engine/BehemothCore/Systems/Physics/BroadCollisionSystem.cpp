@@ -12,7 +12,7 @@ namespace Behemoth
 {
 	void BroadCollisionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, AABBColliderComponent>();
+		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, BroadColliderComponent>();
 		CheckCollision<StaticComponent>(registry, dynamicEntities);
 		CheckCollision<RigidBodyComponent>(registry, dynamicEntities);
 	}

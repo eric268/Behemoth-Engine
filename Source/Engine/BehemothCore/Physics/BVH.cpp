@@ -125,8 +125,8 @@ namespace Behemoth
 
 		for (const BVHData& data : colliders)
 		{
-			BMath::Vector3 colliderMin = data.collider.worldPosition - data.collider.worldExtents;
-			BMath::Vector3 colliderMax = data.collider.worldPosition + data.collider.worldExtents;
+			BMath::Vector3 colliderMin = data.collider.worldPosition - data.collider.worldExtents * data.entityScale;
+			BMath::Vector3 colliderMax = data.collider.worldPosition + data.collider.worldExtents * data.entityScale;
 
 			for (int i = 0; i < 3; i++)
 			{

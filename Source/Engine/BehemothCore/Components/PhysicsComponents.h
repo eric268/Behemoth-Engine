@@ -36,11 +36,6 @@ namespace Behemoth
 		BMask::CollisionLayer collisionLayer;
 	};
 
-	struct PlaneColliderComponent : public ColliderComponent
-	{
-
-	};
-
 
 	struct AABBColliderComponent : public ColliderComponent
 	{
@@ -61,7 +56,9 @@ namespace Behemoth
 	struct BroadColliderComponent : public ColliderComponent
 	{
 		BroadColliderComponent(bool enabled = true) :
-			ColliderComponent(enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider) {}
+			ColliderComponent(enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider),
+		extents(1.0f) 
+		{}
 
 		AABBCollider collider;
 		BMath::Vector3 extents;
