@@ -266,6 +266,7 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
+    <ClInclude Include="BehemothCore\ECS\Page.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">

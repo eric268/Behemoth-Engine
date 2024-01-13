@@ -25,16 +25,14 @@ namespace Behemoth
 			{
 				InitMesh(meshComponent->mesh);
 
-				// Make function for this
+
 				if (meshInitComp->initBroadCollider)
 				{
 					CalculateRotatedAABB(registry, meshComponent, entity);
 				}
 
-				// Make function for this
 				if (meshInitComp->initBoundingVolume)
 				{
-					// Do a check if the cube is rotated, if so 
 					GenerateSphereBoundingVolume(registry, meshComponent, entity);
 				}
 			}

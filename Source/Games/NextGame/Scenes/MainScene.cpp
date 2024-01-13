@@ -65,6 +65,40 @@ MainScene::MainScene()
  	registry.AddComponent<Behemoth::OBBColliderComponent>(playerHandle, BMath::Vector3(1.0f));
  	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0));
  	registry.AddComponent<Behemoth::RotationComponent>(playerHandle, BMath::Quaternion(DEGREE_TO_RAD(45.0f), BMath::Vector3(0, 0, 1)));
+
+	auto comps = registry.GetMultipleComponents< Behemoth::OBBColliderComponent, Behemoth::SphereColliderComponent, Behemoth::AABBColliderComponent>(playerHandle);
+
+	auto& [obb, sphere, aabb] = comps;
+
+	if (obb)
+	{
+		LOGMESSAGE(General, "OBB Found");
+	}
+	else
+	{
+		LOGMESSAGE(Warning, "OBB Not Found");
+	}
+
+
+	if (sphere)
+	{
+		LOGMESSAGE(General, "OBB Found");
+	}
+	else
+	{
+		LOGMESSAGE(Warning, "OBB Not Found");
+	}
+
+
+	if (aabb)
+	{
+		LOGMESSAGE(General, "OBB Found");
+	}
+	else
+	{
+		LOGMESSAGE(Warning, "OBB Not Found");
+	}
+	
 }
 
 void MainScene::Initalize()
