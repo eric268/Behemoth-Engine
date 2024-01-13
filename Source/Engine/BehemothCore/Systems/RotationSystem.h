@@ -19,6 +19,7 @@ namespace Behemoth
 
 	private:
 		BMath::Vector3 GetForwardVector(const BMath::Matrix4x4& transformMatrix);
+		BMath::Vector3 GetUpVector(const BMath::Matrix4x4& transformMatrix);
 		BMath::Vector3 GetRightVector(const BMath::Matrix4x4& transformMatrix);
 
 		void ApplyRotation(BMath::Matrix4x4& transform, const BMath::Matrix4x4& rotationMatrix);

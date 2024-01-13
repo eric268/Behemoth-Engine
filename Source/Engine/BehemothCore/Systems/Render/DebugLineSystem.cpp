@@ -44,7 +44,7 @@ namespace Behemoth
 
 			ProcessLine(p1, p2, viewProjMatrix, lineComp->color);
 		}
-		// DestroyExpiredLines(registry, expiredLines);
+		 DestroyExpiredLines(registry, expiredLines);
 	}
 
 

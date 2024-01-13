@@ -33,14 +33,18 @@ namespace Behemoth
 			// Do not want to perform calculations if nothing is to be drawn
 			if (!meshComp->isVisible)
 			{
+
 				continue;
 			}
+
 
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolume))
 			{
+				LOGMESSAGE(Warning, "");
 				continue;
 			}
+			LOGMESSAGE(General, "");
 
 			ProcessMesh(meshComp->mesh, mainCameraPosition, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty);
 			transformComp->isDirty = false;

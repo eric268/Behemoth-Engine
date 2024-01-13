@@ -16,7 +16,7 @@ namespace Behemoth
 
 	private:
 		void UpdatePerspectiveMatrix(CameraComponent* component, const TransformComponent* transformComponent);
-		void UpdateFrustrum(CameraComponent* cameraComponent);
+		void UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transform);
 
 		float GetDistance(const BMath::Matrix4x4& m, int index);
 	};

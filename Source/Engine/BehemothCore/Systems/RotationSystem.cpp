@@ -98,7 +98,7 @@ namespace Behemoth
 
 		transformComp->forwardVector = GetForwardVector(transformComp->worldTransform);
 		transformComp->rightVector = GetRightVector(transformComp->worldTransform);
-		transformComp->upVector = BMath::Vector3::Up();
+		transformComp->upVector = GetUpVector(transformComp->worldTransform);
 	}
 
 
@@ -136,6 +136,12 @@ namespace Behemoth
 	{
 		return  BMath::Vector3(-transformMatrix._13, -transformMatrix._23, -transformMatrix._33).Normalize();
 	}
+
+	BMath::Vector3 RotationSystem::GetUpVector(const BMath::Matrix4x4& transformMatrix)
+	{
+		return  BMath::Vector3(transformMatrix._12, -transformMatrix._22, -transformMatrix._32).Normalize();
+	}
+
 	BMath::Vector3 RotationSystem::GetRightVector(const BMath::Matrix4x4& transformMatrix)
 	{
 		return BMath::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();

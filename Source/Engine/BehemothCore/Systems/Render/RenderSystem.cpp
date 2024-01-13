@@ -31,9 +31,9 @@ namespace Behemoth
 		float maxScale = std::max(entityTransform->worldScale[0], std::max(entityTransform->worldScale[1], entityTransform->worldScale[2]));
 		for (const auto& p : cameraComponent->worldSpaceFrustum)
 		{
-			float distance = BMath::Vector3::Dot(entityTransform->worldPosition - boundingComp->localPosition, p.normal) + p.d;
+			float distance = BMath::Vector3::Dot(entityTransform->worldPosition + boundingComp->localPosition, p.normal) + p.d;
 			float radius = boundingComp->radius * maxScale;
-			if (distance < -radius)
+			if (distance < -radius )
 			{
 				 return false;
 			}
