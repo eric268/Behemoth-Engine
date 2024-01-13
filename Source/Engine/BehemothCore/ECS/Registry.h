@@ -94,19 +94,28 @@ namespace ECS
 		}
 
 		template<IsComponent T, typename ... Args>
-		bool AddComponent(EntityHandle handle, Args&& ... parameters)
+		T* AddComponent(EntityHandle handle, Args&& ... parameters)
 		{
 			Entity entity = GetEntityFromHandle(handle);
 			if (entity.IsValid())
 			{
-				AddComponent<T>(entity, std::forward<Args>(parameters)...);
-				return true;
+				auto comp = AddComponent<T>(entity, std::forward<Args>(parameters)...);
+				
+				if (comp)
+				{
+					return comp;
+				}
+				else
+				{
+					LOGMESSAGE(Error, "Null component created");
+				}
+
 			}
 			else
 			{
 				std::string message = std::string("Failed to add ") + typeid(T).name() + " to entity: " + entity.name;
 				LOGMESSAGE(MessageType::Error, message);
-				return false;
+				return nullptr;
 			}
 		}
 
@@ -122,12 +131,21 @@ namespace ECS
 		}
 
 		template<IsComponent T, typename ... Args>
-		void AddComponent(Entity entity, Args&& ... parameters)
+		T* AddComponent(Entity entity, Args&& ... parameters)
 		{
 			T component(std::forward<Args>(parameters)...);
 			size_t index = Generator::Value<T>();
 			auto set = GetComponent<T>();
-			set->AddComponent(entity, component);;
+			auto comp = set->AddComponent(entity, component);
+			if (comp)
+			{
+				return comp;
+			}
+			else
+			{
+				LOGMESSAGE(Error, "Null Component created in sparse set");
+				return nullptr;
+			}
 		}
 
 		template<IsComponent T>

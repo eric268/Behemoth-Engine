@@ -49,16 +49,16 @@ namespace ECS
 			return pages[pageIndex][elementIndex];
 		}
 // 
-// 		T& opeartor[](const ECS::entity_id& identifier)
-// 		{
-// 			std::size_t pageIndex = identifier / pageSize;
-// 			std::size_t elementIndex = identifier % pageSize;
-// 
-// 			assert(pageIndex < pages.size());
-// 			assert(elementIndex < pages.size());
-// 
-// 			return pages[pageIndex][elementIndex];
-// 		}
+		T& operator[](const ECS::entity_id& identifier)
+		{
+			std::size_t pageIndex = identifier / pageSize;
+			std::size_t elementIndex = identifier % pageSize;
+
+			assert(pageIndex < pages.size());
+			assert(elementIndex < pageSize);
+
+			return pages[pageIndex][elementIndex];
+		}
 
 		T& Get(const ECS::entity_id& identifier)
 		{

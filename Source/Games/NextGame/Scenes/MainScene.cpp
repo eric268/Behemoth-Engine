@@ -50,7 +50,26 @@ MainScene::MainScene()
 // 	// static 
 	registry.AddComponent<Behemoth::MoveComponent>(cubes[0], BMath::Vector3(-2.0f, 0.0f, 0.0f));
  	registry.AddComponent<Behemoth::MoveComponent>(cubes[1], BMath::Vector3(2.0f, 0.0f, 0.0f));
- 	registry.AddComponent<Behemoth::MoveComponent>(cubes[2], BMath::Vector3(0.0f, 3.0f, 0.0f));
+ 	auto comp = registry.AddComponent<Behemoth::MoveComponent>(cubes[2], BMath::Vector3(0.0f, 3.0f, 0.0f));
+	registry.RemoveComponent<Behemoth::MoveComponent>(cubes[2]);
+
+	for (int i = 0; i < 1000; i++)
+	{
+		auto temp = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "temp");
+		registry.AddComponent<Behemoth::ScalingComponent>(temp, BMath::Vector3(1.f, 1.0, 1.f));
+		registry.AddComponent<Behemoth::StaticComponent>(temp);
+	}
+
+	if (comp)
+	{
+		comp->location = BMath::Vector3(10, 0, 0);
+		LOGMESSAGE(General, "Working");
+	}
+	else
+	{
+		LOGMESSAGE(Warning, "Not working");
+	}
+
  	// registry.AddComponent<Behemoth::MoveComponent>(cubes[3], BMath::Vector3(0.0f, -3.0f, 0.0f));
 //  
 //  	//dynamic

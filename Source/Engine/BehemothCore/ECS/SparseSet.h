@@ -52,7 +52,7 @@ namespace ECS
 			available++;
 		}
 
-		void AddComponent(const Entity& entity, const T& component)
+		T* AddComponent(const Entity& entity, const T& component)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
@@ -71,7 +71,7 @@ namespace ECS
 			if (identifier >= maxSize || Entity::GetVersion(sparse[identifier]) != NULL_VERSION)
 			{
 				LOGMESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
-				return;
+				return nullptr;
 			}
 
 			if (available > 0 && next != NULL_IDENTIFIER)
@@ -89,6 +89,7 @@ namespace ECS
 			}
 
 			components.Add(identifier, component);
+			return &components[identifier];
 		}
 
 		T* GetComponent(const Entity& entity)
@@ -108,7 +109,7 @@ namespace ECS
 
 			if (HasEntity(entity))
 			{
-				return &components.Get(identifier);
+				return &components[identifier];
 			}
 
 			return nullptr;
@@ -148,7 +149,7 @@ namespace ECS
 			const entity_identifier leftIdentifier = lhs.GetIdentifier();
 			const entity_identifier rightIdentifier = rhs.GetIdentifier();
 
-			std::swap(components.Get([sparse[leftIdentifier]]), components.Get([sparse[rightIdentifier]]));
+			std::swap(components[sparse[leftIdentifier]], components[sparse[rightIdentifier]]);
 		}
 
 		template<typename Compare>
