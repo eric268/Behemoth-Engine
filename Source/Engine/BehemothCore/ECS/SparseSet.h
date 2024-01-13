@@ -87,10 +87,10 @@ namespace ECS
 				sparse[identifier] = index++;
 				dense.push_back(entity);
 			}
-			components.Add(sparse[identifier], component);
-			return &components[sparse[identifier]];
-// 			components.Add(identifier, component);
-// 			return &components[identifier];
+// 			components.Add(sparse[identifier], component);
+// 			return &components[sparse[identifier]];
+			components.Add(identifier, component);
+			return &components[identifier];
 		}
 
 		T* GetComponent(const Entity& entity)
