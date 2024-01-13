@@ -11,6 +11,8 @@ namespace Behemoth
 {
 	struct MeshComponent : public ECS::Component
 	{
+		MeshComponent() : modelFileName(""), textureFileName(""), mesh(), isVisible(false) {}
+
 		MeshComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
 			modelFileName(modelName),
 			textureFileName(textureName),
@@ -27,6 +29,7 @@ namespace Behemoth
 
 	struct WireframeComponent : public ECS::Component
 	{
+		WireframeComponent() : mesh(), modelFileName(""), scale(BMath::Vector3(0.0f)), allowRotation(false), isVisible(false), wireframeColor(BMath::Vector3(1.0f)) {}
 		WireframeComponent(const std::string& modelName, BMath::Vector3 scale = BMath::Vector3::One(), bool allowRotation = true,  bool visible = true, BMath::Vector3 color = BMath::Vector3(0.0f, 1.0f, 0.0f)) : 
 			mesh(modelName), 
 			modelFileName(modelName), 
@@ -45,8 +48,9 @@ namespace Behemoth
 
 	struct BoundingVolumeComponent : public ECS::Component
 	{
+
 		BoundingVolumeComponent() : mesh("sphere.obj"), localPosition(BMath::Vector3::Zero()), radius(1.0f), isVisible(false) {}
-		BoundingVolumeComponent(bool visible = false) : mesh("sphere.obj"), localPosition(BMath::Vector3::Zero()), radius(1.0f), isVisible(visible) {}
+		BoundingVolumeComponent(bool visible) : mesh("sphere.obj"), localPosition(BMath::Vector3::Zero()), radius(1.0f), isVisible(visible) {}
 		BoundingVolumeComponent(BMath::Vector3 pos, float radius, bool visible = false) : mesh("sphere.obj"), localPosition(pos), radius(radius), isVisible(visible) {}
 		
 		Mesh mesh;

@@ -2,6 +2,8 @@
 
 #include "Entity.h"
 #include <vector>
+#include <memory>
+#include <cassert>
 
 #define DEFAULT_PAGE_SIZE 4096
 
@@ -13,40 +15,62 @@ namespace ECS
 	public:
 		using page_ptr = std::unique_ptr<T[]>;
 
+		std::size_t pageSize;
+
+		Pages(std::size_t size = DEFAULT_PAGE_SIZE) : pageSize(size) {}
+
 		std::vector<page_ptr> pages;
 
 		inline void AddPage()
 		{
-			vertexPages.push_back(std::make_unique<T[]>(DEFAULT_PAGE_SIZE));
+			pages.push_back(std::make_unique<T[]>(pageSize));
 		}
 		inline T* GetPage(std::size_t index)
 		{
-			std::size_t i = index / DEFAULT_PAGE_SIZE;
-			assert(vertexPages.size() > i);
-			return vertexPages[i].get();
+			std::size_t i = index / pageSize;
+			assert(pages.size() > i);
+			return pages[i].get();
 		}
 
-		void AddComponentToPage(const ECS::entity_id& identifier)
+		T& Add(const ECS::entity_identifier& identifier, T component)
 		{
-			while (handle / DEFAULT_PAGE_SIZE >= vertexPages.size())
+			while (identifier / pageSize >= pages.size())
 			{
 				AddPage();
 			}
 
-			std::size_t pageIndex = i / DEFAULT_PAGE_SIZE;
-			std::size_t elementIndex = i % DEFAULT_PAGE_SIZE;
-		}
-
-
-		T& opeartor[](const ECS::entity_id& identifier)
-		{
-			std::size_t pageIndex = identifier / DEFAULT_PAGE_SIZE;
-			std::size_t elementIndex = identifier % DEFAULT_PAGE_SIZE;
+			std::size_t pageIndex = identifier / pageSize;
+			std::size_t elementIndex = identifier % pageSize;
 
 			assert(pageIndex < pages.size());
+			assert(elementIndex < pageSize);
 
-			return vertexPages[pageIndex][elementIndex];
+			pages[pageIndex][elementIndex] = std::move(component);
+			return pages[pageIndex][elementIndex];
 		}
+// 
+// 		T& opeartor[](const ECS::entity_id& identifier)
+// 		{
+// 			std::size_t pageIndex = identifier / pageSize;
+// 			std::size_t elementIndex = identifier % pageSize;
+// 
+// 			assert(pageIndex < pages.size());
+// 			assert(elementIndex < pages.size());
+// 
+// 			return pages[pageIndex][elementIndex];
+// 		}
+
+		T& Get(const ECS::entity_id& identifier)
+		{
+			std::size_t pageIndex = identifier / pageSize;
+			std::size_t elementIndex = identifier % pageSize;
+
+			assert(pageIndex < pages.size());
+			assert(elementIndex < pageSize);
+
+			return pages[pageIndex][elementIndex];
+		}
+
 	private:
 
 		

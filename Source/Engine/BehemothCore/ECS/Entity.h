@@ -44,6 +44,21 @@ namespace ECS
 			return name;
 		}
 
+		void SetIDToNull()
+		{
+			ID = 0xFFFFFFFF;
+		}
+
+		void SetVersionToNull()
+		{
+			ID = (0xFFFF << 16) | (ID & 0x0000FFFF);
+		}
+
+		static void SetVersion(entity_id& ID,  entity_version version)
+		{
+			ID = (version << 16) | (ID & 0x0000FFFF);
+		}
+
 		const bool operator == (const Entity& e) const
 		{
 			return GetIdentifier() == e.GetIdentifier();
@@ -52,11 +67,6 @@ namespace ECS
 		{
 			return !(*this == e);
 		}
-		
-	private:
-		friend class Registry;
-
-		Entity(std::string name) : name(name), ID(0) {}
 
 		static inline entity_identifier GetIdentifier(entity_id ID)
 		{
@@ -67,6 +77,11 @@ namespace ECS
 		{
 			return ID >> 16;
 		}
+		
+	public:
+		friend class Registry;
+
+		Entity(std::string name) : name(name), ID(0) {}
 
 		// Only want to be able to use this in Registry class to point to next recycled entity ID
 		inline void SetIdentifier(const entity_identifier newIdentifier)

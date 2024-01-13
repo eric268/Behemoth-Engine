@@ -5,6 +5,19 @@
 #include <iostream>
 namespace Behemoth
 {
+	Mesh::Mesh() :
+		meshData{},
+		materialData{}
+	{
+		meshData.modelFileName = "";
+		materialData.textureFileName = "";
+		materialData.uvScale = { 0,0 };
+		materialData.diffuse = BMath::Vector3(0.0f);
+		materialData.specular = BMath::Vector3(0.0f);
+		materialData.shininess = 0.0f;
+	}
+
+
 	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath, const BMath::Vector2 uv) :
 		meshData{},
 		materialData{}

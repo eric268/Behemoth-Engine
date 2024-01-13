@@ -122,6 +122,7 @@ namespace Behemoth
 
 	struct ChildComponent : public ECS::Component
 	{
+		ChildComponent() : parentHandle(NULL_ENTITY) {}
 		explicit ChildComponent(ECS::EntityHandle handle) : parentHandle(handle) {}
 		ECS::EntityHandle parentHandle;
 	};

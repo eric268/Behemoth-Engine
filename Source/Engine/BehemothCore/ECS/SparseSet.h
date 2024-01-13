@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "Entity.h"
 #include "Misc/Log.h"
+#include "Page.h"
 
 // stl
 #include <vector>
@@ -23,7 +24,7 @@ namespace ECS
 	class SparseSet
 	{
 	public:
-		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_IDENTIFIER), index{}
+		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_ENTITY), index {}
 		{
 			Generator::Value<T>();
 		}
@@ -32,35 +33,32 @@ namespace ECS
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
-			if (identifier >= maxSize || sparse[identifier] == NULL_IDENTIFIER)
+			if (identifier >= maxSize || sparse[identifier] == NULL_ENTITY)
 				return;
 
-			std::uint16_t denseIndex = sparse[identifier];
-			int lastPos = dense.size() - 1;
+			Entity e = dense[sparse[identifier]];
 
-			// No need to swap if component to be removed is already the last component in the dense array
-			if (denseIndex != lastPos)
+			dense[sparse[identifier]].SetIDToNull();
+			
+			e.SetVersionToNull();
+
+			if (available > 0)
 			{
-				std::swap(dense[denseIndex], dense[lastPos]);
-				std::swap(components[denseIndex], components[lastPos]);
-
-				Entity swappedEntity = dense[denseIndex];
-				sparse[swappedEntity.GetIdentifier()] = denseIndex;
+				e.SetIdentifier(next);
 			}
 
-			dense.pop_back();
-			components.pop_back();
-
-			sparse[identifier] = NULL_IDENTIFIER;
-			index--;
+			next = identifier;
+			sparse[identifier] = e.GetID();
+			available++;
 		}
 
 		void AddComponent(const Entity& entity, const T& component)
 		{
-			std::size_t identifier = entity.GetIdentifier();
+			entity_identifier identifier = entity.GetIdentifier();
+
 
 			// If this entity already has this component then remove it and add new one assuming that the newest component is the desired one
-			if (sparse[identifier] != NULL_IDENTIFIER && dense[sparse[identifier]].GetIdentifier() == entity.GetIdentifier())
+			if (identifier < maxSize && Entity::GetIdentifier(sparse[identifier]) != NULL_IDENTIFIER && dense[sparse[identifier]].GetIdentifier() == entity.GetIdentifier())
 			{
 				LOGMESSAGE(MessageType::Warning, entity.GetName() + " already has " + typeid(component).name() + " old component removed, new one added");
 				RemoveComponent(entity);
@@ -70,22 +68,34 @@ namespace ECS
 // 				return;
 			}
 
-			if (identifier >= maxSize || sparse[identifier] != NULL_IDENTIFIER)
+			if (identifier >= maxSize || Entity::GetVersion(sparse[identifier]) != NULL_VERSION)
 			{
 				LOGMESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
 				return;
 			}
 
-			sparse[identifier] = index++;
-			dense.push_back(entity);
-			components.push_back(component);
+			if (available > 0 && next != NULL_IDENTIFIER)
+			{
+				entity_identifier identifier = next;
+				next = dense[identifier].GetIdentifier();
+				Entity::SetVersion(sparse[identifier], entity.GetVersion());
+				dense[identifier] = entity;
+				available--;
+			}
+			else
+			{
+				sparse[identifier] = index++;
+				dense.push_back(entity);
+			}
+
+			components.Add(identifier, component);
 		}
 
 		T* GetComponent(const Entity& entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
-			if (identifier >= maxSize || sparse[identifier] == NULL_IDENTIFIER)
+			if (identifier >= maxSize || sparse[identifier] == NULL_ENTITY)
 			{
 				return nullptr;
 			}
@@ -98,7 +108,7 @@ namespace ECS
 
 			if (HasEntity(entity))
 			{
-				return &components[sparse[identifier]];
+				return &components.Get(identifier);
 			}
 
 			return nullptr;
@@ -107,7 +117,7 @@ namespace ECS
 		bool HasEntity(const Entity& entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
-			if (identifier < maxSize && sparse[identifier] != NULL_IDENTIFIER)
+			if (identifier < maxSize && Entity::GetVersion(sparse[identifier]) != NULL_VERSION)
 			{
 				if (entity.GetVersion() == dense[sparse[identifier]].GetVersion())
 				{
@@ -138,7 +148,7 @@ namespace ECS
 			const entity_identifier leftIdentifier = lhs.GetIdentifier();
 			const entity_identifier rightIdentifier = rhs.GetIdentifier();
 
-			std::swap(components[sparse[leftIdentifier]], components[sparse[rightIdentifier]]);
+			std::swap(components.Get([sparse[leftIdentifier]]), components.Get([sparse[rightIdentifier]]));
 		}
 
 		template<typename Compare>
@@ -161,10 +171,13 @@ namespace ECS
 			}
 		}
 
-		std::vector<entity_identifier> sparse;
-		std::vector<T> components;
+		std::vector<entity_id> sparse;
+		Pages<T> components;
 
 		int maxSize;
 		size_t index;
+
+		entity_id next {};
+		std::size_t available{};
 	};
 }

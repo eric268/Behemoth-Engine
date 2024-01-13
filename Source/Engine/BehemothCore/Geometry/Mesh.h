@@ -31,6 +31,7 @@ namespace Behemoth
 	class Mesh
 	{
 	public:
+		Mesh();
 		Mesh(const std::string& modelPath, const std::string& texturePath = "", const BMath::Vector2 uv = {1.0f, 1.0f});
 		void GenerateMesh(const MeshData& meshData, const std::vector<VertexData>& vertexData);
 
