@@ -43,75 +43,66 @@ namespace Behemoth
 
 		BMath::Vector3 target = transformComponent->worldPosition + transformComponent->forwardVector;
 
-		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->worldPosition, target, BMath::Vector3(0,1,0));
+		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->worldPosition, target, BMath::Vector3::Up());
 		cameraComponent->inverseTransposeViewMatrix = BMath::Matrix4x4::Transpose(BMath::Matrix4x4::Inverse(cameraComponent->viewMatrix));
 	}
 
 	void CameraSystem::UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transformComp)
 	{
-		using namespace BMath;
-
-		float nearDist = cameraComponent->nearClippingPlane;
- 		float farDist = cameraComponent->farClippingPlane;
-		Vector3 p = transformComp->worldPosition;
-	 	Vector3 d = transformComp->forwardVector;
-		Vector3 up = BMath::Vector3(0,1,0);
- 		Vector3 right = transformComp->rightVector;
+		BMath::Vector3 position = transformComp->worldPosition;
+	 	BMath::Vector3 forward = transformComp->forwardVector;
+		BMath::Vector3 up = BMath::Vector3::Up();
+ 		BMath::Vector3 right = transformComp->rightVector;
 
 		const float aspectRatio = cameraComponent->windowWidth / cameraComponent->windowHeight;
 
-		float nearD = cameraComponent->nearClippingPlane;
-		float farD = cameraComponent->farClippingPlane;
-
-		float tang = std::tan(DEGREE_TO_RAD(cameraComponent->FOV) * 0.5f);
-		float nearHeight = nearD * tang;
+		float nearHeight = cameraComponent->nearClippingPlane * std::tan(DEGREE_TO_RAD(cameraComponent->FOV) * 0.5f);;
 		float nearWidth = nearHeight * aspectRatio;
-		float fh = farD * tang;
-		float fw = fh * aspectRatio;
 
-		Vector3 X, Y, Z;
-		Vector3 l = p + d;
-		Z = (p - l).Normalize();
-		X = Vector3::Cross(Vector3::Up(), Z);
-		Y = Vector3::Cross(Z, X);
+		BMath::Vector3 xAxis, yAxis, zAxis;
+		BMath::Vector3 l = position + forward;
+		zAxis = (position - l).Normalize();
+		xAxis = BMath::Vector3::Cross(up, zAxis);
+		yAxis = BMath::Vector3::Cross(zAxis, xAxis);
 
-		Vector3 nc = p - Z * nearD;
-		Vector3 fc = p + Z * farD;
+		BMath::Vector3 nearCenter = position - zAxis * cameraComponent->nearClippingPlane;
+		BMath::Vector3 farCenter  = position - zAxis * cameraComponent->farClippingPlane;
 
-		Vector3 aux, normal;
+		BMath::Vector3 dirAlongPlane{};
+		BMath::Vector3 normal{};
 
 		// Left
-		aux = ((nc - X * nearWidth) - p).Normalize();
-		normal = Vector3::Cross(aux, Y);
-		cameraComponent->worldSpaceFrustum[0].normal = normal;
-		cameraComponent->worldSpaceFrustum[0].d = -Vector3::Dot(nc - X * nearWidth, normal);
+		dirAlongPlane = ((nearCenter - xAxis * nearWidth) - position).Normalize();
+		BMath::Vector3 leftNormal = BMath::Vector3::Cross(dirAlongPlane, yAxis);
+		cameraComponent->worldSpaceFrustum[0].normal = leftNormal;
+		cameraComponent->worldSpaceFrustum[0].d = -BMath::Vector3::Dot(nearCenter - xAxis * nearWidth, leftNormal);
 
 		// Right
-		aux = ((nc + X * nearWidth) - p).Normalize();
-		normal = Vector3::Cross(Y, aux);
-		cameraComponent->worldSpaceFrustum[1].normal = normal;
-		cameraComponent->worldSpaceFrustum[1].d = -Vector3::Dot(nc + X * nearWidth, normal);
+		dirAlongPlane = ((nearCenter + xAxis * nearWidth) - position).Normalize();
+		BMath::Vector3 rightNormal = BMath::Vector3::Cross(yAxis, dirAlongPlane);
+		cameraComponent->worldSpaceFrustum[1].normal = rightNormal;
+		cameraComponent->worldSpaceFrustum[1].d = -BMath::Vector3::Dot(nearCenter + xAxis * nearWidth, rightNormal);
 
 		// Bottom
-		aux = ((nc - Y * nearHeight) - p).Normalize();
-		normal = Vector3::Cross(X, aux);
-		cameraComponent->worldSpaceFrustum[2].normal = normal;
-		cameraComponent->worldSpaceFrustum[2].d = -Vector3::Dot(nc - Y * nearHeight, normal);
+		dirAlongPlane = ((nearCenter - yAxis * nearHeight) - position).Normalize();
+		BMath::Vector3 bottomNormal = BMath::Vector3::Cross(xAxis, dirAlongPlane);
+		cameraComponent->worldSpaceFrustum[2].normal = bottomNormal;
+		cameraComponent->worldSpaceFrustum[2].d = -BMath::Vector3::Dot(nearCenter - yAxis * nearHeight, bottomNormal);
+
 
 		// Top
-		aux = ((nc + Y * nearHeight) - p).Normalize();
-		normal = Vector3::Cross(aux, X);
-		cameraComponent->worldSpaceFrustum[3].normal = normal;
-		cameraComponent->worldSpaceFrustum[3].d = -Vector3::Dot(nc + Y * nearHeight, normal);
+		dirAlongPlane = ((nearCenter + yAxis * nearHeight) - position).Normalize();
+		BMath::Vector3 topNormal = BMath::Vector3::Cross(dirAlongPlane, xAxis);
+		cameraComponent->worldSpaceFrustum[3].normal = topNormal;
+		cameraComponent->worldSpaceFrustum[3].d = -BMath::Vector3::Dot(nearCenter + yAxis * nearHeight, topNormal);
 
 		// Near
-		cameraComponent->worldSpaceFrustum[4].normal = -Z;
-		cameraComponent->worldSpaceFrustum[4].d = -Vector3::Dot(nc, normal);
+		cameraComponent->worldSpaceFrustum[4].normal = -zAxis;
+		cameraComponent->worldSpaceFrustum[4].d = -BMath::Vector3::Dot(nearCenter, -zAxis);
 
 		// Far
-		cameraComponent->worldSpaceFrustum[5].normal = Z;
-		cameraComponent->worldSpaceFrustum[5].d = -Vector3::Dot(fc, normal);
-
+		cameraComponent->worldSpaceFrustum[5].normal = zAxis;
+		cameraComponent->worldSpaceFrustum[5].d = -BMath::Vector3::Dot(farCenter, zAxis);
 	}
 
 	float CameraSystem::GetDistance(const BMath::Matrix4x4& m, int index)
