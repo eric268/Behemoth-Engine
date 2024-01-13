@@ -60,6 +60,10 @@ MainScene::MainScene()
 		registry.AddComponent<Behemoth::StaticComponent>(temp);
 	}
 
+	auto temp = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "temp");
+	registry.AddComponent<Behemoth::RigidBodyComponent>(temp);
+
+
 	if (comp)
 	{
 		comp->location = BMath::Vector3(10, 0, 0);
