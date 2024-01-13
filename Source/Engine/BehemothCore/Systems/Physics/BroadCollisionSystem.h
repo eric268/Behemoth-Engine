@@ -32,22 +32,23 @@ namespace Behemoth
 		{
 			auto bvhComponent = registry.Get<BVHComponent<StaticComponent>>();
 
-			for (const auto& [entity, type, velocity, transform, collider] : dynamicEntities)
+			for (const auto& [dynamicEntity, type, velocity, transform, collider] : dynamicEntities)
 			{
  				 collider->collider.worldPosition = transform->worldPosition + collider->extents;
 
 				for (const auto& [entities, bvhRootComp] : bvhComponent)
 				{
-					// This is for AABB do a separate one for lines or other collider types
-					if (CheckAABBCollision(entity, collider->collider, bvhRootComp->rootNode))
+					std::vector<ECS::EntityHandle> nodeHandles;
+ 					// This is for AABB do a separate one for lines or other collider types
+					if (CheckAABBCollision(dynamicEntity, collider->collider, bvhRootComp->rootNode, nodeHandles))
 					{
-						std::cout << "BVH Collision\n";
+						auto comp = registry.AddComponent<BroadCollisionPairsComponent>(dynamicEntity, nodeHandles);
 					}
  				}
 			}
 		}
 
 		bool CheckLineCollision(ECS::EntityHandle handle, BMath::Vector3 p1, BMath::Vector3 p2, std::shared_ptr<BVHNode> root);
-		bool CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root);
+		bool CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root, std::vector<ECS::EntityHandle>& nodeHandles);
 	};
 }

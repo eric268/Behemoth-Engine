@@ -19,8 +19,8 @@ namespace Behemoth
 		std::shared_ptr<BVHNode> staticBVHNode = factory.OnConstruction<StaticComponent>(registry, staticBVHEntities);
 		registry.AddComponent<BVHComponent<StaticComponent>>(staticBVHHandle, staticBVHNode);
 
-		dynamicBVHHandle = registry.CreateEntity("Dynamic BVH");
-		std::shared_ptr<BVHNode> dynamicVHNode = factory.OnConstruction<RigidBodyComponent>(registry, dynamicBVHEntities);
-		registry.AddComponent<BVHComponent<RigidBodyComponent>>(dynamicBVHHandle, dynamicVHNode);
+// 		dynamicBVHHandle = registry.CreateEntity("Dynamic BVH");
+// 		std::shared_ptr<BVHNode> dynamicVHNode = factory.OnConstruction<RigidBodyComponent>(registry, dynamicBVHEntities);
+// 		registry.AddComponent<BVHComponent<RigidBodyComponent>>(dynamicBVHHandle, dynamicVHNode);
 	}
 }

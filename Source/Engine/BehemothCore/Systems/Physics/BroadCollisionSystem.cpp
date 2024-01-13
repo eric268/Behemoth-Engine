@@ -14,7 +14,7 @@ namespace Behemoth
 	{
 		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, BroadColliderComponent>();
 		CheckCollision<StaticComponent>(registry, dynamicEntities);
-		CheckCollision<RigidBodyComponent>(registry, dynamicEntities);
+		// CheckCollision<RigidBodyComponent>(registry, dynamicEntities);
 	}
 
 	bool BroadCollisionSystem::CheckLineCollision(ECS::EntityHandle handle, BMath::Vector3 p1, BMath::Vector3 p2, std::shared_ptr<BVHNode> root)
@@ -55,13 +55,12 @@ namespace Behemoth
 		return collisionFound;
 	}
 
-	bool BroadCollisionSystem::CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root)
+	bool BroadCollisionSystem::CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root, std::vector<ECS::EntityHandle>& nodeHandles)
 	{
 		using node = std::shared_ptr<Behemoth::BVHNode>;
 
 		std::stack<node> nodes;
 		nodes.push(root);
-		bool collisionFound = false;
 
 		while (nodes.size())
 		{
@@ -77,19 +76,13 @@ namespace Behemoth
 			{
 				if (currentNode->IsLeaf())
 				{
-					std::cout << "Collision with entity handle: " << currentNode->entityHandles.ID << std::endl;
-					collisionFound = true;
+					nodeHandles.push_back(currentNode->entityHandles);
 					continue;
 				}
-// 				else
-// 				{
-// 					std::cout << "Collision with BVH volume named: " << currentNode->name << std::endl;
-// 				}
-
 				nodes.push(currentNode->leftChild);
 				nodes.push(currentNode->rightChild);
 			}
 		}
-		return collisionFound;
+		return nodeHandles.size();
 	}
 }

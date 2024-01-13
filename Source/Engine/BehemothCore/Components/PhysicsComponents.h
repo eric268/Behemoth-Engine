@@ -53,17 +53,6 @@ namespace Behemoth
 		AABBCollider collider;
 	};
 
-	struct BroadColliderComponent : public ColliderComponent
-	{
-		BroadColliderComponent(bool enabled = true) :
-			ColliderComponent(enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider),
-		extents(1.0f) 
-		{}
-
-		AABBCollider collider;
-		BMath::Vector3 extents;
-	};
-
 
 	struct OBBColliderComponent : public ColliderComponent
 	{
@@ -86,9 +75,25 @@ namespace Behemoth
 		SphereCollider collider;
 	};
 
-	struct NarrowCollider : public ColliderComponent
+	template <typename ...T>
+	struct CollidersContainer {};
+
+	using AllColliderComponents = CollidersContainer<AABBColliderComponent, SphereColliderComponent, OBBColliderComponent>;
+
+	struct BroadColliderComponent : public ColliderComponent
 	{
-		NarrowCollider(bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::DynamicType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything) :
+		BroadColliderComponent(bool enabled = true) :
+			ColliderComponent(enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider),
+			extents(1.0f)
+		{}
+
+		AABBCollider collider;
+		BMath::Vector3 extents;
+	};
+
+	struct NarrowColliderComponent : public ColliderComponent
+	{
+		NarrowColliderComponent(bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::DynamicType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything) :
 			ColliderComponent(enabled, collisionType, collisionLayer)
 		{}
 
@@ -97,9 +102,12 @@ namespace Behemoth
 		std::vector<SphereCollider> sphereColliders;
 	};
 
-	struct BroadCollisionPair : public ECS::Component
+	struct BroadCollisionPairsComponent : public ECS::Component
 	{
-		ECS::EntityHandle handle1;
+		BroadCollisionPairsComponent() {}
+		BroadCollisionPairsComponent(std::vector<ECS::EntityHandle>& vec) : nodeIDs(std::move(vec)){}
+
+		std::vector<ECS::EntityHandle> nodeIDs;
 	};
 
 	struct CollisionDataComponent : public ECS::Component
