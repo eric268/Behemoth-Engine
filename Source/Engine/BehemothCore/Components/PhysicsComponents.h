@@ -5,6 +5,7 @@
 #include "ECS/Entity.h"
 #include "Physics/Collision/CollisionMask.h"
 #include "Physics/Collision/Colliders.h"
+#include "Physics/Collision/CollisionData.h"
 
 #include <string>
 #include <vector>
@@ -78,7 +79,7 @@ namespace Behemoth
 	template <typename ...T>
 	struct CollidersContainer {};
 
-	using AllColliderComponents = CollidersContainer<AABBColliderComponent, SphereColliderComponent, OBBColliderComponent>;
+	using AllColliderComponents = CollidersContainer<SphereColliderComponent, OBBColliderComponent>;
 
 	struct BroadColliderComponent : public ColliderComponent
 	{
@@ -105,19 +106,19 @@ namespace Behemoth
 	struct BroadCollisionPairsComponent : public ECS::Component
 	{
 		BroadCollisionPairsComponent() {}
-		BroadCollisionPairsComponent(std::vector<ECS::EntityHandle>& vec) : nodeIDs(std::move(vec)){}
+		BroadCollisionPairsComponent(std::vector<ECS::EntityHandle>& vec) : nodeIDs((vec)){}
 
 		std::vector<ECS::EntityHandle> nodeIDs;
 	};
 
 	struct CollisionDataComponent : public ECS::Component
 	{
-		BMath::Vector3 collisionPoint;
-		BMath::Vector3 collisionNormal;
-		float penetrationDepth;
-		ECS::EntityHandle handle1;
-		ECS::EntityHandle handle2;
-		BMath::Vector3 relativeVelocity;
+		CollisionDataComponent() = default;
+		std::vector<CollisionData> data;
+
+		// Potentially dont need this info since I will have it in the resolutino
+// 		ECS::EntityHandle handle1;
+// 		BMath::Vector3 e1Velocity;
 	};
 
 	template<typename ...T>

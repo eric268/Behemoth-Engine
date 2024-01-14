@@ -267,6 +267,8 @@
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
     <ClInclude Include="BehemothCore\ECS\Page.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -405,5 +407,7 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.cpp" />
   </ItemGroup>
 </Project>

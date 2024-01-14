@@ -48,7 +48,7 @@ namespace ECS
 			}
 
 			next = identifier;
-			sparse[identifier] = e.GetID();
+			Entity::SetVersion(sparse[identifier], NULL_VERSION);
 			available++;
 		}
 
@@ -77,8 +77,9 @@ namespace ECS
 			if (available > 0 && next != NULL_IDENTIFIER)
 			{
 				entity_identifier identifier = next;
-				next = dense[identifier].GetIdentifier();
+				auto v = entity.GetVersion();
 				Entity::SetVersion(sparse[identifier], entity.GetVersion());
+				next = dense[identifier].GetIdentifier();
 				dense[identifier] = entity;
 				available--;
 			}

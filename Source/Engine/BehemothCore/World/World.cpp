@@ -23,6 +23,8 @@
 #include "Systems/Physics/OBBCollisionSystem.h"
 #include "Systems/Physics/SphereAABBCollisionSystem.h"
 #include "Systems/Physics/BroadCollisionSystem.h"
+#include "Systems/Physics/NarrowCollisionSystem.h"
+#include "Systems/Physics/CollisionResolutionSystem.h"
 
 #include "Systems/Physics/RigidBodySystem.h"
 
@@ -65,31 +67,34 @@ namespace Behemoth
 	{
 
 		// Keep these in this order
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::ScalingSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RotationSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MovementSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::VelocitySystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshInitSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<ScalingSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<RotationSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<MovementSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
 
 
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::CameraSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
 
 
-		// Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::AABBCollisionSystem>();
-		// Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereCollisionSystem>();
-		// Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::OBBCollisionSystem>();
-		// 	Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::SphereAABBCollisionSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BroadCollisionSystem>();
+		// Behemoth::SystemManager::GetInstance().AddSystem<AABBCollisionSystem>();
+		// Behemoth::SystemManager::GetInstance().AddSystem<SphereCollisionSystem>();
+		// Behemoth::SystemManager::GetInstance().AddSystem<OBBCollisionSystem>();
+		// 	Behemoth::SystemManager::GetInstance().AddSystem<SphereAABBCollisionSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
+// 		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
+// 		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
+
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
 
 		// These systems should always be last and in this order
 		// Maybe make a separate container for them to ensure they are last
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::MeshRenderSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::WireframeRenderSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::DebugLineSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::BoundingVolumeRenderSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::LightingSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<MeshRenderSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<WireframeRenderSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<DebugLineSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<BoundingVolumeRenderSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
 	}
 
 	void World::Update(const float deltaTime)

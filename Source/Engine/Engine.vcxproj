@@ -208,6 +208,8 @@
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\AABBCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\BroadCollisionSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\OBBCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.h" />
@@ -257,6 +259,8 @@
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\AABBCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\BroadCollisionSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\OBBCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.cpp" />

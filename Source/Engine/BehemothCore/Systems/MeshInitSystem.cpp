@@ -53,9 +53,13 @@ namespace Behemoth
 		
 		// Iterate over the component backwards because we always swap a component to the back of the container before removing it
 		// iterating over backwards allows us to update the container size and not cause errors in the range of the loop
-		for (int i = componentsToRemove->dense.size() - 1; i >= 0; i--)
+
+		if (componentsToRemove)
 		{
-			componentsToRemove->RemoveComponent(componentsToRemove->dense[i]);
+			for (int i = componentsToRemove->dense.size() - 1; i >= 0; i--)
+			{
+				componentsToRemove->RemoveComponent(componentsToRemove->dense[i]);
+			}
 		}
 
 	}

@@ -38,6 +38,8 @@ namespace Behemoth
 		// keyboard down - Uses ASCII for input mapping
 		glutKeyboardFunc([](unsigned char key, int x, int y)
 		{
+			if (key >= 65 && key <= 90)
+				key += 32;
 			// Do a check for key down events to see if it is held or this is the first press
 			KeyCode code = static_cast<KeyCode>(key);
 			KeyDownEvent e(code);
@@ -47,6 +49,8 @@ namespace Behemoth
 		// keyboard up
 		glutKeyboardUpFunc([](unsigned char key, int x, int y)
 		{
+			if (key >= 65 && key <= 90)
+				key += 32;
 			KeyCode code = static_cast<KeyCode>(key);
 			KeyReleasedEvent e(code);
 			EventManager::GetInstance().OnEventDelegate(e);

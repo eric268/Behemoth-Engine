@@ -1,5 +1,6 @@
 #pragma once
 #include "Math/Vector.h"
+#include "ECS/Entity.h"
 
 #include <vector>
 
@@ -22,6 +23,10 @@ namespace Behemoth
 
 	struct CollisionData
 	{
-		std::vector<ContactData> collisionContacts;
+		CollisionData() = default;
+		CollisionData(ContactData d, ECS::EntityHandle e, BMath::Vector3 v) : data(d), otherHandle(e), otherVelocity(v) {}
+		ContactData data;
+		ECS::EntityHandle otherHandle;
+		BMath::Vector3 otherVelocity;
 	};
 }

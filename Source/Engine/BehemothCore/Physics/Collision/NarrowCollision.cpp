@@ -44,7 +44,7 @@ namespace Behemoth
 		return true;
 	}
 
-	bool NarrowOBBPlaneCollision(const OBBCollider& box, const Plane& plane, CollisionData& collisionData)
+	bool NarrowOBBPlaneCollision(const OBBCollider& box, const Plane& plane, std::vector<ContactData>& data)
 	{
 		if (!BroadOBBPlaneCollision(box, plane))
 		{
@@ -86,7 +86,7 @@ namespace Behemoth
 				contactData.collisionPoint = vertexPosition - plane.normal * (vertexDistance - planeOffset) * 0.5f;
 
 				// Decide later if we want to save all contacts or break out early 
-				collisionData.collisionContacts.push_back(contactData);
+				data.push_back(contactData);
 			}
 		}
 

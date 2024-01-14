@@ -42,7 +42,7 @@ namespace Behemoth
  					// This is for AABB do a separate one for lines or other collider types
 					if (CheckAABBCollision(dynamicEntity, collider->collider, bvhRootComp->rootNode, nodeHandles))
 					{
-						auto comp = registry.AddComponent<BroadCollisionPairsComponent>(dynamicEntity, nodeHandles);
+						registry.AddComponent<BroadCollisionPairsComponent>(dynamicEntity, nodeHandles);
 					}
  				}
 			}

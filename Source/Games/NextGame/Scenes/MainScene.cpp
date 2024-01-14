@@ -36,6 +36,7 @@ MainScene::MainScene()
 		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
 		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(1.f, 1.0, 1.f));
 		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
+		registry.AddComponent<Behemoth::OBBColliderComponent>(cubes[i]);
 	}
 // 
  	for (int i = 4; i < 8; i++)
@@ -45,6 +46,7 @@ MainScene::MainScene()
  		registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
  		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(2.f, 1.0, 1.f));
  		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
+		registry.AddComponent<Behemoth::OBBColliderComponent>(cubes[i]);
  	}
 // 
 // 	// static 

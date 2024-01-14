@@ -15,7 +15,7 @@ namespace Behemoth
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData);
 	bool NarrowSpherePlaneCollision(const SphereCollider& sphere, const Plane& plane, ContactData& contactData);
 
-	bool NarrowOBBPlaneCollision(const OBBCollider& box, const Plane& plane, CollisionData& collisionData);
+	bool NarrowOBBPlaneCollision(const OBBCollider& box, const Plane& plane, std::vector<ContactData>& data);
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& collisionData);
 
 	bool NarrowOBBOBBCollision(const OBBCollider box1, const OBBCollider box2, ContactData& contactData);
@@ -46,6 +46,35 @@ namespace Behemoth
 		const OBBCollider& box2,
 		BMath::Vector3 axis,
 		const BMath::Vector3& toCenter);
+
+	template<typename T, typename U>
+	bool CheckCollision(const T&, const U&, ContactData& contactData);
+
+	template<>
+	inline bool CheckCollision<SphereCollider, SphereCollider>(const SphereCollider& c1, const SphereCollider& c2, ContactData& contactData)
+	{
+		return NarrowSphereSphereCollision(c1, c2, contactData);
+	}
+
+	template<>
+	inline bool CheckCollision<OBBCollider, SphereCollider>(const OBBCollider& c1, const SphereCollider& c2, ContactData& contactData)
+	{
+		return NarrowOBBSphereCollision(c1, c2, contactData);
+	}
+
+	template<>
+	inline bool CheckCollision<SphereCollider, OBBCollider>(const SphereCollider& c1, const OBBCollider& c2, ContactData& contactData)
+	{
+		return NarrowOBBSphereCollision(c2, c1, contactData);
+	}
+
+	template<>
+	inline bool CheckCollision<OBBCollider, OBBCollider>(const OBBCollider& c1, const OBBCollider& c2, ContactData& contactData)
+	{
+		return NarrowOBBOBBCollision(c1, c2, contactData);
+	}
+
+
 
 
 // 	bool DEBUG_boxAndBox(
