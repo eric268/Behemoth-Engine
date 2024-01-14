@@ -54,7 +54,7 @@ namespace ECS
 			ID = (0xFFFF << 16) | (ID & 0x0000FFFF);
 		}
 
-		static void SetVersion(entity_id& ID,  entity_version version)
+		static void SetVersion(entity_id& ID, entity_id version)
 		{
 			ID = (version << 16) | (ID & 0x0000FFFF);
 		}

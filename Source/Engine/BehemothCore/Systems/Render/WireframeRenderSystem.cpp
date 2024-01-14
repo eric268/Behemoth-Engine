@@ -82,7 +82,7 @@ namespace Behemoth
 
 			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
 			{
-				continue;
+				// continue;
 			}
 			
 			AddWireMeshToRenderer(numVerticies, renderVerts, color);

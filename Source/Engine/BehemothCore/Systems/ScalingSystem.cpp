@@ -11,10 +11,8 @@ namespace Behemoth
 		auto components = registry.Get<ScalingComponent, TransformComponent>();
 
 		// Iterate over the container backwards because we want to remove all of these components once the scaling is completed
-		for (int i = components.size() - 1; i >= 0; i--)
+		for (const auto& [entity, scalingComp, transformComp] : components)
 		{
-			auto& [entity, scalingComp, transformComp] = components[i];
-
 			BMath::Vector3 oldScale = TransformHelper::ExtractScale(transformComp->localTransform);
 			UpdateLocalScale(transformComp, oldScale, scalingComp->scalingVector);
 			UpdateWorldScale(registry, entity, transformComp, oldScale, scalingComp->scalingVector);
@@ -23,6 +21,8 @@ namespace Behemoth
 
 			registry.RemoveComponent<ScalingComponent>(entity);
 		}
+
+		components = registry.Get<ScalingComponent, TransformComponent>();
 	}
 
 	void ScalingSystem::UpdateLocalScale(TransformComponent* transformComp, const BMath::Vector3& oldScale, const BMath::Vector3& newScale)

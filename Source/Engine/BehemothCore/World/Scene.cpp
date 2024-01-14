@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Scene.h"
 #include "Components/PhysicsComponents.h"
+#include "Misc/Log.h"
 
 
 namespace Behemoth
@@ -9,6 +10,7 @@ namespace Behemoth
 	{
 		Initalize();
 		ConstructBVH();
+		LOGMESSAGE(Warning, "");
 	}
 
 	void Scene::ConstructBVH()

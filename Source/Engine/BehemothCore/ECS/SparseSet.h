@@ -33,22 +33,21 @@ namespace ECS
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
-			if (identifier >= maxSize || sparse[identifier] == NULL_ENTITY)
+			if (!Contains(entity))
+			{
 				return;
+			}
+			Entity e = entity;
 
-			Entity e = dense[sparse[identifier]];
-
-			dense[sparse[identifier]].SetIDToNull();
-			
-			e.SetVersionToNull();
+			dense[sparse[identifier]].name = "Deleted";
 
 			if (available > 0)
 			{
-				e.SetIdentifier(next);
+				dense[sparse[identifier]].SetIdentifier(next);
 			}
 
-			next = identifier;
 			Entity::SetVersion(sparse[identifier], NULL_VERSION);
+			next = sparse[identifier];
 			available++;
 		}
 
@@ -56,31 +55,27 @@ namespace ECS
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
-
-			// If this entity already has this component then remove it and add new one assuming that the newest component is the desired one
-			if (identifier < maxSize && Entity::GetIdentifier(sparse[identifier]) != NULL_IDENTIFIER && dense[sparse[identifier]].GetIdentifier() == entity.GetIdentifier())
+			if (Contains(entity))
 			{
 				LOGMESSAGE(MessageType::Warning, entity.GetName() + " already has " + typeid(component).name() + " old component removed, new one added");
 				RemoveComponent(entity);
 
-				// Could also just set the component but worried about not following proper delete process for components. May lead to dangling pointers/references/memory leaks
-// 				components[sparse[identifier]] = component;
-// 				return;
 			}
 
-			if (identifier >= maxSize || Entity::GetVersion(sparse[identifier]) != NULL_VERSION)
-			{
-				LOGMESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
-				return nullptr;
-			}
+// 			if (identifier >= maxSize || Entity::GetVersion(sparse[identifier]) != NULL_VERSION)
+// 			{
+// 				LOGMESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
+// 				return nullptr;
+// 			}
 
 			if (available > 0 && next != NULL_IDENTIFIER)
 			{
 				entity_identifier identifier = next;
-				auto v = entity.GetVersion();
-				Entity::SetVersion(sparse[identifier], entity.GetVersion());
+				// Entity::SetVersion(sparse[identifier], 0);
 				next = dense[identifier].GetIdentifier();
 				dense[identifier] = entity;
+				sparse[identifier] = identifier;
+
 				available--;
 			}
 			else
@@ -98,16 +93,16 @@ namespace ECS
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
-			if (identifier >= maxSize || sparse[identifier] == NULL_ENTITY)
+			if (!Contains(entity))
 			{
 				return nullptr;
 			}
-
-			if (entity.GetVersion() != dense[sparse[identifier]].GetVersion())
-			{
-				RemoveComponent(entity);
-				return nullptr;
-			}
+// 
+// 			if (entity.GetVersion() != dense[Entity::GetIdentifier(sparse[identifier])].GetVersion())
+// 			{
+// 				RemoveComponent(entity);
+// 				return nullptr;
+// 			}
 
 			if (HasEntity(entity))
 			{
@@ -117,18 +112,33 @@ namespace ECS
 			return nullptr;
 		}
 
+		bool Contains(const Entity& entity)
+		{
+			entity_identifier identifier = entity.GetIdentifier();
+			auto id = Entity::GetIdentifier(sparse[identifier]);
+			auto v = Entity::GetVersion(entity.ID);
+			return identifier < sparse.size() && id < dense.size() && dense[id].ID == entity.ID && v != NULL_VERSION;
+// 			entity_identifier identifier = entity.GetIdentifier();
+// 			return (identifier < sparse.size() && ((~0xFFFF & entity.GetIdentifier()) ^ sparse[identifier]) < 0xFFFF);
+		}
+
 		bool HasEntity(const Entity& entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
-			if (identifier < maxSize && Entity::GetVersion(sparse[identifier]) != NULL_VERSION)
+
+			auto id = Entity::GetIdentifier(sparse[identifier]);
+			return identifier < sparse.size() && id < dense.size() && dense[id].ID == entity.ID;
+			//bool result = (identifier < sparse.size() && ((~0xFFFF & entity.GetIdentifier()) ^ sparse[identifier]) < NULL_IDENTIFIER);
+			// return result;
+
+			if (identifier < maxSize || Entity::GetVersion(sparse[identifier]) == NULL_VERSION)
 			{
-				if (entity.GetVersion() == dense[sparse[identifier]].GetVersion())
+				if (entity.GetVersion() == dense[Entity::GetIdentifier(sparse[identifier])].GetVersion())
 				{
 					return true;
 				}
 				else
 				{
-
 					RemoveComponent(entity);
 				}
 			}
@@ -145,34 +155,6 @@ namespace ECS
 
 	private:
 		friend class Registry;
-
-		void Adjust(Entity lhs, Entity rhs)
-		{
-			const entity_identifier leftIdentifier = lhs.GetIdentifier();
-			const entity_identifier rightIdentifier = rhs.GetIdentifier();
-
-			std::swap(components[sparse[leftIdentifier]], components[sparse[rightIdentifier]]);
-		}
-
-		template<typename Compare>
-		void Sort(Compare compare)
-		{
-			std::sort(dense.begin(), dense.end(), std::move(compare));
-
-			for (size_t pos = 0; pos < dense.size(); pos++)
-			{
-				size_t current = pos;
-				size_t next = sparse[dense[current].GetIdentifier()];
-
-				while (current != next)
-				{
-					Adjust(dense[current], dense[next]);
-					sparse[dense[current].GetIdentifier()] = current;
-					current = next;
-					next = sparse[dense[current].GetIdentifier()];
-				}
-			}
-		}
 
 		std::vector<entity_id> sparse;
 		Pages<T> components;

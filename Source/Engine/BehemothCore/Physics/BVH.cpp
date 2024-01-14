@@ -163,8 +163,8 @@ namespace Behemoth
 		
 		if (drawCollider)
 		{
-			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.worldExtents,false, true, color);
-			registry.AddComponent<MeshInitalizeComponent>(handle);
+			auto m = registry.AddComponent<MeshInitalizeComponent>(handle);
+			auto r = registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.worldExtents,false, true, color);
 		}
 
 		return node;

@@ -25,6 +25,11 @@ namespace Behemoth
 
 		for (const auto& [entity, transformComp, movementComp] : components)
 		{
+			if (movementComp->location == BMath::Vector3::Zero())
+			{
+				continue;
+			}
+
 			if (movementComp->localMove)
 			{
 				UpdateLocalTransform(transformComp, movementComp);
@@ -72,12 +77,8 @@ namespace Behemoth
 			{
 				cameraComponent->isDirty = true;
 			}
-		}
 
-		auto movementComponents = registry.GetComponent<MoveComponent>();
-		for (int i = movementComponents->dense.size() - 1; i >= 0; i--)
-		{
-			movementComponents->RemoveComponent(movementComponents->dense[i]);
+			registry.RemoveComponent<MoveComponent>(entity);
 		}
 	}
 

@@ -314,7 +314,7 @@ namespace ECS
 
 			auto smallestPool = GetSmallestPool<T...>(tuple);
 
-			// Iterate over each entity in the smallest set
+			// Iterate over smallest set
 			for (const auto& entity : smallestPool->GetEntities())
 			{
 				// Check if the entity is in all other sets

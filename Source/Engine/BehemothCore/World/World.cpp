@@ -82,8 +82,8 @@ namespace Behemoth
 		// Behemoth::SystemManager::GetInstance().AddSystem<OBBCollisionSystem>();
 		// 	Behemoth::SystemManager::GetInstance().AddSystem<SphereAABBCollisionSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
-// 		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
-// 		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
+ 		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
+ 		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
 
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
@@ -100,7 +100,9 @@ namespace Behemoth
 	void World::Update(const float deltaTime)
 	{
 		if (!currentScene)
+		{
 			return;
+		}
 
 		currentScene->Update(deltaTime);
 	}

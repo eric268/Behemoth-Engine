@@ -45,21 +45,8 @@ namespace Behemoth
 				InitMesh(wireframeMesh->mesh);
 			}
 #endif
-		}
 
-		auto componentsToRemove = registry.GetComponent<MeshInitalizeComponent>();
-		// Get all meshInitalizeComponents to be removed. Don't worry about also checking for if they have a MeshComponent because possible to add a MeshInitalizeComponent
-		// without adding a MeshComponet. In this case we would just remove the MeshInitalizeComponent
-		
-		// Iterate over the component backwards because we always swap a component to the back of the container before removing it
-		// iterating over backwards allows us to update the container size and not cause errors in the range of the loop
-
-		if (componentsToRemove)
-		{
-			for (int i = componentsToRemove->dense.size() - 1; i >= 0; i--)
-			{
-				componentsToRemove->RemoveComponent(componentsToRemove->dense[i]);
-			}
+			registry.RemoveComponent<MeshInitalizeComponent>(entity);
 		}
 
 	}
