@@ -269,6 +269,7 @@
     <ClInclude Include="BehemothCore\ECS\Page.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.h" />
+    <ClInclude Include="BehemothCore\Physics\Collision\ColliderHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">

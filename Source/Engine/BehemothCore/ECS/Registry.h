@@ -221,6 +221,18 @@ namespace ECS
 			return std::static_pointer_cast<ComponentPool<T>>(componentArray[componentID[typeIndex]]);
 		}
 
+		template <typename T> 
+		void RemoveAllComopnents()
+		{
+			auto componentsToRemove = GetComponent<T>();
+
+			for (int i = componentsToRemove->dense.size() - 1; i >= 0; i--)
+			{
+				componentsToRemove->RemoveComponent(componentsToRemove->dense[i]);
+			}
+		}
+
+
 	private:
 		using type_index = int;
 		std::vector<Entity> entities;

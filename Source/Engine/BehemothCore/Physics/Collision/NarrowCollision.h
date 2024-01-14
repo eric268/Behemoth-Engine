@@ -51,25 +51,25 @@ namespace Behemoth
 	bool CheckCollision(const T&, const U&, ContactData& contactData);
 
 	template<>
-	inline bool CheckCollision<SphereCollider, SphereCollider>(const SphereCollider& c1, const SphereCollider& c2, ContactData& contactData)
+	inline bool CheckCollision(const SphereCollider& c1, const SphereCollider& c2, ContactData& contactData)
 	{
 		return NarrowSphereSphereCollision(c1, c2, contactData);
 	}
 
 	template<>
-	inline bool CheckCollision<OBBCollider, SphereCollider>(const OBBCollider& c1, const SphereCollider& c2, ContactData& contactData)
+	inline bool CheckCollision(const OBBCollider& c1, const SphereCollider& c2, ContactData& contactData)
 	{
 		return NarrowOBBSphereCollision(c1, c2, contactData);
 	}
 
 	template<>
-	inline bool CheckCollision<SphereCollider, OBBCollider>(const SphereCollider& c1, const OBBCollider& c2, ContactData& contactData)
+	inline bool CheckCollision(const SphereCollider& c1, const OBBCollider& c2, ContactData& contactData)
 	{
 		return NarrowOBBSphereCollision(c2, c1, contactData);
 	}
 
 	template<>
-	inline bool CheckCollision<OBBCollider, OBBCollider>(const OBBCollider& c1, const OBBCollider& c2, ContactData& contactData)
+	inline bool CheckCollision(const OBBCollider& c1, const OBBCollider& c2, ContactData& contactData)
 	{
 		return NarrowOBBOBBCollision(c1, c2, contactData);
 	}

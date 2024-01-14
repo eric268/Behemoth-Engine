@@ -10,14 +10,21 @@ namespace Behemoth
 	{
 		auto components = registry.Get<TransformComponent, BroadCollisionPairsComponent>();
 
-		for (const auto& [entity, TransformComponent, collisionPairs] : components)
+		for (const auto& [entity, transformComponent, collisionPairs] : components)
 		{
 			auto dynamicColliders = GetColliders(registry, entity, AllColliderComponents{});
 
 			for (const auto& p : collisionPairs->nodeIDs)
 			{
 				auto result = GetColliders(registry, p, AllColliderComponents{});
-				
+
+				TransformComponent* otherTransform = registry.GetComponent<TransformComponent>(p);
+
+				if (!otherTransform)
+				{
+					LOGMESSAGE(Error, "Failed to get transform of colliding pair: " + registry.GetName(p));
+					continue;
+				}
 
 				ContactData data{};
 
@@ -30,7 +37,7 @@ namespace Behemoth
 
 						auto OnCollision = [&](auto&& e1, auto&& e2)
 						{
-							if (GenerateCollisionData(e1, e2, data))
+							if (GenerateCollisionData(transformComponent, otherTransform,e1, e2, data))
 							{
 								CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(entity);
 								
@@ -56,15 +63,6 @@ namespace Behemoth
 
 						}, result));
 					}, (dynamicColliders));
-			}
-		}
-
-		auto componentsToRemove = registry.GetComponent<BroadCollisionPairsComponent>();
-		if (componentsToRemove)
-		{
-			for (int i = componentsToRemove->dense.size() - 1; i >= 0; i--)
-			{
-				componentsToRemove->RemoveComponent(componentsToRemove->dense[i]);
 			}
 		}
 	}

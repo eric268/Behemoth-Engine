@@ -1,6 +1,8 @@
 #pragma once
 #include "Math/MathCore.h"
 #include "Geometry/Plane.h"
+#include "Components/Components.h"
+#include "Misc/TransformHelper.h"
 
 namespace Behemoth
 {
@@ -33,5 +35,4 @@ namespace Behemoth
 		BMath::Vector3 orientation[3];
 		BMath::Vector3 extents;
 	};
-
 }

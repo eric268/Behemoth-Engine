@@ -9,19 +9,20 @@ namespace Behemoth
 {
 	void CollisionResolutionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, transformComp, collisionData] : registry.Get<TransformComponent, CollisionDataComponent>())
+		for (const auto& [entity, transformComp, velocityComp, collisionData] : registry.Get<TransformComponent, VelocityComponent,  CollisionDataComponent>())
 		{
-			LOGMESSAGE(General, "Working");
-		}
+			BMath::Vector3 offsetPosition = -velocityComp->velocity * deltaTime;
 
-
-		auto componentsToRemove = registry.GetComponent<CollisionDataComponent>();
-		if (componentsToRemove)
-		{
-			for (int i = componentsToRemove->dense.size() - 1; i >= 0; i--)
+			for (const auto& collision : collisionData->data)
 			{
-				componentsToRemove->RemoveComponent(componentsToRemove->dense[i]);
+				offsetPosition += collision.data.collisionNormal * collision.data.penetrationDepth;
 			}
+
+			transformComp->worldTransform._41 += offsetPosition.x;
+			transformComp->worldTransform._42 += offsetPosition.y;
+			transformComp->worldTransform._43 += offsetPosition.z;
+
+			transformComp->isDirty = true;
 		}
 	}
 }

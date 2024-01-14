@@ -2,9 +2,9 @@
 
 #include "ECS/Entity.h"
 #include "ECS/Registry.h"
-#include "Components/PhysicsComponents.h"
 #include "Physics/Collision/CollisionData.h"
 #include "Physics/Collision/NarrowCollision.h"
+#include "Physics/Collision/ColliderHelper.h"
 
 #include <type_traits>
 #include <tuple>
@@ -35,12 +35,21 @@ namespace Behemoth
 
 		template <typename T, typename U>
 		// requires HasCollider<T,U>
-		bool GenerateCollisionData(T* collider1, U* collider2, ContactData& data)
+		bool GenerateCollisionData(TransformComponent* transform1, TransformComponent* transform2, T* collider1, U* collider2, ContactData& data)
 		{
-			if (!collider1 || !collider2)
+			if (!collider1 || !collider2 || !(collider1->collisionType & collider2->collisionLayer))
 			{
 				return false;
 			}
+
+			if (!transform1 || !transform2)
+			{
+				LOGMESSAGE(Error, "Null transform found");
+				return false;
+			}
+
+ 			SetCollider(transform1, collider1, collider1->collider);
+ 			SetCollider(transform2, collider2, collider2->collider);
 			
 			return CheckCollision(collider1->collider, collider2->collider, data);
 		}

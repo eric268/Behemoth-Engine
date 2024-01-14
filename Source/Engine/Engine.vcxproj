@@ -196,6 +196,7 @@
     <ClInclude Include="BehemothCore\Physics\BVH.h" />
     <ClInclude Include="BehemothCore\Physics\BoundingGenerator.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\BroadCollision.h" />
+    <ClInclude Include="BehemothCore\Physics\Collision\ColliderHelper.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\Colliders.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\CollisionData.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\CollisionMask.h" />

@@ -12,6 +12,9 @@ namespace Behemoth
 {
 	void BroadCollisionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
+		registry.RemoveAllComopnents<BroadCollisionPairsComponent>();
+		registry.RemoveAllComopnents<CollisionDataComponent>();
+
 		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, BroadColliderComponent>();
 		CheckCollision<StaticComponent>(registry, dynamicEntities);
 		// CheckCollision<RigidBodyComponent>(registry, dynamicEntities);
@@ -71,8 +74,7 @@ namespace Behemoth
 			{
 				continue;
 			}
-
-			if (handle.ID != currentNode->entityHandles.ID && Behemoth::BroadAABBCollision(collider, currentNode->collider))
+			if (Behemoth::BroadAABBCollision(collider, currentNode->collider))
 			{
 				if (currentNode->IsLeaf())
 				{
