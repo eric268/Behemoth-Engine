@@ -29,7 +29,7 @@ namespace ECS
 			Generator::Value<T>();
 		}
 
-		void RemoveComponent(const Entity& entity)
+		void RemoveComponent(Entity entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
@@ -46,14 +46,15 @@ namespace ECS
 				dense[sparse[identifier]].SetIdentifier(next);
 			}
 
-			Entity::SetVersion(sparse[identifier], NULL_VERSION);
 			next = sparse[identifier];
+			Entity::SetVersion(sparse[identifier], NULL_VERSION);
 			available++;
 		}
 
 		T* AddComponent(const Entity& entity, const T& component)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
+
 
 			if (Contains(entity))
 			{
@@ -71,11 +72,9 @@ namespace ECS
 			if (available > 0 && next != NULL_IDENTIFIER)
 			{
 				entity_identifier identifier = next;
-				// Entity::SetVersion(sparse[identifier], 0);
+				sparse[entity.GetIdentifier()] = identifier;
 				next = dense[identifier].GetIdentifier();
 				dense[identifier] = entity;
-				sparse[identifier] = identifier;
-
 				available--;
 			}
 			else
@@ -104,7 +103,7 @@ namespace ECS
 // 				return nullptr;
 // 			}
 
-			if (HasEntity(entity))
+			if (Contains(entity))
 			{
 				return &components[identifier];
 			}
@@ -115,36 +114,35 @@ namespace ECS
 		bool Contains(const Entity& entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
-			auto id = Entity::GetIdentifier(sparse[identifier]);
-			auto v = Entity::GetVersion(entity.ID);
-			return identifier < sparse.size() && id < dense.size() && dense[id].ID == entity.ID && v != NULL_VERSION;
+			std::uint32_t id = Entity::GetIdentifier(sparse[identifier]);
+			std::uint32_t version = Entity::GetVersion(sparse[identifier]);
+			long long val = id + version;
+ 			return (identifier < sparse.size() && val < NULL_VERSION);
+		}
+// 
+// 		bool HasEntity(const Entity& entity)
+// 		{
 // 			entity_identifier identifier = entity.GetIdentifier();
-// 			return (identifier < sparse.size() && ((~0xFFFF & entity.GetIdentifier()) ^ sparse[identifier]) < 0xFFFF);
-		}
-
-		bool HasEntity(const Entity& entity)
-		{
-			entity_identifier identifier = entity.GetIdentifier();
-
-			auto id = Entity::GetIdentifier(sparse[identifier]);
-			return identifier < sparse.size() && id < dense.size() && dense[id].ID == entity.ID;
-			//bool result = (identifier < sparse.size() && ((~0xFFFF & entity.GetIdentifier()) ^ sparse[identifier]) < NULL_IDENTIFIER);
-			// return result;
-
-			if (identifier < maxSize || Entity::GetVersion(sparse[identifier]) == NULL_VERSION)
-			{
-				if (entity.GetVersion() == dense[Entity::GetIdentifier(sparse[identifier])].GetVersion())
-				{
-					return true;
-				}
-				else
-				{
-					RemoveComponent(entity);
-				}
-			}
-
-			return false;
-		}
+// 
+// 			auto id = Entity::GetIdentifier(sparse[identifier]);
+// 			return identifier < sparse.size() && id < dense.size() && dense[id].ID == entity.ID;
+// 			//bool result = (identifier < sparse.size() && ((~0xFFFF & entity.GetIdentifier()) ^ sparse[identifier]) < NULL_IDENTIFIER);
+// 			// return result;
+// 
+// 			if (identifier < maxSize || Entity::GetVersion(sparse[identifier]) == NULL_VERSION)
+// 			{
+// 				if (entity.GetVersion() == dense[Entity::GetIdentifier(sparse[identifier])].GetVersion())
+// 				{
+// 					return true;
+// 				}
+// 				else
+// 				{
+// 					RemoveComponent(entity);
+// 				}
+// 			}
+// 
+// 			return false;
+// 		}
 
 		size_t size() const
 		{

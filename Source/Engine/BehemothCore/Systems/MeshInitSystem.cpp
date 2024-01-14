@@ -48,7 +48,6 @@ namespace Behemoth
 
 			registry.RemoveComponent<MeshInitalizeComponent>(entity);
 		}
-
 	}
 
 	void MeshInitSystem::InitMesh(Mesh& mesh)

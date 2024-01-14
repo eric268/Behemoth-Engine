@@ -108,6 +108,7 @@ namespace ECS
 				else
 				{
 					LOGMESSAGE(Error, "Null component created");
+					return nullptr;
 				}
 
 			}
@@ -279,7 +280,7 @@ namespace ECS
 		{
 			return std::apply([&](auto&... set)
 				{
-					return (set->HasEntity(entity) && ...);
+					return (set->Contains(entity) && ...);
 				}, tuple);
 		}
 

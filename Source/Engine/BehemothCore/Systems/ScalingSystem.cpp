@@ -22,7 +22,7 @@ namespace Behemoth
 			registry.RemoveComponent<ScalingComponent>(entity);
 		}
 
-		components = registry.Get<ScalingComponent, TransformComponent>();
+		auto DEBUG_test = registry.Get<ScalingComponent>();
 	}
 
 	void ScalingSystem::UpdateLocalScale(TransformComponent* transformComp, const BMath::Vector3& oldScale, const BMath::Vector3& newScale)
