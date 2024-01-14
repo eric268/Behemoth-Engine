@@ -91,7 +91,7 @@ namespace Behemoth
 	{
 		Renderer::GetInstance().ReserveLines(numLines);
 	}
-	void DebugLineSystem::ProcessLine(const Point& p1, const Point& p2, const BMath::Matrix4x4& viewProjMatrix, BMath::Vector3 color)
+	void DebugLineSystem::ProcessLine(const Point& p1, const Point& p2, const BMath::Matrix4x4f& viewProjMatrix, BMath::Vector3 color)
 	{
 		BMath::Vector4 renderVerts[2];
 

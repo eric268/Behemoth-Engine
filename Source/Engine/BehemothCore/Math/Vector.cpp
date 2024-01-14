@@ -56,10 +56,6 @@ namespace BMath
 		return Vector3(1.0f, 1.0f, 1.0f);
 	}
 
-	float Vector3::Magnitude() const
-	{
-		return sqrt(x * x + y * y + z * z);
-	}
 
 	Vector3& Vector3::Normalize()
 	{
@@ -76,36 +72,6 @@ namespace BMath
 		z /= mag;
 
 		return *this;
-	}
-
-	float Vector3::Angle(const Vector3& v1, const Vector3& v2)
-	{
-		float dot = Dot(v1, v2);
-		float magnitudeProduct = Magnitude(v1) * Magnitude(v2);
-		float val = std::max(-1.0f, std::min(1.0f, dot / magnitudeProduct));
-		return std::acos(val);
-	}
-
-	float Vector3::Magnitude(const Vector3& v1)
-	{
-		return std::sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
-	}
-
-	float Vector3::SquaredMagnitude(const Vector3& v1)
-	{
-		return (v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
-	}
-
-	float Vector3::Distance(const Vector3& v1, const Vector3& v2)
-	{
-		const Vector3 v = v1 - v2;
-		return Magnitude(v1 - v2);
-	}
-
-	float Vector3::SquaredDistance(const Vector3& v1, const Vector3& v2)
-	{
-		const Vector3 v = v1 - v2;
-		return SquaredMagnitude(v1 - v2);
 	}
 
 	Vector3 Vector3::Normalize(const Vector3& vec)
@@ -131,12 +97,6 @@ namespace BMath
 		);
 	}
 
-
-	float Vector3::Dot(const Vector3& v1, const Vector3& v2)
-	{
-		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-	}
-
 	bool Vector3::Equals(const Vector3& v1, const Vector3& v2, const float epsilon)
 	{
 		return  std::abs(v1.x - v2.x) <= epsilon &&
@@ -144,7 +104,7 @@ namespace BMath
 			std::abs(v1.z - v2.z) <= epsilon;
 	}
 
-	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix, float w)
+	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4<float>& rotationMatrix, float w)
 	{
 		Vector4 v = rotationMatrix * Vector4(vec, w);
 

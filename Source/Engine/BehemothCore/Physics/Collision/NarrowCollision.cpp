@@ -155,25 +155,24 @@ namespace Behemoth
 	{
 		real rBox1, rBox2;
 
-		BMath::Matrix3x3 rotationMatrix{};
-		BMath::Matrix3x3 absRotationMatrix{};
+		BMath::Matrix3x3d rotationMatrix{};
+		BMath::Matrix3x3d absRotationMatrix{};
 
 		int bestIndex = -1;
 		int DEBUG_bestIndex = -1;
 
 		real smallestPenetration = std::numeric_limits<real>::max();
-		real DEBUG_smallestPenetration = std::numeric_limits<real>::max();
 
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				rotationMatrix.data[i][j] = BMath::Vector3::Dot(box1.orientation[i], box2.orientation[j]);
+				rotationMatrix.data[i][j] = BMath::Vector3::Dot<real>(box1.orientation[i], box2.orientation[j]);
 			}
 		}
 
 		BMath::Vector3 dirVec = box2.position - box1.position;
-		dirVec = BMath::Vector3(BMath::Vector3::Dot(dirVec, box1.orientation[0]), BMath::Vector3::Dot(dirVec, box1.orientation[1]), BMath::Vector3::Dot(dirVec, box1.orientation[2]));
+		dirVec = BMath::Vector3(BMath::Vector3::Dot<real>(dirVec, box1.orientation[0]), BMath::Vector3::Dot<real>(dirVec, box1.orientation[1]), BMath::Vector3::Dot<real>(dirVec, box1.orientation[2]));
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -348,7 +347,7 @@ namespace Behemoth
 
 			BMath::Vector3 axis = BMath::Vector3::Cross(box1Axis, box2Axis).Normalize();
 
-			if (BMath::Vector3::Dot(axis, centerPosition) > 0)
+			if (BMath::Vector3::Dot<real>(axis, centerPosition) > 0)
 			{
 				axis *= 1.0f;
 			}
@@ -362,7 +361,7 @@ namespace Behemoth
 				{
 					ptOnOneEdge[i] = 0;
 				}
-				else if (BMath::Vector3::Dot(box1.orientation[i], axis) > 0)
+				else if (BMath::Vector3::Dot<real>(box1.orientation[i], axis) > 0)
 				{
 					ptOnOneEdge[i] = -ptOnOneEdge[i];
 				}
@@ -371,7 +370,7 @@ namespace Behemoth
 				{
 					ptOnTwoEdge[i] = 0;
 				}
-				else if (BMath::Vector3::Dot(box2.orientation[i], axis) < 0)
+				else if (BMath::Vector3::Dot<real>(box2.orientation[i], axis) < 0)
 				{
 					ptOnTwoEdge[i] = -ptOnTwoEdge[i];
 				}
@@ -430,7 +429,7 @@ namespace Behemoth
 	{
 		real pen = combinedBoxes - absDistance;
 
-		if (pen < 1e-2) // is parallel
+		if (pen < 5e-4) // is parallel
 		{
 			return;
 		}
@@ -450,21 +449,21 @@ namespace Behemoth
 	void OBBVertexFaceCollision(const OBBCollider& box1, const OBBCollider& box2, const BMath::Vector3& toCenter, ContactData& contactData, int bestIndex, real pen)
 	{
 		BMath::Vector3 normal = box1.orientation[bestIndex];
-		if (BMath::Vector3::Dot(normal, toCenter) > 0.0f)
+		if (BMath::Vector3::Dot<double>(normal, toCenter) > 0.0f)
 		{
 			normal *= -1.0f;
 		}
 
 		BMath::Vector3 collidingVertex = box2.extents / 2.0f;
-		if (BMath::Vector3::Dot(box2.orientation[0], normal) < 0.0f)
+		if (BMath::Vector3::Dot<double>(box2.orientation[0], normal) < 0.0f)
 		{
 			collidingVertex.x *= -1.0f;
 		}
-		if (BMath::Vector3::Dot(box2.orientation[1], normal) < 0.0f)
+		if (BMath::Vector3::Dot<double>(box2.orientation[1], normal) < 0.0f)
 		{
 			collidingVertex.y *= -1.0f;
 		}
-		if (BMath::Vector3::Dot(box2.orientation[2], normal) < 0.0f)
+		if (BMath::Vector3::Dot<double>(box2.orientation[2], normal) < 0.0f)
 		{
 			collidingVertex.z *= -1.0f;
 		}
@@ -501,13 +500,13 @@ namespace Behemoth
 		real dpStaOne, dpStaTwo, dpOneTwo, smOne, smTwo;
 		real denom, mua, mub;
 
-		smOne = BMath::Vector3::SquaredMagnitude(dOne);
-		smTwo = BMath::Vector3::SquaredMagnitude(dTwo);
-		dpOneTwo = BMath::Vector3::Dot(dTwo, dOne);
+		smOne = BMath::Vector3::SquaredMagnitude<double>(dOne);
+		smTwo = BMath::Vector3::SquaredMagnitude<double>(dTwo);
+		dpOneTwo = BMath::Vector3::Dot<double>(dTwo, dOne);
 
 		toSt = pOne - pTwo;
-		dpStaOne = BMath::Vector3::Dot(dOne, toSt);
-		dpStaTwo = BMath::Vector3::Dot(dTwo, toSt);
+		dpStaOne = BMath::Vector3::Dot<double>(dOne, toSt);
+		dpStaTwo = BMath::Vector3::Dot<double>(dTwo, toSt);
 
 		denom = smOne * smTwo - dpOneTwo * dpOneTwo;
 

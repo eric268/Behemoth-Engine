@@ -10,7 +10,7 @@ namespace Behemoth
 	{
 		ContactData() : collisionPoint(BMath::Vector3::Zero()), collisionNormal(BMath::Vector3::Zero()), penetrationDepth(0.0f) {}
 
-		ContactData(const BMath::Vector3& point, const BMath::Vector3& normal, float depth) : 
+		ContactData(const BMath::Vector3& point, const BMath::Vector3& normal, double depth) : 
 			collisionPoint(point), 
 			collisionNormal(normal),
 			penetrationDepth(depth)
@@ -18,7 +18,7 @@ namespace Behemoth
 
 		BMath::Vector3 collisionPoint;
 		BMath::Vector3 collisionNormal;
-		float penetrationDepth;
+		double penetrationDepth;
 	};
 
 	struct CollisionData

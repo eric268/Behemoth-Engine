@@ -77,7 +77,7 @@ namespace Behemoth
 		primitive->AddLighting(diffuse + specular);
 	}
 
-	void LightingSystem::CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4& viewMatrix)
+	void LightingSystem::CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4f& viewMatrix)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
 
@@ -88,7 +88,7 @@ namespace Behemoth
 		BMath::Vector3 diffuse = CalculateDiffuseLighting(normal, lightDir, primitive->diffuse, light->color, light->intensity);
 		BMath::Vector3 specular = CalculateSpecularLighting(primitive, cameraPos, normal, lightDir, light->color, light->intensity);
 
-		float attenuation = 1.0 / (light->constant + (light->linear * distance) + (light->quadratic * distance * distance));
+		float attenuation = 1.0f / (light->constant + (light->linear * distance) + (light->quadratic * distance * distance));
 		primitive->AddLighting((diffuse + specular) * attenuation);
 	}
 

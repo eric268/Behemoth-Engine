@@ -33,11 +33,11 @@ namespace Behemoth
 		}
 	}
 
-	void BoundingVolumeRenderSystem::ProcessBoundingVolume(BoundingVolumeComponent* boundingComp, TransformComponent* transformComp, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4& viewProjMatrix)
+	void BoundingVolumeRenderSystem::ProcessBoundingVolume(BoundingVolumeComponent* boundingComp, TransformComponent* transformComp, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4f& viewProjMatrix)
 	{
 		// Scale the sphere mesh by bounding radius
 		float maxScale = std::max(transformComp->worldScale[0], std::max(transformComp->worldScale[1], transformComp->worldScale[2]));
-		BMath::Matrix4x4 boundingMatrix = BMath::Matrix4x4::Identity();
+		BMath::Matrix4x4f boundingMatrix = BMath::Matrix4x4f::Identity();
 		for (int i = 0; i < 3; i++)
 		{
 			boundingMatrix.data[i][i] = boundingComp->radius * maxScale;

@@ -13,7 +13,7 @@ namespace Behemoth
 		float d;
 
 
-		static Plane TransformPlane(const Plane& plane, const BMath::Matrix4x4 m);
+		static Plane TransformPlane(const Plane& plane, const BMath::Matrix4x4f m);
 		static inline BMath::Vector3 GetPointOnPlane(const Plane& plane) { return plane.normal * plane.d; }
 		static inline float CalculatePlaneOffset(const BMath::Vector3& normal, const BMath::Vector3& point) 
 		{ 

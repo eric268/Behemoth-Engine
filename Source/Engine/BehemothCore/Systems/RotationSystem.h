@@ -4,8 +4,8 @@
 
 namespace Behemoth
 {
-	class TransformComponent;
-	class MeshComponent;
+	struct TransformComponent;
+	struct MeshComponent;
 
 	// Debug
 	class Primitives;
@@ -18,13 +18,13 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		BMath::Vector3 GetForwardVector(const BMath::Matrix4x4& transformMatrix);
-		BMath::Vector3 GetUpVector(const BMath::Matrix4x4& transformMatrix);
-		BMath::Vector3 GetRightVector(const BMath::Matrix4x4& transformMatrix);
+		BMath::Vector3 GetForwardVector(const BMath::Matrix4x4f& transformMatrix);
+		BMath::Vector3 GetUpVector(const BMath::Matrix4x4f& transformMatrix);
+		BMath::Vector3 GetRightVector(const BMath::Matrix4x4f& transformMatrix);
 
-		void ApplyRotation(BMath::Matrix4x4& transform, const BMath::Matrix4x4& rotationMatrix);
-		void UpdateWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComponent, const BMath::Matrix4x4& rotationMatrix);
-		void RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4& rotationMatrix);
+		void ApplyRotation(BMath::Matrix4x4f& transform, const BMath::Matrix4x4f& rotationMatrix);
+		void UpdateWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComponent, const BMath::Matrix4x4f& rotationMatrix);
+		void RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4f& rotationMatrix);
 		void UpdateMeshNormalsFromParentRotation(TransformComponent* transformComp, MeshComponent* meshComponent);
 
 		// DEBUG

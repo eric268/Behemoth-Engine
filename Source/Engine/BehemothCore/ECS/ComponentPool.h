@@ -9,6 +9,7 @@ namespace ECS
 	class IComponentPool
 	{
 	public:
+		IComponentPool() : typeID(0) {}
 		virtual ~IComponentPool() = default;
 
 		virtual std::size_t size()

@@ -16,8 +16,8 @@ namespace ECS
 
 namespace Behemoth
 {
-	class AABBCollider;
-	class BVHNode;
+	struct AABBCollider;
+	struct BVHNode;
 
 	class BroadCollisionSystem
 	{

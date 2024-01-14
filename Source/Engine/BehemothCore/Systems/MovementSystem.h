@@ -10,8 +10,8 @@ namespace ECS
 
 namespace Behemoth
 {
-	class TransformComponent;
-	class MoveComponent;
+	struct TransformComponent;
+	struct MoveComponent;
 
 	class MovementSystem
 	{

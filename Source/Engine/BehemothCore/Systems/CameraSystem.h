@@ -4,8 +4,8 @@
 
 namespace Behemoth
 {
-	class CameraComponent;
-	class TransformComponent;
+	struct CameraComponent;
+	struct TransformComponent;
 	class Matrix4x4;
 
 	class CameraSystem
@@ -18,7 +18,7 @@ namespace Behemoth
 		void UpdatePerspectiveMatrix(CameraComponent* component, const TransformComponent* transformComponent);
 		void UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transform);
 
-		float GetDistance(const BMath::Matrix4x4& m, int index);
+		float GetDistance(const BMath::Matrix4x4f& m, int index);
 	};
 
 }

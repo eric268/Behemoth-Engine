@@ -8,7 +8,7 @@ namespace ECS
 }
 namespace Behemoth
 {
-	class TransformComponent;
+	struct TransformComponent;
 
 	class ScalingSystem
 	{

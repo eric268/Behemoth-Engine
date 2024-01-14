@@ -18,10 +18,7 @@
 #include "Systems/LightingSystem.h"
 #include "Systems/VelocitySystem.h"
 
-#include "Systems/Physics/AABBCollisionSystem.h"
-#include "Systems/Physics/SphereCollisionSystem.h"
 #include "Systems/Physics/OBBCollisionSystem.h"
-#include "Systems/Physics/SphereAABBCollisionSystem.h"
 #include "Systems/Physics/BroadCollisionSystem.h"
 #include "Systems/Physics/NarrowCollisionSystem.h"
 #include "Systems/Physics/CollisionResolutionSystem.h"
@@ -73,14 +70,9 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
 
-
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
 
-
-		// Behemoth::SystemManager::GetInstance().AddSystem<AABBCollisionSystem>();
-		// Behemoth::SystemManager::GetInstance().AddSystem<SphereCollisionSystem>();
 		// Behemoth::SystemManager::GetInstance().AddSystem<OBBCollisionSystem>();
-		// 	Behemoth::SystemManager::GetInstance().AddSystem<SphereAABBCollisionSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
  		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
  		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();

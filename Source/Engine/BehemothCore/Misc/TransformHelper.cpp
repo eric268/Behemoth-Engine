@@ -6,9 +6,9 @@
 
 namespace Behemoth
 {
-	BMath::Matrix4x4 TransformHelper::GetWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Matrix4x4& localTransform)
+	BMath::Matrix4x4f TransformHelper::GetWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Matrix4x4f& localTransform)
 	{
-		BMath::Matrix4x4 worldTransform = localTransform;
+		BMath::Matrix4x4f worldTransform = localTransform;
 
 		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
 		{
@@ -26,9 +26,9 @@ namespace Behemoth
 		return worldTransform;
 	}
 
-	BMath::Matrix4x4 TransformHelper::GetTransformNoRotation(const BMath::Matrix4x4& m, const BMath::Vector3& scale)
+	BMath::Matrix4x4f TransformHelper::GetTransformNoRotation(const BMath::Matrix4x4f& m, const BMath::Vector3& scale)
 	{
-		BMath::Matrix4x4 result = BMath::Matrix4x4::Identity();
+		BMath::Matrix4x4f result = BMath::Matrix4x4f::Identity();
 
 		result._11 = scale[0];
 		result._22 = scale[1];
@@ -41,7 +41,7 @@ namespace Behemoth
 		return result;
 	}
 
-	BMath::Matrix3x3 TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4& transformMatrix)
+	BMath::Matrix3x3f TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4f& transformMatrix)
 	{
 		BMath::Matrix3x3 m{};
 		for (int col = 0; col < 3; col++)
@@ -63,9 +63,9 @@ namespace Behemoth
 		return m;
 	}
 
-	BMath::Matrix3x3 TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4& transformMatrix, BMath::Vector3 scale)
+	BMath::Matrix3x3f TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4f& transformMatrix, BMath::Vector3 scale)
 	{
-		BMath::Matrix3x3 m{};
+		BMath::Matrix3x3f m{};
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -82,7 +82,7 @@ namespace Behemoth
 		return m;
 	}
 
-	BMath::Vector3 TransformHelper::ExtractScale(const  BMath::Matrix4x4& transformMatrix)
+	BMath::Vector3 TransformHelper::ExtractScale(const  BMath::Matrix4x4f& transformMatrix)
 	{
 		BMath::Vector3 scale{};
 
@@ -95,7 +95,7 @@ namespace Behemoth
 		return scale;
 	}
 
-	BMath::Vector3 TransformHelper::ExtractPosition(const BMath::Matrix4x4& transformMatrix)
+	BMath::Vector3 TransformHelper::ExtractPosition(const BMath::Matrix4x4f& transformMatrix)
 	{
 		return BMath::Vector3(transformMatrix._41, transformMatrix._42, transformMatrix._43);
 	}

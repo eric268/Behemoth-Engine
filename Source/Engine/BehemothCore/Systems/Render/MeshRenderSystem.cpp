@@ -51,7 +51,7 @@ namespace Behemoth
 	}
 
 
-	void MeshRenderSystem::ProcessMesh(Mesh& mesh, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix, bool isDirty)
+	void MeshRenderSystem::ProcessMesh(Mesh& mesh, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4f& transformMatrix, const BMath::Matrix4x4f& viewProjMatrix, bool isDirty)
 	{
 		const MeshData& meshData = mesh.meshData;
 

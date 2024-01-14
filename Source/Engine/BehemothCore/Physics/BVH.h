@@ -12,7 +12,7 @@
 
 namespace Behemoth
 {
-	class AABBCollider;
+	struct AABBCollider;
 
 	struct BVHNode
 	{

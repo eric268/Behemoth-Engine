@@ -6,6 +6,7 @@
 #include "Geometry/Plane.h"
 #include "Math/Quaternion.h"
 #include "ECS/Entity.h"
+#include "Math/Matrix.h"
 
 #include <functional>
 #include <unordered_map>
@@ -16,8 +17,8 @@ namespace Behemoth
 	struct CameraComponent : public ECS::Component
 	{
 		CameraComponent(bool main = false) :
-			viewMatrix(BMath::Matrix4x4::Identity()),
-			projMatrix(BMath::Matrix4x4::Identity()),
+			viewMatrix(BMath::Matrix4x4<float>::Identity()),
+			projMatrix(BMath::Matrix4x4<float>::Identity()),
 			FOV(75.0f),
 			nearClippingPlane(0.1f),
 			farClippingPlane(100.0f),
@@ -29,9 +30,9 @@ namespace Behemoth
 
 		~CameraComponent() = default;
 		Plane worldSpaceFrustum[6];
-		BMath::Matrix4x4 viewMatrix;
-		BMath::Matrix4x4 projMatrix;
-		BMath::Matrix4x4 inverseTransposeViewMatrix;
+		BMath::Matrix4x4<float> viewMatrix;
+		BMath::Matrix4x4<float> projMatrix;
+		BMath::Matrix4x4<float> inverseTransposeViewMatrix;
 		float FOV;
 		float nearClippingPlane;
 		float farClippingPlane;
@@ -55,8 +56,8 @@ namespace Behemoth
 	struct TransformComponent : public ECS::Component
 	{
 		TransformComponent() :
-			worldTransform(BMath::Matrix4x4::Identity()),
-			localTransform(BMath::Matrix4x4::Identity()),
+			worldTransform(BMath::Matrix4x4<float>::Identity()),
+			localTransform(BMath::Matrix4x4<float>::Identity()),
 			forwardVector(BMath::Vector3::Forward()),
 			rightVector(BMath::Vector3::Right()),
 			upVector(BMath::Vector3::Up()),
@@ -68,8 +69,8 @@ namespace Behemoth
 			parentIsDirty(false)
 		{}
 
-		BMath::Matrix4x4 worldTransform;
-		BMath::Matrix4x4 localTransform;
+		BMath::Matrix4x4<float> worldTransform;
+		BMath::Matrix4x4<float> localTransform;
 		BMath::Vector3 forwardVector;
 		BMath::Vector3 rightVector;
 		BMath::Vector3 upVector;

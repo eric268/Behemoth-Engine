@@ -107,7 +107,7 @@ namespace Behemoth
 			if (TransformComponent* transformComp = registry.GetComponent<TransformComponent>(handle))
 			{
 				scale = transformComp->worldScale;
-				BMath::Matrix3x3 rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
+				BMath::Matrix3x3f rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
 
 				GetRotatedAABB(baseCollider, rot,  rotatedCollider);
 			}
@@ -124,7 +124,7 @@ namespace Behemoth
 		}
 	}
 
-	void MeshInitSystem::GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3& rotation,  AABBCollider& result)
+	void MeshInitSystem::GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3<float>& rotation,  AABBCollider& result)
 	{
 		for (int i = 0; i < 3; i++)
 		{

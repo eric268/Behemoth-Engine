@@ -18,11 +18,7 @@ namespace Behemoth
 				offsetPosition += collision.data.collisionNormal * collision.data.penetrationDepth;
 			}
 
-			transformComp->worldTransform._41 += offsetPosition.x;
-			transformComp->worldTransform._42 += offsetPosition.y;
-			transformComp->worldTransform._43 += offsetPosition.z;
-
-			transformComp->isDirty = true;
+			registry.AddComponent<MoveComponent>(entity, offsetPosition);
 		}
 	}
 }

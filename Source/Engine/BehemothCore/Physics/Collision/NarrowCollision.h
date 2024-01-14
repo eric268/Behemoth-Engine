@@ -6,10 +6,10 @@ namespace Behemoth
 {
 	using real = double;
 
-	class OBBCollider;
-	class SphereCollider;
-	class CollisionData;
-	class ContactData;
+	struct OBBCollider;
+	struct SphereCollider;
+	struct CollisionData;
+	struct ContactData;
 	class Plane;
 
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData);

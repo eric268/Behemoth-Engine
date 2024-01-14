@@ -61,7 +61,7 @@ namespace Behemoth
 					transformComp->isDirty = true;
 
 					VelocityComponent* vel = registry.GetComponent<VelocityComponent>(entity);
-					vel->velocity.y += 9.81 * deltaTime;
+					vel->velocity.y += 9.81f * deltaTime;
 				}
 			}
 		}

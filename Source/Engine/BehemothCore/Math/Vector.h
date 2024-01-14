@@ -8,6 +8,11 @@ namespace BMath
 	class Vector2;
 	class Vector3;
 	class Vector4;
+
+	template<typename T>
+	concept FloatOrDouble = std::is_same<T, float>::value || std::is_same<T, double>::value;
+
+	template<FloatOrDouble T>
 	class Matrix4x4;
 
 	class Vector2
@@ -42,7 +47,6 @@ namespace BMath
 		};
 
 		Vector3& Normalize();
-		float Magnitude() const;
 
 		static Vector3 Forward();
 		static Vector3 Right();
@@ -52,15 +56,54 @@ namespace BMath
 
 		static Vector3 Normalize(const Vector3& v1);
 		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
-		static Vector3& RotateVector(Vector3& vec, const Matrix4x4& rotationMatrix, float w = 1.0f);
+		static Vector3& RotateVector(Vector3& vec, const Matrix4x4<float>& rotationMatrix, float w = 1.0f);
 		static Vector3 Reflect(const Vector3& lightDir, const Vector3& normal);
 
-		static float Angle(const Vector3& v1, const Vector3& v2);
-		static float SquaredMagnitude(const Vector3& v1);
-		static float Magnitude(const Vector3& v1);
-		static float Distance(const Vector3& v1, const Vector3& v2);
-		static float SquaredDistance(const Vector3& v1, const Vector3& v2);
-		static float Dot(const Vector3& v1, const Vector3& v2);
+		float Magnitude() const
+		{
+			return std:: sqrt(x * x + y * y + z * z);
+		}
+
+		template <FloatOrDouble T = float>
+		static T Dot(const Vector3& v1, const Vector3& v2)
+		{
+			return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+		}
+
+		template <FloatOrDouble T = float>
+		static T Angle(const Vector3& v1, const Vector3& v2)
+		{
+			T dot = Dot<T>(v1, v2);
+			T magnitudeProduct = Magnitude(v1) * Magnitude(v2);
+			T val = std::max(-1.0f, std::min(1.0f, dot / magnitudeProduct));
+			return std::acos(val);
+		}
+
+		template <FloatOrDouble T = float>
+		static T Magnitude(const Vector3& v1)
+		{
+			return std::sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
+		}
+
+		template <FloatOrDouble T = float>
+		static float SquaredMagnitude(const Vector3& v1)
+		{
+			return (v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
+		}
+
+		template <FloatOrDouble T = float>
+		static T Distance(const Vector3& v1, const Vector3& v2)
+		{
+			const Vector3 v = v1 - v2;
+			return Magnitude(v1 - v2);
+		}
+
+		template <FloatOrDouble T = float>
+		static T SquaredDistance(const Vector3& v1, const Vector3& v2)
+		{
+			const Vector3 v = v1 - v2;
+			return SquaredMagnitude(v1 - v2);
+		}
 
 		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);
 

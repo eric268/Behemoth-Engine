@@ -10,9 +10,9 @@ namespace ECS
 namespace Behemoth
 {
 	class Mesh;
-	class MeshComponent;
-	class MeshInitComponent;
-	class AABBCollider;
+	struct MeshComponent;
+	struct MeshInitComponent;
+	struct AABBCollider;
 
 	class MeshInitSystem
 	{
@@ -29,7 +29,7 @@ namespace Behemoth
 
 		void CalculateRotatedAABB(ECS::Registry&, MeshComponent* meshComp, const ECS::EntityHandle& hanlde);
 
-		void GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3& rotation, AABBCollider& result);
+		void GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3<float>& rotation, AABBCollider& result);
 	};
 
 }

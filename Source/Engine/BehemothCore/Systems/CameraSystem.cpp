@@ -34,7 +34,7 @@ namespace Behemoth
 		const float farPlane = cameraComponent->farClippingPlane;
 		const float nearPlane = cameraComponent->nearClippingPlane;
 
-		cameraComponent->projMatrix = BMath::Matrix4x4::Zero();
+		cameraComponent->projMatrix = BMath::Matrix4x4f::Zero();
 		cameraComponent->projMatrix._11 = fovScale / aspectRatio;
 		cameraComponent->projMatrix._22 = fovScale;
 		cameraComponent->projMatrix._33 = -(farPlane + nearPlane) / (farPlane - nearPlane);
@@ -44,7 +44,7 @@ namespace Behemoth
 		BMath::Vector3 target = transformComponent->worldPosition + transformComponent->forwardVector;
 
 		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->worldPosition, target, BMath::Vector3::Up());
-		cameraComponent->inverseTransposeViewMatrix = BMath::Matrix4x4::Transpose(BMath::Matrix4x4::Inverse(cameraComponent->viewMatrix));
+		cameraComponent->inverseTransposeViewMatrix = BMath::Matrix4x4f::Transpose(BMath::Matrix4x4f::Inverse(cameraComponent->viewMatrix));
 	}
 
 	void CameraSystem::UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transformComp)
@@ -105,7 +105,7 @@ namespace Behemoth
 		cameraComponent->worldSpaceFrustum[5].d = -BMath::Vector3::Dot(farCenter, zAxis);
 	}
 
-	float CameraSystem::GetDistance(const BMath::Matrix4x4& m, int index)
+	float CameraSystem::GetDistance(const BMath::Matrix4x4f& m, int index)
 	{
 		if (index > 3)
 		{

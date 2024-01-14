@@ -6,8 +6,8 @@
 
 namespace Behemoth
 {
-	class CameraComponent;
-	class TransformComponent;
+	struct CameraComponent;
+	struct TransformComponent;
 	class Entity;
 
 	class MeshRenderSystem : public RenderSystem
@@ -18,7 +18,7 @@ namespace Behemoth
 
 	protected:
 		void ReserveResources(int numPrimitives) override;
-		void ProcessMesh(Mesh& mesh, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4& transform, const BMath::Matrix4x4& viewProjMatrix, bool dirty);
+		void ProcessMesh(Mesh& mesh, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4f& transform, const BMath::Matrix4x4f& viewProjMatrix, bool dirty);
 		bool CullBackFace(const BMath::Vector3& cameraLocation, const BMath::Vector4 primitiveVerts[]);
 		void AddPrimitiveToRenderer(Primitives& primitive, const int numVerticies, const BMath::Vector4 verticies[]);
 		float GetPrimitiveDepth(const int numVerticies, const BMath::Vector4 verticies[]);

@@ -7,11 +7,11 @@
 
 namespace Behemoth
 {
-	class MeshComponent;
-	class AmbientLightComponent;
-	class DirectionalLightComponent;
-	class PointLightComponent;
-	class TransformComponent;
+	struct MeshComponent;
+	struct AmbientLightComponent;
+	struct DirectionalLightComponent;
+	struct PointLightComponent;
+	struct TransformComponent;
 	class Primitives;
 	
 	class LightingSystem
@@ -22,7 +22,7 @@ namespace Behemoth
 	private:
 		void CalculateAmbientLights(Primitives* primitive, const AmbientLightComponent* light);
 		void CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos);
-		void CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4& viewMatrix);
+		void CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4f& viewMatrix);
 		BMath::Vector3 GetPrimitivePosition(Primitives* primitive);
 
 		BMath::Vector3 CalculateDiffuseLighting(const BMath::Vector3& surfaceNormal,

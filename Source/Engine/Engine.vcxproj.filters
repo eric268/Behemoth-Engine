@@ -85,6 +85,9 @@
     <ClInclude Include="BehemothCore\ECS\Generator.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\Page.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Registry.h">
       <Filter>ECS</Filter>
     </ClInclude>
@@ -184,6 +187,9 @@
     <ClInclude Include="BehemothCore\Physics\Collision\BroadCollision.h">
       <Filter>Physics\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Physics\Collision\ColliderHelper.h">
+      <Filter>Physics\Collision</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Physics\Collision\Colliders.h">
       <Filter>Physics\Collision</Filter>
     </ClInclude>
@@ -214,22 +220,19 @@
     <ClInclude Include="BehemothCore\Systems\MovementSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Physics\AABBCollisionSystem.h">
+    <ClInclude Include="BehemothCore\Systems\Physics\BroadCollisionSystem.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Physics\BroadCollisionSystem.h">
+    <ClInclude Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.h">
+      <Filter>Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Physics\OBBCollisionSystem.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h">
-      <Filter>Systems\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.h">
-      <Filter>Systems\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Physics\SphereCollisionSystem.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h">
@@ -266,10 +269,6 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
-    <ClInclude Include="BehemothCore\ECS\Page.h" />
-    <ClInclude Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.h" />
-    <ClInclude Include="BehemothCore\Physics\Collision\ColliderHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -307,9 +306,6 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Input\Input.cpp">
       <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Math\Matrix.cpp">
-      <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Math\Quaternion.cpp">
       <Filter>Math</Filter>
@@ -359,22 +355,19 @@
     <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Physics\AABBCollisionSystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Physics\BroadCollisionSystem.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Physics\BroadCollisionSystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.cpp">
+      <Filter>Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\OBBCollisionSystem.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp">
-      <Filter>Systems\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Physics\SphereAABBCollisionSystem.cpp">
-      <Filter>Systems\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Physics\SphereCollisionSystem.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp">
@@ -408,7 +401,5 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.cpp" />
   </ItemGroup>
 </Project>

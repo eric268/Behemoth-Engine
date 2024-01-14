@@ -84,9 +84,9 @@ namespace Behemoth
 
 	void MovementSystem::UpdateLocalTransform(TransformComponent* transformComp, MoveComponent* movementComp)
 	{
-		transformComp->localTransform._41 = movementComp->location.x;
-		transformComp->localTransform._42 = movementComp->location.y;
-		transformComp->localTransform._43 = movementComp->location.z;
+		transformComp->localTransform._41 += movementComp->location.x;
+		transformComp->localTransform._42 += movementComp->location.y;
+		transformComp->localTransform._43 += movementComp->location.z;
 		transformComp->localPosition = movementComp->location;
 	}
 

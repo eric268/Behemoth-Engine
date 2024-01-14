@@ -7,8 +7,8 @@
 
 namespace Behemoth
 {
-	class AABBCollider;
-	class SphereCollider;
+	struct AABBCollider;
+	struct SphereCollider;
 
 	class BoundingGenerator
 	{

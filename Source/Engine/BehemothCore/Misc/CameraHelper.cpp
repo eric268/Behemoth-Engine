@@ -7,21 +7,19 @@
 
 #include <cassert>
 
-using namespace BMath;
-
 namespace Behemoth
 {
-	BMath::Matrix4x4 CameraHelper::LookAt(const BMath::Vector3& eye, const BMath::Vector3& target, const BMath::Vector3& up)
+	BMath::Matrix4x4f CameraHelper::LookAt(const BMath::Vector3& eye, const BMath::Vector3& target, const BMath::Vector3& up)
 	{
-		const Vector3 zAxis = Vector3::Normalize(eye - target);
-		const Vector3 xAxis = Vector3::Normalize(Vector3::Cross(up, zAxis));
-		const Vector3 yAxis = Vector3::Cross(zAxis, xAxis);
+		const BMath::Vector3 zAxis = BMath::Vector3::Normalize(eye - target);
+		const BMath::Vector3 xAxis = BMath::Vector3::Normalize(BMath::Vector3::Cross(up, zAxis));
+		const BMath::Vector3 yAxis = BMath::Vector3::Cross(zAxis, xAxis);
+		
+		const float tx = -BMath::Vector3::Dot(xAxis, eye);
+		const float ty = -BMath::Vector3::Dot(yAxis, eye);
+		const float tz = -BMath::Vector3::Dot(zAxis, eye);
 
-		const float tx = -Vector3::Dot(xAxis, eye);
-		const float ty = -Vector3::Dot(yAxis, eye);
-		const float tz = -Vector3::Dot(zAxis, eye);
-
-		Matrix4x4 viewMatrix =
+		BMath::Matrix4x4f viewMatrix =
 		{
 			{ xAxis.x, xAxis.y, xAxis.z, tx},
 			{ yAxis.x, yAxis.y, yAxis.z, ty},

@@ -45,7 +45,7 @@ namespace Behemoth
 		collider.position = transform->worldPosition;
 		collider.extents = transform->worldScale * component->extents;
 
-		BMath::Matrix3x3 orientationMatrix = TransformHelper::ExtractRotationMatrix(transform->worldTransform);
+		BMath::Matrix3x3f orientationMatrix = TransformHelper::ExtractRotationMatrix(transform->worldTransform);
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
