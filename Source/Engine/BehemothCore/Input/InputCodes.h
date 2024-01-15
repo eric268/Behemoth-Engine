@@ -126,11 +126,13 @@ namespace Behemoth
 
 	enum MouseCode : uint8_t
 	{
-		MC_LeftClick			= 0,
-		MC_ScrollClick			= 1,
-		MC_RightClick			= 2,
+		MC_Left_Click	= 0,
+		MC_Scroll_Click  = 1,
+		MC_Right_Click	= 2,
+		MC_Scroll_Up		= 3,
+		MC_Scroll_Down	= 4,
 
-		NUM_MC = 3
+		NUM_MC = 5
 	};
 
 	enum ControllerCode : uint16_t

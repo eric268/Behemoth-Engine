@@ -266,6 +266,7 @@
     <ClInclude Include="BehemothCore\Misc\Page.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Physics\CollisionTypedefs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">

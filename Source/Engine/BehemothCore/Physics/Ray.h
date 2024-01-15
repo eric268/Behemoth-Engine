@@ -2,8 +2,16 @@
 #include "Math/MathCore.h"
 #include "Collision/CollisionMask.h"
 
+namespace ECS
+{
+	class Registry;
+}
+
 namespace Behemoth
 {
+	class ContactData;
+	class CollisionData;
+
 	class Ray
 	{
 	public:
@@ -14,4 +22,6 @@ namespace Behemoth
 		BMath::Vector3 direction;
 	};
 
+	static bool RayCast(ECS::Registry& registry, const Ray& ray, ContactData& data,  BMask::CollisionType mask = BMask::CollisionType::AllCollision);
+	static bool RayCast(ECS::Registry& registry, const Ray& ray, ContactData data[], BMask::CollisionType mask = BMask::CollisionType::AllCollision);
 }

@@ -64,6 +64,7 @@ namespace Behemoth
 		std::shared_ptr<BVHNode> CreateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
 		{
 			std::vector<BVHData> data = GetSceneColliderData<T...>(registry);
+
 			if (!data.size())
 			{
 				return nullptr;
