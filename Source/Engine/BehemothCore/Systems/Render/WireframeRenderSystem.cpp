@@ -59,7 +59,7 @@ namespace Behemoth
 			if (vertexIndex >= meshData.triangleVertexCount)
 				numVerticies = 4;
 
-			Primitives& primitive = mesh.meshPrimitives[i];
+			Primitive& primitive = mesh.meshPrimitives[i];
 
 			// Only need to update the verticies if matrix dirty
 			if (isDirty)

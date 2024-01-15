@@ -258,34 +258,6 @@ namespace BMath
 #pragma endregion 
 	private:
 	};
-// 
-// 	struct Vector3d : public Vector3
-// 	{
-// 	public:
-// 
-// 		Vector3d(float x, float y, float z) : x(x), y(y), z(z) {}
-// 		Vector3d() : x(0.0), y(0.0), z(0.0) {}
-// 		Vector3d(Vector3 v)
-// 		{
-// 			x = static_cast<double>(v.x);
-// 			y = static_cast<double>(v.y);
-// 			z = static_cast<double>(v.z);
-// 		}
-// 
-// 	/*	 Vector3d(const Vector4& v);*/
-// 
-// 		union
-// 		{
-// 			double data[3];
-// 			struct
-// 			{
-// 				double x;
-// 				double y;
-// 				double z;
-// 			};
-// 
-// 		};
-// 	};
 
 	class Vector4
 	{
@@ -306,7 +278,10 @@ namespace BMath
 			};
 		};
 
-
+		inline std::string Print()
+		{
+			return std::string(" X: " + std::to_string(x) + " Y: " + std::to_string(y) + " Z: " + std::to_string(z) + " W: " + std::to_string(w));
+		}
 		static bool Equals(const Vector4& vec1, const Vector4& vec2, float epsilon = 1e-2);
 		static Vector4 Cross(const Vector4& v1, const Vector4& v2, const float wVal = 1.0f);
 

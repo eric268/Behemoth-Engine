@@ -63,7 +63,7 @@ namespace Behemoth
 				uv[j].y = vertexData[i + j].uv.y * materialData.uvScale.y;
 			}
 			const std::string& path = Behemoth::ResourceManager::GetInstance().GetTexturePath(materialData.textureFileName);
-			Primitives p{ path, materialData.textureFileName, type, v, n, uv };
+			Primitive p{ path, materialData.textureFileName, type, v, n, uv };
 
 			p.diffuse	= materialData.diffuse;
 			p.specular	= materialData.specular;

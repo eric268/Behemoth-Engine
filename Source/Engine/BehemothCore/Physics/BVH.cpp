@@ -174,6 +174,7 @@ namespace Behemoth
 	{
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
 		node->collider = colliderData.collider;
+		node->collider.worldExtents *= colliderData.entityScale;
 		node->entityHandles = colliderData.handle;
 		node->leftChild = nullptr;
 		node->rightChild = nullptr;

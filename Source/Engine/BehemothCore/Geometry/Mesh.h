@@ -37,7 +37,7 @@ namespace Behemoth
 
 		MaterialData materialData;
 		MeshData meshData;
-		std::vector<Primitives> meshPrimitives;
+		std::vector<Primitive> meshPrimitives;
 		
 	private:
 		void GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVerticies, int vertexOffset);

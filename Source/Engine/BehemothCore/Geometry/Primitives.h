@@ -15,19 +15,19 @@ namespace Behemoth
 		QUAD = 4
 	};
 
-	class Primitives
+	class Primitive
 	{
 	public:
-		Primitives();
-		Primitives(std::string& path, std::string& textureName);
-		Primitives(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[]);
-		~Primitives();
+		Primitive();
+		Primitive(std::string& path, std::string& textureName);
+		Primitive(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[]);
+		~Primitive();
 
-		Primitives(const Primitives& obj);
-		Primitives(Primitives&& obj) noexcept;
+		Primitive(const Primitive& obj);
+		Primitive(Primitive&& obj) noexcept;
 
-		Primitives& operator=(Primitives&& obj) noexcept;
- 		Primitives& operator=(const Primitives& obj);
+		Primitive& operator=(Primitive&& obj) noexcept;
+ 		Primitive& operator=(const Primitive& obj);
 
 		void Draw();
 

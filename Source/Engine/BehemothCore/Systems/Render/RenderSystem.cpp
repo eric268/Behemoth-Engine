@@ -19,7 +19,7 @@ namespace Behemoth
 				primitiveVerts[i].y < -primitiveVerts[i].w ||
 				primitiveVerts[i].y >  primitiveVerts[i].w ||
 				primitiveVerts[i].z > primitiveVerts[i].w ||
-				primitiveVerts[i].z <= -1.0f)
+				primitiveVerts[i].z < 0.0f)
 				numVerticiesOutsideFrustrum++;
 		}
 
@@ -41,7 +41,7 @@ namespace Behemoth
 		return true;
 	}
 
-	void RenderSystem::TransformVertex(const Primitives& primitive, const BMath::Matrix4x4f& transformMatrix, BMath::Vector4 vertex[], const int numVerticies)
+	void RenderSystem::TransformVertex(const Primitive& primitive, const BMath::Matrix4x4f& transformMatrix, BMath::Vector4 vertex[], const int numVerticies)
 	{
 		for (int j = 0; j < numVerticies; j++)
 		{
@@ -49,21 +49,28 @@ namespace Behemoth
 		}
 	}
 
-	void RenderSystem::ProcessVertex(const BMath::Matrix4x4f& viewProjMatrix, BMath::Vector4 vertex[], int numVerticies)
+	float RenderSystem::ProcessVertex(const BMath::Matrix4x4f& viewProjMatrix, BMath::Vector4 vertex[], int numVerticies)
 	{
+		float depth = 0.0f;
+
 		for (int j = 0; j < numVerticies; j++)
 		{
+			
+			auto val  = viewProjMatrix * vertex[j];
 			vertex[j] = viewProjMatrix * vertex[j];
 
 			if (vertex[j].w == 0.0f)
 			{
 				vertex[j].w = EPSILON;
 			}
+			depth += vertex[j].w;
 
 			// Invert w so only perform 1 divide instead of 4
 			float w = 1.0f / vertex[j].w;
 			vertex[j] *= w;
-
+			val *= w;
 		}
+
+		return depth /= numVerticies;
 	}
 }

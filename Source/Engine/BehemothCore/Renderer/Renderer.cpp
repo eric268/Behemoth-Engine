@@ -25,13 +25,13 @@ namespace Behemoth
 	void Renderer::SortPrimitivesByDepth()
 	{
 		std::sort(primitivesToDraw.begin(), primitivesToDraw.end(),
-			[&](const Primitives* p1, const Primitives* p2)
+			[&](const Primitive* p1, const Primitive* p2)
 			{
 				return p1->depth > p2->depth;
 			});
 	}
 
-	void Renderer::AddPrimitive(Primitives* primitive)
+	void Renderer::AddPrimitive(Primitive* primitive)
 	{
 		primitivesToDraw[primitivesIndex++] = primitive;
 	}

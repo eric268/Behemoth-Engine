@@ -8,7 +8,7 @@ namespace Behemoth
 	struct MeshComponent;
 
 	// Debug
-	class Primitives;
+	class Primitive;
 
 	class RotationSystem
 	{
@@ -31,6 +31,6 @@ namespace Behemoth
 		bool doOnce = true;
 		int counter = 0;
 		ECS::EntityHandle entityHandles[12];
-		BMath::Vector3 GetPrimitivePosition(Primitives* primitive);
+		BMath::Vector3 GetPrimitivePosition(Primitive* primitive);
 	};
 }

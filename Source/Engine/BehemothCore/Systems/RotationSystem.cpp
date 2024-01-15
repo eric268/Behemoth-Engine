@@ -110,7 +110,7 @@ namespace Behemoth
 			// Need to check if gettings the mesh normal from resource manager, then multiplying by world transform, then setting primitive normal is still faster
 			// BMath::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[0], rotationMatrix, 0.0f);
 
-			Primitives& primitive = meshComponent->mesh.meshPrimitives[i];
+			Primitive& primitive = meshComponent->mesh.meshPrimitives[i];
 			primitive.normals[0] = BMath::Vector3(BMath::Vector4::Cross(primitive.verticies[1] - primitive.verticies[0], primitive.verticies[2] - primitive.verticies[0]));
 			primitive.normals[0].Normalize();
 		}
@@ -147,7 +147,7 @@ namespace Behemoth
 		return BMath::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();
 	}
 
-	BMath::Vector3 RotationSystem::GetPrimitivePosition(Primitives* primitive)
+	BMath::Vector3 RotationSystem::GetPrimitivePosition(Primitive* primitive)
 	{
 		int numVertices = static_cast<PrimitiveType>(primitive->primitiveType);
 		if (numVertices <= 0)

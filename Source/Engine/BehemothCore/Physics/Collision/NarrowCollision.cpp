@@ -96,57 +96,50 @@ namespace Behemoth
 
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::Vector3 spherePosition = sphere.position;
-		BMath::Vector3 boxPosition = box.position;
+		const BMath::Vector3 spherePosition = sphere.position;
+		const BMath::Vector3 boxPosition = box.position;
 
-		BMath::Vector3 translatedCenter = spherePosition - boxPosition;
+		BMath::Matrix3x3d boxOrientation {};
 
-		// Transpose the rotation matrix formed by the orientation vectors
-		BMath::Vector3 invRotatedCenter = BMath::Vector3(
-			BMath::Vector3::Dot(translatedCenter, BMath::Vector3(box.orientation[0].x,box.orientation[1].x, box.orientation[2].x)),
-			BMath::Vector3::Dot(translatedCenter, BMath::Vector3(box.orientation[0].y,box.orientation[1].y, box.orientation[2].y)),
-			BMath::Vector3::Dot(translatedCenter, BMath::Vector3(box.orientation[0].z,box.orientation[1].z, box.orientation[2].z))
-		);
-
-		BMath::Vector3 relCenter = BMath::Vector3
-		(
-			invRotatedCenter.x / box.extents.x,
-			invRotatedCenter.y / box.extents.y,
-			invRotatedCenter.z / box.extents.z
-		);
-
-		if (std::abs(relCenter.x) - sphere.radius > box.extents.x ||
-			std::abs(relCenter.y) - sphere.radius > box.extents.y ||
-			std::abs(relCenter.z) - sphere.radius > box.extents.z)
+		for (int i = 0; i < 3; i++)
 		{
-			return false;
+			for (int j = 0; j < 3; j++)
+			{
+				boxOrientation.data[i][j] = box.orientation[i][j];
+			}
 		}
+
+		BMath::Vector3 relativeCenter = spherePosition - boxPosition;
+		BMath::Vector3 localToSphere = BMath::Matrix3x3d::Transpose(boxOrientation) * relativeCenter;
 
 		BMath::Vector3 closestPoint(0.0f);
 
-		float distance = relCenter.x;
-		distance = (distance > box.extents.x) ? box.extents.x : (distance < -box.extents.x) ? -box.extents.x : relCenter.x;
-		closestPoint.x = distance;
-	
-		distance = relCenter.y;
-		distance = (distance > box.extents.y) ? box.extents.y : (distance < -box.extents.y) ? -box.extents.y : relCenter.y;
-		closestPoint.y = distance;
+		for (int i = 0; i < 3; ++i) 
+		{
+			float value = localToSphere[i];
+			if (value > box.extents[i])
+			{
+				value = box.extents[i];
+			}
+			if (value < -box.extents[i])
+			{
+				value = -box.extents[i];
+			}
+			closestPoint[i] = value;
+		}
 
-		distance = relCenter.z;
-		distance = (distance > box.extents.z) ? box.extents.z : (distance < -box.extents.z) ? -box.extents.z : relCenter.z;
-		closestPoint.z = distance;
-
-		distance = BMath::Vector3::SquaredMagnitude((closestPoint - relCenter));
+		BMath::Vector3 diff = localToSphere - closestPoint;
+		float squareDist = BMath::Vector3::SquaredMagnitude(diff);
 		
-		if (distance > sphere.radius * sphere.radius)
+		if (squareDist > sphere.radius * sphere.radius)
 		{
 			return false;
 		}
 
-		contactData.collisionNormal = closestPoint - spherePosition;
-		contactData.collisionNormal.Normalize();
-		contactData.collisionPoint = closestPoint;
-		contactData.penetrationDepth = sphere.radius - std::sqrt(distance);
+		BMath::Vector3 worldContactPoint = boxOrientation * closestPoint + boxPosition;
+		contactData.collisionPoint = worldContactPoint;
+		contactData.collisionNormal = diff.Normalize();
+		contactData.penetrationDepth = sphere.radius - std::sqrt(squareDist);
 
 		return true;
 	}
@@ -333,11 +326,6 @@ namespace Behemoth
 			OBBVertexFaceCollision(box1, box2, centerPosition, contactData, bestIndex % 3, smallestPenetration);
 			return true;
 		}
-// 		else if (bestIndex < 6)
-// 		{
-// 			OBBVertexFaceCollision(box2, box1, centerPosition * -1.0f, contactData, bestIndex - 3, smallestPenetration);
-// 			return true;
-// 		}
 		else
 		{
 			bestIndex -= 6;
@@ -346,13 +334,6 @@ namespace Behemoth
 			int axisTwoIndex = bestIndex % 3;
 			BMath::Vector3 box1Axis = box1.orientation[axisOneIndex];
 			BMath::Vector3 box2Axis = box2.orientation[axisTwoIndex];
-
-// 			BMath::Vector3 axis = BMath::Vector3::Cross(box1Axis, box2Axis).Normalize();
-// 
-// 			if (BMath::Vector3::Dot<real>(axis, centerPosition) > 0)
-// 			{
-// 				axis *= -1.0f;
-// 			}
 			BMath::Vector3 axis = (box1.position - box2.position).Normalize();
 
 			BMath::Vector3 ptOnOneEdge = box1.extents;
@@ -378,7 +359,6 @@ namespace Behemoth
 					ptOnTwoEdge[i] = -ptOnTwoEdge[i];
 				}
 			}
-
 
 			BMath::Matrix4x4 box1Transform {};
 
@@ -586,187 +566,61 @@ namespace Behemoth
 
 		return b1 + b2 - distance;
 	}
-// 
-// 
-// 
-// 
-// 	bool DEBUG_tryAxis(
-// 		const OBBCollider& one,
-// 		const OBBCollider& two,
-// 		BMath::Vector3 axis,
-// 		const BMath::Vector3& toCentre,
-// 		unsigned index,
-// 
-// 		// These values may be updated
-// 		real& smallestPenetration,
-// 		unsigned& smallestCase
-// 	)
-// 	{
-// 		// Make sure we have a normalized axis, and don't check almost parallel axes
-// 		if (BMath::Vector3::SquaredMagnitude(axis) < 0.0001) 
-// 			return true;
-// 		axis.Normalize();
-// 
-// 		real penetration = penetrationOnAxis(one, two, axis, toCentre);
-// 
-// 		if (penetration < 0) return false;
-// 		if (penetration < smallestPenetration) {
-// 			smallestPenetration = penetration;
-// 			smallestCase = index;
-// 		}
-// 		return true;
-// 	}
-// 
-// 	// FOR TESTING ONLY DELETE BEFORE SUBMISSION 
-// #define CHECK_OVERLAP(axis, index) \
-//     if (!DEBUG_tryAxis(one, two, (axis), toCentre, (index), pen, best)) return false;
-// 
-// 	bool DEBUG_boxAndBox(
-// 		const OBBCollider& one,
-// 		const OBBCollider& two,
-// 		ContactData contactData
-// 	)
-// 	{
-// 		//if (!IntersectionTests::boxAndBox(one, two)) return 0;
-// 
-// 		// Find the vector between the two centres
-// 		BMath::Vector3 toCentre = two.orientation[3] - one.orientation[3];
-// 
-// 		// We start assuming there is no contact
-// 		real pen = std::numeric_limits<real>::max();
-// 		unsigned best = 0xffffff;
-// 
-// 		// Now we check each axes, returning if it gives us
-// 		// a separating axis, and keeping track of the axis with
-// 		// the smallest penetration otherwise.
-// 		CHECK_OVERLAP(one.orientation[0], 0);
-// 		CHECK_OVERLAP(one.orientation[1], 1);
-// 		CHECK_OVERLAP(one.orientation[2], 2);
-// 
-// 		CHECK_OVERLAP(two.orientation[0], 3);
-// 		CHECK_OVERLAP(two.orientation[1], 4);
-// 		CHECK_OVERLAP(two.orientation[2], 5);
-// 
-// 		// Store the best axis-major, in case we run into almost
-// 		// parallel edge collisions later
-// 		unsigned bestSingleAxis = best;
-// 
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[0], two.orientation[0]), 6);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[0], two.orientation[1]), 7);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[0], two.orientation[2]), 8);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[1], two.orientation[0]), 9);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[1], two.orientation[1]), 10);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[1], two.orientation[2]), 11);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[2], two.orientation[0]), 12);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[2], two.orientation[1]), 13);
-// 		CHECK_OVERLAP(BMath::Vector3::Cross(one.orientation[2], two.orientation[2]), 14);
-// 
-// 		// Make sure we've got a result.
-// 		assert(best != 0xffffff);
-// 
-// 		// We now know there's a collision, and we know which
-// 		// of the axes gave the smallest penetration. We now
-// 		// can deal with it in different ways depending on
-// 		// the case.
-// 		if (best < 3)
-// 		{
-// 			// We've got a vertex of box two on a face of box one.
-// 			OBBVertexFaceCollision(one, two, toCentre, contactData, best, pen);
-// 			return 1;
-// 		}
-// 		else if (best < 6)
-// 		{
-// 			// We've got a vertex of box one on a face of box two.
-// 			// We use the same algorithm as above, but swap around
-// 			// one and two (and therefore also the vector between their
-// 			// centres).
-// 			OBBVertexFaceCollision(two, one, toCentre * -1.0f, contactData, best - 3, pen);
-// 			return 1;
-// 		}
-// 		else
-// 		{
-// 			// We've got an edge-edge contact. Find out which axes
-// 			best -= 6;
-// 			unsigned oneAxisIndex = best / 3;
-// 			unsigned twoAxisIndex = best % 3;
-// 			BMath::Vector3 oneAxis = one.orientation[oneAxisIndex];
-// 			BMath::Vector3 twoAxis = two.orientation[twoAxisIndex];
-// 			BMath::Vector3 axis = BMath::Vector3::Cross(oneAxis, twoAxis);
-// 			axis.Normalize();
-// 
-// 			// The axis should point from box one to box two.
-// 			if (BMath::Vector3::Dot(axis, toCentre) > 0) axis = axis * -1.0f;
-// 
-// 			// We have the axes, but not the edges: each axis has 4 edges parallel
-// 			// to it, we need to find which of the 4 for each object. We do
-// 			// that by finding the point in the centre of the edge. We know
-// 			// its component in the direction of the box's collision axis is zero
-// 			// (its a mid-point) and we determine which of the extremes in each
-// 			// of the other axes is closest.
-// 			BMath::Vector3 ptOnOneEdge = one.extents;
-// 			BMath::Vector3 ptOnTwoEdge = two.extents;
-// 			for (unsigned i = 0; i < 3; i++)
-// 			{
-// 				if (i == oneAxisIndex) ptOnOneEdge[i] = 0;
-// 				else if (BMath::Vector3::Dot(one.orientation[i], axis) > 0) ptOnOneEdge[i] = -ptOnOneEdge[i];
-// 
-// 				if (i == twoAxisIndex) ptOnTwoEdge[i] = 0;
-// 				else if (BMath::Vector3::Dot(two.orientation[i], axis) < 0) ptOnTwoEdge[i] = -ptOnTwoEdge[i];
-// 			}
-// 
-// 			// Move them into world coordinates (they are already oriented
-// 			// correctly, since they have been derived from the axes).
-// 			BMath::Matrix4x4 box1Transform {};
-// 
-// 			for (int i = 0; i < 3; i++)
-// 			{
-// 				for (int j = 0; j < 3; j++)
-// 				{
-// 					box1Transform.data[i][j] = one.orientation[i][j] * one.extents[i];
-// 				}
-// 			}
-// 
-// 			box1Transform._41 = one.position.x;
-// 			box1Transform._42 = one.position.y;
-// 			box1Transform._43 = one.position.z;
-// 
-// 
-// 			BMath::Matrix4x4 box2Transform {};
-// 
-// 			for (int i = 0; i < 3; i++)
-// 			{
-// 				for (int j = 0; j < 3; j++)
-// 				{
-// 					box2Transform.data[i][j] = two.orientation[i][j] * two.extents[i];
-// 				}
-// 			}
-// 
-// 			box2Transform._41 = two.position.x;
-// 			box2Transform._42 = two.position.y;
-// 			box2Transform._43 = two.position.z;
-// 
-// 			ptOnOneEdge = BMath::Vector3(box1Transform * BMath::Vector4(ptOnOneEdge, 1.0f));
-// 			ptOnTwoEdge = BMath::Vector3(box2Transform * BMath::Vector4(ptOnTwoEdge, 1.0f));
-// 
-// 			// So we have a point and a direction for the colliding edges.
-// 			// We need to find out point of closest approach of the two
-// 			// line-segments.
-// 			BMath::Vector3 vertex = CalculateOBBContactPoint(
-// 				ptOnOneEdge, oneAxis, one.extents[oneAxisIndex],
-// 				ptOnTwoEdge, twoAxis, two.extents[twoAxisIndex],
-// 				bestSingleAxis > 2
-// 			);
-// 
-// 			// We can fill the contact.
-// 		
-// 
-// 			contactData.penetrationDepth= pen;
-// 			contactData.collisionNormal = axis;
-// 			contactData.collisionPoint = vertex;
-// 
-// 			return 1;
-// 		}
-// 		return 0;
-// 	}
-
 }
+
+// const BMath::Vector3 spherePosition = sphere.position;
+// const BMath::Vector3 boxPosition = box.position;
+// 
+// BMath::Matrix4x4d boxTransform = BMath::Matrix4x4d::Identity();
+// 
+// for (int i = 0; i < 3; i++)
+// {
+// 	for (int j = 0; j < 3; j++)
+// 	{
+// 		boxTransform.data[i][j] = box.orientation[i][j] * box.extents[i];
+// 	}
+// }
+// 
+// boxTransform._41 = box.position.x;
+// boxTransform._42 = box.position.y;
+// boxTransform._43 = box.position.z;
+// 
+// BMath::Vector3 rC = spherePosition - boxPosition;
+// 
+// const BMath::Matrix4x4d invBoxTransform = BMath::Matrix4x4d::Transpose(boxTransform);
+// BMath::Vector3 relativeCenter = BMath::Vector3(invBoxTransform * BMath::Vector4(spherePosition, 1.0f));
+// 
+// 
+// 
+// BMath::Vector3 translatedCenter = spherePosition - boxPosition;
+// 
+// BMath::Vector3 closestPoint(0.0f);
+// 
+// float distance = relativeCenter.x;
+// distance = (distance > box.extents.x) ? box.extents.x : (distance < -box.extents.x) ? -box.extents.x : relativeCenter.x;
+// closestPoint.x = distance;
+// 
+// distance = relativeCenter.y;
+// distance = (distance > box.extents.y) ? box.extents.y : (distance < -box.extents.y) ? -box.extents.y : relativeCenter.y;
+// closestPoint.y = distance;
+// 
+// distance = relativeCenter.z;
+// distance = (distance > box.extents.z) ? box.extents.z : (distance < -box.extents.z) ? -box.extents.z : relativeCenter.z;
+// closestPoint.z = distance;
+// 
+// distance = BMath::Vector3::SquaredMagnitude((relativeCenter - closestPoint));
+// 
+// if (distance > sphere.radius * sphere.radius)
+// {
+// 	return false;
+// }
+// 
+// BMath::Vector3 closestPointWorld = BMath::Vector3(invBoxTransform * BMath::Vector4(closestPoint, 1.0f));
+// 
+// 
+// contactData.collisionNormal = (spherePosition - closestPointWorld).Normalize();
+// contactData.collisionNormal.Normalize();
+// contactData.collisionPoint = closestPointWorld;
+// contactData.penetrationDepth = sphere.radius - std::sqrt(distance);
+// 
+// return true;

@@ -28,7 +28,9 @@ namespace Behemoth
 
 				std::apply([&](auto&&... elems1) 
 				{
-						(std::apply([&](auto&&... elems2)
+						auto func = [&](auto&& tup) 
+						{
+							return ((std::apply([&](auto&&... elems2)
 							{
 								ContactData contactData{};
 								auto OnCollision = [&](auto&& entitiy, auto&& hitEntity)
@@ -53,11 +55,13 @@ namespace Behemoth
 											collisionDataComp->data.push_back(collisionData);
 										}
 									}
-								}; (..., OnCollision(elems1, elems2));
+								}; (..., OnCollision(tup, elems2));
 
-						}, hitColliders));
+							}, hitColliders))); };
 
-				}, (dynamicColliders));
+						(..., func(elems1));
+				}, dynamicColliders);
+
 			}
 		}
 	}

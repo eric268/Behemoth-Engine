@@ -31,7 +31,7 @@ namespace Behemoth
 
 		for (int i = 0; i < Renderer::GetInstance().primitivesToDraw.size(); i++)
 		{
-			Primitives* primitive = Renderer::GetInstance().primitivesToDraw[i];
+			Primitive* primitive = Renderer::GetInstance().primitivesToDraw[i];
 			assert(primitive);
 
 #ifdef ENABLE_LIGHTING
@@ -58,13 +58,13 @@ namespace Behemoth
 		}
 	}
 
-	void LightingSystem::CalculateAmbientLights(Primitives* primitive, const AmbientLightComponent* light)
+	void LightingSystem::CalculateAmbientLights(Primitive* primitive, const AmbientLightComponent* light)
 	{
 		BMath::Vector3 ambientLight = light->color * light->intensity;
 		primitive->AddLighting(ambientLight);
 	}
 
-	void LightingSystem::CalculateDirectionalLights(Primitives* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos)
+	void LightingSystem::CalculateDirectionalLights(Primitive* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
 		
@@ -77,7 +77,7 @@ namespace Behemoth
 		primitive->AddLighting(diffuse + specular);
 	}
 
-	void LightingSystem::CalculatePointLights(Primitives* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4f& viewMatrix)
+	void LightingSystem::CalculatePointLights(Primitive* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4f& viewMatrix)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
 
@@ -92,7 +92,7 @@ namespace Behemoth
 		primitive->AddLighting((diffuse + specular) * attenuation);
 	}
 
-	BMath::Vector3 LightingSystem::GetPrimitivePosition(Primitives* primitive)
+	BMath::Vector3 LightingSystem::GetPrimitivePosition(Primitive* primitive)
 	{
 		int numVertices = static_cast<PrimitiveType>(primitive->primitiveType);
 		if (numVertices <= 0) 
@@ -117,7 +117,7 @@ namespace Behemoth
 		return primitiveDiffusion * diff * lightIntensity * lightColor;
 	}
 
-	BMath::Vector3 LightingSystem::CalculateSpecularLighting(Primitives* primitive,
+	BMath::Vector3 LightingSystem::CalculateSpecularLighting(Primitive* primitive,
 														    const BMath::Vector3& cameraPos,
 														    const BMath::Vector3& surfaceNormal,
 														    const BMath::Vector3& lightDir,

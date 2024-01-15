@@ -14,10 +14,9 @@ namespace Behemoth
 	void MeshRenderSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		auto components = registry.Get<MeshComponent, TransformComponent>();
-		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+		TransformComponent* cameraTransformComp = CameraHelper::GetMainCameraTransform(registry);
 
 		std::sort(components.begin(), components.end(),
 			[&](std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple1, std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple2)
@@ -43,15 +42,16 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessMesh(meshComp->mesh, mainCameraPosition, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty);
+			ProcessMesh(meshComp->mesh, cameraTransformComp, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty);
 			transformComp->isDirty = false;
+
 		}
 
 		Renderer::GetInstance().FreeResourceOverflow();
 	}
 
 
-	void MeshRenderSystem::ProcessMesh(Mesh& mesh, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4f& transformMatrix, const BMath::Matrix4x4f& viewProjMatrix, bool isDirty)
+	void MeshRenderSystem::ProcessMesh(Mesh& mesh, TransformComponent* cameraTransform, const BMath::Matrix4x4f& transformMatrix, const BMath::Matrix4x4f& viewProjMatrix, bool isDirty)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -67,9 +67,11 @@ namespace Behemoth
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
 			if (vertexIndex >= meshData.triangleVertexCount)
+			{
 				numVerticies = 4;
+			}
 
-			Primitives& primitive = mesh.meshPrimitives[i];
+			Primitive& primitive = mesh.meshPrimitives[i];
 
 			// Only need to update the verticies if matrix dirty
 			if (isDirty)
@@ -85,7 +87,7 @@ namespace Behemoth
 				vertexIndex += numVerticies;
 			}
 
-			if (CullBackFace(cameraPosition, primitive.verticies))
+			if (CullBackFace(cameraTransform->worldPosition, primitive.verticies))
 			{
 				continue;
 			}
@@ -93,16 +95,27 @@ namespace Behemoth
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
 
-			ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
+			primitive.depth = ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
  
 			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
 			{
 				continue;
 			}
-
-			primitive.depth = GetPrimitiveDepth(numVerticies, renderVerts);
 			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts);
 		}
+	}
+
+	bool MeshRenderSystem::PrimitiveBehindCamera(Primitive& primitive, int numVerticies, BMath::Vector3 cameraPos, BMath::Vector3 cameraForward)
+	{
+		BMath::Vector3 averagePos{};
+		for (int i = 0; i < numVerticies; i++)
+		{
+			averagePos += BMath::Vector3(primitive.verticies[i]) / static_cast<float>(numVerticies);
+		}
+		BMath::Vector3 dir = (averagePos - cameraPos).Normalize();
+		float d =  BMath::Vector3::Dot(cameraForward, dir);
+		LOGMESSAGE(Error, std::to_string(d));
+		return d < 0;
 	}
 
 	bool MeshRenderSystem::CullBackFace(const BMath::Vector3& cameraLocation, const BMath::Vector4 primitiveVerts[])
@@ -113,7 +126,7 @@ namespace Behemoth
 	}
 
 
-	void MeshRenderSystem::AddPrimitiveToRenderer(Primitives& primitive, const int numVerticies, const BMath::Vector4 vertex[])
+	void MeshRenderSystem::AddPrimitiveToRenderer(Primitive& primitive, const int numVerticies, const BMath::Vector4 vertex[])
 	{
 		primitive.SetSpriteVerticies(numVerticies, vertex);
 		Renderer::GetInstance().AddPrimitive(&primitive);

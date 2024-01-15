@@ -8,7 +8,7 @@
 
 namespace Behemoth
 {
-	class Primitives;
+	class Primitive;
 	class Vector4;
 
 	class Renderer
@@ -23,13 +23,13 @@ namespace Behemoth
 		Renderer& operator=(const Renderer&) = delete;
 
 		std::vector<Line> linesToDraw;
-		std::vector<Primitives*> primitivesToDraw;
+		std::vector<Primitive*> primitivesToDraw;
 		std::size_t primitivesIndex;
 		std::size_t lineIndex;
 
 		void Draw();
 		void ReservePrimitives(std::size_t numPrimitives);
-		void AddPrimitive(Primitives* primitive);
+		void AddPrimitive(Primitive* primitive);
 		void ReserveLines(std::size_t numLines);
 		void AddLine(const Line& line);
 		void FreeResourceOverflow();
