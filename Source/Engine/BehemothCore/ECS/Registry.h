@@ -160,7 +160,6 @@ namespace ECS
 			}
 		}
 
-
 		template<IsComponent T>
 		T* GetComponent(Entity entity)
 		{

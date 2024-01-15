@@ -4,7 +4,7 @@
 #include "Component.h"
 #include "Entity.h"
 #include "Misc/Log.h"
-#include "Page.h"
+#include "Misc/Page.h"
 
 // stl
 #include <vector>
@@ -32,12 +32,10 @@ namespace ECS
 		void RemoveComponent(Entity entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
-
 			if (!Contains(entity))
 			{
 				return;
 			}
-			Entity e = entity;
 
 			dense[sparse[identifier]].name = "Deleted";
 
@@ -55,19 +53,11 @@ namespace ECS
 		{
 			entity_identifier identifier = entity.GetIdentifier();
 
-
 			if (Contains(entity))
 			{
-				LOGMESSAGE(MessageType::Warning, entity.GetName() + " already has " + typeid(component).name() + " old component removed, new one added");
 				RemoveComponent(entity);
 
 			}
-
-// 			if (identifier >= maxSize || Entity::GetVersion(sparse[identifier]) != NULL_VERSION)
-// 			{
-// 				LOGMESSAGE(MessageType::Error, std::string("Failed to add ") + typeid(component).name() + "to entity " + entity.GetName());
-// 				return nullptr;
-// 			}
 
 			if (available > 0 && next != NULL_IDENTIFIER)
 			{
@@ -82,8 +72,7 @@ namespace ECS
 				sparse[identifier] = index++;
 				dense.push_back(entity);
 			}
-// 			components.Add(sparse[identifier], component);
-// 			return &components[sparse[identifier]];
+
 			components.Add(identifier, component);
 			return &components[identifier];
 		}
@@ -96,12 +85,12 @@ namespace ECS
 			{
 				return nullptr;
 			}
-// 
-// 			if (entity.GetVersion() != dense[Entity::GetIdentifier(sparse[identifier])].GetVersion())
-// 			{
-// 				RemoveComponent(entity);
-// 				return nullptr;
-// 			}
+
+			if (entity.GetVersion() != dense[sparse[identifier]].GetVersion())
+			{
+				RemoveComponent(entity);
+				return nullptr;
+			}
 
 			if (Contains(entity))
 			{
@@ -119,30 +108,6 @@ namespace ECS
 			long long val = id + version;
  			return (identifier < sparse.size() && val < NULL_VERSION);
 		}
-// 
-// 		bool HasEntity(const Entity& entity)
-// 		{
-// 			entity_identifier identifier = entity.GetIdentifier();
-// 
-// 			auto id = Entity::GetIdentifier(sparse[identifier]);
-// 			return identifier < sparse.size() && id < dense.size() && dense[id].ID == entity.ID;
-// 			//bool result = (identifier < sparse.size() && ((~0xFFFF & entity.GetIdentifier()) ^ sparse[identifier]) < NULL_IDENTIFIER);
-// 			// return result;
-// 
-// 			if (identifier < maxSize || Entity::GetVersion(sparse[identifier]) == NULL_VERSION)
-// 			{
-// 				if (entity.GetVersion() == dense[Entity::GetIdentifier(sparse[identifier])].GetVersion())
-// 				{
-// 					return true;
-// 				}
-// 				else
-// 				{
-// 					RemoveComponent(entity);
-// 				}
-// 			}
-// 
-// 			return false;
-// 		}
 
 		size_t size() const
 		{

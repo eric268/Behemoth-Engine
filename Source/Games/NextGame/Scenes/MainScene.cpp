@@ -37,7 +37,7 @@ MainScene::MainScene()
 // 		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
 // 		registry.AddComponent<Behemoth::OBBColliderComponent>(cubes[i]);
 // 	}
-
+// 
 //  for (int i = 4; i < 8; i++)
 //  {
 //  	std::string name = "Cube " + std::to_string(i + 1);
@@ -59,22 +59,20 @@ MainScene::MainScene()
 //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[5], BMath::Vector3( 11.0f, 0.0f, -12.0f));
 //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[6], BMath::Vector3( 14.0f, -3.0f, -6.0f));
 //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
-// 
+
 
  	playerHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Player");
- 	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
- 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 5.0f, 0.0f));
- 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, true);
+ 	// registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
+ 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, 0.0f));
+ 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
  	registry.AddComponent<Behemoth::SphereColliderComponent>(playerHandle);
  	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0));
 
-
-	auto testCube = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "Player");
-	registry.AddComponent<Behemoth::MoveComponent>(testCube, BMath::Vector3(2.0f, 0.0f, 0.0f));
-	registry.AddComponent<Behemoth::StaticComponent>(testCube);
-	registry.AddComponent<Behemoth::OBBColliderComponent>(testCube, BMath::Vector3(1.0f));
-	registry.AddComponent<Behemoth::ScalingComponent>(testCube, BMath::Vector3(4.0, 1.0, 4.0));
-	registry.AddComponent<Behemoth::WireframeComponent>(testCube, "cube.obj");
+ 	auto testCube = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "Player");
+ 	registry.AddComponent<Behemoth::MoveComponent>(testCube, BMath::Vector3(2.0f, 0.0f, 0.0f));
+ 	registry.AddComponent<Behemoth::StaticComponent>(testCube);
+ 	registry.AddComponent<Behemoth::OBBColliderComponent>(testCube, BMath::Vector3(1.0f));
+ 	registry.AddComponent<Behemoth::ScalingComponent>(testCube, BMath::Vector3(1.0, 1.0, 1.0));
 
 
 

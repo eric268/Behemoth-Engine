@@ -22,7 +22,7 @@ namespace Behemoth
 	class BroadCollisionSystem
 	{
 	public:
-		using DynamicEntities = std::vector <std::tuple<ECS::Entity, RigidBodyComponent*, VelocityComponent*, TransformComponent*, BroadColliderComponent*>>;
+		using DynamicEntities = std::vector<std::tuple<ECS::Entity, RigidBodyComponent*, VelocityComponent*, TransformComponent*, BroadColliderComponent*>>;
 
 		void Run(const float deltaTime, ECS::Registry& registry);
 

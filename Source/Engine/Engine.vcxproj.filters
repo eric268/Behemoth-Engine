@@ -85,9 +85,6 @@
     <ClInclude Include="BehemothCore\ECS\Generator.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\ECS\Page.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Registry.h">
       <Filter>ECS</Filter>
     </ClInclude>
@@ -229,9 +226,6 @@
     <ClInclude Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Physics\OBBCollisionSystem.h">
-      <Filter>Systems\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
@@ -269,6 +263,9 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
+    <ClInclude Include="BehemothCore\Misc\Page.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -362,9 +359,6 @@
       <Filter>Systems\Physics</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.cpp">
-      <Filter>Systems\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Physics\OBBCollisionSystem.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp">

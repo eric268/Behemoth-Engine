@@ -128,7 +128,7 @@ namespace Behemoth
 			closestPoint[i] = value;
 		}
 
-		BMath::Vector3 diff = localToSphere - closestPoint;
+		BMath::Vector3 diff = closestPoint - localToSphere;
 		float squareDist = BMath::Vector3::SquaredMagnitude(diff);
 		
 		if (squareDist > sphere.radius * sphere.radius)
@@ -142,6 +142,14 @@ namespace Behemoth
 		contactData.penetrationDepth = sphere.radius - std::sqrt(squareDist);
 
 		return true;
+	}
+
+	bool NarrowSphereOBBCollision(const SphereCollider& sphere, const OBBCollider& box, ContactData& collisionData)
+	{
+		bool result = NarrowOBBSphereCollision(box, sphere, collisionData);
+		// If we are checking sphere against OBB instead of the OBB against sphere, we have to invert the normal
+		collisionData.collisionNormal *= -1.0f;
+		return result;
 	}
 
 	// https://github.com/idmillington/cyclone-physics/blob/master/src/collide_fine.cpp#L311

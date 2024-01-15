@@ -38,7 +38,6 @@ namespace Behemoth
 		// requires HasCollider<T,U>
 		bool GenerateCollisionData(TransformComponent* transform1, TransformComponent* transform2, T* collider1, U* collider2, ContactData& data)
 		{
-			std::cout << "Called\n";
 			if (!collider1 || !collider2 || !(collider1->collisionType & collider2->collisionLayer))
 			{
 				return false;
