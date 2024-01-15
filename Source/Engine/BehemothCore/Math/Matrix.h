@@ -151,7 +151,7 @@ namespace BMath
 
 		static Matrix2x2<T> GetSubMatrix(const Matrix3x3& m, int skipCol, int skipRow)
 		{
-			Matrix2x2 m2{};
+			Matrix2x2<T> m2{};
 			int subRow = 0, subCol = 0;
 
 			for (int col = 0; col < 3; col++)
@@ -247,13 +247,13 @@ namespace BMath
 			}
 		}
 
-		Matrix4x4(std::initializer_list<std::initializer_list<double>> list) : Matrix(4)
+		Matrix4x4(std::initializer_list<std::initializer_list<T>> list) : Matrix(4)
 		{
 			int row = 0;
 			for (const auto& l : list)
 			{
 				int col = 0;
-				for (const double val : l)
+				for (const T val : l)
 				{
 					data[row][col] = val;
 					col++;
@@ -288,28 +288,25 @@ namespace BMath
 			return Vector4(data[i][0], data[i][1], data[i][2], data[i][3]);
 		}
 
-		static bool Equals(Matrix4x4 m1, Matrix4x4 m2, float epsilon = 1e-2)
+		static bool Equals(Matrix4x4<T> m1, Matrix4x4<T> m2, T epsilon = 1e-2)
 		{
-			int n = m1.Size();
-			int m = m2.Size();
-			if (m != 4 || n != 4)
-				return false;
-
-			for (int col = 0; col < n; col++)
+			for (int i = 0; i < 4; i++)
 			{
-				for (int row = 0; row < n; row++)
+				for (int j = 0; j < 4; j++)
 				{
-					T r = std::abs(m1.data[row][col] - m2.data[row][col]);
+					T r = std::abs(m1.data[j][i] - m2.data[j][i]);
 					if (r > epsilon)
+					{
 						return false;
+					}
 				}
 			}
 			return true;
 		}
 
-		static Matrix4x4 Transpose(const Matrix4x4& m)
+		static Matrix4x4 Transpose(const Matrix4x4<T>& m)
 		{
-			Matrix4x4 m2{};
+			Matrix4x4<T> m2{};
 			for (int col = 0; col < 4; col++)
 			{
 				for (int row = 0; row < 4; row++)
@@ -321,9 +318,9 @@ namespace BMath
 			return m2;
 		}
 
-		static Matrix4x4 Inverse(const Matrix4x4& m)
+		static Matrix4x4 Inverse(const Matrix4x4<T>& m)
 		{
-			Matrix4x4 m2{};
+			Matrix4x4<T> m2{};
 
 			T det = Matrix4x4<T>::Determinant(m);
 			if (det == 0.0f)
@@ -400,9 +397,9 @@ namespace BMath
 			return vec;
 		}
 
-		Matrix4x4 operator*(const Matrix4x4& m) const
+		Matrix4x4<T> operator*(const Matrix4x4& m) const
 		{
-			Matrix4x4 result;
+			Matrix4x4<T> result;
 
 			for (int col = 0; col < 4; col++)
 			{
