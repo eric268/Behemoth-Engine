@@ -5,6 +5,7 @@
 #include "Physics/Collision/Colliders.h"
 #include "Geometry/Plane.h"
 #include "CollisionData.h"
+#include "Misc/Log.h"
 
 namespace Behemoth
 {
@@ -154,7 +155,7 @@ namespace Behemoth
 	bool NarrowOBBOBBCollision(const OBBCollider box1, const OBBCollider box2, ContactData& contactData)
 	{
 		real rBox1, rBox2;
-
+		
 		BMath::Matrix3x3d rotationMatrix{};
 		BMath::Matrix3x3d absRotationMatrix{};
 
@@ -329,6 +330,8 @@ namespace Behemoth
 		if (bestIndex < 3)
 		{
 			OBBVertexFaceCollision(box1, box2, centerPosition, contactData, bestIndex, smallestPenetration);
+
+
 			return true;
 		}
 		else if (bestIndex < 6)

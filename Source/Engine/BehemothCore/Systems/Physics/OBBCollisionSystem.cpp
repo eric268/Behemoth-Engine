@@ -41,27 +41,37 @@ namespace Behemoth
 				if ((OBBComp->collisionType & OBBComp2->collisionLayer) && NarrowOBBOBBCollision(OBBComp->collider, OBBComp2->collider, contactData))
 				{
 					NarrowOBBOBBCollision(OBBComp->collider, OBBComp2->collider, contactData);
-					LOGMESSAGE(Warning, "Colliding " + registry.GetName(entity));
-					BMath::Vector3 offset = contactData.collisionNormal * contactData.penetrationDepth;
-					LOGMESSAGE(General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
-					// registry.AddComponent<MoveComponent>(entity, offset);
-					 offset *= 1.1f;
 
-// 					transformComp->localTransform._41 += offset.x;
-// 					transformComp->localTransform._42 += offset.y;
-// 					transformComp->localTransform._43 += offset.z;
+					auto vel = registry.GetComponent<VelocityComponent>(entity);
 
-					transformComp->worldTransform._41 += offset.x;
-					transformComp->worldTransform._42 += offset.y;
-					transformComp->worldTransform._43 += offset.z;
+					BMath::Vector3 offsetPosition = -vel->velocity * deltaTime;
 
-					transformComp->worldPosition += offset;
-					// transformComp->localPosition += offset;
 
-					transformComp->isDirty = true;
+					offsetPosition += contactData.collisionNormal * contactData.penetrationDepth;
+					
 
-					VelocityComponent* vel = registry.GetComponent<VelocityComponent>(entity);
-					vel->velocity.y += 9.81f * deltaTime;
+					registry.AddComponent<MoveComponent>(entity, offsetPosition);
+// 					LOGMESSAGE(Warning, "Colliding " + registry.GetName(entity));
+// 					BMath::Vector3 offset = contactData.collisionNormal * contactData.penetrationDepth;
+// 					LOGMESSAGE(General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
+// 					// registry.AddComponent<MoveComponent>(entity, offset);
+// 					 offset *= 1.1f;
+// 
+// // 					transformComp->localTransform._41 += offset.x;
+// // 					transformComp->localTransform._42 += offset.y;
+// // 					transformComp->localTransform._43 += offset.z;
+// 
+// 					transformComp->worldTransform._41 += offset.x;
+// 					transformComp->worldTransform._42 += offset.y;
+// 					transformComp->worldTransform._43 += offset.z;
+// 
+// 					transformComp->worldPosition += offset;
+// 					// transformComp->localPosition += offset;
+// 
+// 					transformComp->isDirty = true;
+// 
+// 					VelocityComponent* vel = registry.GetComponent<VelocityComponent>(entity);
+// 					vel->velocity.y += 9.81f * deltaTime;
 				}
 			}
 		}

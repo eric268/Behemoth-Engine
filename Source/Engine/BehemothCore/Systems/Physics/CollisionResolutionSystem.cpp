@@ -11,14 +11,38 @@ namespace Behemoth
 	{
 		for (const auto& [entity, transformComp, velocityComp, collisionData] : registry.Get<TransformComponent, VelocityComponent,  CollisionDataComponent>())
 		{
-			BMath::Vector3 offsetPosition = -velocityComp->velocity * deltaTime;
+			BMath::Vector3 offsetPosition;
+			BMath::Vector3 offsetVelocity;
+ 
+ 			for (const auto& collision : collisionData->data)
+ 			{
+ 				offsetPosition += collision.data.collisionNormal * collision.data.penetrationDepth;
 
-			for (const auto& collision : collisionData->data)
-			{
-				offsetPosition += collision.data.collisionNormal * collision.data.penetrationDepth;
-			}
-
-			registry.AddComponent<MoveComponent>(entity, offsetPosition);
+				float velocityAlongNormal = BMath::Vector3::Dot(velocityComp->velocity, collision.data.collisionNormal);
+				offsetVelocity += collision.data.collisionNormal * -velocityAlongNormal;
+ 			}
+ 
+ 			registry.AddComponent<MoveComponent>(entity, offsetPosition);
+			velocityComp->velocity += offsetVelocity * 0.99f;
 		}
 	}
 }
+
+// ContactData contactData = collisionData->data[0].data;
+// 
+// BMath::Vector3 offset = contactData.collisionNormal * contactData.penetrationDepth;
+// LOGMESSAGE(General, "Collision - Offset: X" + std::to_string(offset.x) + " Y: " + std::to_string(offset.y) + " Z: " + std::to_string(offset.z));
+// 
+// offset *= 1.1f;
+// 
+// transformComp->worldTransform._41 += offset.x;
+// transformComp->worldTransform._42 += offset.y;
+// transformComp->worldTransform._43 += offset.z;
+// 
+// transformComp->worldPosition += offset;
+// 
+// 
+// transformComp->isDirty = true;
+// 
+// VelocityComponent* vel = registry.GetComponent<VelocityComponent>(entity);
+// vel->velocity.y += 9.81f * deltaTime;

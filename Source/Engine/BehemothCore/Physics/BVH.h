@@ -64,7 +64,12 @@ namespace Behemoth
 		std::shared_ptr<BVHNode> CreateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
 		{
 			std::vector<BVHData> data = GetSceneColliderData<T...>(registry);
-			root = GenerateNode(registry, entityHandles, GenerateCollider(data), true, BColors::GetColor(BColors::Red));
+			if (!data.size())
+			{
+				return nullptr;
+			}
+
+			root = (data.size() > 1) ? GenerateNode(registry, entityHandles, GenerateCollider(data), true, BColors::GetColor(BColors::Red)) : GenerateLeaf(data[0]);
 			GenerateBVHTree(registry, entityHandles, root, data, 1);
 			return root;
 		}

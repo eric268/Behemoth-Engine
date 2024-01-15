@@ -116,9 +116,6 @@ namespace Behemoth
 				LOGMESSAGE(Error, "Error getting transform from entity: " + registry.GetName(handle));
 			}
 
-
-			// temp *= 2.0f * std::sqrt(3) / 2.0f; This is to ensure that the cube stays within the aabb
-
 			broadCollider->extents = rotatedCollider.worldExtents;
 			broadCollider->collider.worldExtents = broadCollider->extents;
 		}

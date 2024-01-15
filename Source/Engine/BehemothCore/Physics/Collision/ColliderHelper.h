@@ -7,50 +7,49 @@
 namespace Behemoth
 {
 
-	template<typename T, typename U>
-	inline void SetCollider(const TransformComponent* transform, T* colliderComponent, U& collider);
+	template<typename T>
+	inline void SetCollider(const TransformComponent* transform, T* colliderComponent);
 
 	template<>
-	inline void SetCollider(const TransformComponent* transform, AABBColliderComponent* component, AABBCollider& collider)
+	inline void SetCollider(const TransformComponent* transform, AABBColliderComponent* component)
 	{
 		if (!transform || !component)
 		{
 			return;
 		}
 
-		collider.worldExtents = transform->worldScale * component->extents;
-		collider.worldPosition = transform->worldPosition;
+		component->collider.worldExtents = transform->worldScale * component->extents;
+		component->collider.worldPosition = transform->worldPosition;
 	}
 
 	template<>
-	inline void SetCollider(const TransformComponent* transform, SphereColliderComponent* component, SphereCollider& collider)
+	inline void SetCollider(const TransformComponent* transform, SphereColliderComponent* component)
 	{
 		if (!transform || !component)
 		{
 			return;
 		}
 
-		collider.position = transform->worldPosition;
-		collider.radius = std::max(transform->worldScale[0], std::max(transform->worldScale[1], transform->worldScale[2])) * component->radius;
+		component->collider.position = transform->worldPosition;
+		component->collider.radius = std::max(transform->worldScale[0], std::max(transform->worldScale[1], transform->worldScale[2])) * component->radius;
 	}
 
 	template<>
-	inline void SetCollider(const TransformComponent* transform, OBBColliderComponent* component, OBBCollider& collider)
+	inline void SetCollider(const TransformComponent* transform, OBBColliderComponent* component)
 	{
 		if (!transform || !component)
 		{
 			return;
 		}
-
-		collider.position = transform->worldPosition;
-		collider.extents = transform->worldScale * component->extents;
+		component->collider.position = transform->worldPosition;
+		component->collider.extents = transform->worldScale * component->extents;
 
 		BMath::Matrix3x3f orientationMatrix = TransformHelper::ExtractRotationMatrix(transform->worldTransform);
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				collider.orientation[i][j] = orientationMatrix.data[i][j];
+				component->collider.orientation[i][j] = orientationMatrix.data[i][j] / transform->worldScale[i];;
 			}
 		}
 	}

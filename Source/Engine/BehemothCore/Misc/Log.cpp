@@ -70,3 +70,16 @@ void Log(MessageType type, const std::string& message, const std::string& filena
 	SetConsoleTextAttribute(hConsole, 7);
 #endif
 }
+
+
+// std::string message =
+// std::string("Entity world pos: ") +
+// std::to_string(box1.position.x) + std::string(" ") +
+// std::to_string(box1.position.y) + std::string(" ") +
+// std::to_string(box1.position.z) + std::string(" Entity Extent: ") +
+// std::to_string(box1.extents.x) + std::string(" ") +
+// std::to_string(box1.extents.y) + std::string(" ") +
+// std::to_string(box1.extents.z) + std::string(" ");
+// 
+// 
+// LOGMESSAGE(General, message);

@@ -5,6 +5,7 @@
 #include "Physics/Collision/CollisionData.h"
 #include "Physics/Collision/NarrowCollision.h"
 #include "Physics/Collision/ColliderHelper.h"
+#include "Misc/Log.h"
 
 #include <type_traits>
 #include <tuple>
@@ -48,8 +49,9 @@ namespace Behemoth
 				return false;
 			}
 
- 			SetCollider(transform1, collider1, collider1->collider);
- 			SetCollider(transform2, collider2, collider2->collider);
+			SetCollider(transform1, collider1);
+			SetCollider(transform2, collider2);
+
 			
 			return CheckCollision(collider1->collider, collider2->collider, data);
 		}

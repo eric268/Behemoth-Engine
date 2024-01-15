@@ -4,6 +4,8 @@
 #include "Physics/Collision/Colliders.h"
 #include "Components/Components.h"
 
+
+
 namespace Behemoth
 {
 	void NarrowCollisionSystem::Run(const float deltaTime, ECS::Registry& registry)
@@ -30,15 +32,16 @@ namespace Behemoth
 
 				std::apply([&](auto&&... elems1) 
 					{
-					(std::apply([&](auto&&... elems2) 
-						{
-
-						ContactData data{};
-
-						auto OnCollision = [&](auto&& e1, auto&& e2)
-						{
-							if (GenerateCollisionData(transformComponent, otherTransform,e1, e2, data))
+						(std::apply([&](auto&&... elems2)
 							{
+
+							ContactData data{};
+
+							auto OnCollision = [&](auto&& e1, auto&& e2)
+								{
+								if (GenerateCollisionData(transformComponent, otherTransform, e1, e2, data))
+									{
+
 								CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(entity);
 								
 								if (!collisionDataComp)

@@ -34,7 +34,9 @@ namespace Behemoth
 
 			for (const auto& [dynamicEntity, type, velocity, transform, collider] : dynamicEntities)
 			{
- 				 collider->collider.worldPosition = transform->worldPosition + collider->extents;
+				
+				collider->collider.worldExtents = transform->worldScale * collider->extents;
+				collider->collider.worldPosition = transform->worldPosition;
 
 				for (const auto& [entities, bvhRootComp] : bvhComponent)
 				{

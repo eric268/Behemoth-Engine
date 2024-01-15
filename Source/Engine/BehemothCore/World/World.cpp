@@ -18,7 +18,7 @@
 #include "Systems/LightingSystem.h"
 #include "Systems/VelocitySystem.h"
 
-#include "Systems/Physics/OBBCollisionSystem.h"
+/*#include "Systems/Physics/OBBCollisionSystem.h"*/
 #include "Systems/Physics/BroadCollisionSystem.h"
 #include "Systems/Physics/NarrowCollisionSystem.h"
 #include "Systems/Physics/CollisionResolutionSystem.h"
@@ -62,20 +62,20 @@ namespace Behemoth
 
 	void World::Init()
 	{
+// 		Behemoth::SystemManager::GetInstance().AddSystem<OBBCollisionSystem>();
+ 		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
+  		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
+  		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
 
 		// Keep these in this order
 		Behemoth::SystemManager::GetInstance().AddSystem<ScalingSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<RotationSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<MovementSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
-
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
 
-		// Behemoth::SystemManager::GetInstance().AddSystem<OBBCollisionSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
- 		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
- 		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
+
+		Behemoth::SystemManager::GetInstance().AddSystem<MovementSystem>();
 
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
