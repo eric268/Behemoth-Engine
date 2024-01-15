@@ -198,7 +198,7 @@ namespace Behemoth
 			}
 		}
 
-		real absDistance = 0.0f;
+		real absDistance = 0.0;
 
 		// Check if vertex of box1 is intersecting with face of box2
 		for (int i = 0; i < 3; i++)
@@ -327,18 +327,17 @@ namespace Behemoth
 		int bestSingleAxis = bestIndex;
 
 		const BMath::Vector3 centerPosition = box2.position - box1.position;
-		if (bestIndex < 3)
+
+		if (bestIndex < 6)
 		{
-			OBBVertexFaceCollision(box1, box2, centerPosition, contactData, bestIndex, smallestPenetration);
-
-
+			OBBVertexFaceCollision(box1, box2, centerPosition, contactData, bestIndex % 3, smallestPenetration);
 			return true;
 		}
-		else if (bestIndex < 6)
-		{
-			OBBVertexFaceCollision(box2, box1, centerPosition * -1.0f, contactData, bestIndex - 3, smallestPenetration);
-			return true;
-		}
+// 		else if (bestIndex < 6)
+// 		{
+// 			OBBVertexFaceCollision(box2, box1, centerPosition * -1.0f, contactData, bestIndex - 3, smallestPenetration);
+// 			return true;
+// 		}
 		else
 		{
 			bestIndex -= 6;
@@ -348,12 +347,13 @@ namespace Behemoth
 			BMath::Vector3 box1Axis = box1.orientation[axisOneIndex];
 			BMath::Vector3 box2Axis = box2.orientation[axisTwoIndex];
 
-			BMath::Vector3 axis = BMath::Vector3::Cross(box1Axis, box2Axis).Normalize();
-
-			if (BMath::Vector3::Dot<real>(axis, centerPosition) > 0)
-			{
-				axis *= 1.0f;
-			}
+// 			BMath::Vector3 axis = BMath::Vector3::Cross(box1Axis, box2Axis).Normalize();
+// 
+// 			if (BMath::Vector3::Dot<real>(axis, centerPosition) > 0)
+// 			{
+// 				axis *= -1.0f;
+// 			}
+			BMath::Vector3 axis = (box1.position - box2.position).Normalize();
 
 			BMath::Vector3 ptOnOneEdge = box1.extents;
 			BMath::Vector3 ptOnTwoEdge = box2.extents;
@@ -421,7 +421,7 @@ namespace Behemoth
 				bestSingleAxis > 2);
 
 			contactData.penetrationDepth = smallestPenetration;
-			contactData.collisionNormal = axis;
+			contactData.collisionNormal = axis.Normalize();
 			contactData.collisionPoint = vertex;
 
 			return true;
@@ -452,9 +452,10 @@ namespace Behemoth
 	void OBBVertexFaceCollision(const OBBCollider& box1, const OBBCollider& box2, const BMath::Vector3& toCenter, ContactData& contactData, int bestIndex, real pen)
 	{
 		BMath::Vector3 normal = box1.orientation[bestIndex];
+		
 		if (BMath::Vector3::Dot<double>(normal, toCenter) > 0.0f)
 		{
-			normal *= -1.0f;
+			// normal *= -1.0f;
 		}
 
 		BMath::Vector3 collidingVertex = box2.extents / 2.0f;
@@ -485,7 +486,7 @@ namespace Behemoth
 		transform._42 = box2.position.y;
 		transform._43 = box2.position.z;
 
-		contactData.collisionNormal = normal;
+		contactData.collisionNormal = normal.Normalize();
 		contactData.collisionPoint = BMath::Vector3(transform * BMath::Vector4(collidingVertex, 1.0f));
 		contactData.penetrationDepth = pen;
 	}
@@ -573,11 +574,11 @@ namespace Behemoth
 		BMath::Vector3 axis,
 		const BMath::Vector3& toCenter)
 	{
-		real b1 = box1.extents.x + std::abs(BMath::Vector3::Dot(axis, box1.orientation[0])) +
+		real b1 =  box1.extents.x + std::abs(BMath::Vector3::Dot(axis, box1.orientation[0])) +
 				   box1.extents.y + std::abs(BMath::Vector3::Dot(axis, box1.orientation[1])) +
 				   box1.extents.z + std::abs(BMath::Vector3::Dot(axis, box1.orientation[2]));
 
-		real b2 = box2.extents.x + std::abs(BMath::Vector3::Dot(axis, box2.orientation[0])) +
+		real b2 =  box2.extents.x + std::abs(BMath::Vector3::Dot(axis, box2.orientation[0])) +
 				   box2.extents.y + std::abs(BMath::Vector3::Dot(axis, box2.orientation[1])) +
 				   box2.extents.z + std::abs(BMath::Vector3::Dot(axis, box2.orientation[2]));
 

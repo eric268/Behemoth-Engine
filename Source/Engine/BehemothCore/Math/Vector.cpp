@@ -160,5 +160,12 @@ namespace BMath
 			wVal
 		);
 	}
+
+// 	Vector3d::Vector3d(const Vector4& v)
+// 	{
+// 		x = static_cast<double>(v.x);
+// 		y = static_cast<double>(v.y);
+// 		z = static_cast<double>(v.z);
+// 	}
 }
 

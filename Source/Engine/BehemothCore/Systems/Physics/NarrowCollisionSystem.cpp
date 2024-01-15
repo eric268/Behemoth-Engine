@@ -10,62 +10,54 @@ namespace Behemoth
 {
 	void NarrowCollisionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto components = registry.Get<TransformComponent, BroadCollisionPairsComponent>();
-
-		for (const auto& [entity, transformComponent, collisionPairs] : components)
+		for (const auto& [dynamicEntity, dynamicTransform, collisionPairs] : registry.Get<TransformComponent, BroadCollisionPairsComponent>())
 		{
-			auto dynamicColliders = GetColliders(registry, entity, AllColliderComponents{});
+			auto dynamicColliders = GetColliders(registry, dynamicEntity, AllColliderComponents{});
 
-			for (const auto& p : collisionPairs->nodeIDs)
+			for (const auto& hitEntityID : collisionPairs->nodeIDs)
 			{
-				auto result = GetColliders(registry, p, AllColliderComponents{});
+				auto hitColliders = GetColliders(registry, hitEntityID, AllColliderComponents{});
 
-				TransformComponent* otherTransform = registry.GetComponent<TransformComponent>(p);
+				TransformComponent* hitTransform = registry.GetComponent<TransformComponent>(hitEntityID);
 
-				if (!otherTransform)
+				if (!hitTransform)
 				{
-					LOGMESSAGE(Error, "Failed to get transform of colliding pair: " + registry.GetName(p));
+					LOGMESSAGE(Error, "Failed to get transform of colliding pair: " + registry.GetName(hitEntityID));
 					continue;
 				}
 
-				ContactData data{};
-
 				std::apply([&](auto&&... elems1) 
-					{
+				{
 						(std::apply([&](auto&&... elems2)
 							{
-
-							ContactData data{};
-
-							auto OnCollision = [&](auto&& e1, auto&& e2)
+								ContactData contactData{};
+								auto OnCollision = [&](auto&& entitiy, auto&& hitEntity)
 								{
-								if (GenerateCollisionData(transformComponent, otherTransform, e1, e2, data))
+									if (GenerateCollisionData(dynamicTransform, hitTransform, entitiy, hitEntity, contactData))
 									{
+										CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(dynamicEntity);
+										if (!collisionDataComp)
+										{
+											collisionDataComp = registry.AddComponent<CollisionDataComponent>(dynamicEntity);
+										}
 
-								CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(entity);
-								
-								if (!collisionDataComp)
-								{
-									collisionDataComp = registry.AddComponent<CollisionDataComponent>(entity);
-								}
-								
-								if (collisionDataComp)
-								{
-									BMath::Vector3 otherVelocity{};
+										if (collisionDataComp)
+										{
+											BMath::Vector3 hitVelocity{};
 
-									if (VelocityComponent* vel = registry.GetComponent<VelocityComponent>(p))
-									{
-										otherVelocity = vel->velocity;
+											if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitEntityID))
+											{
+												hitVelocity = hitVelocityComponent->velocity;
+											}
+											CollisionData collisionData(contactData, hitEntityID, hitVelocity);
+											collisionDataComp->data.push_back(collisionData);
+										}
 									}
-									CollisionData d(data, p, otherVelocity);
-									collisionDataComp->data.push_back(d);
-								}
-							}
-						};
-						(..., OnCollision(elems1, elems2));
+								}; (..., OnCollision(elems1, elems2));
 
-						}, result));
-					}, (dynamicColliders));
+						}, hitColliders));
+
+				}, (dynamicColliders));
 			}
 		}
 	}

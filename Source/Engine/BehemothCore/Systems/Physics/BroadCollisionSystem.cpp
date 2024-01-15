@@ -16,8 +16,8 @@ namespace Behemoth
 		registry.RemoveAllComopnents<CollisionDataComponent>();
 
 		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, BroadColliderComponent>();
-		CheckCollision<StaticComponent>(registry, dynamicEntities);
-		// CheckCollision<RigidBodyComponent>(registry, dynamicEntities);
+		CheckCollision<StaticComponent>(registry, dynamicEntities, deltaTime);
+		// CheckCollision<RigidBodyComponent>(registry, dynamicEntities, deltaTime);
 	}
 
 	bool BroadCollisionSystem::CheckLineCollision(ECS::EntityHandle handle, BMath::Vector3 p1, BMath::Vector3 p2, std::shared_ptr<BVHNode> root)

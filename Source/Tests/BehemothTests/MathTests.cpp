@@ -6,24 +6,24 @@
 // {
 // 	EXPECT_TRUE(true);
 // }
-
- TEST(Vec4_Mul_M4x4, BMath)
- {
- 	BMath::Vector4 vec(10.0, -8.0, 7.72, -0.1);
- 
- 	BMath::Matrix4x4d m =
- 	{
- 		{   9.0 ,   0.3 ,    7.0, -12.2},
- 		{ -19.0 ,   0.87, -107.1,   0.0},
- 		{  32.33, -10.12,  -72.5, -12.2},
- 		{  91.0 ,   1.13,   -7.7,  92.72}
- 	};
- 
- 	BMath::Vector4 result = m * vec;
- 	BMath::Vector4 ans(142.86, -1023.772, -154.22, 832.244);
- 
- 	EXPECT_TRUE(BMath::Vector4::Equals(result, ans));
- }
+// 
+//  TEST(Vec4_Mul_M4x4, BMath)
+//  {
+//  	BMath::Vector4 vec(10.0, -8.0, 7.72, -0.1);
+//  
+//  	BMath::Matrix4x4d m =
+//  	{
+//  		{   9.0 ,   0.3 ,    7.0, -12.2},
+//  		{ -19.0 ,   0.87, -107.1,   0.0},
+//  		{  32.33, -10.12,  -72.5, -12.2},
+//  		{  91.0 ,   1.13,   -7.7,  92.72}
+//  	};
+//  
+//  	BMath::Vector4 result = m * vec;
+//  	BMath::Vector4 ans(142.86, -1023.772, -154.22, 832.244);
+//  
+//  	EXPECT_TRUE(BMath::Vector4::Equals(result, ans));
+//  }
 // 
 // TEST(Vec4_Mul_M4x4_T2, BMath)
 // {

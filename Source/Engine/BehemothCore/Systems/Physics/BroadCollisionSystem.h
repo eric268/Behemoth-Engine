@@ -28,7 +28,7 @@ namespace Behemoth
 
 	private:
 		template<typename T>
-		void CheckCollision(ECS::Registry& registry, DynamicEntities& dynamicEntities)
+		void CheckCollision(ECS::Registry& registry, DynamicEntities& dynamicEntities, const float deltaTime)
 		{
 			auto bvhComponent = registry.Get<BVHComponent<StaticComponent>>();
 

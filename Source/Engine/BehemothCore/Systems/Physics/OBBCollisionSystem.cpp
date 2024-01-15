@@ -6,6 +6,7 @@
 #include "Physics/Collision/NarrowCollision.h"
 #include "Physics/Collision/BroadCollision.h"
 #include "Physics/Collision/CollisionData.h"
+#include "Physics/Collision/ColliderHelper.h"
 
 namespace Behemoth
 {
@@ -22,20 +23,23 @@ namespace Behemoth
 					continue;
 				}
 
-				OBBComp->collider.position = transformComp->worldPosition;
-				OBBComp2->collider.position = transformComp2->worldPosition;
+// 				OBBComp->collider.position = transformComp->worldPosition;
+// 				OBBComp2->collider.position = transformComp2->worldPosition;
+// 
+// 				OBBComp->collider.extents = OBBComp->extents * transformComp->worldScale;
+// 				OBBComp2->collider.extents = OBBComp2->extents * transformComp2->worldScale;
+// 
+// 				for (int i = 0; i < 3; i++)
+// 				{
+// 					for (int j = 0; j < 3; j++)
+// 					{
+// 						OBBComp->collider.orientation[i][j] = transformComp->worldTransform.data[i][j] / transformComp->worldScale[i];
+// 						OBBComp2->collider.orientation[i][j] = transformComp2->worldTransform.data[i][j] / transformComp2->worldScale[i];
+// 					}
+// 				}
 
-				OBBComp->collider.extents = OBBComp->extents * transformComp->worldScale;
-				OBBComp2->collider.extents = OBBComp2->extents * transformComp2->worldScale;
-
-				for (int i = 0; i < 3; i++)
-				{
-					for (int j = 0; j < 3; j++)
-					{
-						OBBComp->collider.orientation[i][j] = transformComp->worldTransform.data[i][j] / transformComp->worldScale[i];
-						OBBComp2->collider.orientation[i][j] = transformComp2->worldTransform.data[i][j] / transformComp2->worldScale[i];
-					}
-				}
+				SetCollider(transformComp, OBBComp);
+				SetCollider(transformComp2, OBBComp2);
 
 				ContactData contactData{};
 				if ((OBBComp->collisionType & OBBComp2->collisionLayer) && NarrowOBBOBBCollision(OBBComp->collider, OBBComp2->collider, contactData))

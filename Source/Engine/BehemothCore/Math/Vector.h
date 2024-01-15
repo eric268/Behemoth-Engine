@@ -7,6 +7,7 @@ namespace BMath
 {
 	class Vector2;
 	class Vector3;
+	class Vector3d;
 	class Vector4;
 
 	template<typename T>
@@ -58,6 +59,11 @@ namespace BMath
 		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
 		static Vector3& RotateVector(Vector3& vec, const Matrix4x4<float>& rotationMatrix, float w = 1.0f);
 		static Vector3 Reflect(const Vector3& lightDir, const Vector3& normal);
+
+		std::string Print()
+		{
+			return std::string(" X: " + std::to_string(x) + " Y: " + std::to_string(y) + " Z: " + std::to_string(z));
+		}
 
 		float Magnitude() const
 		{
@@ -252,6 +258,34 @@ namespace BMath
 #pragma endregion 
 	private:
 	};
+// 
+// 	struct Vector3d : public Vector3
+// 	{
+// 	public:
+// 
+// 		Vector3d(float x, float y, float z) : x(x), y(y), z(z) {}
+// 		Vector3d() : x(0.0), y(0.0), z(0.0) {}
+// 		Vector3d(Vector3 v)
+// 		{
+// 			x = static_cast<double>(v.x);
+// 			y = static_cast<double>(v.y);
+// 			z = static_cast<double>(v.z);
+// 		}
+// 
+// 	/*	 Vector3d(const Vector4& v);*/
+// 
+// 		union
+// 		{
+// 			double data[3];
+// 			struct
+// 			{
+// 				double x;
+// 				double y;
+// 				double z;
+// 			};
+// 
+// 		};
+// 	};
 
 	class Vector4
 	{

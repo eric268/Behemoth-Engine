@@ -11,17 +11,22 @@ namespace Behemoth
 	{
 		for (const auto& [entity, transformComp, velocityComp, collisionData] : registry.Get<TransformComponent, VelocityComponent,  CollisionDataComponent>())
 		{
-			BMath::Vector3 offsetPosition;
-			BMath::Vector3 offsetVelocity;
- 
- 			for (const auto& collision : collisionData->data)
- 			{
- 				offsetPosition += collision.data.collisionNormal * collision.data.penetrationDepth;
+			
+			LOGMESSAGE(General, "Size: " + collisionData->data.size());
+ 			BMath::Vector3 offsetPosition;
+ 			BMath::Vector3 offsetVelocity;
+  
+  			for (auto& collision : collisionData->data)
+  			{
+				LOGMESSAGE(Warning, "Normal: " + collision.data.collisionNormal.Print());
+				LOGMESSAGE(Warning, "Pen: " + std::to_string(collision.data.penetrationDepth));
 
-				float velocityAlongNormal = BMath::Vector3::Dot(velocityComp->velocity, collision.data.collisionNormal);
-				offsetVelocity += collision.data.collisionNormal * -velocityAlongNormal;
- 			}
+  				offsetPosition += collision.data.collisionNormal * collision.data.penetrationDepth;
  
+ 				float velocityAlongNormal = BMath::Vector3::Dot(velocityComp->velocity, collision.data.collisionNormal);
+ 				offsetVelocity += collision.data.collisionNormal * -velocityAlongNormal;
+  			}
+//  
  			registry.AddComponent<MoveComponent>(entity, offsetPosition);
 			velocityComp->velocity += offsetVelocity * 0.99f;
 		}

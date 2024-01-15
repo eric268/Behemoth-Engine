@@ -211,9 +211,9 @@
     <ClInclude Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Physics\OBBCollisionSystem.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h" />
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h" />
@@ -262,9 +262,9 @@
     <ClCompile Include="BehemothCore\Systems\Physics\CollisionResolutionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\NarrowCollisionSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Physics\OBBCollisionSystem.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp" />
