@@ -96,21 +96,21 @@ namespace Behemoth
 
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& contactData)
 	{
-		const BMath::Vector3 spherePosition = sphere.position;
-		const BMath::Vector3 boxPosition = box.position;
-
-		BMath::Matrix3x3d boxOrientation {};
+		BMath::Matrix4x4d boxTransform = BMath::Matrix4x4d::Identity();
 
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				boxOrientation.data[i][j] = box.orientation[i][j];
+				boxTransform.data[i][j] = box.orientation[i][j] * box.extents[i];
 			}
 		}
 
-		BMath::Vector3 relativeCenter = spherePosition - boxPosition;
-		BMath::Vector3 localToSphere = BMath::Matrix3x3d::Transpose(boxOrientation) * relativeCenter;
+		boxTransform._41 = box.position.x;
+		boxTransform._42 = box.position.y;
+		boxTransform._43 = box.position.z;
+
+		BMath::Vector3 localToSphere = BMath::Vector3(BMath::Matrix4x4d::Inverse(boxTransform) * BMath::Vector4(sphere.position, 1.0f));
 
 		BMath::Vector3 closestPoint(0.0f);
 
@@ -136,7 +136,7 @@ namespace Behemoth
 			return false;
 		}
 
-		BMath::Vector3 worldContactPoint = boxOrientation * closestPoint + boxPosition;
+		BMath::Vector3 worldContactPoint = BMath::Vector3(boxTransform * BMath::Vector4(closestPoint, 1.0f));
 		contactData.collisionPoint = worldContactPoint;
 		contactData.collisionNormal = diff.Normalize();
 		contactData.penetrationDepth = sphere.radius - std::sqrt(squareDist);

@@ -27,6 +27,7 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 //  
   	Behemoth::GameObjectFactory gameObjectFactory{};
+	
 // 
 // 	for (int i = 0; i < 4; i++)
 // 	{

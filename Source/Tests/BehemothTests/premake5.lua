@@ -20,15 +20,17 @@ project "BehemothTests"
            "%{wks.location}/Source/Tests/BehemothTests/**.hpp",
            "%{wks.location}/Source/Tests/BehemothTests/**.cpp" }
 
-   links { "Engine", "freeglut" }
+   links {"Engine","NextAPI", "freeglut" }
 
    filter "architecture:Win32"
-      libdirs { "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "Engine/" }
+      libdirs { "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "Engine/",
+                "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "NextAPI/" }
 
    filter "architecture:x64"
-      libdirs { "%{wks.location}/Source/NextAPI/glut/lib/x64/", outputdir .. "Engine/" }
+      libdirs { "%{wks.location}/Source/NextAPI/glut/lib/x64/", outputdir .. "Engine/",
+               "%{wks.location}/Source/NextAPI/glut/lib/", outputdir .. "NextAPI/" }
 
-   includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/NextAPI/" }
+   includedirs { "%{wks.location}/Source/Engine/BehemothCore", "%{wks.location}/Source/", "%{wks.location}/Source/NextAPI/" }
 
    filter "system:windows"
       systemversion "latest"
