@@ -268,6 +268,7 @@
     </ClInclude>
     <ClInclude Include="BehemothCore\Physics\CollisionTypedefs.h" />
     <ClInclude Include="BehemothCore\Systems\Render\SkySphereSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\TimerSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -395,5 +396,6 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\SkySphereSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\TimerSystem.cpp" />
   </ItemGroup>
 </Project>

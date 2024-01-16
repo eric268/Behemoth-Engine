@@ -6,6 +6,8 @@
 #include "Systems/ScalingSystem.h"
 #include "Misc/Stopwatch.h"
 
+#include "Systems/TimerSystem.h"
+
 #include "Systems/Render/MeshRenderSystem.h"
 #include "Systems/Render/WireframeRenderSystem.h"
 #include "Systems/Render/BoundingVolumeRenderSystem.h"
@@ -68,6 +70,8 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
+
+		Behemoth::SystemManager::GetInstance().AddSystem<TimerSystem>();
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
 

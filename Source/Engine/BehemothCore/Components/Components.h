@@ -134,4 +134,14 @@ namespace Behemoth
 
 		std::vector<ECS::EntityHandle> childHandles;
 	};
+
+	struct TimerComponent : public ECS::Component
+	{
+		TimerComponent() : duration(-1.0f), counter(0.0f), funcPtr(nullptr) {}
+		TimerComponent(std::function<void()> func, float time) : duration(time), counter(0.0f), funcPtr(func) {}
+
+		float counter;
+		float duration;
+		std::function<void()> funcPtr;
+	};
 }
