@@ -11,18 +11,16 @@ namespace Behemoth
 {
 	struct MeshComponent : public ECS::Component
 	{
-		MeshComponent() : modelFileName(""), textureFileName(""), mesh(), isVisible(false), cullBackFace(true) {}
+		MeshComponent() : modelFileName(""), textureFileName(""), mesh(), isVisible(false){}
 
-		MeshComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true, bool cullBackFace = true) :
+		MeshComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
 			modelFileName(modelName),
 			textureFileName(textureName),
-			mesh(modelName, textureName, uvScale, cullBackFace),
-			isVisible(visible),
-			cullBackFace(cullBackFace)
+			mesh(modelName, textureName, uvScale),
+			isVisible(visible)
 		{}
 
 		bool isVisible;
-		bool cullBackFace;
 		Mesh mesh;
 		std::string modelFileName;
 		std::string textureFileName;

@@ -86,7 +86,7 @@ namespace Behemoth
 				vertexIndex += numVerticies;
 			}
 
-			if (mesh.cullBackFace && CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
+			if (CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
 			{
 				continue;
 			}
@@ -109,19 +109,19 @@ namespace Behemoth
 
 		BMath::Vector3 p1 = BMath::Vector3(primitiveVerts[0]) - cameraLocation;
 		BMath::Vector3 p2 = BMath::Vector3(primitiveVerts[1]) - cameraLocation;
-/*		BMath::Vector3 p3 = BMath::Vector3(primitiveVerts[2]) - cameraLocation;*/
+		BMath::Vector3 p3 = BMath::Vector3(primitiveVerts[2]) - cameraLocation;
 
 		if (BMath::Vector3::Dot(forwardVec, p1) < 0 || BMath::Vector3::Dot(forwardVec, p2) < 0 /*|| BMath::Vector3::Dot(forwardVec, p3) < 0*/)
 		{
 			return true;
 		}
 
-		BMath::Vector3 n1 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
-		BMath::Vector3 n2 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[2] - primitiveVerts[1], primitiveVerts[0] - primitiveVerts[1]));
-		// BMath::Vector3 n3 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[0] - primitiveVerts[1], primitiveVerts[1] - primitiveVerts[2]));
+		 BMath::Vector3 n1 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
+		 BMath::Vector3 n2 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[2] - primitiveVerts[1], primitiveVerts[0] - primitiveVerts[1]));
+		 BMath::Vector3 n3 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[0] - primitiveVerts[1], primitiveVerts[1] - primitiveVerts[2]));
 
 		// Back-face culling - if normals are not pointing towards camera cull the primitive
-		return (BMath::Vector3::Dot(n1, p1) > 0 && BMath::Vector3::Dot(n2, p2) > 0 /*&& BMath::Vector3::Dot(n3, p3) > 0*/);
+		return (BMath::Vector3::Dot(n1, p1) > 0 && BMath::Vector3::Dot(n2, p2) > 0 && BMath::Vector3::Dot(n3, p3) > 0);
 	}
 
 

@@ -30,12 +30,10 @@ MainScene::MainScene()
   	Behemoth::GameObjectFactory gameObjectFactory{};
 
 	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
-	 registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle);
-	registry.AddComponent<Behemoth::MeshComponent>(cubemapHandle, "SegmentSphere15.obj", "Sky.png", BMath::Vector2(1.0f,1.0f), true, false);
-	registry.AddComponent<Behemoth::MeshInitalizeComponent>(cubemapHandle);
+	registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle, "SegmentSphere15.obj", "Sky.jpg", BMath::Vector2(1.0f, 1.0f), true);
 	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
 	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
-	registry.AddComponent<Behemoth::ChildComponent>(cubemapHandle, mainCameraHandle);
+	registry.AddComponent<Behemoth::RotationComponent>(cubemapHandle, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
 
 
 // 

@@ -7,8 +7,7 @@ namespace Behemoth
 {
 	Mesh::Mesh() :
 		meshData{},
-		materialData{},
-		cullBackFace(true)
+		materialData{}
 	{
 		meshData.modelFileName = "";
 		materialData.textureFileName = "";
@@ -19,10 +18,9 @@ namespace Behemoth
 	}
 
 
-	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath, const BMath::Vector2 uv, bool cullBackFace) :
+	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath, const BMath::Vector2 uv):
 		meshData{},
-		materialData{},
-		cullBackFace(cullBackFace)
+		materialData{}
 	{
 		meshData.modelFileName = modelPath;
 		materialData.textureFileName = texturePath;

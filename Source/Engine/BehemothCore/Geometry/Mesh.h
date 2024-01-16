@@ -32,14 +32,13 @@ namespace Behemoth
 	{
 	public:
 		Mesh();
-		Mesh(const std::string& modelPath, const std::string& texturePath = "", const BMath::Vector2 uv = {1.0f, 1.0f}, bool cullBackFace = true);
+		Mesh(const std::string& modelPath, const std::string& texturePath = "", const BMath::Vector2 uv = {1.0f, 1.0f});
 		void GenerateMesh(const MeshData& meshData, const std::vector<VertexData>& vertexData);
 
 		MaterialData materialData;
 		MeshData meshData;
 		std::vector<Primitive> meshPrimitives;
 		
-		bool cullBackFace;
 	private:
 		void GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVerticies, int vertexOffset);
 	};

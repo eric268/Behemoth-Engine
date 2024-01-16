@@ -12,6 +12,7 @@
 #include <type_traits>
 #include <concepts>
 #include <algorithm>
+#include <string>
 
 #define DEFAULT_SPARSE_SIZE 10'000
 
@@ -27,6 +28,12 @@ namespace ECS
 		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_ENTITY), index {}
 		{
 			Generator::Value<T>();
+		}
+
+		~SparseSet()
+		{
+
+			LOGMESSAGE(General, std::string("Sparse set: ") + typeid(T).name() + " destroyed");
 		}
 
 		void RemoveComponent(Entity entity)
