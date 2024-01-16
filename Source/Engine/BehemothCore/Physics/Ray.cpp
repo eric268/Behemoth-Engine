@@ -30,8 +30,7 @@ namespace Behemoth
 			return false;
 		}
 
-		std::vector<ContactData> hitData;
-		return NarrowRayCheck(registry, ray, hitEntities, hitData, mask);
+		return NarrowRayCheck(registry, ray, hitEntities, data, mask);
 	}
 
 	bool RayCast(ECS::Registry& registry, const Ray& ray, ContactData& data, const std::vector<ECS::EntityHandle>& entitiesToIgnore, BMask::CollisionType mask)

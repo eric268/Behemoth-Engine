@@ -11,89 +11,91 @@ namespace Behemoth
 {
 	bool NarrowRayOBBCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData)
 	{
-		real tMin = (real)0.0;
-		real tMax = std::numeric_limits<real>::max();
+		real collisionStartTime = (real)0.0;
+		real collisionEndTime = std::numeric_limits<real>::max();
 
-		BMath::Vector3 normal;
-		BMath::Vector3 obbCenterToRayOrigin = box.position- ray.origin;
+		BMath::Vector3 collisionNormal;
+		BMath::Vector3 distanceCenterRayOrigin = box.position - ray.origin;
 
-		for (int i = 0; i < 3; ++i) 
+		for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
 		{
-			BMath::Vector3 axis = box.orientation[i];
-			real e = BMath::Vector3::Dot<real>(axis, obbCenterToRayOrigin);
-			real f = BMath::Vector3::Dot<real>(axis, ray.direction);
+			BMath::Vector3 currentAxis = box.orientation[axisIndex];
+			real extentProjection = BMath::Vector3::Dot<real>(currentAxis, distanceCenterRayOrigin);
+			real directionProjection = BMath::Vector3::Dot<real>(currentAxis, ray.direction);
 
-			if (abs(f) < EPSILON)
-			{ 
-				if (-e - box.extents[i] > 0 || -e + box.extents[i] < 0)
+			if (abs(directionProjection) < EPSILON)
+			{
+				if (-extentProjection - box.extents[axisIndex] > 0 || -extentProjection + box.extents[axisIndex] < 0)
 				{
 					return false;
 				}
 			}
 			else
 			{
-				real t0 = (e + box.extents[i]) / f;
-				real t1 = (e - box.extents[i]) / f;
+				real entryPointTime = (extentProjection + box.extents[axisIndex]) / directionProjection;
+				real exitPointTime = (extentProjection - box.extents[axisIndex]) / directionProjection;
 
-				if (t0 > t1) 
+				if (entryPointTime > exitPointTime)
 				{
-					std::swap(t0, t1);
+					std::swap(entryPointTime, exitPointTime);
 				}
 
-				if (t0 > tMin) {
-					tMin = t0;
-					normal = axis * ((e + box.extents[i]) > 0 ? -1 : 1); // Corrected normal calculation
+				if (entryPointTime > collisionStartTime) {
+					collisionStartTime = entryPointTime;
+					collisionNormal = currentAxis * ((extentProjection + box.extents[axisIndex]) > 0 ? -1 : 1);
 				}
 
-				tMax = std::min(tMax, t1);
+				collisionEndTime = std::min(collisionEndTime, exitPointTime);
 
-				if (tMin > tMax || tMax < 0) {
+				if (collisionStartTime > collisionEndTime || collisionEndTime < 0) 
+				{
 					return false;
 				}
-			
 			}
 		}
-		contactData.depth = tMin;
-		contactData.collisionNormal = normal.Normalize();
-		contactData.collisionPoint = ray.origin + ray.direction * tMin;
+		contactData.depth = collisionStartTime;
+		contactData.collisionNormal = collisionNormal.Normalize();
+		contactData.collisionPoint = ray.origin + ray.direction * collisionStartTime;
 		return true;
 	}
 
 	bool NarrowRaySphereCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::Vector3 dir = ray.origin - sphere.position;
-		real a = BMath::Vector3::Dot<real>(ray.direction, ray.direction);
-		real b = 2.0f * BMath::Vector3::Dot<real>(ray.direction, dir);
-		real c = BMath::Vector3::Dot<real>(dir, dir) - sphere.radius * sphere.radius;
+		BMath::Vector3 rayToSphereVector = ray.origin - sphere.position;
+		real directionMagnitudeSquared = BMath::Vector3::Dot<real>(ray.direction, ray.direction);
+		real projectionOntoRay = 2.0f * BMath::Vector3::Dot<real>(ray.direction, rayToSphereVector);
+		real sphereEquationConstant = BMath::Vector3::Dot<real>(rayToSphereVector, rayToSphereVector) - sphere.radius * sphere.radius;
 
-		real disc = b * b - 4 * a * c;
+		real discriminant = projectionOntoRay * projectionOntoRay - 4 * directionMagnitudeSquared * sphereEquationConstant;
 
-		if (disc < 0)
+		if (discriminant < 0)
 		{
 			return false;
 		}
 
-		real sqrtDisc = std::sqrt(disc);
+		real sqrtDiscriminant = std::sqrt(discriminant);
 
-		real t0 = (-b - sqrtDisc) / ((real)2.0 * a);
-		real t1 = (-b + sqrtDisc) / ((real)2.0 * a);
+		real entryTime = (-projectionOntoRay - sqrtDiscriminant) / ((real)2.0 * directionMagnitudeSquared);
+		real exitTime = (-projectionOntoRay + sqrtDiscriminant) / ((real)2.0 * directionMagnitudeSquared);
 
-		real t = (t0 < t1) ? t0 : t1;
+		real collisionTime = (entryTime < exitTime) ? entryTime : exitTime;
 
-		if (t < 0)
+		if (collisionTime < 0)
 		{
-			t = t1;
-			if (t < 0)
+			collisionTime = exitTime;
+			if (collisionTime < 0)
 			{
 				return false;
 			}
 		}
-		contactData.depth = t;
-		contactData.collisionPoint = ray.origin + ray.direction * t;
+
+		contactData.depth = collisionTime;
+		contactData.collisionPoint = ray.origin + ray.direction * collisionTime;
 		contactData.collisionNormal = (contactData.collisionPoint - sphere.position) / sphere.radius;
 
 		return true;
 	}
+
 
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData)
 	{

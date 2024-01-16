@@ -21,6 +21,7 @@ namespace Behemoth::BMask
 		BVHComponent		= BVHCollider,
 		StaticType			= Terrain | Player | Character | EnvObject | Raycast,
 		DynamicType			= StaticType,
+		ChildMesh			= Raycast,
 		IgnoreRaycast		= StaticType & ~Raycast,
 		RaycastOnly			= Raycast,
 		AllCollision		= Everything

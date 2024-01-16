@@ -79,7 +79,7 @@ MainScene::MainScene()
 	auto testCube = gameObjectFactory.AddChildObject(registry, playerHandle,  "SegmentSphere15.obj", "rock.png", "Player");
  	registry.AddComponent<Behemoth::MoveComponent>(testCube, BMath::Vector3(2.0f, 0.0f, 0.0f));
  	registry.AddComponent<Behemoth::StaticComponent>(testCube);
- 	registry.AddComponent<Behemoth::OBBColliderComponent>(testCube, BMath::Vector3(1.0f));
+ 	registry.AddComponent<Behemoth::OBBColliderComponent>(testCube, BMath::Vector3(1.0f), true, Behemoth::BMask::CollisionType::ChildMesh, Behemoth::BMask::CollisionLayer::NoCollision);
  	registry.AddComponent<Behemoth::ScalingComponent>(testCube, BMath::Vector3(1.0, 1.0, 1.0));
 
 
