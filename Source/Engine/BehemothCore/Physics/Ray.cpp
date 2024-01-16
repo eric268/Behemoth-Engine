@@ -41,18 +41,20 @@ namespace Behemoth
 
 	bool RayCast(ECS::Registry& registry, const Ray& ray, ContactData& data, const std::vector<ECS::EntityHandle>& entitiesToIgnore, BMask::CollisionType mask)
 	{
-		std::vector<ECS::EntityHandle> hitEntities;
-
-		if (!BroadRayCheck(registry, ray, hitEntities, entitiesToIgnore))
+		std::vector<ContactData> contacts;
+		if (RayCast(registry, ray, contacts, entitiesToIgnore, mask))
 		{
-			return false;
+			if (!contacts.size())
+			{
+				return false;
+			}
+
+			std::sort(contacts.begin(), contacts.end(), [](const ContactData& d1, const ContactData& d2) {return d1.depth < d2.depth; });
+			data = contacts[0];
+			return true;
 		}
-
-		std::vector<ContactData> hitData;
-		return NarrowRayCheck(registry, ray, hitEntities, hitData, mask);
-
+		
 		return false;
-
 	}
 
 	static bool BroadRayCheck(ECS::Registry& registry, const Ray& ray, std::vector<ECS::EntityHandle>& hitEntities, const std::vector<ECS::EntityHandle>& entitiesToIgnore)
@@ -85,6 +87,7 @@ namespace Behemoth
 							// Ensure collider isn't null, that mask is correct and that collision is occurring 
  							if (GenerateCollisionData(ray, transform, c, contactData, mask))
  							{
+								contactData.handle = entity;
  								data.push_back(contactData);
  							}
 						}

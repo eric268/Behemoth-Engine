@@ -11,28 +11,74 @@ namespace Behemoth
 {
 	bool NarrowRayOBBCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData)
 	{
+		real tMin = (real)0.0;
+		real tMax = std::numeric_limits<real>::max();
+
+		BMath::Vector3 normal;
+		BMath::Vector3 obbCenterToRayOrigin = box.position- ray.origin;
+
+		for (int i = 0; i < 3; ++i) 
+		{
+			BMath::Vector3 axis = box.orientation[i];
+			real e = BMath::Vector3::Dot<real>(axis, obbCenterToRayOrigin);
+			real f = BMath::Vector3::Dot<real>(axis, ray.direction);
+
+			if (abs(f) < EPSILON)
+			{ 
+				if (-e - box.extents[i] > 0 || -e + box.extents[i] < 0)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				real t0 = (e + box.extents[i]) / f;
+				real t1 = (e - box.extents[i]) / f;
+
+				if (t0 > t1) 
+				{
+					std::swap(t0, t1);
+				}
+
+				if (t0 > tMin) {
+					tMin = t0;
+					normal = axis * ((e + box.extents[i]) > 0 ? -1 : 1); // Corrected normal calculation
+				}
+
+				tMax = std::min(tMax, t1);
+
+				if (tMin > tMax || tMax < 0) {
+					return false;
+				}
+			
+			}
+		}
+		contactData.depth = tMin;
+		contactData.collisionNormal = normal.Normalize();
+		contactData.collisionPoint = ray.origin + ray.direction * tMin;
 		return true;
 	}
+
 	bool NarrowRaySphereCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
 	{
 		BMath::Vector3 dir = ray.origin - sphere.position;
-		float a = BMath::Vector3::Dot(ray.direction, ray.direction);
-		float b = 2.0f * BMath::Vector3::Dot(ray.direction, dir);
-		float c = BMath::Vector3::Dot(dir, dir) - sphere.radius * sphere.radius;
+		real a = BMath::Vector3::Dot<real>(ray.direction, ray.direction);
+		real b = 2.0f * BMath::Vector3::Dot<real>(ray.direction, dir);
+		real c = BMath::Vector3::Dot<real>(dir, dir) - sphere.radius * sphere.radius;
 
-		float disc = b * b - 4 * a * c;
+		real disc = b * b - 4 * a * c;
 
 		if (disc < 0)
 		{
 			return false;
 		}
 
-		float sqrtDisc = std::sqrt(disc);
+		real sqrtDisc = std::sqrt(disc);
 
-		float t0 = (-b - sqrtDisc) / (2.0f * a);
-		float t1 = (-b + sqrtDisc) / (2.0f * a);
+		real t0 = (-b - sqrtDisc) / ((real)2.0 * a);
+		real t1 = (-b + sqrtDisc) / ((real)2.0 * a);
 
-		float t = (t0 < t1) ? t0 : t1;
+		real t = (t0 < t1) ? t0 : t1;
 
 		if (t < 0)
 		{
@@ -42,7 +88,7 @@ namespace Behemoth
 				return false;
 			}
 		}
-
+		contactData.depth = t;
 		contactData.collisionPoint = ray.origin + ray.direction * t;
 		contactData.collisionNormal = (contactData.collisionPoint - sphere.position) / sphere.radius;
 
@@ -55,24 +101,24 @@ namespace Behemoth
 		BMath::Vector3 positionTwo = sphere2.position;
 
 		BMath::Vector3 midline = positionOne - positionTwo;
-		float size = BMath::Vector3::Magnitude(midline);
+		real size = BMath::Vector3::Magnitude(midline);
 
-		if (size <= 0.0f || size > sphere1.radius + sphere2.radius)
+		if (size <= (real)0.0 || size > sphere1.radius + sphere2.radius)
 		{
 			return false;
 		}
 
 		BMath::Vector3 normal = midline / size;
 		contactData.collisionNormal = normal;
-		contactData.collisionPoint = positionOne + midline * 0.5f;
-		contactData.penetrationDepth = (sphere1.radius + sphere2.radius - size);
+		contactData.collisionPoint = positionOne + midline * (real)0.5;
+		contactData.depth = (sphere1.radius + sphere2.radius - size);
 		return true;
 	}
 
 	bool NarrowSpherePlaneCollision(const SphereCollider& sphere, const Plane& plane, ContactData& contactData)
 	{
 		BMath::Vector3 spherePosition = sphere.position;
-		float distanceFromPlane = BMath::Vector3::Dot(plane.normal, spherePosition) - sphere.radius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
+		real distanceFromPlane = BMath::Vector3::Dot<real>(plane.normal, spherePosition) - sphere.radius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
 
 		if (distanceFromPlane >= 0.0f)
 		{
@@ -80,7 +126,7 @@ namespace Behemoth
 		}
 
 		contactData.collisionNormal = plane.normal;
-		contactData.penetrationDepth = -distanceFromPlane;
+		contactData.depth = -distanceFromPlane;
 		contactData.collisionPoint = spherePosition - plane.normal * (distanceFromPlane + sphere.radius);
 		return true;
 	}
@@ -92,13 +138,13 @@ namespace Behemoth
 			return false;
 		}
 
-		static float mults[8][3] =
+		static real mults[8][3] =
 		{
 			{1,1,1},  {-1,1,1},  {1,-1,1},   {-1,-1, 1},
 			{1,1,-1}, {-1,1,-1}, {1,-1,-1},  {-1,-1,-1}
 		};
 
-		const float planeOffset = Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
+		const real planeOffset = Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
 
 		bool collisionOccured = false;
 
@@ -115,7 +161,7 @@ namespace Behemoth
 
 			vertexPosition += box.position;
 
-			float vertexDistance = BMath::Vector3::Dot(vertexPosition, plane.normal);
+			real vertexDistance = BMath::Vector3::Dot(vertexPosition, plane.normal);
 
 			// Vertex is penetrating plane
 			if (vertexDistance <= planeOffset)
@@ -123,8 +169,8 @@ namespace Behemoth
 				collisionOccured = true;
 				ContactData contactData{};
 				contactData.collisionNormal = plane.normal;
-				contactData.penetrationDepth = planeOffset - vertexDistance;
-				contactData.collisionPoint = vertexPosition - plane.normal * (vertexDistance - planeOffset) * 0.5f;
+				contactData.depth = planeOffset - vertexDistance;
+				contactData.collisionPoint = vertexPosition - plane.normal * (vertexDistance - planeOffset) * (real)0.5;
 
 				// Decide later if we want to save all contacts or break out early 
 				data.push_back(contactData);
@@ -156,7 +202,7 @@ namespace Behemoth
 
 		for (int i = 0; i < 3; ++i)
 		{
-			float value = localToSphere[i];
+			real value = localToSphere[i];
 			if (value > box.extents[i])
 			{
 				value = box.extents[i];
@@ -169,7 +215,7 @@ namespace Behemoth
 		}
 
 		BMath::Vector3 diff = closestPoint - localToSphere;
-		float squareDist = BMath::Vector3::SquaredMagnitude(diff);
+		real squareDist = BMath::Vector3::SquaredMagnitude(diff);
 
 		if (squareDist > sphere.radius * sphere.radius)
 		{
@@ -179,7 +225,7 @@ namespace Behemoth
 		BMath::Vector3 worldContactPoint = BMath::Vector3(boxTransform * BMath::Vector4(closestPoint, 1.0f));
 		contactData.collisionPoint = worldContactPoint;
 		contactData.collisionNormal = diff.Normalize();
-		contactData.penetrationDepth = sphere.radius - std::sqrt(squareDist);
+		contactData.depth = sphere.radius - std::sqrt(squareDist);
 
 		return true;
 	}
@@ -221,23 +267,18 @@ namespace Behemoth
 	{
 		BMath::Vector3 normal = box1.orientation[bestIndex];
 
-		if (BMath::Vector3::Dot<double>(normal, toCenter) > 0.0f)
-		{
-			// normal *= -1.0f;
-		}
-
 		BMath::Vector3 collidingVertex = box2.extents / 2.0f;
-		if (BMath::Vector3::Dot<double>(box2.orientation[0], normal) < 0.0f)
+		if (BMath::Vector3::Dot<real>(box2.orientation[0], normal) < (real)0.0)
 		{
-			collidingVertex.x *= -1.0f;
+			collidingVertex.x *= (real)-1.0;
 		}
-		if (BMath::Vector3::Dot<double>(box2.orientation[1], normal) < 0.0f)
+		if (BMath::Vector3::Dot<real>(box2.orientation[1], normal) < (real)0.0)
 		{
-			collidingVertex.y *= -1.0f;
+			collidingVertex.y *= (real) - 1.0f;
 		}
-		if (BMath::Vector3::Dot<double>(box2.orientation[2], normal) < 0.0f)
+		if (BMath::Vector3::Dot<real>(box2.orientation[2], normal) < (real)0.0f)
 		{
-			collidingVertex.z *= -1.0f;
+			collidingVertex.z *= (real) - 1.0f;
 		}
 
 		BMath::Matrix4x4 transform {};
@@ -256,7 +297,7 @@ namespace Behemoth
 
 		contactData.collisionNormal = normal.Normalize();
 		contactData.collisionPoint = BMath::Vector3(transform * BMath::Vector4(collidingVertex, 1.0f));
-		contactData.penetrationDepth = pen;
+		contactData.depth = pen;
 	}
 
 	BMath::Vector3 CalculateOBBContactPoint(
@@ -272,13 +313,13 @@ namespace Behemoth
 		real dpStaOne, dpStaTwo, dpOneTwo, smOne, smTwo;
 		real denom, mua, mub;
 
-		smOne = BMath::Vector3::SquaredMagnitude<double>(dOne);
-		smTwo = BMath::Vector3::SquaredMagnitude<double>(dTwo);
-		dpOneTwo = BMath::Vector3::Dot<double>(dTwo, dOne);
+		smOne = BMath::Vector3::SquaredMagnitude<real>(dOne);
+		smTwo = BMath::Vector3::SquaredMagnitude<real>(dTwo);
+		dpOneTwo = BMath::Vector3::Dot<real>(dTwo, dOne);
 
 		toSt = pOne - pTwo;
-		dpStaOne = BMath::Vector3::Dot<double>(dOne, toSt);
-		dpStaTwo = BMath::Vector3::Dot<double>(dTwo, toSt);
+		dpStaOne = BMath::Vector3::Dot<real>(dOne, toSt);
+		dpStaTwo = BMath::Vector3::Dot<real>(dTwo, toSt);
 
 		denom = smOne * smTwo - dpOneTwo * dpOneTwo;
 
@@ -301,7 +342,7 @@ namespace Behemoth
 			cOne = pOne + dOne * mua;
 			cTwo = pTwo + dTwo * mub;
 
-			return cOne * 0.5 + cTwo * 0.5;
+			return cOne * (real) 0.5 + cTwo * (real)0.5;
 		}
 
 	}
@@ -561,7 +602,7 @@ namespace Behemoth
 				box2Axis, box2.extents[axisTwoIndex],
 				bestSingleAxis > 2);
 
-			contactData.penetrationDepth = smallestPenetration;
+			contactData.depth = smallestPenetration;
 			contactData.collisionNormal = axis.Normalize();
 			contactData.collisionPoint = vertex;
 

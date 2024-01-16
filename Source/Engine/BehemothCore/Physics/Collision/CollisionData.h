@@ -8,17 +8,18 @@ namespace Behemoth
 {
 	struct ContactData
 	{
-		ContactData() : collisionPoint(BMath::Vector3::Zero()), collisionNormal(BMath::Vector3::Zero()), penetrationDepth(0.0f) {}
+		ContactData() : collisionPoint(BMath::Vector3::Zero()), collisionNormal(BMath::Vector3::Zero()), depth(0.0f) {}
 
 		ContactData(const BMath::Vector3& point, const BMath::Vector3& normal, double depth) : 
 			collisionPoint(point), 
 			collisionNormal(normal),
-			penetrationDepth(depth)
+			depth(depth)
 		{}
 
+		ECS::EntityHandle handle;
 		BMath::Vector3 collisionPoint;
 		BMath::Vector3 collisionNormal;
-		double penetrationDepth;
+		double depth;
 	};
 
 	struct CollisionData

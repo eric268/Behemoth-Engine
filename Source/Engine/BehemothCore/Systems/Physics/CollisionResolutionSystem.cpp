@@ -21,7 +21,7 @@ namespace Behemoth
 // 				LOGMESSAGE(Warning, "Normal: " + collision.data.collisionNormal.Print());
 // 				LOGMESSAGE(Warning, "Pen: " + std::to_string(collision.data.penetrationDepth));
 
-  				offsetPosition += collision.data.collisionNormal * collision.data.penetrationDepth;
+  				offsetPosition += collision.data.collisionNormal * collision.data.depth;
  
  				float velocityAlongNormal = BMath::Vector3::Dot(velocityComp->velocity, collision.data.collisionNormal);
  				offsetVelocity += collision.data.collisionNormal * -velocityAlongNormal;
