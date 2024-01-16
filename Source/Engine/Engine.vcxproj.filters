@@ -272,6 +272,12 @@
     <ClInclude Include="BehemothCore\Components\AudioComponents.h" />
     <ClInclude Include="BehemothCore\Systems\AudioSystem.h" />
     <ClInclude Include="BehemothCore\Audio\SoundClip.h" />
+    <ClInclude Include="BehemothCore\Components\UIComponents.h" />
+    <ClInclude Include="BehemothCore\UI\Image.h" />
+    <ClInclude Include="BehemothCore\UI\Text.h" />
+    <ClInclude Include="BehemothCore\Systems\UI\TextSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\UI\ImageSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\SystemHeaders.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -402,5 +408,9 @@
     <ClCompile Include="BehemothCore\Systems\TimerSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\AudioSystem.cpp" />
     <ClCompile Include="BehemothCore\Audio\SoundClip.cpp" />
+    <ClCompile Include="BehemothCore\UI\Image.cpp" />
+    <ClCompile Include="BehemothCore\UI\Text.cpp" />
+    <ClCompile Include="BehemothCore\Systems\UI\TextSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\UI\ImageSystem.cpp" />
   </ItemGroup>
 </Project>

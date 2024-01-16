@@ -159,6 +159,7 @@
     <ClInclude Include="BehemothCore\Components\LightComponents.h" />
     <ClInclude Include="BehemothCore\Components\PhysicsComponents.h" />
     <ClInclude Include="BehemothCore\Components\RenderComponents.h" />
+    <ClInclude Include="BehemothCore\Components\UIComponents.h" />
     <ClInclude Include="BehemothCore\ECS\Component.h" />
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h" />
     <ClInclude Include="BehemothCore\ECS\ECSCore.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="BehemothCore\Renderer\Renderer.h" />
     <ClInclude Include="BehemothCore\Systems\AudioSystem.h" />
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\SystemHeaders.h" />
     <ClInclude Include="BehemothCore\Systems\TimerSystem.h" />
     <ClInclude Include="BehemothCore\Systems\LightingSystem.h" />
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h" />
@@ -225,7 +227,11 @@
     <ClInclude Include="BehemothCore\Systems\RotationSystem.h" />
     <ClInclude Include="BehemothCore\Systems\ScalingSystem.h" />
     <ClInclude Include="BehemothCore\Systems\SystemManager.h" />
+    <ClInclude Include="BehemothCore\Systems\UI\ImageSystem.h" />
+    <ClInclude Include="BehemothCore\Systems\UI\TextSystem.h" />
     <ClInclude Include="BehemothCore\Systems\VelocitySystem.h" />
+    <ClInclude Include="BehemothCore\UI\Image.h" />
+    <ClInclude Include="BehemothCore\UI\Text.h" />
     <ClInclude Include="BehemothCore\World\Scene.h" />
     <ClInclude Include="BehemothCore\World\World.h" />
     <ClInclude Include="BehemothCore\pch.h" />
@@ -273,7 +279,11 @@
     <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\RotationSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\ScalingSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\UI\ImageSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\UI\TextSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\VelocitySystem.cpp" />
+    <ClCompile Include="BehemothCore\UI\Image.cpp" />
+    <ClCompile Include="BehemothCore\UI\Text.cpp" />
     <ClCompile Include="BehemothCore\World\Scene.cpp" />
     <ClCompile Include="BehemothCore\World\World.cpp" />
     <ClCompile Include="BehemothCore\pch.cpp">

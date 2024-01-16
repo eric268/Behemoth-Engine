@@ -2,7 +2,6 @@
 
 #include "Math/MathCore.h"
 #include "NextAPI/App/SimpleSprite.h"
-#include "NextAPI/App/app.h"
 
 #include <vector>
 #include <string>
