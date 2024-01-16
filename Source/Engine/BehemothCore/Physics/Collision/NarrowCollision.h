@@ -1,6 +1,7 @@
 #pragma once
 #include "Math/MathCore.h"
 #include "Components/PhysicsComponents.h"
+#include "Physics/Ray.h"
 
 namespace Behemoth
 {
@@ -75,13 +76,16 @@ namespace Behemoth
 		return NarrowOBBOBBCollision(c1, c2, contactData);
 	}
 
+	template<>
+	inline bool CheckCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
+	{
+		return true;
+	}
 
-
-
-// 	bool DEBUG_boxAndBox(
-// 		const OBBCollider& one,
-// 		const OBBCollider& two,
-// 		ContactData data);
-
+	template<>
+	inline bool CheckCollision(const Ray& ray, const OBBCollider& sphere, ContactData& contactData)
+	{
+		return true;
+	}
 }
 

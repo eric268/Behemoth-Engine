@@ -3,9 +3,17 @@
 #include "Colliders.h"
 #include "Components/PhysicsComponents.h"
 #include "Components/Components.h"
+#include "ECS/Entity.h"
+#include "ECS/Registry.h"
 
 namespace Behemoth
 {
+
+	template <typename ...Colliders>
+	static std::tuple<Colliders*...> GetColliders(ECS::Registry& registry, const ECS::EntityHandle& handle, CollidersContainer<Colliders ...>)
+	{
+		return registry.GetMultipleComponents<Colliders...>(handle);
+	}
 
 	template<typename T>
 	inline void SetCollider(const TransformComponent* transform, T* colliderComponent);

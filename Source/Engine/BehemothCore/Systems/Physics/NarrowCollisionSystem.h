@@ -28,12 +28,6 @@ namespace Behemoth
 
 	private:
 
-		template <typename ...Colliders>
-		std::tuple<Colliders*...> GetColliders(ECS::Registry& registry, const ECS::EntityHandle& handle, CollidersContainer<Colliders ...>)
-		{
-			return registry.GetMultipleComponents<Colliders...>(handle);
-		}
-
 		template <typename T, typename U>
 		// requires HasCollider<T,U>
 		bool GenerateCollisionData(TransformComponent* transform1, TransformComponent* transform2, T* collider1, U* collider2, ContactData& data)

@@ -246,7 +246,6 @@
     <ClCompile Include="BehemothCore\Physics\BVH.cpp" />
     <ClCompile Include="BehemothCore\Physics\BoundingGenerator.cpp" />
     <ClCompile Include="BehemothCore\Physics\Collision\BroadCollision.cpp" />
-    <ClCompile Include="BehemothCore\Physics\Collision\CollisionData.cpp" />
     <ClCompile Include="BehemothCore\Physics\Collision\NarrowCollision.cpp" />
     <ClCompile Include="BehemothCore\Physics\Ray.cpp" />
     <ClCompile Include="BehemothCore\Renderer\Renderer.cpp" />

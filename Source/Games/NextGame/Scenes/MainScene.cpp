@@ -8,6 +8,7 @@
 
 #include "Physics/Collision/BroadCollision.h"
 #include "Physics/Collision/CollisionMask.h"
+#include "Physics/Ray.h"
 
 #include "GameSystems/CameraControllerSystem.h"
 #include "GameComponents/CameraControllerComponent.h"
@@ -61,9 +62,9 @@ MainScene::MainScene()
 //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
 
 
- 	playerHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Player");
- 	// registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
- 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 0.0f, 0.0f));
+ 	playerHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png", "Player");
+ 	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
+ 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(0.0f, 3.0f, 0.0f));
  	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
  	registry.AddComponent<Behemoth::SphereColliderComponent>(playerHandle);
  	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0));
@@ -116,6 +117,11 @@ void MainScene::Update(const float deltaTime)
 		ECS::EntityHandle debugLineHandle = registry.CreateEntity("Debug line");
 		registry.AddComponent<Behemoth::DebugLineComponent>(debugLineHandle, startPos, endPos, 20.0f);
 
+		Behemoth::Ray ray(startPos, cameraTransform->forwardVector);
+		std::vector<Behemoth::ContactData> data;
+		std::vector<ECS::EntityHandle> entitiesToIgnore;
+
+		Behemoth::RayCast(registry, ray, data, entitiesToIgnore);
 	}
 
 	if (auto comp = registry.GetComponent<Behemoth::RotationComponent>(playerHandle))

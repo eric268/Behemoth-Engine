@@ -30,7 +30,7 @@ namespace Behemoth
 		template<typename T>
 		void CheckCollision(ECS::Registry& registry, DynamicEntities& dynamicEntities, const float deltaTime)
 		{
-			auto bvhComponent = registry.Get<BVHComponent<StaticComponent>>();
+			auto bvhComponent = registry.Get<BVHComponent<T>>();
 
 			for (const auto& [dynamicEntity, type, velocity, transform, collider] : dynamicEntities)
 			{
@@ -55,7 +55,6 @@ namespace Behemoth
 			}
 		}
 
-		bool CheckLineCollision(ECS::EntityHandle handle, BMath::Vector3 p1, BMath::Vector3 p2, std::shared_ptr<BVHNode> root);
 		bool CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root, std::vector<ECS::EntityHandle>& nodeHandles);
 	};
 }

@@ -23,7 +23,7 @@ namespace Behemoth
 	bool BroadLineAABBIntersection(const Point& p1, const Point& p2, const AABBCollider& box);
 
 	// Raycasts
-	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint);
+	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider);
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere);
 
 	// Point AABB

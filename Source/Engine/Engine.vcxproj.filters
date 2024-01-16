@@ -329,9 +329,6 @@
     <ClCompile Include="BehemothCore\Physics\Collision\BroadCollision.cpp">
       <Filter>Physics\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Physics\Collision\CollisionData.cpp">
-      <Filter>Physics\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="BehemothCore\Physics\Collision\NarrowCollision.cpp">
       <Filter>Physics\Collision</Filter>
     </ClCompile>
