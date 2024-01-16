@@ -54,7 +54,7 @@ namespace Behemoth
 		template<typename ...T>
 		std::shared_ptr<BVHNode> OnReconstruction(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
 		{
-			DestroyBVHTree(registry);
+			DestroyBVHTree(registry, entityHandles);
 			return CreateBVHTree<T...>(registry, entityHandles);
 		}
 

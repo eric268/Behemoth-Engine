@@ -96,8 +96,7 @@ namespace Behemoth
 
 	void MeshInitSystem::CalculateRotatedAABB(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
 	{
-		registry.AddComponent<BroadColliderComponent>(handle);
-		BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(handle);
+		BroadColliderComponent* broadCollider = registry.AddComponent<BroadColliderComponent>(handle);
 		if (broadCollider)
 		{
 			BMath::Vector3 scale = BMath::Vector3::One();

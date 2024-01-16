@@ -106,9 +106,9 @@ namespace Behemoth
 	struct BroadCollisionPairsComponent : public ECS::Component
 	{
 		BroadCollisionPairsComponent() {}
-		BroadCollisionPairsComponent(std::vector<ECS::EntityHandle>& vec) : nodeIDs((vec)){}
+		BroadCollisionPairsComponent(std::vector<ECS::EntityHandle>& vec) : staticCollisionIDs((vec)){}
 
-		std::vector<ECS::EntityHandle> nodeIDs;
+		std::vector<ECS::EntityHandle> staticCollisionIDs;
 	};
 
 	struct CollisionDataComponent : public ECS::Component

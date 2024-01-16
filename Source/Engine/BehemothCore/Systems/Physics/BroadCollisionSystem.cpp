@@ -17,7 +17,7 @@ namespace Behemoth
 
 		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, BroadColliderComponent>();
 		CheckCollision<StaticComponent>(registry, dynamicEntities, deltaTime);
-		// CheckCollision<RigidBodyComponent>(registry, dynamicEntities, deltaTime);
+		CheckCollision<RigidBodyComponent>(registry, dynamicEntities, deltaTime);
 	}
 
 	bool BroadCollisionSystem::CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root, std::vector<ECS::EntityHandle>& nodeHandles)
@@ -43,6 +43,7 @@ namespace Behemoth
 					nodeHandles.push_back(currentNode->entityHandles);
 					continue;
 				}
+
 				nodes.push(currentNode->leftChild);
 				nodes.push(currentNode->rightChild);
 			}

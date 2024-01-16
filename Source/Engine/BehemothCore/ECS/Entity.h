@@ -108,6 +108,17 @@ namespace ECS
 		EntityHandle() : ID(NULL_ENTITY) {}
 		EntityHandle(entity_id id) : ID(id) {}
 		EntityHandle(Entity e) : ID(e.GetID()) {}
+
+		bool operator==(EntityHandle& otherHandle)
+		{
+			return ID == otherHandle.ID;
+		}
+
+		bool operator !=(EntityHandle& otherHandle)
+		{
+			return ID != otherHandle.ID;
+		}
+
 		entity_id ID;
 	};
 

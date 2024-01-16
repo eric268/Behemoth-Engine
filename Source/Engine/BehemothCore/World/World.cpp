@@ -95,6 +95,7 @@ namespace Behemoth
 		}
 
 		currentScene->Update(deltaTime);
+		currentScene->RecalculateBVH();
 	}
 
 	void World::Shutdown()

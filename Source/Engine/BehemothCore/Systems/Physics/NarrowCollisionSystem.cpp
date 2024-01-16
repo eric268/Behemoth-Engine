@@ -13,7 +13,7 @@ namespace Behemoth
 		{
 			auto dynamicColliders = GetColliders(registry, dynamicEntity, AllColliderComponents{});
 
-			for (const auto& hitEntityID : collisionPairs->nodeIDs)
+			for (const auto& hitEntityID : collisionPairs->staticCollisionIDs)
 			{
 				auto hitColliders = GetColliders(registry, hitEntityID, AllColliderComponents{});
 

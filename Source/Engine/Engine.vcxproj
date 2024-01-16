@@ -162,7 +162,7 @@
     <ClInclude Include="BehemothCore\ECS\ECSCore.h" />
     <ClInclude Include="BehemothCore\ECS\Entity.h" />
     <ClInclude Include="BehemothCore\ECS\Generator.h" />
-    <ClInclude Include="BehemothCore\Misc\Page.h" />
+    <ClInclude Include="BehemothCore\ECS\Page.h" />
     <ClInclude Include="BehemothCore\ECS\Registry.h" />
     <ClInclude Include="BehemothCore\ECS\SparseSet.h" />
     <ClInclude Include="BehemothCore\ECS\System.h" />

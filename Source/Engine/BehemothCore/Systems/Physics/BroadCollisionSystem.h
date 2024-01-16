@@ -49,7 +49,18 @@ namespace Behemoth
  					// This is for AABB do a separate one for lines or other collider types
 					if (CheckAABBCollision(dynamicEntity, collider->collider, bvhRootComp->rootNode, nodeHandles))
 					{
-						registry.AddComponent<BroadCollisionPairsComponent>(dynamicEntity, nodeHandles);
+						// Check if entity already has a collision pairs component
+						BroadCollisionPairsComponent* collisionPairsComp = registry.GetComponent<BroadCollisionPairsComponent>(dynamicEntity);
+						if (!collisionPairsComp)
+						{
+							registry.AddComponent<BroadCollisionPairsComponent>(dynamicEntity, nodeHandles);
+						}
+						else
+						{
+							// If it already has the component add the new collision pairs to the end of that container
+							std::vector<ECS::EntityHandle>& collisionPairs = collisionPairsComp->staticCollisionIDs;
+							collisionPairs.insert(collisionPairs.end(), nodeHandles.begin(), nodeHandles.end());
+						}
 					}
  				}
 			}

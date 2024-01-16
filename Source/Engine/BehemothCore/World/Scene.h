@@ -19,6 +19,7 @@ namespace Behemoth
 
 		void CreateScene();
 		void ConstructBVH();
+		void RecalculateBVH();
 
 	protected:
 		ECS::Registry registry;
@@ -27,6 +28,8 @@ namespace Behemoth
 		std::vector<ECS::EntityHandle> dynamicBVHEntities;
 		ECS::EntityHandle staticBVHHandle;
 		ECS::EntityHandle dynamicBVHHandle;
+
+		BVHFactory factory{};
 	};
 }
 

@@ -4,7 +4,7 @@
 #include "Component.h"
 #include "Entity.h"
 #include "Misc/Log.h"
-#include "Misc/Page.h"
+#include "Page.h"
 
 // stl
 #include <vector>
