@@ -35,7 +35,6 @@ namespace Behemoth
 				continue;
 			}
 
-
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolume))
 			{
@@ -87,7 +86,7 @@ namespace Behemoth
 				vertexIndex += numVerticies;
 			}
 
-			if (CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
+			if (mesh.cullBackFace && CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
 			{
 				continue;
 			}

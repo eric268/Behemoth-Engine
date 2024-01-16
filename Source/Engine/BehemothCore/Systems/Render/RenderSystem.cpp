@@ -55,8 +55,6 @@ namespace Behemoth
 
 		for (int j = 0; j < numVerticies; j++)
 		{
-			
-			auto val  = viewProjMatrix * vertex[j];
 			vertex[j] = viewProjMatrix * vertex[j];
 
 			if (vertex[j].w == 0.0f)
@@ -68,7 +66,6 @@ namespace Behemoth
 			// Invert w so only perform 1 divide instead of 4
 			float w = 1.0f / vertex[j].w;
 			vertex[j] *= w;
-			val *= w;
 		}
 
 		return depth /= numVerticies;

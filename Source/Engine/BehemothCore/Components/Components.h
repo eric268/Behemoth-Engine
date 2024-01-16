@@ -21,7 +21,7 @@ namespace Behemoth
 			projMatrix(BMath::Matrix4x4<float>::Identity()),
 			FOV(75.0f),
 			nearClippingPlane(0.1f),
-			farClippingPlane(100.0f),
+			farClippingPlane(1000.0f),
 			windowWidth(0.0f),
 			windowHeight(0.0f),
 			isMain(main),
@@ -131,6 +131,7 @@ namespace Behemoth
 	struct ParentComponent : public ECS::Component
 	{
 		ParentComponent() : childHandles(std::vector<ECS::EntityHandle>()) {}
+
 		std::vector<ECS::EntityHandle> childHandles;
 	};
 }

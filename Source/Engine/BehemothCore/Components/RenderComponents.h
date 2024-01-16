@@ -11,17 +11,18 @@ namespace Behemoth
 {
 	struct MeshComponent : public ECS::Component
 	{
-		MeshComponent() : modelFileName(""), textureFileName(""), mesh(), isVisible(false) {}
+		MeshComponent() : modelFileName(""), textureFileName(""), mesh(), isVisible(false), cullBackFace(true) {}
 
-		MeshComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
+		MeshComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true, bool cullBackFace = true) :
 			modelFileName(modelName),
 			textureFileName(textureName),
-			mesh(modelName, textureName, uvScale),
-			isVisible(visible)
+			mesh(modelName, textureName, uvScale, cullBackFace),
+			isVisible(visible),
+			cullBackFace(cullBackFace)
 		{}
 
 		bool isVisible;
-
+		bool cullBackFace;
 		Mesh mesh;
 		std::string modelFileName;
 		std::string textureFileName;
@@ -84,5 +85,25 @@ namespace Behemoth
 		Point startPoint;
 		Point endPoint;
 		BMath::Vector3 color;
+	};
+
+	struct SkySphereComponent : public ECS::Component
+	{
+		SkySphereComponent() : modelFileName(""), textureFileName(""), mesh(), isVisible(false), isInitalized(false) {}
+
+		SkySphereComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
+			modelFileName(modelName),
+			textureFileName(textureName),
+			mesh(modelName, textureName, uvScale),
+			isVisible(visible),
+			isInitalized(false)
+		{}
+
+		bool isVisible;
+		bool isInitalized;
+		Mesh mesh;
+		std::string modelFileName;
+		std::string textureFileName;
+		std::vector<BMath::Vector3> verticies;
 	};
 }

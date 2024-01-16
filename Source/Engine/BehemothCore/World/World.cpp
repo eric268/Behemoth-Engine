@@ -10,6 +10,7 @@
 #include "Systems/Render/WireframeRenderSystem.h"
 #include "Systems/Render/BoundingVolumeRenderSystem.h"
 #include "Systems/Render/DebugLineSystem.h"
+#include "Systems/Render/SkySphereSystem.h"
 
 #include "Systems/CameraSystem.h"
 #include "Systems/RotationSystem.h"
@@ -67,6 +68,7 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
+
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
 
  		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
@@ -77,6 +79,7 @@ namespace Behemoth
 
 		// These systems should always be last and in this order
 		// Maybe make a separate container for them to ensure they are last
+		Behemoth::SystemManager::GetInstance().AddSystem<SkySphereSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshRenderSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<WireframeRenderSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<DebugLineSystem>();

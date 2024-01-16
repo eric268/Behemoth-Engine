@@ -267,6 +267,7 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Physics\CollisionTypedefs.h" />
+    <ClInclude Include="BehemothCore\Systems\Render\SkySphereSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -393,5 +394,6 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Render\SkySphereSystem.cpp" />
   </ItemGroup>
 </Project>

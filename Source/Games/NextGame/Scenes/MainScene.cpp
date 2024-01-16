@@ -28,7 +28,16 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 //  
   	Behemoth::GameObjectFactory gameObjectFactory{};
-	
+
+	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
+	 registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle);
+	registry.AddComponent<Behemoth::MeshComponent>(cubemapHandle, "SegmentSphere15.obj", "Sky.png", BMath::Vector2(1.0f,1.0f), true, false);
+	registry.AddComponent<Behemoth::MeshInitalizeComponent>(cubemapHandle);
+	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
+	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
+	registry.AddComponent<Behemoth::ChildComponent>(cubemapHandle, mainCameraHandle);
+
+
 // 
 // 	for (int i = 0; i < 4; i++)
 // 	{
@@ -69,7 +78,7 @@ MainScene::MainScene()
  	registry.AddComponent<Behemoth::SphereColliderComponent>(playerHandle);
  	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0));
 
- 	auto testCube = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "Player");
+	auto testCube = gameObjectFactory.AddChildObject(registry, playerHandle,  "SegmentSphere15.obj", "rock.png", "Player");
  	registry.AddComponent<Behemoth::MoveComponent>(testCube, BMath::Vector3(2.0f, 0.0f, 0.0f));
  	registry.AddComponent<Behemoth::StaticComponent>(testCube);
  	registry.AddComponent<Behemoth::OBBColliderComponent>(testCube, BMath::Vector3(1.0f));
