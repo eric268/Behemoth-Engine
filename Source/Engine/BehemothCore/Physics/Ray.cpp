@@ -21,6 +21,9 @@ namespace Behemoth
 	template<typename T>
 	bool RayBVHCheck(ECS::Registry& registry, const Ray& ray, const std::vector<ECS::EntityHandle>& entitiesToIgnore, std::vector<ECS::EntityHandle>& entitiesHit);
 
+	template <typename T>
+	bool GenerateCollisionData(const Ray& ray, TransformComponent* transform, T* collider, ContactData& data, BMask::CollisionType mask);
+
 	bool RayCast(ECS::Registry& registry, const Ray& ray, std::vector<ContactData>& data, const std::vector<ECS::EntityHandle>& entitiesToIgnore, BMask::CollisionType mask)
 	{
 		std::vector<ECS::EntityHandle> hitEntities;
@@ -64,8 +67,15 @@ namespace Behemoth
 	{
 		for (const auto& entity : hitEntities)
 		{
-			auto colliders = GetColliders(registry, entity, AllColliderComponents{});
+			TransformComponent* transform = registry.GetComponent<TransformComponent>(entity);
 
+			if (!transform)
+			{
+				LOGMESSAGE(Error, "Error finding transform");
+				continue;
+			}
+
+			auto colliders = GetColliders(registry, entity, AllColliderComponents{});
 			std::apply([&](auto&& ... collider)
 				{
 					auto NarrrowRayCheck = [&](const Ray& r, auto&& c)
@@ -73,10 +83,10 @@ namespace Behemoth
 						ContactData contactData{};
 						{
 							// Ensure collider isn't null, that mask is correct and that collision is occurring 
-							if (c && c->collisionType & mask && CheckCollision(r, c, contactData))
-							{
-								data.push_back(contactData);
-							}
+ 							if (GenerateCollisionData(ray, transform, c, contactData, mask))
+ 							{
+ 								data.push_back(contactData);
+ 							}
 						}
 
 					}; (..., (NarrrowRayCheck(ray, collider)));
@@ -139,5 +149,24 @@ namespace Behemoth
 			CheckRayCollision(ray, node->rootNode, entitiesToIgnore, entitiesHit);
 		}
 		return entitiesHit.size();
+	}
+
+	template <typename T>
+	bool GenerateCollisionData(const Ray& ray, TransformComponent* transform, T* collider,  ContactData& data, BMask::CollisionType mask)
+	{
+		if (!collider || !(collider->collisionType & mask))
+		{
+			return false;
+		}
+
+		if (!transform)
+		{
+			LOGMESSAGE(Error, "Null transform found");
+			return false;
+		}
+
+		SetCollider(transform, collider);
+
+		return CheckCollision(ray, collider->collider, data);
 	}
 }

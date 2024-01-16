@@ -9,6 +9,46 @@
 
 namespace Behemoth
 {
+	bool NarrowRayOBBCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData)
+	{
+		return true;
+	}
+	bool NarrowRaySphereCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
+	{
+		BMath::Vector3 dir = ray.origin - sphere.position;
+		float a = BMath::Vector3::Dot(ray.direction, ray.direction);
+		float b = 2.0f * BMath::Vector3::Dot(ray.direction, dir);
+		float c = BMath::Vector3::Dot(dir, dir) - sphere.radius * sphere.radius;
+
+		float disc = b * b - 4 * a * c;
+
+		if (disc < 0)
+		{
+			return false;
+		}
+
+		float sqrtDisc = std::sqrt(disc);
+
+		float t0 = (-b - sqrtDisc) / (2.0f * a);
+		float t1 = (-b + sqrtDisc) / (2.0f * a);
+
+		float t = (t0 < t1) ? t0 : t1;
+
+		if (t < 0)
+		{
+			t = t1;
+			if (t < 0)
+			{
+				return false;
+			}
+		}
+
+		contactData.collisionPoint = ray.origin + ray.direction * t;
+		contactData.collisionNormal = (contactData.collisionPoint - sphere.position) / sphere.radius;
+
+		return true;
+	}
+
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData)
 	{
 		BMath::Vector3 positionOne = sphere1.position;
@@ -33,7 +73,7 @@ namespace Behemoth
 	{
 		BMath::Vector3 spherePosition = sphere.position;
 		float distanceFromPlane = BMath::Vector3::Dot(plane.normal, spherePosition) - sphere.radius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
-	
+
 		if (distanceFromPlane >= 0.0f)
 		{
 			return false;
@@ -52,10 +92,10 @@ namespace Behemoth
 			return false;
 		}
 
-		static float mults[8][3] = 
-		{ 
+		static float mults[8][3] =
+		{
 			{1,1,1},  {-1,1,1},  {1,-1,1},   {-1,-1, 1},
-			{1,1,-1}, {-1,1,-1}, {1,-1,-1},  {-1,-1,-1} 
+			{1,1,-1}, {-1,1,-1}, {1,-1,-1},  {-1,-1,-1}
 		};
 
 		const float planeOffset = Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
@@ -65,7 +105,7 @@ namespace Behemoth
 		for (int i = 0; i < 8; i++)
 		{
 			BMath::Vector3 vertexPosition = BMath::Vector3(mults[i][0] * box.extents.x, mults[i][1] * box.extents.y, mults[i][2] * box.extents.z);
-			
+
 			vertexPosition = BMath::Vector3
 			(
 				box.orientation[0].x * vertexPosition.x + box.orientation[1].x * vertexPosition.y + box.orientation[2].x * vertexPosition.z,
@@ -114,7 +154,7 @@ namespace Behemoth
 
 		BMath::Vector3 closestPoint(0.0f);
 
-		for (int i = 0; i < 3; ++i) 
+		for (int i = 0; i < 3; ++i)
 		{
 			float value = localToSphere[i];
 			if (value > box.extents[i])
@@ -130,7 +170,7 @@ namespace Behemoth
 
 		BMath::Vector3 diff = closestPoint - localToSphere;
 		float squareDist = BMath::Vector3::SquaredMagnitude(diff);
-		
+
 		if (squareDist > sphere.radius * sphere.radius)
 		{
 			return false;
@@ -144,6 +184,9 @@ namespace Behemoth
 		return true;
 	}
 
+
+
+	// https://github.com/idmillington/cyclone-physics/blob/master/src/collide_fine.cpp#L311
 	bool NarrowSphereOBBCollision(const SphereCollider& sphere, const OBBCollider& box, ContactData& collisionData)
 	{
 		bool result = NarrowOBBSphereCollision(box, sphere, collisionData);
@@ -152,11 +195,121 @@ namespace Behemoth
 		return result;
 	}
 
-	// https://github.com/idmillington/cyclone-physics/blob/master/src/collide_fine.cpp#L311
+
+	void SetSATBestPen(int& bestIndex, real& bestPen, real absDistance, real combinedBoxes, int index)
+	{
+		real pen = combinedBoxes - absDistance;
+
+		if (pen < 5e-4) // is parallel
+		{
+			return;
+		}
+
+		if (bestIndex < 0)
+		{
+			bestIndex = index;
+			bestPen = pen;
+		}
+		else if (pen < bestPen)
+		{
+			bestIndex = index;
+			bestPen = pen;
+		}
+	}
+
+	void OBBVertexFaceCollision(const OBBCollider& box1, const OBBCollider& box2, const BMath::Vector3& toCenter, ContactData& contactData, int bestIndex, real pen)
+	{
+		BMath::Vector3 normal = box1.orientation[bestIndex];
+
+		if (BMath::Vector3::Dot<double>(normal, toCenter) > 0.0f)
+		{
+			// normal *= -1.0f;
+		}
+
+		BMath::Vector3 collidingVertex = box2.extents / 2.0f;
+		if (BMath::Vector3::Dot<double>(box2.orientation[0], normal) < 0.0f)
+		{
+			collidingVertex.x *= -1.0f;
+		}
+		if (BMath::Vector3::Dot<double>(box2.orientation[1], normal) < 0.0f)
+		{
+			collidingVertex.y *= -1.0f;
+		}
+		if (BMath::Vector3::Dot<double>(box2.orientation[2], normal) < 0.0f)
+		{
+			collidingVertex.z *= -1.0f;
+		}
+
+		BMath::Matrix4x4 transform {};
+
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				transform.data[i][j] = box2.orientation[i][j] * box2.extents[i];
+			}
+		}
+
+		transform._41 = box2.position.x;
+		transform._42 = box2.position.y;
+		transform._43 = box2.position.z;
+
+		contactData.collisionNormal = normal.Normalize();
+		contactData.collisionPoint = BMath::Vector3(transform * BMath::Vector4(collidingVertex, 1.0f));
+		contactData.penetrationDepth = pen;
+	}
+
+	BMath::Vector3 CalculateOBBContactPoint(
+		const BMath::Vector3& pOne,
+		const BMath::Vector3& dOne,
+		real oneSize,
+		const BMath::Vector3& pTwo,
+		const BMath::Vector3& dTwo,
+		real twoSize,
+		const bool useOne)
+	{
+		BMath::Vector3 toSt, cOne, cTwo;
+		real dpStaOne, dpStaTwo, dpOneTwo, smOne, smTwo;
+		real denom, mua, mub;
+
+		smOne = BMath::Vector3::SquaredMagnitude<double>(dOne);
+		smTwo = BMath::Vector3::SquaredMagnitude<double>(dTwo);
+		dpOneTwo = BMath::Vector3::Dot<double>(dTwo, dOne);
+
+		toSt = pOne - pTwo;
+		dpStaOne = BMath::Vector3::Dot<double>(dOne, toSt);
+		dpStaTwo = BMath::Vector3::Dot<double>(dTwo, toSt);
+
+		denom = smOne * smTwo - dpOneTwo * dpOneTwo;
+
+		// Zero denominator indicates parrallel lines
+		if (std::abs(denom) < EPSILON)
+		{
+			return useOne ? pOne : pTwo;
+		}
+
+		mua = (dpOneTwo * dpStaTwo - smTwo * dpStaOne) / denom;
+		mub = (smOne * dpStaTwo - dpOneTwo * dpStaOne) / denom;
+
+
+		if (mua > oneSize || mua < -oneSize || mub > twoSize || mub < -twoSize)
+		{
+			return useOne ? pOne : pTwo;
+		}
+		else
+		{
+			cOne = pOne + dOne * mua;
+			cTwo = pTwo + dTwo * mub;
+
+			return cOne * 0.5 + cTwo * 0.5;
+		}
+
+	}
+
 	bool NarrowOBBOBBCollision(const OBBCollider box1, const OBBCollider box2, ContactData& contactData)
 	{
 		real rBox1, rBox2;
-		
+
 		BMath::Matrix3x3d rotationMatrix{};
 		BMath::Matrix3x3d absRotationMatrix{};
 
@@ -416,219 +569,4 @@ namespace Behemoth
 		}
 	}
 
-	void SetSATBestPen(int& bestIndex, real& bestPen, real absDistance, real combinedBoxes, int index)
-	{
-		real pen = combinedBoxes - absDistance;
-
-		if (pen < 5e-4) // is parallel
-		{
-			return;
-		}
-
-		if (bestIndex < 0)
-		{
-			bestIndex = index;
-			bestPen = pen;
-		}
-		else if (pen < bestPen)
-		{
-			bestIndex = index;
-			bestPen = pen;
-		}
-	}
-
-	void OBBVertexFaceCollision(const OBBCollider& box1, const OBBCollider& box2, const BMath::Vector3& toCenter, ContactData& contactData, int bestIndex, real pen)
-	{
-		BMath::Vector3 normal = box1.orientation[bestIndex];
-		
-		if (BMath::Vector3::Dot<double>(normal, toCenter) > 0.0f)
-		{
-			// normal *= -1.0f;
-		}
-
-		BMath::Vector3 collidingVertex = box2.extents / 2.0f;
-		if (BMath::Vector3::Dot<double>(box2.orientation[0], normal) < 0.0f)
-		{
-			collidingVertex.x *= -1.0f;
-		}
-		if (BMath::Vector3::Dot<double>(box2.orientation[1], normal) < 0.0f)
-		{
-			collidingVertex.y *= -1.0f;
-		}
-		if (BMath::Vector3::Dot<double>(box2.orientation[2], normal) < 0.0f)
-		{
-			collidingVertex.z *= -1.0f;
-		}
-
-		BMath::Matrix4x4 transform {};
-
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				transform.data[i][j] = box2.orientation[i][j] * box2.extents[i];
-			}
-		}
-
-		transform._41 = box2.position.x;
-		transform._42 = box2.position.y;
-		transform._43 = box2.position.z;
-
-		contactData.collisionNormal = normal.Normalize();
-		contactData.collisionPoint = BMath::Vector3(transform * BMath::Vector4(collidingVertex, 1.0f));
-		contactData.penetrationDepth = pen;
-	}
-
-	BMath::Vector3 CalculateOBBContactPoint(
-		const BMath::Vector3& pOne,
-		const BMath::Vector3& dOne,
-		real oneSize,
-		const BMath::Vector3& pTwo,
-		const BMath::Vector3& dTwo,
-		real twoSize,
-		const bool useOne)
-	{
-		BMath::Vector3 toSt, cOne, cTwo;
-		real dpStaOne, dpStaTwo, dpOneTwo, smOne, smTwo;
-		real denom, mua, mub;
-
-		smOne = BMath::Vector3::SquaredMagnitude<double>(dOne);
-		smTwo = BMath::Vector3::SquaredMagnitude<double>(dTwo);
-		dpOneTwo = BMath::Vector3::Dot<double>(dTwo, dOne);
-
-		toSt = pOne - pTwo;
-		dpStaOne = BMath::Vector3::Dot<double>(dOne, toSt);
-		dpStaTwo = BMath::Vector3::Dot<double>(dTwo, toSt);
-
-		denom = smOne * smTwo - dpOneTwo * dpOneTwo;
-
-		// Zero denominator indicates parrallel lines
-		if (std::abs(denom) < EPSILON) 
-		{
-			return useOne ? pOne : pTwo;
-		}
-
-		mua = (dpOneTwo * dpStaTwo - smTwo * dpStaOne) / denom;
-		mub = (smOne * dpStaTwo - dpOneTwo * dpStaOne) / denom;
-
-
-		if (mua > oneSize || mua < -oneSize || mub > twoSize ||mub < -twoSize)
-		{
-			return useOne ? pOne : pTwo;
-		}
-		else
-		{
-			cOne = pOne + dOne * mua;
-			cTwo = pTwo + dTwo * mub;
-
-			return cOne * 0.5 + cTwo * 0.5;
-		}
-
-	}
-
-	bool TryAxis(
-		const OBBCollider& box1,
-		const OBBCollider& box2,
-		BMath::Vector3 axis,
-		const BMath::Vector3 toCenter,
-		int index,
-		real& smallestPen,
-		int& smallestCase)
-	{
-		if (BMath::Vector3::SquaredMagnitude(axis) < EPSILON)
-		{
-			return true;
-		}
-
-		axis.Normalize();
-		real pen = penetrationOnAxis(box1, box2, axis, toCenter);
-
-		if (pen < 0)
-		{
-			return false;
-		}
-
-		if (pen < smallestPen)
-		{
-			smallestPen = pen;
-			smallestCase = index;
-		}
-		return true;
-	}
-
-	real penetrationOnAxis(
-		const OBBCollider& box1,
-		const OBBCollider& box2,
-		BMath::Vector3 axis,
-		const BMath::Vector3& toCenter)
-	{
-		real b1 =  box1.extents.x + std::abs(BMath::Vector3::Dot(axis, box1.orientation[0])) +
-				   box1.extents.y + std::abs(BMath::Vector3::Dot(axis, box1.orientation[1])) +
-				   box1.extents.z + std::abs(BMath::Vector3::Dot(axis, box1.orientation[2]));
-
-		real b2 =  box2.extents.x + std::abs(BMath::Vector3::Dot(axis, box2.orientation[0])) +
-				   box2.extents.y + std::abs(BMath::Vector3::Dot(axis, box2.orientation[1])) +
-				   box2.extents.z + std::abs(BMath::Vector3::Dot(axis, box2.orientation[2]));
-
-		real distance = std::abs(BMath::Vector3::Dot(toCenter, axis));
-
-		return b1 + b2 - distance;
-	}
 }
-
-// const BMath::Vector3 spherePosition = sphere.position;
-// const BMath::Vector3 boxPosition = box.position;
-// 
-// BMath::Matrix4x4d boxTransform = BMath::Matrix4x4d::Identity();
-// 
-// for (int i = 0; i < 3; i++)
-// {
-// 	for (int j = 0; j < 3; j++)
-// 	{
-// 		boxTransform.data[i][j] = box.orientation[i][j] * box.extents[i];
-// 	}
-// }
-// 
-// boxTransform._41 = box.position.x;
-// boxTransform._42 = box.position.y;
-// boxTransform._43 = box.position.z;
-// 
-// BMath::Vector3 rC = spherePosition - boxPosition;
-// 
-// const BMath::Matrix4x4d invBoxTransform = BMath::Matrix4x4d::Transpose(boxTransform);
-// BMath::Vector3 relativeCenter = BMath::Vector3(invBoxTransform * BMath::Vector4(spherePosition, 1.0f));
-// 
-// 
-// 
-// BMath::Vector3 translatedCenter = spherePosition - boxPosition;
-// 
-// BMath::Vector3 closestPoint(0.0f);
-// 
-// float distance = relativeCenter.x;
-// distance = (distance > box.extents.x) ? box.extents.x : (distance < -box.extents.x) ? -box.extents.x : relativeCenter.x;
-// closestPoint.x = distance;
-// 
-// distance = relativeCenter.y;
-// distance = (distance > box.extents.y) ? box.extents.y : (distance < -box.extents.y) ? -box.extents.y : relativeCenter.y;
-// closestPoint.y = distance;
-// 
-// distance = relativeCenter.z;
-// distance = (distance > box.extents.z) ? box.extents.z : (distance < -box.extents.z) ? -box.extents.z : relativeCenter.z;
-// closestPoint.z = distance;
-// 
-// distance = BMath::Vector3::SquaredMagnitude((relativeCenter - closestPoint));
-// 
-// if (distance > sphere.radius * sphere.radius)
-// {
-// 	return false;
-// }
-// 
-// BMath::Vector3 closestPointWorld = BMath::Vector3(invBoxTransform * BMath::Vector4(closestPoint, 1.0f));
-// 
-// 
-// contactData.collisionNormal = (spherePosition - closestPointWorld).Normalize();
-// contactData.collisionNormal.Normalize();
-// contactData.collisionPoint = closestPointWorld;
-// contactData.penetrationDepth = sphere.radius - std::sqrt(distance);
-// 
-// return true;

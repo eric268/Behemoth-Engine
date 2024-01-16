@@ -13,6 +13,9 @@ namespace Behemoth
 	struct ContactData;
 	class Plane;
 
+	bool NarrowRayOBBCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData);
+	bool NarrowRaySphereCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData);
+
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData);
 	bool NarrowSpherePlaneCollision(const SphereCollider& sphere, const Plane& plane, ContactData& contactData);
 
@@ -22,32 +25,6 @@ namespace Behemoth
 
 	bool NarrowOBBOBBCollision(const OBBCollider box1, const OBBCollider box2, ContactData& contactData);
 
-	void SetSATBestPen(int& bestIndex, real& bestPen, real absDistance, real combinedBoxes, int index);
-	void OBBVertexFaceCollision(const OBBCollider& box1, const OBBCollider& box2, const BMath::Vector3& toCenter, ContactData& contactData, int bestIndex, real pen);
-
-	BMath::Vector3 CalculateOBBContactPoint(
-			const BMath::Vector3& pointOneEdge,
-			const BMath::Vector3& oneAxis,
-			real oneAxisExtent,
-			const BMath::Vector3& pointTwoEdge,
-			const BMath::Vector3& twoAxis,
-			real twoAxisExtent,
-			const bool twoSize);
-
-	bool TryAxis(
-		const OBBCollider& box1,
-		const OBBCollider& box2, 
-		BMath::Vector3 axis, 
-		const BMath::Vector3 toCenter, 
-		int index, 
-		real& smallestPen,
-		int& smallestCase);
-
-	real penetrationOnAxis(
-		const OBBCollider& box1,
-		const OBBCollider& box2,
-		BMath::Vector3 axis,
-		const BMath::Vector3& toCenter);
 
 	template<typename T, typename U>
 	bool CheckCollision(const T&, const U&, ContactData& contactData);
@@ -79,13 +56,13 @@ namespace Behemoth
 	template<>
 	inline bool CheckCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
 	{
-		return true;
+		return  NarrowRaySphereCollision(ray, sphere, contactData);
 	}
 
 	template<>
-	inline bool CheckCollision(const Ray& ray, const OBBCollider& sphere, ContactData& contactData)
+	inline bool CheckCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData)
 	{
-		return true;
+		return NarrowRayOBBCollision(ray, box, contactData);
 	}
 }
 
