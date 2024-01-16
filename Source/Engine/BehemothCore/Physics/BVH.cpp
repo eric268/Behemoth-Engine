@@ -157,15 +157,18 @@ namespace Behemoth
 		ECS::EntityHandle handle = registry.CreateEntity(name);
 		entityHandles.push_back(handle);
 
+		// Drawing the BVH colliders is just needed for debugging purposes
+#ifdef DEBUG
 		registry.AddComponent<TransformComponent>(handle);
 		registry.AddComponent<MoveComponent>(handle, collider.worldPosition);
 		registry.AddComponent<AABBColliderComponent>(handle, collider.worldExtents);
 		
 		if (drawCollider)
 		{
-			auto m = registry.AddComponent<MeshInitalizeComponent>(handle);
-			auto r = registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.worldExtents,false, true, color);
+			registry.AddComponent<MeshInitalizeComponent>(handle);
+			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.worldExtents,false, true, color);
 		}
+#endif
 
 		return node;
 	}

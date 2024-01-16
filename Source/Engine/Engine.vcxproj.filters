@@ -269,6 +269,9 @@
     <ClInclude Include="BehemothCore\Physics\CollisionTypedefs.h" />
     <ClInclude Include="BehemothCore\Systems\Render\SkySphereSystem.h" />
     <ClInclude Include="BehemothCore\Systems\TimerSystem.h" />
+    <ClInclude Include="BehemothCore\Components\AudioComponents.h" />
+    <ClInclude Include="BehemothCore\Systems\AudioSystem.h" />
+    <ClInclude Include="BehemothCore\Audio\SoundClip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -397,5 +400,7 @@
     <ClCompile Include="BehemothCore\pch.cpp" />
     <ClCompile Include="BehemothCore\Systems\Render\SkySphereSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\TimerSystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\AudioSystem.cpp" />
+    <ClCompile Include="BehemothCore\Audio\SoundClip.cpp" />
   </ItemGroup>
 </Project>

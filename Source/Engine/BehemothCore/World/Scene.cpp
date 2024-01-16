@@ -25,11 +25,11 @@ namespace Behemoth
 
 	void Scene::RecalculateBVH()
 	{
-// 		auto staticBVHComp = registry.GetComponent<BVHComponent<StaticComponent>>(staticBVHHandle);
-// 		if (staticBVHComp)
-// 		{
-// 			staticBVHComp->rootNode = factory.OnReconstruction<StaticComponent>(registry, staticBVHEntities);
-// 		}
+		auto staticBVHComp = registry.GetComponent<BVHComponent<StaticComponent>>(staticBVHHandle);
+		if (staticBVHComp)
+		{
+			staticBVHComp->rootNode = factory.OnReconstruction<StaticComponent>(registry, staticBVHEntities);
+		}
 
 		auto dynamicBVHComp = registry.GetComponent<BVHComponent<RigidBodyComponent>>(dynamicBVHHandle);
 		if (dynamicBVHComp)

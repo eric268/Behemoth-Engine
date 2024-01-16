@@ -25,6 +25,8 @@
 #include "Systems/Physics/NarrowCollisionSystem.h"
 #include "Systems/Physics/CollisionResolutionSystem.h"
 
+#include "Systems/AudioSystem.h"
+
 #include "Systems/Physics/RigidBodySystem.h"
 
 namespace Behemoth
@@ -89,6 +91,8 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<DebugLineSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<BoundingVolumeRenderSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
+
+		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
 	}
 
 	void World::Update(const float deltaTime)

@@ -5,6 +5,7 @@
 #include "Components/LightComponents.h"
 #include "Components/PhysicsComponents.h"
 #include "Components/RenderComponents.h"
+#include "Components/AudioComponents.h"
 
 #include "Physics/Collision/BroadCollision.h"
 #include "Physics/Collision/CollisionMask.h"
@@ -29,11 +30,11 @@ MainScene::MainScene()
 //  
   	Behemoth::GameObjectFactory gameObjectFactory{};
 
-// 	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
-// 	registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle, "SegmentSphere15.obj", "stone.jpg", BMath::Vector2(1.0f, 1.0f), true);
-// 	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
-// 	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
-// 	registry.AddComponent<Behemoth::RotationComponent>(cubemapHandle, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
+	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
+	registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle, "SegmentSphere15.obj", "stone.jpg", BMath::Vector2(1.0f, 1.0f), true);
+	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
+	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
+	registry.AddComponent<Behemoth::RotationComponent>(cubemapHandle, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
 
 // 
 	
@@ -84,8 +85,10 @@ MainScene::MainScene()
 	registry.AddComponent<CameraControllerComponent>(testCube, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
 
 
-	auto timer = registry.CreateEntity("Timer");
-	registry.AddComponent<Behemoth::TimerComponent>(timer, [&]() {LOGMESSAGE(General, "Timer called\n"); }, 5.0f);
+	auto soundEffectTest = registry.CreateEntity("Timer");
+	registry.AddComponent<Behemoth::AudioComponent>(soundEffectTest, "test.wav");
+
+
 
 }
 

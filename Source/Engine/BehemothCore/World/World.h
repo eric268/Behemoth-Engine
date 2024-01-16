@@ -26,7 +26,6 @@ namespace Behemoth
 		void Init();
 		void Update(const float deltaTime);
 		void Shutdown();
-		void ProcessCollisions(const float deltaTime);
 
 	private:
 		World() = default;
