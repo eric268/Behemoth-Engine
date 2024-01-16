@@ -63,7 +63,7 @@ namespace Behemoth
 		return result;
 	}
 
-	std::string& ResourceManager::GetTexturePath(const std::string& textureName)
+	const std::string& ResourceManager::GetTexturePath(const std::string& textureName)
 	{
 		if (textureMap.find(textureName) != textureMap.end())
 			return textureMap[textureName];

@@ -19,9 +19,7 @@ public:
 	ECS::EntityHandle pointLight;
 	ECS::EntityHandle cubes[8];
 	ECS::EntityHandle playerHandle;
-
-	bool doOnce = true;
-	int counter = 0;
+	ECS::EntityHandle DEBUG_audioEntity;
 
 private:
 	void InitSystems();

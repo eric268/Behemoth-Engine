@@ -64,7 +64,7 @@ namespace Behemoth
 		shininess(obj.shininess)
 	{
 		CopyVertexData(obj.verticies, obj.normals, obj.uv);
-		std::string& str = Behemoth::ResourceManager::GetInstance().GetTexturePath(textureName);
+		const std::string& str = Behemoth::ResourceManager::GetInstance().GetTexturePath(textureName);
 		sprite = new CSimpleSprite(str.c_str());
 	}
 
@@ -94,7 +94,7 @@ namespace Behemoth
 			CopyVertexData(obj.verticies, obj.normals, obj.uv);
 
 			textureName = obj.textureName;
-			std::string& str = Behemoth::ResourceManager::GetInstance().GetTexturePath(textureName);
+			const std::string& str = Behemoth::ResourceManager::GetInstance().GetTexturePath(textureName);
 			sprite = new CSimpleSprite(str.c_str());
 
 			depth = obj.depth;

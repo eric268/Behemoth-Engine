@@ -7,24 +7,23 @@ namespace Behemoth
 {
 	SoundClip::SoundClip() : audioFilepath(""), isLooping(false) {}
 
-	SoundClip::SoundClip(std::string path, bool looping) : isLooping(looping) 
-	{
-		audioFilepath = ResourceManager::GetInstance().GetSoundClipPath(path);
-		App::StopSound(audioFilepath.c_str());
-	}
+	SoundClip::SoundClip(std::string path, bool looping) : isLooping(looping), audioFilepath(path) {}
 
 	void SoundClip::PlaySoundClip()
 	{
-		App::PlaySound(audioFilepath.c_str(), isLooping);
+		const std::string& p = ResourceManager::GetInstance().GetSoundClipPath(audioFilepath);
+		App::PlaySound(p.c_str(), isLooping);
 	}
 
 	void SoundClip::StopSoundClip()
 	{
-		App::StopSound(audioFilepath.c_str());
+		const std::string& p = ResourceManager::GetInstance().GetSoundClipPath(audioFilepath);
+		App::StopSound(p.c_str());
 	}
 
-	bool SoundClip::SoundClipIsPlaying(const std::string& filepath)
+	bool SoundClip::SoundClipIsPlaying()
 	{
-		return App::IsSoundPlaying(ResourceManager::GetInstance().GetSoundClipPath(filepath).c_str());
+		const std::string& p = ResourceManager::GetInstance().GetSoundClipPath(audioFilepath);
+		return App::IsSoundPlaying(p.c_str());
 	}
 }

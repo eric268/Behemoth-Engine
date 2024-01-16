@@ -11,9 +11,9 @@ namespace Behemoth
 		for (const auto& [entity, audioFileComp] : registry.Get<AudioComponent>())
 		{
 			// Sound clip has stopped
-			if (!SoundClip::SoundClipIsPlaying(audioFileComp->audioFilePath))
+			if (!audioFileComp->soundClip.SoundClipIsPlaying())
 			{
-				// We have stopped it ourselves so continue
+				// We have stopped it ourselves, continue
 				if (audioFileComp->stopSoundClip)
 				{
 					continue;
@@ -21,32 +21,45 @@ namespace Behemoth
 				// audio file has finished playing
 				else if (audioFileComp->isPlaying)
 				{
-					if (audioFileComp->onAudioFinished)
-					{
-						audioFileComp->onAudioFinished();
-					}
-
-					if (audioFileComp->destroyEntityOnFinished)
-					{
-						registry.DestroyEntity(ECS::EntityHandle(entity));
-					}
+					OnFinished(registry, audioFileComp, entity);
 				}
 				// Audio file has not started playing so play it
 				else if (audioFileComp->playSoundClip)
 				{
-					audioFileComp->soundClip.PlaySoundClip();
-					audioFileComp->isPlaying = true;
+					StartAudio(audioFileComp);
 				}
 			}
-			else
+			else if (audioFileComp->stopSoundClip)
 			{
 				// Sound clip is playing but we want to stop it
-				if (audioFileComp->stopSoundClip)
-				{
-					audioFileComp->soundClip.StopSoundClip();
-					audioFileComp->isPlaying = false;
-				}
+				StopAudio(audioFileComp);
 			}
+		}
+	}
+
+	void AudioSystem::StartAudio(AudioComponent* audioComponent)
+	{
+		audioComponent->soundClip.PlaySoundClip();
+		audioComponent->isPlaying = true;
+	}
+
+	void AudioSystem::StopAudio(AudioComponent* audioComponent)
+	{
+		audioComponent->soundClip.StopSoundClip();
+		audioComponent->isPlaying = false;
+		audioComponent->playSoundClip = false;
+	}
+
+	void AudioSystem::OnFinished(ECS::Registry& registry, AudioComponent* audioComponent, const ECS::EntityHandle& handle)
+	{
+		if (audioComponent->onAudioFinished)
+		{
+			audioComponent->onAudioFinished();
+		}
+
+		if (audioComponent->destroyEntityOnFinished)
+		{
+			registry.DestroyEntity(ECS::EntityHandle(handle));
 		}
 	}
 }

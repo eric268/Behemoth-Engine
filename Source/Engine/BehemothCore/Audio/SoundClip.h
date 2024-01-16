@@ -11,12 +11,11 @@ namespace Behemoth
 		SoundClip(std::string path, bool looping);
 		void PlaySoundClip();
 		void StopSoundClip();
-		static bool SoundClipIsPlaying(const std::string& path);
+		bool SoundClipIsPlaying();
 
 		std::string audioFilepath;
 		bool isLooping;
 	private:
-		std::string fullFilepath;
 	};
 }
 

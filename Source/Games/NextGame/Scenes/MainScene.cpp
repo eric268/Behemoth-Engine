@@ -30,11 +30,11 @@ MainScene::MainScene()
 //  
   	Behemoth::GameObjectFactory gameObjectFactory{};
 
-	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
-	registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle, "SegmentSphere15.obj", "stone.jpg", BMath::Vector2(1.0f, 1.0f), true);
-	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
-	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(cubemapHandle, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
+// 	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
+// 	registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle, "SegmentSphere15.obj", "stone.jpg", BMath::Vector2(1.0f, 1.0f), true);
+// 	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
+// 	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
+// 	registry.AddComponent<Behemoth::RotationComponent>(cubemapHandle, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
 
 // 
 	
@@ -83,13 +83,6 @@ MainScene::MainScene()
  	registry.AddComponent<Behemoth::ScalingComponent>(testCube, BMath::Vector3(1.0, 1.0, 1.0));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(testCube, false);
 	registry.AddComponent<CameraControllerComponent>(testCube, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-
-
-	auto soundEffectTest = registry.CreateEntity("Timer");
-	registry.AddComponent<Behemoth::AudioComponent>(soundEffectTest, "test.wav");
-
-
-
 }
 
 void MainScene::Initalize()
@@ -122,6 +115,12 @@ void MainScene::Update(const float deltaTime)
 {
 	if (Behemoth::Input::IsKeyReleased(Behemoth::KeyCode::KC_Space))
 	{
+		auto comp = registry.GetComponent<Behemoth::AudioComponent>(DEBUG_audioEntity);
+		if (comp)
+		{
+			comp->stopSoundClip = true;
+		}
+
 		Behemoth::TransformComponent* cameraTransform = Behemoth::CameraHelper::GetMainCameraTransform(registry);
 		float distance = 50.0f;
 		BMath::Vector3 startPos = cameraTransform->worldPosition + cameraTransform->forwardVector * 0.5f;

@@ -23,7 +23,7 @@ namespace Behemoth
 
 		const std::vector<VertexData>& GetMeshVerticies(const std::string& filePath);
 		const MeshData& GetMeshData(const std::string& filePath);
-		std::string& GetTexturePath(const std::string& textureName);
+		const std::string& GetTexturePath(const std::string& textureName);
 		const std::string& GetSoundClipPath(const std::string& soundclipName);
 		AABBCollider GetMeshAABBBounds(const std::string& filenpath);
 		SphereCollider GetMeshSphereBounds(const std::string& filepath);
