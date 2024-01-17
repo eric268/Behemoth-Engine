@@ -68,9 +68,6 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
 
 		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
-
-		Behemoth::SystemManager::GetInstance().AddSystem<TextSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<ImageSystem>();
 	}
 
 	void World::Update(const float deltaTime)

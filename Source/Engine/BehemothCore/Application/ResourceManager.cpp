@@ -85,6 +85,18 @@ namespace Behemoth
 		return soundClipMap[soundclipName];
 	}
 
+	const std::string& ResourceManager::GetImagePath(const std::string& imagePath)
+	{
+		if (imageMap.find(imagePath) != imageMap.end())
+		{
+			return imageMap[imagePath];
+		}
+
+		std::filesystem::path full_path = std::filesystem::current_path() / "Images" / imagePath;
+		imageMap[imagePath] = full_path.string();
+		return imageMap[imagePath];
+	}
+
 	AABBCollider ResourceManager::GetMeshAABBBounds(const std::string& filepath)
 	{
 		std::size_t id = hasher(filepath);

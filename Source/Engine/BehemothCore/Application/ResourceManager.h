@@ -25,6 +25,7 @@ namespace Behemoth
 		const MeshData& GetMeshData(const std::string& filePath);
 		const std::string& GetTexturePath(const std::string& textureName);
 		const std::string& GetSoundClipPath(const std::string& soundclipName);
+		const std::string& GetImagePath(const std::string& soundclipName);
 		AABBCollider GetMeshAABBBounds(const std::string& filenpath);
 		SphereCollider GetMeshSphereBounds(const std::string& filepath);
 
@@ -35,6 +36,7 @@ namespace Behemoth
 		const std::pair <MeshData, std::vector<VertexData>>& GetMesh(const std::string& filepath);
 
 		std::hash<std::string> hasher;
+		std::unordered_map<std::string, std::string> imageMap;
 		std::unordered_map<std::string, std::string> textureMap;
 		std::unordered_map<std::string, std::string> soundClipMap;
 		std::unordered_map<std::size_t, std::pair<MeshData, std::vector<VertexData>>> meshMap;

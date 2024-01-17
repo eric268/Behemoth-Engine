@@ -11,8 +11,11 @@
 
 #include "ECS/System.h"
 #include "Systems/SystemManager.h"
+#include "Systems/UI/ImageSystem.h"
 #include "Misc/CameraHelper.h"
 #include "Misc/Stopwatch.h"
+
+#include "Systems/UI/TextSystem.h"
 
 #include "Input/Input.h"
 
@@ -20,7 +23,8 @@
 
 extern void CreateApplication();
 
-
+Behemoth::TextSystem textSystem{};
+Behemoth::ImageSystem imageSystem{};
 
 void OnEvent(Behemoth::Event& e)
 {
@@ -67,9 +71,20 @@ void Update(float deltaTime)
 // Add your display calls here (DrawLine,Print, DrawSprite.) 
 // See App.h 
 //------------------------------------------------------------------------
+
 void Render()
 {
 	Behemoth::Renderer::GetInstance().Draw();
+
+	// TODO:
+	// create a separate manager/renderer for handling UI rendering
+	Behemoth::Scene* currentScene = Behemoth::World::GetInstance().GetActiveScene();
+	if (currentScene)
+	{
+		ECS::Registry& registry = currentScene->GetRegistry();
+		textSystem.Run(0.0f, registry);
+		imageSystem.Run(0.0f, registry);
+	}
 }
 
 //------------------------------------------------------------------------

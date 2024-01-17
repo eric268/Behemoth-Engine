@@ -99,18 +99,7 @@ namespace ECS
 			Entity entity = GetEntityFromHandle(handle);
 			if (entity.IsValid())
 			{
-				auto comp = AddComponent<T>(entity, std::forward<Args>(parameters)...);
-				
-				if (comp)
-				{
-					return comp;
-				}
-				else
-				{
-					LOGMESSAGE(Error, "Null component created");
-					return nullptr;
-				}
-
+				return AddComponent<T>(entity, std::forward<Args>(parameters)...);
 			}
 			else
 			{
@@ -137,16 +126,7 @@ namespace ECS
 			T component(std::forward<Args>(parameters)...);
 			size_t index = Generator::Value<T>();
 			auto set = GetComponent<T>();
-			auto comp = set->AddComponent(entity, component);
-			if (comp)
-			{
-				return comp;
-			}
-			else
-			{
-				LOGMESSAGE(Error, "Null Component created in sparse set");
-				return nullptr;
-			}
+			return set->AddComponent(entity, component);
 		}
 
 		template<IsComponent T>
