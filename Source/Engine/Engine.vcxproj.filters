@@ -63,10 +63,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BehemothCore\Application\ResourceManager.h">
+    <ClInclude Include="BehemothCore\Core\ResourceManager.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Application\ThreadPool.h">
+    <ClInclude Include="BehemothCore\Core\ThreadPool.h">
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Audio\SoundClip.h">
@@ -193,10 +193,10 @@
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Misc\Log.h">
+    <ClInclude Include="BehemothCore\Core\Log.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Misc\Stopwatch.h">
+    <ClInclude Include="BehemothCore\Core\Stopwatch.h">
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Misc\TransformHelper.h">
@@ -316,13 +316,13 @@
     <ClInclude Include="BehemothCore\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
+    <ClCompile Include="BehemothCore\Core\GameLoop.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Application\ResourceManager.cpp">
+    <ClCompile Include="BehemothCore\Core\ResourceManager.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Application\ThreadPool.cpp">
+    <ClCompile Include="BehemothCore\Core\ThreadPool.cpp">
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Audio\SoundClip.cpp">
@@ -367,7 +367,7 @@
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Misc\Log.cpp">
+    <ClCompile Include="BehemothCore\Core\Log.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Misc\TransformHelper.cpp">

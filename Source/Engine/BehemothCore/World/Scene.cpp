@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Scene.h"
 #include "Components/PhysicsComponents.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 #include "Event/EventManager.h"
 #include "Event/WindowEvents.h"
 #include "Misc/CameraHelper.h"

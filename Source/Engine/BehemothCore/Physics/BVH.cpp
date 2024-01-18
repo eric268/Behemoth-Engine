@@ -5,7 +5,7 @@
 #include "Components/RenderComponents.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 #include "Collision/BroadCollision.h"
 #include "Misc/BColors.h"
 

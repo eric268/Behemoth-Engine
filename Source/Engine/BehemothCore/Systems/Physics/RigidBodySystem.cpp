@@ -3,7 +3,7 @@
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 
 namespace Behemoth
 {

@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Primitives.h"
 #include "NextAPI/App/SimpleSprite.h"
-#include "Misc/Log.h"
-#include "Application/ResourceManager.h"
+#include "Core/Log.h"
+#include "Core/ResourceManager.h"
 #include "NextAPI/App/SimpleSprite.h"
 
 #include <random>

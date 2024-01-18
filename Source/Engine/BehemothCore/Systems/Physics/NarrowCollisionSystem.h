@@ -5,7 +5,7 @@
 #include "Physics/Collision/CollisionData.h"
 #include "Physics/Collision/NarrowCollision.h"
 #include "Physics/Collision/ColliderHelper.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 
 #include <type_traits>
 #include <tuple>

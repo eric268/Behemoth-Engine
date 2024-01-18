@@ -1,8 +1,8 @@
 #pragma once
 
 // Application
-#include "Application/ResourceManager.h"
-#include "Application/ThreadPool.h"
+#include "Core/ResourceManager.h"
+#include "Core/ThreadPool.h"
 
 // ECS
 #include "ECS/Registry.h"
@@ -24,8 +24,8 @@
 
 // Misc
 #include "Misc/CameraHelper.h"
-#include "Misc/Log.h"
-#include "Misc/Stopwatch.h"
+#include "Core/Log.h"
+#include "Core/Stopwatch.h"
 
 // Systems
 #include "Systems/SystemManager.h"

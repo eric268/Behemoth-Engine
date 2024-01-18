@@ -3,7 +3,7 @@
 
 #include "Component.h"
 #include "Entity.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 #include "Page.h"
 
 // stl

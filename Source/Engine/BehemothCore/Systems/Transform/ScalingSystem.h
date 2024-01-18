@@ -21,7 +21,7 @@ namespace Behemoth
 	private:
 		void ScaleEntities(ECS::Registry& registry, ScalingComponent* scalingComp, TransformComponent* transformComp, const ECS::EntityHandle& handle);
 		void UpdateLocalScale(TransformComponent* transformComponent, const BMath::Vector3& oldScale, const BMath::Vector3& newScale);
-		void UpdateWorldScale(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComponent, const BMath::Vector3& oldScale, const BMath::Vector3& newScale);
+		void UpdateWorldScale(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComponent);
 	};
 }
 

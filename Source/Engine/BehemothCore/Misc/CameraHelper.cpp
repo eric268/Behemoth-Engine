@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CameraHelper.h"
 #include "Math/Vector.h"
-#include "Log.h"
+#include "Core/Log.h"
 #include "ECS/Registry.h"
 #include "Components/Components.h"
 

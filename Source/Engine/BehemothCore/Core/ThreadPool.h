@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <queue>
 
-#include "Misc/Log.h"
+#include "Core/Log.h"
 
 namespace Behemoth
 {

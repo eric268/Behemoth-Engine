@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Mesh.h"
-#include "Application/ResourceManager.h"
+#include "Core/ResourceManager.h"
 
 #include <iostream>
 namespace Behemoth

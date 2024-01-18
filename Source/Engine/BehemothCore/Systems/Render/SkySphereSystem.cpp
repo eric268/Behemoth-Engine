@@ -5,7 +5,7 @@
 #include "Components/RenderComponents.h"
 #include "Components/Components.h"
 #include "Misc/CameraHelper.h"
-#include "Application/ResourceManager.h"
+#include "Core/ResourceManager.h"
 #include "Geometry/Mesh.h"
 #include "Renderer/Renderer.h"
 

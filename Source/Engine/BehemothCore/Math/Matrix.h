@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vector.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 // stl
 #include <memory>
 #include <cassert>

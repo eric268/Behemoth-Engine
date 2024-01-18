@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Image.h"
 #include "NextAPI/App/SimpleSprite.h"
-#include "Application/ResourceManager.h"
+#include "Core/ResourceManager.h"
 
 namespace Behemoth
 {

@@ -2,7 +2,7 @@
 #include "TransformHelper.h"
 #include "ECS/Registry.h"
 #include "Components/Components.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 
 namespace Behemoth
 {

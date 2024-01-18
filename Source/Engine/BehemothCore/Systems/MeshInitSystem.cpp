@@ -5,8 +5,8 @@
 #include "Components/PhysicsComponents.h"
 #include "ECS/Registry.h"
 #include "Geometry/Mesh.h"
-#include "Application/ResourceManager.h"
-#include "Misc/Log.h"
+#include "Core/ResourceManager.h"
+#include "Core/Log.h"
 #include "Misc/TransformHelper.h"
 
 

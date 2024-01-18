@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "SoundClip.h"
-#include "Application/ResourceManager.h"
+#include "Core/ResourceManager.h"
 #include "NextAPI/App/app.h"
 
 namespace Behemoth

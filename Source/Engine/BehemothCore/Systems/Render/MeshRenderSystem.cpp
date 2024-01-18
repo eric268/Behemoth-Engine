@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "MeshRenderSystem.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 #include "Misc/CameraHelper.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "ECS/Entity.h"
 #include "Renderer/Renderer.h"
 #include "Geometry/MeshLoader.h"
-#include "Application/ResourceManager.h"
-#include "Application/ThreadPool.h"
+#include "Core/ResourceManager.h"
+#include "Core/ThreadPool.h"
 
 namespace Behemoth
 {

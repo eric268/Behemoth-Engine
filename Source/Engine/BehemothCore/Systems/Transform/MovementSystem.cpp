@@ -4,7 +4,7 @@
 #include "Misc/TransformHelper.h"
 #include "ECS/Registry.h"
 #include "ECS/Entity.h"
-#include "Misc/Log.h"
+#include "Core/Log.h"
 
 namespace Behemoth
 {

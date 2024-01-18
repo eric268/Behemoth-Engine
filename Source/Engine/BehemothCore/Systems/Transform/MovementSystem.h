@@ -13,6 +13,8 @@ namespace Behemoth
 	struct TransformComponent;
 	struct MoveComponent;
 
+	// This system essentially is a translate function that will teleport entities to the inputted location initially ignoring all collisions
+	// Should preferably use the Velocity Component to move dynamic objects in a scene
 	class MovementSystem
 	{
 	public:

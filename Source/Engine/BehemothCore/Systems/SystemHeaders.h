@@ -2,7 +2,7 @@
 
 #include "Systems/SystemManager.h"
 #include "Systems/Transform/ScalingSystem.h"
-#include "Misc/Stopwatch.h"
+#include "Core/Stopwatch.h"
 
 #include "Systems/TimerSystem.h"
 
