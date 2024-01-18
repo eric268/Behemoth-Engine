@@ -10,7 +10,7 @@
 
 namespace Behemoth
 {
-	Renderer::Renderer() : primitivesIndex(0), lineIndex(0) {}
+	Renderer::Renderer() {}
 
 	void Renderer::ReservePrimitives(std::size_t numPrimitives)
 	{
@@ -31,21 +31,19 @@ namespace Behemoth
 			});
 	}
 
-	void Renderer::AddPrimitive(Primitive* primitive)
+	void Renderer::AddPrimitive(Primitive* primitive, int index)
 	{
-		primitivesToDraw[primitivesIndex++] = primitive;
+		primitivesToDraw[index] = primitive;
+	}
+
+	void Renderer::AddLine(const Line& line)
+	{
+		linesToDraw.push_back(line);
 	}
 
 	void Renderer::FreeResourceOverflow()
 	{
-		primitivesToDraw.erase(primitivesToDraw.begin() + primitivesIndex, primitivesToDraw.end());
-		linesToDraw.erase(linesToDraw.begin() + lineIndex, linesToDraw.end());
-	}
-
-
-	void Renderer::AddLine(const Line& line)
-	{
-		linesToDraw[lineIndex++] = line;
+		primitivesToDraw.erase(std::remove(primitivesToDraw.begin(), primitivesToDraw.end(), nullptr), primitivesToDraw.end());
 	}
 
 	void Renderer::Draw()
@@ -67,9 +65,7 @@ namespace Behemoth
 	void Renderer::ClearResources()
 	{
 		primitivesToDraw.clear();
-		primitivesIndex = 0;
 
 		linesToDraw.clear();
-		lineIndex = 0;
 	}
 }

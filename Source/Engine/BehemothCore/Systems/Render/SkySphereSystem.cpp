@@ -84,7 +84,7 @@ namespace Behemoth
 
 			// Want to always render this first to be in front of all other primtives
 			primitive.depth = std::numeric_limits<float>::max();
-			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts);
+			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, vertexIndex);
 		}
 	}
 

@@ -1,10 +1,75 @@
 #include "pch.h"
 
-//Math Tests
+// Vector3 tests
 
-TEST(Name, n2)
+TEST(Vec3_Normalize, V3Normalize)
 {
-	EXPECT_TRUE(true);
+    BMath::Vector3 vec(16.67f, -971.1f, 8.26f);
+    vec.Normalize();
+    BMath::Vector3 ans(0.01716f, -0.99981f, 0.00850f);
+	EXPECT_TRUE(BMath::Vector3::Equals(vec, ans));
+}
+
+
+TEST(Vec3_CrossProduct, V3Cross)
+{
+    BMath::Vector3 vec1(9.1f, 7.75f, -18.15f);
+    BMath::Vector3 vec2(0.1f, -17.22f, 8.01f);
+    BMath::Vector3 result = BMath::Vector3::Cross(vec1, vec2);
+    BMath::Vector3 ans(-250.4655f, -74.706f, -157.477f);
+	EXPECT_TRUE(BMath::Vector3::Equals(result, ans));
+}
+
+TEST(Vec3_DotProduct, V3Dot)
+{
+	BMath::Vector3 vec1(13.1f, -98.75f, 15.15f);
+	BMath::Vector3 vec2(1.5f,  7.22f, -96.01f);
+	float result = BMath::Vector3::Dot(vec1, vec2);
+    float  ans = -2147.8765f;
+	EXPECT_TRUE(std::abs(result - ans) < 0.01f);
+}
+
+TEST(Vec3_Angle, V3Angle)
+{
+	BMath::Vector3 vec1(3.1f, -2.75f, 1.15f);
+	BMath::Vector3 vec2(5.7f, 2.22f, -6.01f);
+    float result = BMath::Vector3::Angle(vec1, vec2);
+    float ans = 1.444f;
+    EXPECT_TRUE(std::abs(result - ans) < 0.01f);
+}
+
+TEST(Vec3_Mag, V3Magnitude)
+{
+    BMath::Vector3 vec(109.1f, 87.6f, -11.1f);
+    float result = BMath::Vector3::Magnitude(vec);
+    float ans = 140.3559;
+    EXPECT_TRUE(std::abs(result - ans) < 0.01f);
+}
+
+TEST(Vec3_SqMag, V3SqMagnitude)
+{
+	BMath::Vector3 vec(109.1f, 87.6f, -11.1f);
+	float result = BMath::Vector3::SquaredMagnitude(vec);
+	float ans = 19'699.778f;
+	EXPECT_TRUE(std::abs(result - ans) < 0.01f);
+}
+
+TEST(Vec3_Distance, V3Dist)
+{
+	BMath::Vector3 vec1(30.2f, -1.5f, 0.15f);
+	BMath::Vector3 vec2(-5.7f, 12.22f, -60.01f);
+	float result = BMath::Vector3::Distance(vec1, vec2);
+	float ans = 71.388f;
+	EXPECT_TRUE(std::abs(result - ans) < 0.01f);
+}
+
+TEST(Vec3_SqDistance, V3SqDist)
+{
+	BMath::Vector3 vec1(30.2f, -1.5f, 0.15f);
+	BMath::Vector3 vec2(-5.7f, 12.22f, -60.01f);
+	float result = BMath::Vector3::SquaredDistance(vec1, vec2);
+    float ans = 5'096.274f;
+	EXPECT_TRUE(std::abs(result - ans) < 0.01f);
 }
 
  TEST(Vec4_Mul_M4x4, BMath)
@@ -154,6 +219,8 @@ TEST(Name, n2)
       EXPECT_TRUE(BMath::Matrix4x4f::Equals(result, ans));
   }
 
+
+// Quaternion Tests
 
 TEST(Quaternion_Axis_Angle, BMath)
 {

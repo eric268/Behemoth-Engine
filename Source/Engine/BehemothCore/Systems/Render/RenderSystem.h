@@ -24,8 +24,8 @@ namespace Behemoth
 		void TransformVertex(const Primitive& primitive, const BMath::Matrix4x4f& transformMatix, BMath::Vector4 vertex[], const int numVerticies);
 		float ProcessVertex(const BMath::Matrix4x4f& viewProjMatrix, BMath::Vector4 verticies[], int numVerticies);
 
-		std::vector<VertexData> cachedVerticies;
-		std::string cachedMeshName;
+// 		std::vector<VertexData> cachedVerticies;
+// 		std::string cachedMeshName;
 	};
 
 }

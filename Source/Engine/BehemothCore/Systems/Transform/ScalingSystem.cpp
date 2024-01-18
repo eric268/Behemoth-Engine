@@ -4,6 +4,8 @@
 #include "Components/Components.h"
 #include "Misc/TransformHelper.h"
 
+#include "Application/ThreadPool.h"
+
 namespace Behemoth
 {
 	void ScalingSystem::Run(const float deltaTime, ECS::Registry& registry)
@@ -13,14 +15,21 @@ namespace Behemoth
 		// Iterate over the container backwards because we want to remove all of these components once the scaling is completed
 		for (const auto& [entity, scalingComp, transformComp] : components)
 		{
-			BMath::Vector3 oldScale = TransformHelper::ExtractScale(transformComp->localTransform);
-			UpdateLocalScale(transformComp, oldScale, scalingComp->scalingVector);
-			UpdateWorldScale(registry, entity, transformComp, oldScale, scalingComp->scalingVector);
-			TransformHelper::NotifyChildrenTransformChange(registry, entity);
-			transformComp->isDirty = true;
-
-			registry.RemoveComponent<ScalingComponent>(entity);
+			ScaleEntities(registry, scalingComp, transformComp, entity);
+			// ThreadPool::GetInstance().Enqueue(&ScalingSystem::ScaleEntities, this, std::ref(registry), scalingComp, transformComp, entity);
 		}
+		ThreadPool::GetInstance().WaitForCompletion();
+	}
+
+	void ScalingSystem::ScaleEntities(ECS::Registry& registry, ScalingComponent* scalingComp, TransformComponent* transformComp, const ECS::EntityHandle& handle)
+	{
+		BMath::Vector3 oldScale = TransformHelper::ExtractScale(transformComp->localTransform);
+		UpdateLocalScale(transformComp, oldScale, scalingComp->scalingVector);
+		UpdateWorldScale(registry, handle, transformComp, oldScale, scalingComp->scalingVector);
+		TransformHelper::NotifyChildrenTransformChange(registry, handle);
+		transformComp->isDirty = true;
+
+		registry.RemoveComponent<ScalingComponent>(handle);
 	}
 
 	void ScalingSystem::UpdateLocalScale(TransformComponent* transformComp, const BMath::Vector3& oldScale, const BMath::Vector3& newScale)
@@ -47,6 +56,8 @@ namespace Behemoth
 		{
 			transformComp->worldTransform = TransformHelper::GetWorldTransform(registry, handle, transformComp->localTransform);
 			transformComp->parentIsDirty = false;
+			transformComp->worldScale = TransformHelper::ExtractScale(transformComp->worldTransform);
+
 		}
 		else
 		{

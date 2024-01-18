@@ -11,7 +11,7 @@ namespace Behemoth
 	// TODO:
 	// Find a way to remove all nullptr colliders so we don't need to waste cycles iterating over them later
 	template <typename ...Colliders>
-	static std::tuple<Colliders*...> GetColliders(ECS::Registry& registry, const ECS::EntityHandle& handle, CollidersContainer<Colliders ...>)
+	static std::tuple<Colliders*...> GetColliders(ECS::Registry& registry, const ECS::EntityHandle& handle, NarrowColliders<Colliders ...>)
 	{
 		return registry.GetMultipleComponents<Colliders...>(handle);
 	}

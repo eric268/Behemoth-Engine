@@ -45,9 +45,9 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<ScalingSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<RotationSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
 
+		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<TimerSystem>();
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
@@ -60,14 +60,19 @@ namespace Behemoth
 
 		// These systems should always be last and in this order
 		// Maybe make a separate container for them to ensure they are last
-		Behemoth::SystemManager::GetInstance().AddSystem<SkySphereSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<MeshRenderSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
+
+#ifdef DEBUG
+		// These are systems for rendering various debug tools
 		Behemoth::SystemManager::GetInstance().AddSystem<WireframeRenderSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<DebugLineSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<BoundingVolumeRenderSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
+#endif
 
-		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
+		// Ensure sky sphere is always called before mesh renderer
+		Behemoth::SystemManager::GetInstance().AddSystem<SkySphereSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<MeshRenderSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
 	}
 
 	void World::Update(const float deltaTime)

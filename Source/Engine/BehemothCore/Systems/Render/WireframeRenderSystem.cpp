@@ -47,11 +47,12 @@ namespace Behemoth
 
 		ReserveResources(meshData.totalPrimitives);
 
-		if (isDirty && cachedMeshName != meshData.modelFileName)
-		{
-			cachedMeshName = meshData.modelFileName;
-			cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
-		}
+// 		if (isDirty && cachedMeshName != meshData.modelFileName)
+// 		{
+// 			cachedMeshName = meshData.modelFileName;
+// 			cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
+// 		}
+		std::vector<VertexData> cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
 
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
@@ -82,7 +83,7 @@ namespace Behemoth
 
 			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
 			{
-				// continue;
+				continue;
 			}
 			
 			AddWireMeshToRenderer(numVerticies, renderVerts, color);

@@ -1,18 +1,30 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Defines the Behemoth namespace with input structures and enumerations.
+ */
+
 namespace Behemoth
 {
+	/**
+	* @struct AnalogInput
+	* @brief Represents an analog input with x and y coordinates.
+	*/
 	struct AnalogInput
 	{
 		float x;
 		float y;
 	};
-
+	/**
+	* @enum KeyCode
+	* @brief Enumerates keyboard key codes.
+	*/
 	enum KeyCode : uint16_t
 	{
-		KC_None						= 0,
-		KC_Backspace				= 8,
-		KC_Tab						= 9,
+		KC_None = 0, ///< No key pressed
+		KC_Backspace = 8, ///< Backspace key
+		KC_Tab = 9, ///< Tab key
 		KC_Enter					= 13,
 		KC_Escape					= 27,
 		KC_Space					= 32,
@@ -124,6 +136,10 @@ namespace Behemoth
 		NUM_KC					= SpecialKeyOffset + 130
 	};
 
+	/**
+	* @enum MouseCode
+	* @brief Enumerates mouse button and wheel codes.
+	*/
 	enum MouseCode : uint8_t
 	{
 		MC_Left_Click	= 0,
@@ -135,6 +151,10 @@ namespace Behemoth
 		NUM_MC = 5
 	};
 
+	/**
+	* @enum ControllerCode
+	* @brief Enumerates controller button codes.
+	*/
 	enum ControllerCode : uint16_t
 	{
 		CC_DPAD_UP				= 0,

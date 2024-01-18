@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Systems/SystemManager.h"
-#include "Systems/ScalingSystem.h"
+#include "Systems/Transform/ScalingSystem.h"
 #include "Misc/Stopwatch.h"
 
 #include "Systems/TimerSystem.h"
@@ -13,11 +13,11 @@
 #include "Systems/Render/SkySphereSystem.h"
 
 #include "Systems/CameraSystem.h"
-#include "Systems/RotationSystem.h"
-#include "Systems/MovementSystem.h"
+#include "Systems/Transform/RotationSystem.h"
+#include "Systems/Transform/MovementSystem.h"
 #include "Systems/MeshInitSystem.h"
 #include "Systems/LightingSystem.h"
-#include "Systems/VelocitySystem.h"
+#include "Systems/Transform/VelocitySystem.h"
 
 #include "Systems/Physics/BroadCollisionSystem.h"
 #include "Systems/Physics/NarrowCollisionSystem.h"

@@ -21,8 +21,8 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void UpdateLocalTransform(TransformComponent* transformComp, MoveComponent* movementComp);
-		void UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, MoveComponent* movementComp);
+		void MarkViewDirtyIfCamera(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
+		void UpdateLocalTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, BMath::Vector3 deltaLocation);
 	};
 }
 

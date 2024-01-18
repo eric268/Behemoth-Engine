@@ -60,12 +60,12 @@ namespace BMath
 		static Vector3& RotateVector(Vector3& vec, const Matrix4x4<float>& rotationMatrix, float w = 1.0f);
 		static Vector3 Reflect(const Vector3& lightDir, const Vector3& normal);
 
-		std::string Print()
+		inline std::string Print()
 		{
 			return std::string(" X: " + std::to_string(x) + " Y: " + std::to_string(y) + " Z: " + std::to_string(z));
 		}
 
-		float Magnitude() const
+		inline float Magnitude() const
 		{
 			return std:: sqrt(x * x + y * y + z * z);
 		}
@@ -100,15 +100,19 @@ namespace BMath
 		template <FloatOrDouble T = float>
 		static T Distance(const Vector3& v1, const Vector3& v2)
 		{
-			const Vector3 v = v1 - v2;
-			return Magnitude(v1 - v2);
+			const float x = v1.x - v2.x;
+			const float y = v1.y - v2.y;
+			const float z = v1.z - v2.z;
+			return std::sqrt((x * x) + (y * y) + (z * z));
 		}
 
 		template <FloatOrDouble T = float>
 		static T SquaredDistance(const Vector3& v1, const Vector3& v2)
 		{
-			const Vector3 v = v1 - v2;
-			return SquaredMagnitude(v1 - v2);
+			const float x = v1.x - v2.x;
+			const float y = v1.y - v2.y;
+			const float z = v1.z - v2.z;
+			return (x * x) + (y * y) + (z * z);
 		}
 
 		static bool Equals(const Vector3& v1, const Vector3& v2, const float epsilon = 1e-2);

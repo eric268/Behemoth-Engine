@@ -214,7 +214,7 @@
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\MovementSystem.h">
+    <ClInclude Include="BehemothCore\Systems\Transform\MovementSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Physics\BroadCollisionSystem.h">
@@ -244,16 +244,16 @@
     <ClInclude Include="BehemothCore\Systems\Render\WireframeRenderSystem.h">
       <Filter>Systems\Render</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\RotationSystem.h">
+    <ClInclude Include="BehemothCore\Systems\Transform\RotationSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\ScalingSystem.h">
+    <ClInclude Include="BehemothCore\Systems\Transform\ScalingSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\SystemManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\VelocitySystem.h">
+    <ClInclude Include="BehemothCore\Systems\Transform\VelocitySystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\World\Scene.h">
@@ -358,7 +358,7 @@
     <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\MovementSystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Transform\MovementSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\BroadCollisionSystem.cpp">
@@ -388,13 +388,13 @@
     <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp">
       <Filter>Systems\Render</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\RotationSystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Transform\RotationSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\ScalingSystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Transform\ScalingSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\VelocitySystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Transform\VelocitySystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\World\Scene.cpp">

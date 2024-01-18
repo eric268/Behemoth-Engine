@@ -18,5 +18,11 @@
 #include <fstream>
 #include <sstream>
 
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <future>
+#include <stdexcept>
+
 #define NOMINMAX
 #include <windows.h>

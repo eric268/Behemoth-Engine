@@ -44,6 +44,8 @@ namespace Behemoth
 	{
 		int numVerticies = (type == TRIANGLE) ? 3 : 4;
 
+		const std::string& path = Behemoth::ResourceManager::GetInstance().GetTexturePath(materialData.textureFileName);
+
 		for (int i = vertexOffset; i < totalVerticies + vertexOffset; i += numVerticies)
 		{
 			BMath::Vector4 v[4];
@@ -62,13 +64,14 @@ namespace Behemoth
 				uv[j].x = vertexData[i + j].uv.x * materialData.uvScale.x;
 				uv[j].y = vertexData[i + j].uv.y * materialData.uvScale.y;
 			}
-			const std::string& path = Behemoth::ResourceManager::GetInstance().GetTexturePath(materialData.textureFileName);
+
 			Primitive p{ path, materialData.textureFileName, type, v, n, uv };
 
 			p.diffuse	= materialData.diffuse;
 			p.specular	= materialData.specular;
 			p.shininess = materialData.shininess;
 			
+
 			meshPrimitives.push_back(std::move(p));
 		}
 	}

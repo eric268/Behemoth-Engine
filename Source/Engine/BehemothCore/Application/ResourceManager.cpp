@@ -66,7 +66,9 @@ namespace Behemoth
 	const std::string& ResourceManager::GetTexturePath(const std::string& textureName)
 	{
 		if (textureMap.find(textureName) != textureMap.end())
+		{
 			return textureMap[textureName];
+		}
 
 		std::filesystem::path full_path = std::filesystem::current_path() / "Textures" / textureName;
 		textureMap[textureName] = full_path.string();

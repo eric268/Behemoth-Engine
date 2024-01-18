@@ -7,6 +7,7 @@
 //stl
 #include <string>
 #include <vector>
+#include <mutex>
 
 namespace Behemoth
 {
@@ -38,7 +39,7 @@ namespace Behemoth
 		MaterialData materialData;
 		MeshData meshData;
 		std::vector<Primitive> meshPrimitives;
-		
+
 	private:
 		void GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVerticies, int vertexOffset);
 	};

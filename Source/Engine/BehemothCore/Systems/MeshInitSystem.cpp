@@ -9,6 +9,8 @@
 #include "Misc/Log.h"
 #include "Misc/TransformHelper.h"
 
+
+
 namespace Behemoth
 {
 	void MeshInitSystem::Run(const float deltaTime, ECS::Registry& registry)
@@ -28,12 +30,12 @@ namespace Behemoth
 
 				if (meshInitComp->initBroadCollider)
 				{
-					CalculateRotatedAABB(registry, meshComponent, entity);
+					InitAABBBoundingVolume(registry, meshComponent, entity);
 				}
 
 				if (meshInitComp->initBoundingVolume)
 				{
-					GenerateSphereBoundingVolume(registry, meshComponent, entity);
+					InitSphereBoundingVolume(registry, meshComponent, entity);
 				}
 			}
 
@@ -48,19 +50,20 @@ namespace Behemoth
 
 			registry.RemoveComponent<MeshInitalizeComponent>(entity);
 		}
+
 	}
 
 	void MeshInitSystem::InitMesh(Mesh& mesh)
 	{
 		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVerticies(mesh.meshData.modelFileName);
 		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(mesh.meshData.modelFileName);
-		mesh.GenerateMesh(meshData, vertexData );
+		mesh.GenerateMesh(meshData, vertexData);
 	}
 
 	void MeshInitSystem::GenerateAABBBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
 	{
-		registry.AddComponent<BroadColliderComponent>(handle);
-		BroadColliderComponent* broadCollider = registry.GetComponent<BroadColliderComponent>(handle);
+		registry.AddComponent<BVHColliderComponent>(handle);
+		BVHColliderComponent* broadCollider = registry.GetComponent<BVHColliderComponent>(handle);
 		if (broadCollider)
 		{
 			BMath::Vector3 scale = BMath::Vector3::One();
@@ -75,28 +78,26 @@ namespace Behemoth
 			}
 			BMath::Vector3 temp = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName).worldExtents;
 			
-			// temp *= 2.0f * std::sqrt(3) / 2.0f; This is to ensure that the cube stays within the aabb
-			
 			broadCollider->extents = temp;
 			broadCollider->collider.worldExtents = temp;
 		}
 	}
-	void MeshInitSystem::GenerateSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
+	void MeshInitSystem::InitSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
 	{
-		registry.AddComponent<BoundingVolumeComponent>(handle, false);
+		registry.AddComponent<BoundingVolumeComponent>(handle, true);
 		BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(handle);
 		if (boundingVolume)
 		{
-			InitMesh(boundingVolume->mesh);
+			// InitMesh(boundingVolume->mesh, std::ref(Path));
 			SphereCollider collider = ResourceManager::GetInstance().GetMeshSphereBounds(meshComp->modelFileName);
 			boundingVolume->radius = collider.radius;
 			boundingVolume->localPosition = collider.position;
 		}
 	}
 
-	void MeshInitSystem::CalculateRotatedAABB(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
+	void MeshInitSystem::InitAABBBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
 	{
-		BroadColliderComponent* broadCollider = registry.AddComponent<BroadColliderComponent>(handle);
+		BVHColliderComponent* broadCollider = registry.AddComponent<BVHColliderComponent>(handle);
 		if (broadCollider)
 		{
 			BMath::Vector3 scale = BMath::Vector3::One();
@@ -107,7 +108,6 @@ namespace Behemoth
 			{
 				scale = transformComp->worldScale;
 				BMath::Matrix3x3f rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
-
 				GetRotatedAABB(baseCollider, rot,  rotatedCollider);
 			}
 			else
@@ -117,6 +117,8 @@ namespace Behemoth
 
 			broadCollider->extents = rotatedCollider.worldExtents;
 			broadCollider->collider.worldExtents = broadCollider->extents;
+
+			// registry.AddComponent<Behemoth::WireframeComponent>(handle, "cube.obj", broadCollider->extents, false);
 		}
 	}
 

@@ -24,6 +24,7 @@ namespace Behemoth
 		bool affectedByGravity;
 	};
 
+	// Collider Components
 	struct ColliderComponent : public ECS::Component
 	{
 	protected:
@@ -37,7 +38,7 @@ namespace Behemoth
 		BMask::CollisionLayer collisionLayer;
 	};
 
-
+	// Broad collision components
 	struct AABBColliderComponent : public ColliderComponent
 	{
 		AABBColliderComponent(BMath::Vector3 extents = BMath::Vector3(1.0f), bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::StaticType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject) :
@@ -54,7 +55,15 @@ namespace Behemoth
 		AABBCollider collider;
 	};
 
+	struct BroadCollisionPairsComponent : public ECS::Component
+	{
+		BroadCollisionPairsComponent() {}
+		BroadCollisionPairsComponent(std::vector<ECS::EntityHandle>& vec) : collisionIDs((vec)) {}
 
+		std::vector<ECS::EntityHandle> collisionIDs;
+	};
+
+	// Narrow collision components
 	struct OBBColliderComponent : public ColliderComponent
 	{
 		OBBColliderComponent(BMath::Vector3 extent = BMath::Vector3(1.0f), bool enabled = true,  BMask::CollisionType collisionType = BMask::CollisionType::DynamicType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything) :
@@ -77,61 +86,36 @@ namespace Behemoth
 	};
 
 	template <typename ...T>
-	struct CollidersContainer {};
+	struct NarrowColliders {};
+	using NarrowColliderTypes = NarrowColliders<SphereColliderComponent, OBBColliderComponent>;
 
-	using AllColliderComponents = CollidersContainer<SphereColliderComponent, OBBColliderComponent>;
-
-	struct BroadColliderComponent : public ColliderComponent
+	// Collision Resolution Components
+	struct CollisionDataComponent : public ECS::Component
 	{
-		BroadColliderComponent(bool enabled = true) :
+		CollisionDataComponent() = default;
+		std::vector<CollisionData> data;
+	};
+
+	// Bounding Volume Hierarchy components
+	template<typename ...T>
+	struct RequiredTypes {};
+
+	template <typename ... T>
+	struct BVHRootComponent : public ECS::Component
+	{
+		BVHRootComponent(std::shared_ptr<BVHNode> root = nullptr) : rootNode(root) {}
+		std::shared_ptr<BVHNode> rootNode;
+		RequiredTypes<T...> types;
+	};
+
+	struct BVHColliderComponent : public ColliderComponent
+	{
+		BVHColliderComponent(bool enabled = true) :
 			ColliderComponent(enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider),
 			extents(1.0f)
 		{}
 
 		AABBCollider collider;
 		BMath::Vector3 extents;
-	};
-
-	struct NarrowColliderComponent : public ColliderComponent
-	{
-		NarrowColliderComponent(bool enabled = true, BMask::CollisionType collisionType = BMask::CollisionType::DynamicType, BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything) :
-			ColliderComponent(enabled, collisionType, collisionLayer)
-		{}
-
-		std::vector<ECS::EntityHandle> colliderHandles;
-		std::vector<OBBCollider> boxColliders;
-		std::vector<SphereCollider> sphereColliders;
-	};
-
-	struct BroadCollisionPairsComponent : public ECS::Component
-	{
-		BroadCollisionPairsComponent() {}
-		BroadCollisionPairsComponent(std::vector<ECS::EntityHandle>& vec) : staticCollisionIDs((vec)){}
-
-		std::vector<ECS::EntityHandle> staticCollisionIDs;
-	};
-
-	struct CollisionDataComponent : public ECS::Component
-	{
-		CollisionDataComponent() = default;
-		std::vector<CollisionData> data;
-
-		// Potentially dont need this info since I will have it in the resolutino
-// 		ECS::EntityHandle handle1;
-// 		BMath::Vector3 e1Velocity;
-	};
-
-	template<typename ...T>
-	struct RequiredTypes
-	{
-
-	};
-
-	template <typename ... T>
-	struct BVHComponent : public ECS::Component
-	{
-		BVHComponent(std::shared_ptr<BVHNode> root = nullptr) : rootNode(root) {}
-		std::shared_ptr<BVHNode> rootNode;
-		RequiredTypes<T...> types;
 	};
 }

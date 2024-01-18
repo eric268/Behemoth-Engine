@@ -90,10 +90,9 @@ namespace Behemoth
 
 	struct MoveComponent : public ECS::Component
 	{
-		MoveComponent() : location(BMath::Vector3{}), localMove(true) {}
-		MoveComponent(BMath::Vector3 vec, bool isLocal = true) : location(vec), localMove(isLocal) {}
+		MoveComponent() : location(BMath::Vector3(0.0f)) {}
+		MoveComponent(BMath::Vector3 vec) : location(vec) {}
 
-		bool localMove;
 		BMath::Vector3 location;
 	};
 

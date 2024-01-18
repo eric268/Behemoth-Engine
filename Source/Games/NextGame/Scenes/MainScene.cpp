@@ -30,59 +30,72 @@ MainScene::MainScene()
 //  
   	Behemoth::GameObjectFactory gameObjectFactory{};
 
-// 	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
-// 	registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle, "SegmentSphere15.obj", "stone.jpg", BMath::Vector2(1.0f, 1.0f), true);
-// 	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
-// 	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
-// 	registry.AddComponent<Behemoth::RotationComponent>(cubemapHandle, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
+// 
+//  	ECS::EntityHandle cubemapHandle = registry.CreateEntity("Cubemap");
+//  	registry.AddComponent<Behemoth::SkySphereComponent>(cubemapHandle, "SegmentSphere15.obj", "brick.png", BMath::Vector2(4.0f, 4.0f), true);
+//  	registry.AddComponent<Behemoth::TransformComponent>(cubemapHandle);
+//  	registry.AddComponent<Behemoth::ScalingComponent>(cubemapHandle, BMath::Vector3(900.0f));
+//  	registry.AddComponent<Behemoth::RotationComponent>(cubemapHandle, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
+// 
+//  
+// 
+//  	for (int i = 0; i < 4; i++)
+//  	{
+//  		std::string name = "Cube " + std::to_string(i + 1);
+//  		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
+//  		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(1.f, 1.0, 1.f));
+//  		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
+//  		registry.AddComponent<Behemoth::OBBColliderComponent>(cubes[i]);
+//  	}
+//  
+//   for (int i = 4; i < 8; i++)
+//   {
+//   	std::string name = "Cube " + std::to_string(i + 1);
+//   	cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
+//   	registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
+//   	registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(2.f, 1.0, 1.f));
+//   	registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
+//   	registry.AddComponent<Behemoth::OBBColliderComponent>(cubes[i]);
+//   }
+// // 
+// // 	 static 
+// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[0], BMath::Vector3(-2.0f, 0.0f, 0.0f));
+// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[1], BMath::Vector3(2.0f, 0.0f, 0.0f));
+// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[2], BMath::Vector3(0.0f, 3.0f, 0.0f));
+// 	registry.AddComponent<Behemoth::MoveComponent>(cubes[3], BMath::Vector3(0.0f, -3.0f, 0.0f));
+//  //  
+//   	//dynamic
+//   	registry.AddComponent<Behemoth::MoveComponent>(cubes[4], BMath::Vector3( 8.0f, -5.0f, -5.0f));
+//   	registry.AddComponent<Behemoth::MoveComponent>(cubes[5], BMath::Vector3( 11.0f, 0.0f, -12.0f));
+//   	registry.AddComponent<Behemoth::MoveComponent>(cubes[6], BMath::Vector3( 14.0f, -3.0f, -6.0f));
+//   	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
+// // 
+// // 
 
-// 
-	
-// 	for (int i = 0; i < 4; i++)
-// 	{
-// 		std::string name = "Cube " + std::to_string(i + 1);
-// 		cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
-// 		registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(1.f, 1.0, 1.f));
-// 		registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
-// 		registry.AddComponent<Behemoth::OBBColliderComponent>(cubes[i]);
-// 	}
-// 
-//  for (int i = 4; i < 8; i++)
-//  {
-//  	std::string name = "Cube " + std::to_string(i + 1);
-//  	cubes[i] = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", name);
-//  	registry.AddComponent<Behemoth::AABBColliderComponent>(cubes[i], BMath::Vector3(1.5f, 1.0, 0.5f));
-//  	registry.AddComponent<Behemoth::ScalingComponent>(cubes[i], BMath::Vector3(2.f, 1.0, 1.f));
-//  	registry.AddComponent<Behemoth::StaticComponent>(cubes[i]);
-//  	registry.AddComponent<Behemoth::OBBColliderComponent>(cubes[i]);
-//  }
-// 
-// 	 static 
-//  	 	registry.AddComponent<Behemoth::MoveComponent>(cubes[0], BMath::Vector3(-2.0f, 0.0f, 0.0f));
-//  	 	registry.AddComponent<Behemoth::MoveComponent>(cubes[1], BMath::Vector3(2.0f, 0.0f, 0.0f));
-//  	    registry.AddComponent<Behemoth::MoveComponent>(cubes[2], BMath::Vector3(0.0f, 3.0f, 0.0f));
-//  	    registry.AddComponent<Behemoth::MoveComponent>(cubes[3], BMath::Vector3(0.0f, -3.0f, 0.0f));
-// // //  
-// //  	//dynamic
-// //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[4], BMath::Vector3( 8.0f, -5.0f, -5.0f));
-// //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[5], BMath::Vector3( 11.0f, 0.0f, -12.0f));
-// //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[6], BMath::Vector3( 14.0f, -3.0f, -6.0f));
-// //  	registry.AddComponent<Behemoth::MoveComponent>(cubes[7], BMath::Vector3( 10.0f, 3.0f, -9.0f));
-// 
-// 
+
  	playerHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Player");
  	registry.AddComponent<CameraControllerComponent>(playerHandle, 5.0f, 1.0f, true, Behemoth::KeyCode::KC_Up, Behemoth::KeyCode::KC_Down, Behemoth::KeyCode::KC_Left, Behemoth::KeyCode::KC_Right, Behemoth::KeyCode::KC_Plus, Behemoth::KeyCode::KC_Minus);
- 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(2.0f, 3.0f, 0.0f));
+ 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, BMath::Vector3(2.0f, 0.0f, 0.0f));
  	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false);
  	auto c = registry.AddComponent<Behemoth::SphereColliderComponent>(playerHandle);
- 	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(1.0));
-// 	auto testCube = gameObjectFactory.CreateGameObject(registry, "SegmentSphere15.obj", "rock.png", "Player");
-//  	registry.AddComponent<Behemoth::MoveComponent>(testCube, BMath::Vector3(4.0f, 0.0f, 0.0f));
-//  	registry.AddComponent<Behemoth::SphereColliderComponent>(testCube);
-//  	registry.AddComponent<Behemoth::ScalingComponent>(testCube, BMath::Vector3(1.0, 1.0, 1.0));
-// 	registry.AddComponent<Behemoth::RigidBodyComponent>(testCube, false);
-// 	registry.AddComponent<CameraControllerComponent>(testCube, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-}
+ 	registry.AddComponent<Behemoth::ScalingComponent>(playerHandle, BMath::Vector3(0.5));
+// 
+
+	testCube = gameObjectFactory.AddChildObject(registry, playerHandle, "cube.obj", "rock.png", "Child");
+	registry.AddComponent<Behemoth::MoveComponent>(testCube, BMath::Vector3(4.0f, 0.0f, 0.0f));
+	registry.AddComponent<Behemoth::SphereColliderComponent>(testCube);
+	registry.AddComponent<Behemoth::ScalingComponent>(testCube, BMath::Vector3(1.0, 2.0, 1.0));
+	registry.AddComponent<Behemoth::RigidBodyComponent>(testCube, false);
+	 registry.AddComponent<Behemoth::RotationComponent>(testCube, BMath::Quaternion(DEGREE_TO_RAD(45.0f), BMath::Vector3(0, 1, 0)));
+	registry.AddComponent<CameraControllerComponent>(testCube, 5.0f, 0.33f, true, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
+
+	auto testCube2 = gameObjectFactory.AddChildObject(registry, testCube, "cube.obj", "rock.png", "Child");
+	registry.AddComponent<Behemoth::MoveComponent>(testCube2, BMath::Vector3(4.0f, 0.0f, 0.0f));
+	registry.AddComponent<Behemoth::SphereColliderComponent>(testCube2);
+	registry.AddComponent<Behemoth::ScalingComponent>(testCube2, BMath::Vector3(1.0, 1.0, 1.0));
+	registry.AddComponent<Behemoth::RigidBodyComponent>(testCube2, false);
+	
+ }
 
 void MainScene::Initalize()
 {
@@ -154,6 +167,29 @@ void MainScene::Update(const float deltaTime)
 		if (rot != BMath::Vector3::Zero())
 		{
 			comp->quat = BMath::Quaternion(BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot));
+		}
+
+	}
+
+	if (auto comp2 = registry.GetComponent<Behemoth::RotationComponent>(testCube))
+	{
+		BMath::Vector3 rot2;
+		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_G))
+		{
+			rot2.x = 1.0f;
+		}
+		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_H))
+		{
+			rot2.y = 1.0f;
+		}
+		if (Behemoth::Input::IsKeyHeld(Behemoth::KeyCode::KC_J))
+		{
+			rot2.z = 1.0f;
+		}
+
+		if (rot2 != BMath::Vector3::Zero())
+		{
+			comp2->quat = BMath::Quaternion(BMath::Quaternion(DEGREE_TO_RAD(2.5f), rot2));
 		}
 	}
 

@@ -17,8 +17,7 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 		if (Behemoth::Input::IsKeyHeld(controllerComp->forward))
 		{
 			// velocity += transformComp->forwardVector;
-			 velocity += BMath::Vector3::Forward();
-			
+			 velocity += BMath::Vector3::Forward();	
 		}
 
 		if (Behemoth::Input::IsKeyHeld(controllerComp->back))
@@ -49,32 +48,6 @@ void CameraControllerSystem::Run(const float deltaTime, ECS::Registry& registry)
 			// velocity -= transformComp->upVector;
 			velocity -= BMath::Vector3::Up();
 		}
-
-// 		if (controllerComp->enableRotation)
-// 		{
-// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_I))
-// 			{
-// 				rotationComp->speed = 1.0f;
-// 				rotationComp->axis = Behemoth::RotationComponent::X_AXIS;
-// 			}
-// 
-// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_K))
-// 			{
-// 				rotationComp->speed = -1.0f;
-// 				rotationComp->axis = Behemoth::RotationComponent::X_AXIS;
-// 			}
-// 
-// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_J))
-// 			{
-// 				rotationComp->speed = -1.0f;
-// 				rotationComp->axis = Behemoth::RotationComponent::Y_AXIS;
-// 			}
-// 			if (Behemoth::Input::IsKeyHeld(Behemoth::KC_L))
-// 			{
-// 				rotationComp->speed = 1.0f;
-// 				rotationComp->axis = Behemoth::RotationComponent::Y_AXIS;
-// 			}
-// 		}
 
 		velocity.Normalize();
 		velocity *= controllerComp->movementSpeed;

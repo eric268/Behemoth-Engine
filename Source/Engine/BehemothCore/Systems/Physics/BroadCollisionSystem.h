@@ -22,7 +22,7 @@ namespace Behemoth
 	class BroadCollisionSystem
 	{
 	public:
-		using DynamicEntities = std::vector<std::tuple<ECS::Entity, RigidBodyComponent*, VelocityComponent*, TransformComponent*, BroadColliderComponent*>>;
+		using DynamicEntities = std::vector<std::tuple<ECS::Entity, RigidBodyComponent*, VelocityComponent*, TransformComponent*, BVHColliderComponent*>>;
 
 		void Run(const float deltaTime, ECS::Registry& registry);
 
@@ -30,7 +30,7 @@ namespace Behemoth
 		template<typename T>
 		void CheckCollision(ECS::Registry& registry, DynamicEntities& dynamicEntities, const float deltaTime)
 		{
-			auto bvhComponent = registry.Get<BVHComponent<T>>();
+			auto bvhComponent = registry.Get<BVHRootComponent<T>>();
 
 			for (const auto& [dynamicEntity, type, velocity, transform, collider] : dynamicEntities)
 			{
@@ -58,7 +58,7 @@ namespace Behemoth
 						else
 						{
 							// If it already has the component add the new collision pairs to the end of that container
-							std::vector<ECS::EntityHandle>& collisionPairs = collisionPairsComp->staticCollisionIDs;
+							std::vector<ECS::EntityHandle>& collisionPairs = collisionPairsComp->collisionIDs;
 							collisionPairs.insert(collisionPairs.end(), nodeHandles.begin(), nodeHandles.end());
 						}
 					}

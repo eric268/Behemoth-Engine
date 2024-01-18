@@ -8,6 +8,7 @@
 #include "Renderer/Renderer.h"
 #include "Geometry/MeshLoader.h"
 #include "Application/ResourceManager.h"
+#include "Application/ThreadPool.h"
 
 namespace Behemoth
 {
@@ -24,8 +25,18 @@ namespace Behemoth
 				return std::get<1>(tuple1)->mesh.meshPrimitives.size() < std::get<1>(tuple2)->mesh.meshPrimitives.size();
 			});
 
+		std::uint32_t renderSlotIndex = 0;
+		std::uint32_t totalPrimitives = 0;
+
 		// ** Order of multiplication matters here **
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
+
+		for (const auto& [entity, meshComp, transformComp] : components)
+		{
+			totalPrimitives += meshComp->mesh.meshPrimitives.size();
+		}
+
+		ReserveResources(totalPrimitives);
 
 		for (const auto& [entity, meshComp, transformComp] : components)
 		{
@@ -41,26 +52,23 @@ namespace Behemoth
 				continue;
 			}
 
-			ProcessMesh(meshComp->mesh, cameraTransformComp, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty);
+
+			ThreadPool::GetInstance().Enqueue(std::bind(&MeshRenderSystem::ProcessMesh, this, std::ref(meshComp->mesh), cameraTransformComp, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty, renderSlotIndex));
+			renderSlotIndex += meshComp->mesh.meshPrimitives.size();
 			transformComp->isDirty = false;
 
 		}
 
+		ThreadPool::GetInstance().WaitForCompletion();
 		Renderer::GetInstance().FreeResourceOverflow();
 	}
 
 
-	void MeshRenderSystem::ProcessMesh(Mesh& mesh, TransformComponent* cameraTransform, const BMath::Matrix4x4f& transformMatrix, const BMath::Matrix4x4f& viewProjMatrix, bool isDirty)
+	void MeshRenderSystem::ProcessMesh(Mesh& mesh, TransformComponent* cameraTransform, const BMath::Matrix4x4f& transformMatrix, const BMath::Matrix4x4f& viewProjMatrix, bool isDirty, int renderSlotIndex)
 	{
 		const MeshData& meshData = mesh.meshData;
 
-		ReserveResources(meshData.totalPrimitives);
-
-		if (isDirty && cachedMeshName != meshData.modelFileName)
-		{
-			cachedMeshName = meshData.modelFileName;
-			cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
-		}
+		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
 
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
@@ -77,7 +85,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * BMath::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
+					primitive.verticies[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex].vertex, 1.0f);
 					vertexIndex++;
 				}
 			}
@@ -100,7 +108,9 @@ namespace Behemoth
 			{
 				continue;
 			}
-			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts);
+
+			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, renderSlotIndex);
+			renderSlotIndex++;
 		}
 	}
 
@@ -125,10 +135,10 @@ namespace Behemoth
 	}
 
 
-	void MeshRenderSystem::AddPrimitiveToRenderer(Primitive& primitive, const int numVerticies, const BMath::Vector4 vertex[])
+	void MeshRenderSystem::AddPrimitiveToRenderer(Primitive& primitive, const int numVerticies, const BMath::Vector4 vertex[], int renderSlotIndex)
 	{
 		primitive.SetSpriteVerticies(numVerticies, vertex);
-		Renderer::GetInstance().AddPrimitive(&primitive);
+		Renderer::GetInstance().AddPrimitive(&primitive, renderSlotIndex);
 	}
 
 

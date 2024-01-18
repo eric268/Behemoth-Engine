@@ -6,6 +6,39 @@
 
 namespace Behemoth
 {
+	void TransformHelper::UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp)
+	{
+		if (transformComp->parentIsDirty)
+		{
+			TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, handle);
+			if (parentTransform)
+			{
+				// Combine parent's world transform with child's local transform
+				BMath::Matrix4x4f combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform, parentTransform->worldScale) *
+					TransformHelper::RemoveScale(transformComp->localTransform, transformComp->localScale);
+
+				for (int i = 0; i < 3; i++)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						transformComp->worldTransform.data[i][j] = combinedTransform.data[i][j] * transformComp->worldScale[i];
+					}
+				}
+
+				transformComp->worldPosition = BMath::Vector3(combinedTransform._41, combinedTransform._42, combinedTransform._43);
+				transformComp->worldTransform._41 = transformComp->worldPosition.x;
+				transformComp->worldTransform._42 = transformComp->worldPosition.y;
+				transformComp->worldTransform._43 = transformComp->worldPosition.z;
+			}
+		}
+		else
+		{
+			transformComp->worldTransform = transformComp->localTransform;
+			transformComp->worldPosition = transformComp->localPosition;
+			transformComp->isDirty = true;
+		}
+	}
+
 	BMath::Matrix4x4f TransformHelper::GetWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Matrix4x4f& localTransform)
 	{
 		BMath::Matrix4x4f worldTransform = localTransform;
@@ -25,6 +58,115 @@ namespace Behemoth
 
 		return worldTransform;
 	}
+	BMath::Matrix3x3f TransformHelper::GetWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Matrix3x3f& localRotation)
+	{
+		BMath::Matrix3x3f worldRotation = localRotation;
+
+		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
+		{
+			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
+			if (parentTransform)
+			{
+				BMath::Matrix3x3f parentRotation = ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
+
+				worldRotation = parentRotation * localRotation;
+			}
+			else
+			{
+				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
+			}
+		}
+		return worldRotation;
+	}
+
+	TransformComponent* TransformHelper::GetParentTransformComp(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
+	{
+		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
+		{
+			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
+			if (parentTransform)
+			{
+				return parentTransform;
+			}
+			else
+			{
+				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
+			}
+		}
+		return nullptr;
+	}
+
+	BMath::Matrix4x4f TransformHelper::GetParentTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
+	{
+		if (TransformComponent* transform = GetParentTransformComp(registry, entityHandle))
+		{
+			return transform->worldTransform;
+		}
+		return BMath::Matrix4x4f::Identity();
+	}
+
+	BMath::Matrix3x3f TransformHelper::GetParentRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
+	{
+		return ExtractRotationMatrix(GetParentTransform(registry, entityHandle));
+	}
+
+	BMath::Vector3 TransformHelper::GetParentScale(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
+	{
+		if (TransformComponent* transform = GetParentTransformComp(registry, entityHandle))
+		{
+			return transform->worldScale;
+		}
+		return BMath::Vector3(1.0f);
+	}
+
+	BMath::Vector3 TransformHelper::GetParentPosition(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
+	{
+		if (TransformComponent* transform = GetParentTransformComp(registry, entityHandle))
+		{
+			return transform->worldPosition;
+		}
+		return BMath::Vector3(0.0f);
+	}
+
+	BMath::Vector3 TransformHelper::GetWorldPosition(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Vector3& localPosition)
+	{
+		BMath::Vector3 worldPosition = localPosition;
+
+		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
+		{
+			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
+			if (parentTransform)
+			{
+				worldPosition += parentTransform->worldPosition;
+			}
+			else
+			{
+				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
+			}
+		}
+
+		return worldPosition;
+	}
+
+	BMath::Vector3 TransformHelper::GetWorldScale(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Vector3& localScale)
+	{
+		BMath::Vector3 worldScale = localScale;
+
+		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
+		{
+			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
+			if (parentTransform)
+			{
+				worldScale *= parentTransform->worldScale;
+			}
+			else
+			{
+				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
+			}
+		}
+
+		return worldScale;
+	}
 
 	BMath::Matrix4x4f TransformHelper::GetTransformNoRotation(const BMath::Matrix4x4f& m, const BMath::Vector3& scale)
 	{
@@ -39,6 +181,24 @@ namespace Behemoth
 		result._43 = m._43;
 
 		return result;
+	}
+
+	BMath::Matrix4x4f TransformHelper::RemoveScale(const BMath::Matrix4x4f& transform, const BMath::Vector3& scale)
+	{
+		BMath::Matrix4x4f m = BMath::Matrix4x4f::Identity();
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				m.data[i][j] = transform.data[i][j] / scale[i];
+			}
+		}
+
+		m._41 = transform._41;
+		m._42 = transform._42;
+		m._43 = transform._43;
+		
+		return m;
 	}
 
 	BMath::Matrix3x3f TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4f& transformMatrix)

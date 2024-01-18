@@ -20,6 +20,7 @@ public:
 	ECS::EntityHandle cubes[8];
 	ECS::EntityHandle playerHandle;
 	ECS::EntityHandle DEBUG_audioEntity;
+	ECS::EntityHandle testCube;
 
 private:
 	void InitSystems();

@@ -25,8 +25,18 @@ namespace Behemoth
 			}
 
 			BMath::Vector3 deltaPosition = velocityComp->velocity * deltaTime;
-			UpdateLocalTransform(transformComp, deltaPosition);
-			UpdateWorldTransform(registry, entity, transformComp, deltaPosition);
+
+			TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, entity);
+			if (parentTransform)
+			{
+				// If object is a child, move in parents local space
+				BMath::Matrix3x3f parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
+
+				deltaPosition = parentTransformNoScale * deltaPosition;
+			}
+
+			UpdateLocalTransform(registry, entity, transformComp, deltaPosition);
+			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 
 			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
@@ -39,29 +49,12 @@ namespace Behemoth
 		}
 	}
 
-	void VelocitySystem::UpdateLocalTransform(TransformComponent* transformComp, const BMath::Vector3& deltaPosition)
+	void VelocitySystem::UpdateLocalTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, BMath::Vector3 deltaPosition)
 	{
 		transformComp->localTransform._41 += deltaPosition.x;
 		transformComp->localTransform._42 += deltaPosition.y;
 		transformComp->localTransform._43 += deltaPosition.z;
 		transformComp->localPosition += deltaPosition;
 		transformComp->isDirty = true;
-	}
-
-	void VelocitySystem::UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, const BMath::Vector3& deltaPosition)
-	{
-		if (transformComp->parentIsDirty)
-		{
-			transformComp->worldTransform = TransformHelper::GetWorldTransform(registry, handle, transformComp->localTransform);
-			transformComp->parentIsDirty = false;
-		}
-		else
-		{
-			transformComp->worldTransform._41 += deltaPosition.x;
-			transformComp->worldTransform._42 += deltaPosition.y;
-			transformComp->worldTransform._43 += deltaPosition.z;
-			transformComp->worldPosition += deltaPosition;
-			transformComp->isDirty = true;
-		}
 	}
 }

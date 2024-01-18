@@ -78,13 +78,13 @@ namespace Behemoth
 		template <typename ...T>
 		std::vector<BVHData> GetSceneColliderData(ECS::Registry& registry)
 		{
-			auto components = registry.Get<TransformComponent, BroadColliderComponent, T...>();
+			auto components = registry.Get<TransformComponent, BVHColliderComponent, T...>();
 			std::vector<BVHData> data;
 			data.reserve(components.size());
 
 			for (auto& componentTuple : components)
 			{
-				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, BroadColliderComponent* colliderComp, auto* ...args)
+				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, BVHColliderComponent* colliderComp, auto* ...args)
 					{
 
 						colliderComp->collider.worldPosition = transformComp->worldPosition;

@@ -72,7 +72,7 @@ namespace Behemoth
 				continue;
 			}
 
-			auto colliders = GetColliders(registry, entity, AllColliderComponents{});
+			auto colliders = GetColliders(registry, entity, NarrowColliderTypes{});
 			std::apply([&](auto&& ... collider)
 				{
 					auto NarrrowRayCheck = [&](const Ray& r, auto&& c)
@@ -141,7 +141,7 @@ namespace Behemoth
 	template<typename T>
 	static bool RayBVHCheck(ECS::Registry& registry, const Ray& ray, const std::vector<ECS::EntityHandle>& entitiesToIgnore, std::vector<ECS::EntityHandle>& entitiesHit)
 	{
-		auto bvhComponent = registry.Get<BVHComponent<T>>();
+		auto bvhComponent = registry.Get<BVHRootComponent<T>>();
 		// Should only be one BVH node with static or dynamic type, but leave check in for now
 		for (const auto& bvhNode : bvhComponent)
 		{

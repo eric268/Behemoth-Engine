@@ -13,17 +13,6 @@ namespace Behemoth
 	{
 		auto components = registry.Get<RotationComponent, TransformComponent>();
 
-// 		if (doOnce)
-// 		{
-// 			doOnce = false;
-// 			for (int i = 0; i < 12; i++)
-// 			{
-// 				entityHandles[i] = registry.CreateEntity("Debug Normals" + std::to_string(i));
-// 				registry.AddComponent<DebugLineComponent>(entityHandles[i]);
-// 			}
-// 		}
-// 		counter = 0;
-
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
   			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
@@ -36,7 +25,7 @@ namespace Behemoth
 
 			// Ensure local transform is updated first
 			ApplyRotation(transformComp->localTransform, rotationMatrix);
-			UpdateWorldRotation(registry, entity, transformComp, rotationMatrix);
+			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 
 			transformComp->isDirty = true;
@@ -52,22 +41,6 @@ namespace Behemoth
 			if (MeshComponent*  meshComp = registry.GetComponent<MeshComponent>(entity))
 			{
 				RotateMeshNormals(meshComp, rotationMatrix);
-
-// 				for (int i = 0; i < 6; i++)
-// 				{
-// 					if (auto component = registry.GetComponent<DebugLineComponent>(entityHandles[counter++]))
-// 					{
-// 						BMath::Vector3 origin = GetPrimitivePosition(&meshComp->mesh.meshPrimitives[i]);
-// 						BMath::Vector3 endPos = origin + meshComp->mesh.meshPrimitives[i].normals[0] * 2.0f;
-// 
-// 						auto c = BColors::colors[i];
-// 
-// 						component->lifetime = 100.0f;
-// 						component->startPoint = origin;
-// 						component->endPoint = endPos;
-// 						component->color = c;
-// 					}
-// 				}
 			}
 		}
 	}
@@ -75,32 +48,14 @@ namespace Behemoth
 	void RotationSystem::ApplyRotation(BMath::Matrix4x4f& transform, const BMath::Matrix4x4f& rotationMatrix)
 	{
 		BMath::Matrix4x4f rotatedTransformMatrix = rotationMatrix * transform;
-		for (int col = 0; col < 3; col++)
+		for (int i = 0; i < 3; i++)
 		{
-			for (int row = 0; row < 3; row++)
+			for (int j = 0; j < 3; j++) 
 			{
-				transform.data[col][row] = rotatedTransformMatrix.data[col][row];
+				transform.data[i][j] = rotatedTransformMatrix.data[i][j];
 			}
 		}
 	}
-
-	void RotationSystem::UpdateWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, const BMath::Matrix4x4f& rotationMatrix)
-	{
-		if (transformComp->parentIsDirty)
-		{
-			transformComp->worldTransform = TransformHelper::GetWorldTransform(registry, handle, transformComp->localTransform);
-			transformComp->parentIsDirty = false;
-		}
-		else
-		{
-			ApplyRotation(transformComp->worldTransform, rotationMatrix);
-		}
-
-		transformComp->forwardVector = GetForwardVector(transformComp->worldTransform);
-		transformComp->rightVector = GetRightVector(transformComp->worldTransform);
-		transformComp->upVector = GetUpVector(transformComp->worldTransform);
-	}
-
 
 	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4f& rotationMatrix)
 	{
@@ -120,7 +75,6 @@ namespace Behemoth
 	{
 		BMath::Matrix3x3f extractedLocal = TransformHelper::ExtractRotationMatrix(transformComp->localTransform);
 		BMath::Matrix3x3f extractedWorld = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
-
 
 		BMath::Matrix3x3f inverseLocal = BMath::Matrix3x3<float>::Inverse(extractedLocal);
 		BMath::Matrix3x3f diffInRotation = extractedWorld * inverseLocal;
@@ -145,20 +99,5 @@ namespace Behemoth
 	BMath::Vector3 RotationSystem::GetRightVector(const BMath::Matrix4x4f& transformMatrix)
 	{
 		return BMath::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();
-	}
-
-	BMath::Vector3 RotationSystem::GetPrimitivePosition(Primitive* primitive)
-	{
-		int numVertices = static_cast<PrimitiveType>(primitive->primitiveType);
-		if (numVertices <= 0)
-			return BMath::Vector3{};
-
-		BMath::Vector3 averagePos{};
-
-		for (int i = 0; i < numVertices; i++)
-		{
-			averagePos += BMath::Vector3(primitive->verticies[i]) / static_cast<float>(numVertices);
-		}
-		return averagePos;
 	}
 }

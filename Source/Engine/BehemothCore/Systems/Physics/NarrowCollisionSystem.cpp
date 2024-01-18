@@ -9,59 +9,66 @@ namespace Behemoth
 {
 	void NarrowCollisionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
+		// Dynamic entities are the entities that we are first iterating over to check for collisions
 		for (const auto& [dynamicEntity, dynamicTransform, collisionPairs] : registry.Get<TransformComponent, BroadCollisionPairsComponent>())
 		{
-			auto dynamicColliders = GetColliders(registry, dynamicEntity, AllColliderComponents{});
+			// Generates a tuple with all narrow colliers ** Some maybe nullptr's so always check if valid first **
+			auto dynamicColliders = GetColliders(registry, dynamicEntity, NarrowColliderTypes{});
 
-			for (const auto& hitEntityID : collisionPairs->staticCollisionIDs)
+			// Hit entities are all entities that collided with the dynamic entity during the broad collision check
+			for (const auto& hitEntityHandle : collisionPairs->collisionIDs)
 			{
-				auto hitColliders = GetColliders(registry, hitEntityID, AllColliderComponents{});
+				auto hitColliders = GetColliders(registry, hitEntityHandle, NarrowColliderTypes{});
 
-				TransformComponent* hitTransform = registry.GetComponent<TransformComponent>(hitEntityID);
-
+				TransformComponent* hitTransform = registry.GetComponent<TransformComponent>(hitEntityHandle);
 				if (!hitTransform)
 				{
-					LOGMESSAGE(Error, "Failed to get transform of colliding pair: " + registry.GetName(hitEntityID));
+					LOGMESSAGE(Error, "Failed to get transform of colliding pair: " + registry.GetName(hitEntityHandle));
 					continue;
 				}
 
-				std::apply([&](auto&&... elems1) 
+				// Essentially do a nested loop over each collider in the tuples of both the dynamic and hit entities looking for collision
+				std::apply([&](auto&&... dynamicEntityColliders) 
 				{
-						auto func = [&](auto&& tup) 
+					auto CheckDynamicColliders = [&](auto&& dynamicCollider) 
+					{
+						return ((std::apply([&](auto&&... hitColliders)
 						{
-							return ((std::apply([&](auto&&... elems2)
+							ContactData contactData{};
+							auto CheckHitColliders = [&](auto&& collider1, auto&& collider2)
 							{
-								ContactData contactData{};
-								auto OnCollision = [&](auto&& entitiy, auto&& hitEntity)
+								if (IsCollision(dynamicTransform, hitTransform, collider1, collider2, contactData))
 								{
-									if (GenerateCollisionData(dynamicTransform, hitTransform, entitiy, hitEntity, contactData))
-									{
-										CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(dynamicEntity);
-										if (!collisionDataComp)
-										{
-											collisionDataComp = registry.AddComponent<CollisionDataComponent>(dynamicEntity);
-										}
+									GenerateCollisionData(registry, dynamicEntity, hitEntityHandle, contactData);
+								}
+							}; (..., CheckHitColliders(dynamicCollider, hitColliders));
 
-										if (collisionDataComp)
-										{
-											BMath::Vector3 hitVelocity{};
+						}, hitColliders))); };
 
-											if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitEntityID))
-											{
-												hitVelocity = hitVelocityComponent->velocity;
-											}
-											CollisionData collisionData(contactData, hitEntityID, hitVelocity);
-											collisionDataComp->data.push_back(collisionData);
-										}
-									}
-								}; (..., OnCollision(tup, elems2));
-
-							}, hitColliders))); };
-
-						(..., func(elems1));
+					(..., CheckDynamicColliders(dynamicEntityColliders));
 				}, dynamicColliders);
 
 			}
+		}
+	}
+	void NarrowCollisionSystem::GenerateCollisionData(ECS::Registry& registry, const ECS::EntityHandle& dynamicHandle, const ECS::EntityHandle& hitHandle, const ContactData& contactData)
+	{
+		CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(dynamicHandle);
+		if (!collisionDataComp)
+		{
+			collisionDataComp = registry.AddComponent<CollisionDataComponent>(dynamicHandle);
+		}
+
+		if (collisionDataComp)
+		{
+			BMath::Vector3 hitVelocity{};
+
+			if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitHandle))
+			{
+				hitVelocity = hitVelocityComponent->velocity;
+			}
+			CollisionData collisionData(contactData, hitHandle, hitVelocity);
+			collisionDataComp->data.push_back(collisionData);
 		}
 	}
 }

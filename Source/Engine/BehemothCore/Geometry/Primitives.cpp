@@ -54,7 +54,6 @@ namespace Behemoth
 
 	Primitive::~Primitive()
 	{
-		// std::cout << "Primitive destructor called\n";
 		delete sprite;
 	}
 
@@ -140,7 +139,6 @@ namespace Behemoth
 			LOGMESSAGE(MessageType::Error, "Null primitive attempted to be drawn");
 		}
 		sprite->Draw();
-		
 	}
 
 	void Primitive::SetSpriteVerticies(const int numVerticies, const BMath::Vector4 vert[])
