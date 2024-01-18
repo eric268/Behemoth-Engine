@@ -47,18 +47,15 @@ namespace Behemoth
 
 		ReserveResources(meshData.totalPrimitives);
 
-// 		if (isDirty && cachedMeshName != meshData.modelFileName)
-// 		{
-// 			cachedMeshName = meshData.modelFileName;
-// 			cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
-// 		}
-		std::vector<VertexData> cachedVerticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
+		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
 
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
 			if (vertexIndex >= meshData.triangleVertexCount)
+			{
 				numVerticies = 4;
+			}
 
 			Primitive& primitive = mesh.meshPrimitives[i];
 
@@ -67,14 +64,15 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * BMath::Vector4(cachedVerticies[vertexIndex].vertex, 1.0f);
-					vertexIndex++;
+					primitive.verticies[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].vertex, 1.0f);
 				}
 			}
 			else
 			{
 				vertexIndex += numVerticies;
 			}
+
+			
 
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);

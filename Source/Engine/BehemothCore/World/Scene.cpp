@@ -2,10 +2,37 @@
 #include "Scene.h"
 #include "Components/PhysicsComponents.h"
 #include "Misc/Log.h"
+#include "Event/EventManager.h"
+#include "Event/WindowEvents.h"
+#include "Misc/CameraHelper.h"
 
 
 namespace Behemoth
 {
+	void Scene::OnEvent(Event& e)
+	{
+		Behemoth::EventHandler eventHandler{e};
+
+		bool handled = eventHandler.ProcessEvent<Behemoth::WindowResizeEvent>([&](Behemoth::WindowResizeEvent keyEvent)
+			{
+				ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
+
+				if (cameraEntity.GetIdentifier() != NULL_ENTITY)
+				{
+					Behemoth::CameraComponent* cameraComponent = registry.GetComponent<Behemoth::CameraComponent>(cameraEntity);
+					if (cameraComponent)
+					{
+						cameraComponent->isDirty = true;
+					}
+				}
+			});
+
+		// If event is not handled by parent scene then propagate event to current active scene
+		if (!handled)
+		{
+			ProcessEvent(e);
+		}
+	}
 	void Scene::CreateScene()
 	{
 		Initalize();

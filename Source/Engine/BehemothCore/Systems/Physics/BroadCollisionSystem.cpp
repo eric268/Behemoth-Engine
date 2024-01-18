@@ -32,7 +32,7 @@ namespace Behemoth
 			node currentNode = nodes.top();
 			nodes.pop();
 
-			if (!currentNode)
+			if (!currentNode || handle == currentNode->entityHandle)
 			{
 				continue;
 			}
@@ -40,7 +40,7 @@ namespace Behemoth
 			{
 				if (currentNode->IsLeaf())
 				{
-					nodeHandles.push_back(currentNode->entityHandles);
+					nodeHandles.push_back(currentNode->entityHandle);
 					continue;
 				}
 

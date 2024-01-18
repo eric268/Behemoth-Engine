@@ -11,12 +11,13 @@ namespace Behemoth
 	public:
 		Scene() = default;
 
-		virtual void OnEvent(Event& e) = 0;
+		virtual void ProcessEvent(Event& e) = 0;
 		virtual void Initalize() = 0;
 		virtual void Update(const float deltaTime) = 0;
 		virtual void Shutdown() = 0;
 		virtual ECS::Registry& GetRegistry() = 0;
 
+		void OnEvent(Event& e);
 		void CreateScene();
 		void ConstructBVH();
 		void RecalculateBVH();

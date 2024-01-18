@@ -40,11 +40,6 @@ namespace Behemoth
 
 				for (const auto& [entities, bvhRootComp] : bvhComponent)
 				{
-					if (dynamicEntity == entities)
-					{
-						continue;
-					}
-
 					std::vector<ECS::EntityHandle> nodeHandles;
  					// This is for AABB do a separate one for lines or other collider types
 					if (CheckAABBCollision(dynamicEntity, collider->collider, bvhRootComp->rootNode, nodeHandles))

@@ -11,11 +11,9 @@ namespace Behemoth
 	{
 	public:
 		LightFactory() = default;
-		ECS::EntityHandle CreateDirectionalLight(ECS::Registry& registry, const std::string& name = "Directional Light");
 		ECS::EntityHandle CreatePointLight(ECS::Registry& registry, const std::string& name = "Point Light");
 
 	private:
-
 	};
 }
 

@@ -16,10 +16,10 @@ namespace Behemoth
 
 	struct BVHNode
 	{
-		BVHNode() : entityHandles(NULL_ENTITY) {}
+		BVHNode() : entityHandle(NULL_ENTITY) {}
 		bool IsLeaf() 
 		{ 
-			return entityHandles.ID != NULL_ENTITY; 
+			return entityHandle.ID != NULL_ENTITY; 
 		}
 
 		std::string name;
@@ -27,7 +27,7 @@ namespace Behemoth
 		std::shared_ptr<BVHNode> leftChild;
 		std::shared_ptr<BVHNode> rightChild;
 		// For leaf nodes only
-		ECS::EntityHandle entityHandles;
+		ECS::EntityHandle entityHandle;
 	};
 
 	struct BVHData
@@ -42,7 +42,7 @@ namespace Behemoth
 	class BVHFactory
 	{
 	public:
-		BVHFactory();
+		BVHFactory(bool drawColliders = false);
 		~BVHFactory();
 
 		template <typename ...T>
@@ -70,7 +70,16 @@ namespace Behemoth
 				return nullptr;
 			}
 
-			root = (data.size() > 1) ? GenerateNode(registry, entityHandles, GenerateCollider(data), true, BColors::GetColor(BColors::Red)) : GenerateLeaf(data[0]);
+			// If only one entity exists then we only need a single lead node for the entire tree
+			if (data.size() == 1)
+			{
+				root = GenerateLeaf(data[0]);
+			}
+			else
+			{
+				root = GenerateNode(registry, entityHandles, GenerateCollider(data), BColors::GetColor(BColors::Red));
+			}
+
 			GenerateBVHTree(registry, entityHandles, root, data, 1);
 			return root;
 		}
@@ -97,19 +106,16 @@ namespace Behemoth
 
 
 		AABBCollider GenerateCollider(const std::vector<BVHData>& colliders);
-		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, bool drawCollider = true, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
+		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
 		std::shared_ptr<BVHNode> GenerateLeaf(const BVHData& colliderData);
 
 		void GenerateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth);
 		float CalculateSAH(int position, std::vector<BVHData>& colliders, float traversalCost, float intersectCost);
 		float GetSurfaceArea(const AABBCollider& componenets);
 
-		
 		void DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles);
-
 		std::shared_ptr<BVHNode> root;
-
-		int DEBUG_ColliderID = 0;
+		bool drawDebugColliders;
 	};
 }
 

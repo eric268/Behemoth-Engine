@@ -12,6 +12,18 @@ function CreateProject(projectName)
     -- Create a directory for the new project
     local projectDir = "../Games/" .. projectName
 
+    -- Function to check if a directory does not exist
+    local function directoryExists(directory)
+        -- Returns true if directory does not exist (os.execute returns 0)
+        return os.execute("if exist \"" .. directory .. "\" (exit 1) else (exit 0)")
+    end
+
+    -- Check if the project directory does not exist
+    if not os.execute("if exist \"" .. projectDir .. "\" (exit 1) else (exit 0)") then
+        print("Error - Project with this name already exists.")
+        return false
+    end
+
     -- Create project directory
     os.execute("mkdir \"" .. projectDir .. "\"")
     os.execute("mkdir \"" .. projectDir .. "\\Scenes\"")

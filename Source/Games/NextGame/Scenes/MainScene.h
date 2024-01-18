@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BehemothEngine.h"
-#include "Physics/BVH.h"
 
 class MainScene : public Behemoth::Scene
 {
@@ -9,20 +8,21 @@ public:
 	using Super = Behemoth::Scene;
 
 	MainScene();
-	void OnEvent(Behemoth::Event& e) override;
 	void Initalize() override;
+	void ProcessEvent(Behemoth::Event& e) override;
 	void Update(const float deltaTime) override;
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
-	ECS::EntityHandle mainCameraHandle;
-	ECS::EntityHandle pointLight;
-	ECS::EntityHandle cubes[8];
-	ECS::EntityHandle playerHandle;
-	ECS::EntityHandle DEBUG_audioEntity;
-	ECS::EntityHandle testCube;
-
 private:
-	void InitSystems();
+	ECS::EntityHandle mainCameraHandle;
+	ECS::EntityHandle environmentLighting;
+	ECS::EntityHandle pointLight;
+	ECS::EntityHandle skySphere;
+
+	ECS::EntityHandle exampleParentEntity;
+	ECS::EntityHandle exampleChildEntity1;
+	ECS::EntityHandle exampleChildEntity2;
+
 };
             

@@ -11,7 +11,7 @@
 
 namespace Behemoth
 {
-	BVHFactory::BVHFactory() : root() {}
+	BVHFactory::BVHFactory(bool drawColliders) : root(), drawDebugColliders(drawColliders) {}
 	BVHFactory::~BVHFactory() {}
 
 	void BVHFactory::DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
@@ -73,7 +73,7 @@ namespace Behemoth
 		// Assign children to current node
 		if (leftComponents.size() > 1)
 		{
-			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), true, BColors::GetColor(BColors::Blue));
+			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), BColors::GetColor(BColors::Blue));
 			GenerateBVHTree(registry, entityHandles, node->leftChild, leftComponents, depth + 1);
 		}
 		else if (leftComponents.size())
@@ -83,7 +83,7 @@ namespace Behemoth
 
 		if (rightComponents.size() > 1)
 		{
-			node->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), true, BColors::GetColor(BColors::Green));
+			node->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), BColors::GetColor(BColors::Green));
 			GenerateBVHTree(registry, entityHandles, node->rightChild, rightComponents, depth + 1);
 		}
 		else if (rightComponents.size())
@@ -148,23 +148,22 @@ namespace Behemoth
 		return collider;
 	}
 
-	std::shared_ptr<BVHNode> BVHFactory::GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, bool drawCollider, BMath::Vector3 color)
+	std::shared_ptr<BVHNode> BVHFactory::GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, BMath::Vector3 color)
 	{
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
-		std::string name = "BVH Collider: " + std::to_string(DEBUG_ColliderID++);
-		node->name = name;
 		node->collider = collider;
-		ECS::EntityHandle handle = registry.CreateEntity(name);
-		entityHandles.push_back(handle);
 
-		// Drawing the BVH colliders is just needed for debugging purposes
+// Drawing the BVH colliders is just needed for debugging purposes, do not need to actually create entities in the registry for it to function
 #ifdef DEBUG
-		registry.AddComponent<TransformComponent>(handle);
-		registry.AddComponent<MoveComponent>(handle, collider.worldPosition);
-		registry.AddComponent<AABBColliderComponent>(handle, collider.worldExtents);
-		
-		if (drawCollider)
+		if (drawDebugColliders)
 		{
+			ECS::EntityHandle handle = registry.CreateEntity("BVH Debug Collider");
+			entityHandles.push_back(handle);
+
+			registry.AddComponent<TransformComponent>(handle);
+			registry.AddComponent<MoveComponent>(handle, collider.worldPosition);
+			registry.AddComponent<AABBColliderComponent>(handle, collider.worldExtents);
+	
 			registry.AddComponent<MeshInitalizeComponent>(handle);
 			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.worldExtents,false, true, color);
 		}
@@ -178,7 +177,7 @@ namespace Behemoth
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
 		node->collider = colliderData.collider;
 		node->collider.worldExtents *= colliderData.entityScale;
-		node->entityHandles = colliderData.handle;
+		node->entityHandle = colliderData.handle;
 		node->leftChild = nullptr;
 		node->rightChild = nullptr;
 		return node;

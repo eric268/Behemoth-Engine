@@ -9,7 +9,6 @@ namespace Behemoth
 	void BoundingVolumeRenderSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		auto components = registry.Get<BoundingVolumeComponent, TransformComponent>();
-		auto cameraComponents = registry.Get<CameraComponent, TransformComponent>();
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);

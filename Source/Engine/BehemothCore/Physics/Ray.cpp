@@ -116,7 +116,7 @@ namespace Behemoth
 			bool ignoreEntity = false;
 			for (int i = 0; i < entitiesToIgnore.size(); i++)
 			{
-				if (currentNode->entityHandles.ID == entitiesToIgnore[i].ID)
+				if (currentNode->entityHandle.ID == entitiesToIgnore[i].ID)
 				{
 					ignoreEntity = true;
 					break;
@@ -127,7 +127,7 @@ namespace Behemoth
 			{
 				if (currentNode->IsLeaf())
 				{
-					hitEntity.push_back(currentNode->entityHandles.ID);
+					hitEntity.push_back(currentNode->entityHandle.ID);
 					continue;
 				}
 

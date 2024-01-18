@@ -32,14 +32,22 @@ namespace Behemoth
 			return meshMap[id];
 		}
 
-		LOGMESSAGE(MessageType::Error, "Failed to copy mesh");
+		if (filePath.size())
+		{
+			LOGMESSAGE(MessageType::Error, "Failed to copy mesh");
+		}
+
 		return meshMap[id];
 	}
 
 	bool ResourceManager::LoadMeshData(const std::string& filePath, const std::size_t id)
 	{
-		MeshLoader meshLoader{};
+		if (!filePath.size())
+		{
+			return false;
+		}
 
+		MeshLoader meshLoader{};
 		std::vector<VertexData> meshVerticies;
 		MeshData meshData{};
 		meshData.modelFileName = filePath;

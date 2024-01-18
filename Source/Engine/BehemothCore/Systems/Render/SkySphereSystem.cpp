@@ -7,6 +7,7 @@
 #include "Misc/CameraHelper.h"
 #include "Application/ResourceManager.h"
 #include "Geometry/Mesh.h"
+#include "Renderer/Renderer.h"
 
 namespace Behemoth
 {
@@ -21,11 +22,14 @@ namespace Behemoth
 			{
 				InitalizeSphere(skySphereComp);
 			}
-			FollowCamera(transformComp, cameraTransform->worldPosition);
+			 FollowCamera(transformComp, cameraTransform->worldPosition);
 
 			BMath::Matrix4x4f viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
+
 			ProcessSphere(transformComp, skySphereComp, viewProjMatrix);
 		}
+
+		Renderer::GetInstance().FreeResourceOverflow();
 	}
 
 	void SkySphereSystem::InitalizeSphere(SkySphereComponent* skySphereComponent)
@@ -47,7 +51,7 @@ namespace Behemoth
 		const MeshData& meshData = skySphereComponent->mesh.meshData;
 
 		ReserveResources(meshData.totalPrimitives);
-
+		int primitiveIndex = 0;
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
@@ -63,14 +67,14 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformComp->worldTransform * BMath::Vector4(skySphereComponent->verticies[vertexIndex], 1.0f);
-					vertexIndex++;
+					primitive.verticies[j] = transformComp->worldTransform * BMath::Vector4(skySphereComponent->verticies[vertexIndex++], 1.0f);
 				}
 			}
 			else
 			{
 				vertexIndex += numVerticies;
 			}
+			
 
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
@@ -84,7 +88,9 @@ namespace Behemoth
 
 			// Want to always render this first to be in front of all other primtives
 			primitive.depth = std::numeric_limits<float>::max();
-			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, vertexIndex);
+
+			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, primitiveIndex);
+			primitiveIndex++;
 		}
 	}
 

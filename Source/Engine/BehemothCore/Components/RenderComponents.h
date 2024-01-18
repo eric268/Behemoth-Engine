@@ -89,10 +89,10 @@ namespace Behemoth
 	{
 		SkySphereComponent() : modelFileName(""), textureFileName(""), mesh(), isVisible(false), isInitalized(false) {}
 
-		SkySphereComponent(const std::string& modelName, const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
-			modelFileName(modelName),
+		SkySphereComponent(const std::string& textureName, const BMath::Vector2 uvScale = { 1.0f,1.0f }, bool visible = true) :
+			modelFileName("SkySphere.obj"),
 			textureFileName(textureName),
-			mesh(modelName, textureName, uvScale),
+			mesh("SkySphere.obj", textureName, uvScale),
 			isVisible(visible),
 			isInitalized(false)
 		{}

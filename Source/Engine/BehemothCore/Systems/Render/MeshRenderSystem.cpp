@@ -85,8 +85,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex].vertex, 1.0f);
-					vertexIndex++;
+					primitive.verticies[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].vertex, 1.0f);
 				}
 			}
 			else

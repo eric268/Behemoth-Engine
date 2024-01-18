@@ -4,6 +4,9 @@
     <Filter Include="Application">
       <UniqueIdentifier>{D9DE78AF-4594-F1A4-CE88-EB7B3A3DE8A8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{6B7DD516-5735-1764-C03C-F0BFAC13B254}</UniqueIdentifier>
     </Filter>
@@ -46,6 +49,15 @@
     <Filter Include="Systems\Render">
       <UniqueIdentifier>{EC19CD6C-D8E7-C072-C17B-3199ADE89CD7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Transform">
+      <UniqueIdentifier>{28BECB7B-94D4-C911-DD4B-553349A19A99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\UI">
+      <UniqueIdentifier>{2AD86F8A-1690-B1D7-7F97-8A336B6E4CC8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{83755900-6F01-880B-D8AF-880BC45A880B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{4D25640E-B939-8CBF-82BB-2F1FEE8E88F0}</UniqueIdentifier>
     </Filter>
@@ -57,7 +69,13 @@
     <ClInclude Include="BehemothCore\Application\ThreadPool.h">
       <Filter>Application</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Audio\SoundClip.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\BehemothEngine.h" />
+    <ClInclude Include="BehemothCore\Components\AudioComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Components\Components.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -68,6 +86,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Components\RenderComponents.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Components\UIComponents.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Component.h">
@@ -83,6 +104,9 @@
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Generator.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\ECS\Page.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Registry.h">
@@ -205,6 +229,9 @@
     <ClInclude Include="BehemothCore\Renderer\Renderer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\AudioSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Systems\CameraSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -212,9 +239,6 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\MeshInitSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Transform\MovementSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Physics\BroadCollisionSystem.h">
@@ -229,6 +253,9 @@
     <ClInclude Include="BehemothCore\Systems\Physics\RigidBodySystem.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Physics\VelocitySystem.h">
+      <Filter>Systems\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.h">
       <Filter>Systems\Render</Filter>
     </ClInclude>
@@ -241,20 +268,41 @@
     <ClInclude Include="BehemothCore\Systems\Render\RenderSystem.h">
       <Filter>Systems\Render</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Render\SkySphereSystem.h">
+      <Filter>Systems\Render</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Systems\Render\WireframeRenderSystem.h">
       <Filter>Systems\Render</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Transform\RotationSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Transform\ScalingSystem.h">
+    <ClInclude Include="BehemothCore\Systems\SystemHeaders.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Systems\SystemManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Physics\VelocitySystem.h">
+    <ClInclude Include="BehemothCore\Systems\TimerSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Transform\MovementSystem.h">
+      <Filter>Systems\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Transform\RotationSystem.h">
+      <Filter>Systems\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Transform\ScalingSystem.h">
+      <Filter>Systems\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\UI\ImageSystem.h">
+      <Filter>Systems\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\UI\TextSystem.h">
+      <Filter>Systems\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\UI\Image.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\UI\Text.h">
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\World\Scene.h">
       <Filter>World</Filter>
@@ -263,21 +311,6 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
-    <ClInclude Include="BehemothCore\ECS\Page.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Physics\CollisionTypedefs.h" />
-    <ClInclude Include="BehemothCore\Systems\Render\SkySphereSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\TimerSystem.h" />
-    <ClInclude Include="BehemothCore\Components\AudioComponents.h" />
-    <ClInclude Include="BehemothCore\Systems\AudioSystem.h" />
-    <ClInclude Include="BehemothCore\Audio\SoundClip.h" />
-    <ClInclude Include="BehemothCore\Components\UIComponents.h" />
-    <ClInclude Include="BehemothCore\UI\Image.h" />
-    <ClInclude Include="BehemothCore\UI\Text.h" />
-    <ClInclude Include="BehemothCore\Systems\UI\TextSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\UI\ImageSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\SystemHeaders.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -288,6 +321,9 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Application\ThreadPool.cpp">
       <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Audio\SoundClip.cpp">
+      <Filter>Audio</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Event\EventManager.cpp">
       <Filter>Event</Filter>
@@ -349,6 +385,9 @@
     <ClCompile Include="BehemothCore\Renderer\Renderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\AudioSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Systems\CameraSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -356,9 +395,6 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\MeshInitSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Transform\MovementSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Physics\BroadCollisionSystem.cpp">
@@ -373,6 +409,9 @@
     <ClCompile Include="BehemothCore\Systems\Physics\RigidBodySystem.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Physics\VelocitySystem.cpp">
+      <Filter>Systems\Physics</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Render\BoundingVolumeRenderSystem.cpp">
       <Filter>Systems\Render</Filter>
     </ClCompile>
@@ -385,17 +424,35 @@
     <ClCompile Include="BehemothCore\Systems\Render\RenderSystem.cpp">
       <Filter>Systems\Render</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Render\SkySphereSystem.cpp">
+      <Filter>Systems\Render</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Render\WireframeRenderSystem.cpp">
       <Filter>Systems\Render</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Transform\RotationSystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\TimerSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Transform\MovementSystem.cpp">
+      <Filter>Systems\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Transform\RotationSystem.cpp">
+      <Filter>Systems\Transform</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Systems\Transform\ScalingSystem.cpp">
-      <Filter>Systems</Filter>
+      <Filter>Systems\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Physics\VelocitySystem.cpp">
-      <Filter>Systems</Filter>
+    <ClCompile Include="BehemothCore\Systems\UI\ImageSystem.cpp">
+      <Filter>Systems\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\UI\TextSystem.cpp">
+      <Filter>Systems\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\UI\Image.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\UI\Text.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\World\Scene.cpp">
       <Filter>World</Filter>
@@ -404,13 +461,5 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Render\SkySphereSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\TimerSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\AudioSystem.cpp" />
-    <ClCompile Include="BehemothCore\Audio\SoundClip.cpp" />
-    <ClCompile Include="BehemothCore\UI\Image.cpp" />
-    <ClCompile Include="BehemothCore\UI\Text.cpp" />
-    <ClCompile Include="BehemothCore\Systems\UI\TextSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\UI\ImageSystem.cpp" />
   </ItemGroup>
 </Project>
