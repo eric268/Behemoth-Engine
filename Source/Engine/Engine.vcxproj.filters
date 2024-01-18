@@ -253,7 +253,7 @@
     <ClInclude Include="BehemothCore\Systems\SystemManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Transform\VelocitySystem.h">
+    <ClInclude Include="BehemothCore\Systems\Physics\VelocitySystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\World\Scene.h">
@@ -394,7 +394,7 @@
     <ClCompile Include="BehemothCore\Systems\Transform\ScalingSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Transform\VelocitySystem.cpp">
+    <ClCompile Include="BehemothCore\Systems\Physics\VelocitySystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\World\Scene.cpp">

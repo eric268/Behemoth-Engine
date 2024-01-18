@@ -17,7 +17,7 @@
 #include "Systems/Transform/MovementSystem.h"
 #include "Systems/MeshInitSystem.h"
 #include "Systems/LightingSystem.h"
-#include "Systems/Transform/VelocitySystem.h"
+#include "Systems/Physics/VelocitySystem.h"
 
 #include "Systems/Physics/BroadCollisionSystem.h"
 #include "Systems/Physics/NarrowCollisionSystem.h"

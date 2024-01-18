@@ -40,15 +40,15 @@ namespace Behemoth
 	};
 
 	// Need to find a way to polymorphically 
-	class EventDispatcher
+	class EventHandler
 	{
 	public:
-		EventDispatcher(Event& e) : e(e) {}
+		EventHandler(Event& e) : e(e) {}
 
 		template <typename T, typename Func>
-		bool Dispatch(Func func)
+		bool ProcessEvent(Func func)
 		{
-			if (e.GetEventType() == T::GetStaticEventType())
+			if (typeid(e).name() == typeid(T).name())
 			{
 				func(static_cast<T&>(e));
 				return true;

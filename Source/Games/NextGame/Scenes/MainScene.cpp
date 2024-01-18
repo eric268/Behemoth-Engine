@@ -104,11 +104,11 @@ void MainScene::Initalize()
 
 void MainScene::OnEvent(Behemoth::Event& e)
 {
-	Behemoth::EventDispatcher dispatcher{e};
+	Behemoth::EventHandler eventHandler{e};
 
 	//  Maybe move this to world because in essentially any scene I would want this
 
-	 dispatcher.Dispatch<Behemoth::WindowResizeEvent>([&](Behemoth::WindowResizeEvent keyEvent)
+	 eventHandler.ProcessEvent<Behemoth::WindowResizeEvent>([&](Behemoth::WindowResizeEvent keyEvent)
 	 {
 			 ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
 

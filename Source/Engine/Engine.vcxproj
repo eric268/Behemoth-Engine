@@ -229,7 +229,7 @@
     <ClInclude Include="BehemothCore\Systems\SystemManager.h" />
     <ClInclude Include="BehemothCore\Systems\UI\ImageSystem.h" />
     <ClInclude Include="BehemothCore\Systems\UI\TextSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\Transform\VelocitySystem.h" />
+    <ClInclude Include="BehemothCore\Systems\Physics\VelocitySystem.h" />
     <ClInclude Include="BehemothCore\UI\Image.h" />
     <ClInclude Include="BehemothCore\UI\Text.h" />
     <ClInclude Include="BehemothCore\World\Scene.h" />
@@ -281,7 +281,7 @@
     <ClCompile Include="BehemothCore\Systems\Transform\ScalingSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\UI\ImageSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\UI\TextSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Transform\VelocitySystem.cpp" />
+    <ClCompile Include="BehemothCore\Systems\Physics\VelocitySystem.cpp" />
     <ClCompile Include="BehemothCore\UI\Image.cpp" />
     <ClCompile Include="BehemothCore\UI\Text.cpp" />
     <ClCompile Include="BehemothCore\World\Scene.cpp" />

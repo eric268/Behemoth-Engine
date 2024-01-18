@@ -45,13 +45,13 @@ namespace Behemoth
 
 	bool Input::OnEvent(Event& event)
 	{
-		EventDispatcher eventDispatcher{ event };
+		EventHandler eventDispatcher{ event };
 
- 		if (eventDispatcher.Dispatch<KeyDownEvent>(&Input::OnKeyDown)			|| 
- 			eventDispatcher.Dispatch<KeyReleasedEvent>(&Input::OnKeyReleased)  ||
- 			eventDispatcher.Dispatch<MouseDownEvent>(&Input::OnMouseDown)		||
- 			eventDispatcher.Dispatch<MouseUpEvent>(&Input::OnMouseUp)			||
- 			eventDispatcher.Dispatch<MouseMoveEvent>(&Input::OnMouseMove))
+ 		if (eventDispatcher.ProcessEvent<KeyDownEvent>(&Input::OnKeyDown)			|| 
+ 			eventDispatcher.ProcessEvent<KeyReleasedEvent>(&Input::OnKeyReleased)  ||
+ 			eventDispatcher.ProcessEvent<MouseDownEvent>(&Input::OnMouseDown)		||
+ 			eventDispatcher.ProcessEvent<MouseUpEvent>(&Input::OnMouseUp)			||
+ 			eventDispatcher.ProcessEvent<MouseMoveEvent>(&Input::OnMouseMove))
 			return true;
 
 		return false;
