@@ -14,6 +14,7 @@ namespace Behemoth
 		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<VelocityComponent>(entity);
 		registry.AddComponent<RotationComponent>(entity);
+		registry.AddComponent<ScalingComponent>(entity, BMath::Vector3(1.0f));
 
 		return entity;
 	}

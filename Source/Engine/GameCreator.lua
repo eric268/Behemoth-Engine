@@ -11,117 +11,59 @@ end
 function CreateProject(projectName)
     -- Create a directory for the new project
     local projectDir = "../Games/" .. projectName
+    local sandboxDir = "../Games/Sandbox/"
 
-    -- Function to check if a directory does not exist
+    -- Function to check if a directory exists
     local function directoryExists(directory)
-        -- Returns true if directory does not exist (os.execute returns 0)
-        return os.execute("if exist \"" .. directory .. "\" (exit 1) else (exit 0)")
+        return os.execute("if exist \"" .. directory .. "\" (exit 0) else (exit 1)")
     end
 
-    -- Check if the project directory does not exist
-    if not os.execute("if exist \"" .. projectDir .. "\" (exit 1) else (exit 0)") then
+    -- Check if the project directory exists
+    if directoryExists(projectDir) then
         print("Error - Project with this name already exists.")
         return false
     end
 
     -- Create project directory
     os.execute("mkdir \"" .. projectDir .. "\"")
-    os.execute("mkdir \"" .. projectDir .. "\\Scenes\"")
-    os.execute("mkdir \"" .. projectDir .. "\\Application\"")
 
-        -- Create MainScene.h
-        local mainSceneHeader = [[
-#pragma once
-            
-#include "World/Scene.h"
-            
-class MainScene : public Behemoth::Scene
-    {
-    public:
-        void Init() override;
-        void Update(const float deltaTime) override;
-        void Shutdown() override;
-            
-    private:
-            
-    };
-            ]]
-            createFile(projectDir .. "\\Scenes\\MainScene.h", mainSceneHeader)
-            
-                -- Create MainScene.cpp
-            local mainSceneSource = [[
-#include "MainScene.h"
-#include "Factories/CameraFactory.h"
-#include "Factories/LightFactories.h"
-#include "Components/Components.h"
-            
-void MainScene::Init()
-    {
-        Behemoth::CameraFactory cameraFactory{};
-        cameraFactory.CreateCamera(registry, true, "Main Camera");
-            
-        Behemoth::DirectionalLightFactory dirLightFactory{};
-        dirLightFactory.CreateDirectionalLight(registry);
-            
-        Behemoth::PointLightFactory pointLightFactory{};
-        pointLightFactory.CreatePointLight(registry, "Point Light 1");
-             
-        for (int i = -1; i < 2; i++)
-        {
-            ECS::Entity e1 = registry.CreateEntity("Cube 1");
-            registry.AddComponent<Behemoth::MeshComponent>(e1, "monkey.obj", "diamond.png");
-            registry.AddComponent<Behemoth::TransformComponent>(e1);
-            registry.AddComponent<Behemoth::MeshInitalizeComponent>(e1);
-            registry.AddComponent<Behemoth::RotationComponent>(e1, i + 1, 1.0f);
-            registry.AddComponent<Behemoth::MovementComponent>(e1, Math::Vector3(-3.0f * i, 0.0f, -5.0f));
-            registry.AddComponent<Behemoth::ScalingComponent>(e1, Math::Vector3(1.0f, 1.0f, 1.0f));
-            registry.AddComponent<Behemoth::BoundingVolumeComponent>(e1, 1.5f, false);
-        }
-    }
-            
-    void MainScene::Update(const float deltaTime)
-    {
-            
-            
-    }
-            
-    void MainScene::Shutdown()
-    {
-            
-    }
-            ]]
-            createFile(projectDir .. "\\Scenes\\MainScene.cpp", mainSceneSource)
-            
-                -- Create game.cpp
-            local gameSource = [[
-#include <iostream>
-#include "World/World.h"
-#include "Scenes/MainScene.h"
-            
-    void CreateApplication()
-    {
-        Behemoth::Scene* mainScene = new MainScene();
-        Behemoth::World::GetInstance().ChangeScene(mainScene);
-    }
-            ]]
-                createFile(projectDir .. "\\Application\\game.cpp", gameSource)
-    
-    local pchHeader = [[
-#pragma once
-    ]]
-    createFile(projectDir .. "\\pch.h", pchHeader)
+    local function copyDirectory(source, destination)
+        local command = "xcopy /E /I /Y \"" .. source .. "\" \"" .. destination .. "\""
+        local result = os.execute(command)
+        if result ~= true then
+            print("Failed to copy directory from " .. source .. " to " .. destination)
+        end
+    end
 
-    local pchSource = [[
-#include "pch.h"
-    ]]
-    createFile(projectDir .. "\\pch.cpp", pchSource)
-    
+    -- CreateFile(projectDir, "pch.h", "#pragma once \n")
+    -- CreateFile(projectDir, "pch.cpp", "#include \"pch.h\" \n")
+
+    local function copyFile(sourceFile, destinationFile)
+        os.execute("copy /Y \"" .. sourceFile .. "\" \"" .. destinationFile .. "\"")
+    end
+
+    copyFile(sandboxDir .. "\\pch.h", projectDir .. "\\pch.h")
+    copyFile(sandboxDir .. "\\pch.cpp", projectDir .. "\\pch.cpp")
+
+    copyDirectory(sandboxDir .. "\\Scenes\\", projectDir .. "\\Scenes")
+    copyDirectory(sandboxDir .. "\\Application\\", projectDir .. "\\Application")
+
     CreatePremakeConfig(projectName)
+
+    -- End of CreateProject function
 end
 
+function CreateFile(destination, filename, contents)
+    local file = io.open(destination .. "\\" .. filename, "w")
+    if file then
+        file:write(contents)
+        file:close()
+    else
+        print("Failed to create " .. filename .. " in " .. destination)
+    end
+end
 
 function CreatePremakeConfig(projectName)
-
     local premakeConfig = [[
 project "]] .. projectName .. [["
     kind "StaticLib"

@@ -1,6 +1,6 @@
 workspace "BehemothEngine"
 
-     if not _OPTIONS["prj"] then
+     if not _OPTIONS["prj"] and not _OPTIONS["new"] then
           _OPTIONS["prj"] = "NextGame"
      end
    -- os.execute("rmdir /s /q .vs")
@@ -37,8 +37,6 @@ workspace "BehemothEngine"
     group "Vendor"
 
         include "Source/NextAPI"
-
-
 
      if _OPTIONS["prj"] then
      group "Game"

@@ -145,6 +145,9 @@
     <ClInclude Include="BehemothCore\Factories\LightFactories.h">
       <Filter>Factories</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Factories\SkySphereFactory.h">
+      <Filter>Factories</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Geometry\Line.h">
       <Filter>Geometry</Filter>
     </ClInclude>
@@ -311,7 +314,6 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
-    <ClInclude Include="BehemothCore\Factories\SkySphereFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -336,6 +338,9 @@
       <Filter>Factories</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Factories\LightFactories.cpp">
+      <Filter>Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Factories\SkySphereFactory.cpp">
       <Filter>Factories</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Geometry\Mesh.cpp">
@@ -462,6 +467,5 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
-    <ClCompile Include="BehemothCore\Factories\SkySphereFactory.cpp" />
   </ItemGroup>
 </Project>

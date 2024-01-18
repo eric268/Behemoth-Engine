@@ -72,6 +72,11 @@ void MainScene::Update(const float deltaTime)
 	{
 		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(1.5f), BMath::Vector3(0, 1, 0));
 	}
+
+	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::KC_Space))
+	{
+		registry.AddComponent<Behemoth::ScalingComponent>(exampleParentEntity, BMath::Vector3(0.25f));
+	}
 }
 
 void MainScene::Shutdown()

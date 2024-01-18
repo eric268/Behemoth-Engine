@@ -249,8 +249,8 @@ namespace Behemoth
 		for (int i = 0; i < 3; i++)
 		{
 			scale[i] = sqrt(transformMatrix.data[i][0] * transformMatrix.data[i][0] +
-				transformMatrix.data[i][1] * transformMatrix.data[i][1] +
-				transformMatrix.data[i][2] * transformMatrix.data[i][2]);
+								transformMatrix.data[i][1] * transformMatrix.data[i][1] +
+								transformMatrix.data[i][2] * transformMatrix.data[i][2]);
 		}
 		return scale;
 	}

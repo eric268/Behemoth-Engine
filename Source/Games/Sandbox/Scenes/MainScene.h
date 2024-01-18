@@ -1,18 +1,27 @@
 #pragma once
 
-#include "World/Scene.h"
-#include "ECS/Entity.h"
+#include "BehemothEngine.h"
 
 class MainScene : public Behemoth::Scene
 {
 public:
-	MainScene();
+	using Super = Behemoth::Scene;
 
-	void Init() override;
+	MainScene();
+	void Initalize() override;
+	void ProcessEvent(Behemoth::Event& e) override;
 	void Update(const float deltaTime) override;
 	void Shutdown() override;
+	ECS::Registry& GetRegistry() override { return registry; }
 
-	ECS::Entity pointLight;
 private:
-};
+	ECS::EntityHandle mainCameraHandle;
+	ECS::EntityHandle environmentLighting;
+	ECS::EntityHandle pointLight;
+	ECS::EntityHandle skySphere;
 
+	ECS::EntityHandle exampleParentEntity;
+	ECS::EntityHandle exampleChildEntity1;
+	ECS::EntityHandle exampleChildEntity2;
+
+};

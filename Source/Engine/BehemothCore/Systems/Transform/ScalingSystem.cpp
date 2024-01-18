@@ -54,18 +54,29 @@ namespace Behemoth
 	{
 		if (transformComp->parentIsDirty)
 		{
-			transformComp->worldTransform = TransformHelper::GetWorldTransform(registry, handle, transformComp->localTransform);
+			transformComp->worldScale = TransformHelper::GetParentScale(registry, handle) * transformComp->localScale;
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					transformComp->worldTransform.data[i][j] /= transformComp->worldScale[i];
+				}
+			}
+			// Apply new scale
+			for (int i = 0; i < 3; i++)
+			{
+				transformComp->worldTransform.data[i][i] = transformComp->worldScale[i];
+			}
+
 			transformComp->parentIsDirty = false;
-			transformComp->worldScale = TransformHelper::ExtractScale(transformComp->worldTransform);
 
 		}
 		else
 		{
-			for (int i = 0; i < 3; i++)
-			{
-				transformComp->worldTransform.data[i][i] = (transformComp->worldTransform.data[i][i] / oldScale[i]) * newScale[i];
-				transformComp->worldScale[i] = transformComp->worldTransform.data[i][i];
-			}
+
+			transformComp->worldTransform = transformComp->localTransform;
+			transformComp->worldScale = transformComp->localScale;
 		}
 	}
 }
