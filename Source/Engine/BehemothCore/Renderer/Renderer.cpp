@@ -65,7 +65,6 @@ namespace Behemoth
 	void Renderer::ClearResources()
 	{
 		primitivesToDraw.clear();
-
 		linesToDraw.clear();
 	}
 }

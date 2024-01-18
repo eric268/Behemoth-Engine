@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Misc/Log.h"
 #include "Systems/SystemHeaders.h"
+#include "Renderer/Renderer.h"
 
 namespace Behemoth
 {
@@ -19,6 +20,10 @@ namespace Behemoth
 			currentScene->Shutdown();
 			delete currentScene;
 		}
+
+
+		Renderer::GetInstance().ClearResources();
+
 
 		currentScene = newScene;
 

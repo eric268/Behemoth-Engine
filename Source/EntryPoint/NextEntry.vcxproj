@@ -90,7 +90,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Debug\windows\Engine;..\..\Build\bin\Debug\windows\NextAPI;..\..\Build\bin\Debug\windows\NewProject;Build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Debug\windows\Engine;..\..\Build\bin\Debug\windows\NextAPI;..\..\Build\bin\Debug\windows\NextGame;Build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll"\ (xcopy /Q /E /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Debug\windows\$(ProjectName)\" &gt; nul) ELSE (xcopy /Q /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Debug\windows\$(ProjectName)\" &gt; nul)</Command>
@@ -118,7 +118,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Release\windows\Engine;..\..\Build\bin\Release\windows\NextAPI;..\..\Build\bin\Release\windows\NewProject;Build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Release\windows\Engine;..\..\Build\bin\Release\windows\NextAPI;..\..\Build\bin\Release\windows\NextGame;Build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll"\ (xcopy /Q /E /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Release\windows\$(ProjectName)\" &gt; nul) ELSE (xcopy /Q /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Release\windows\$(ProjectName)\" &gt; nul)</Command>
@@ -146,7 +146,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Dist\windows\Engine;..\..\Build\bin\Dist\windows\NextAPI;..\..\Build\bin\Dist\windows\NewProject;Build\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\NextAPI\glut\lib\x64;..\..\Build\bin\Dist\windows\Engine;..\..\Build\bin\Dist\windows\NextAPI;..\..\Build\bin\Dist\windows\NextGame;Build\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll"\ (xcopy /Q /E /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Dist\windows\$(ProjectName)\" &gt; nul) ELSE (xcopy /Q /Y /I "$(SolutionDir)\Source\NextAPI\glut\bin\x64\*.dll" "$(SolutionDir)\Build\bin\Dist\windows\$(ProjectName)\" &gt; nul)</Command>
@@ -162,8 +162,8 @@
     <ProjectReference Include="..\NextAPI\NextAPI.vcxproj">
       <Project>{3E5F536C-AA3E-D207-B356-5DDE1FB53869}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Games\NewProject\NewProject.vcxproj">
-      <Project>{4630CC58-32E8-0DA6-9BEF-E60187C6A896}</Project>
+    <ProjectReference Include="..\Games\NextGame\NextGame.vcxproj">
+      <Project>{9EDEC2F6-8AAB-1D02-B3C4-0BAA9FF05290}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

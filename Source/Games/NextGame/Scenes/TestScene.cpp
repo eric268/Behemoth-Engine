@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "TestScene.h"
 #include "MainScene.h"
 
 #include "Components/Components.h"
@@ -17,9 +18,7 @@
 
 #include "Factories/SkySphereFactory.h"
 
-#include "TestScene.h"
-
-MainScene::MainScene()
+TestScene::TestScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
@@ -30,59 +29,59 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "brick.png", { 8.0, 8.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "rock.png", { 8.0, 8.0 });
 
-  	Behemoth::GameObjectFactory gameObjectFactory{};
-	exampleParentEntity = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
+	Behemoth::GameObjectFactory gameObjectFactory{};
+	exampleParentEntity = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "Example Parent");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleParentEntity);
 	registry.AddComponent<Behemoth::ScalingComponent>(exampleParentEntity, BMath::Vector3(0.5f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleParentEntity, false);
 
-	exampleChildEntity1 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "cube.obj", "brick.png", "Child 1");
+	exampleChildEntity1 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "monkey.obj", "brick.png", "Child 1");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleChildEntity1, BMath::Vector3(-2.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleChildEntity1);
 	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity1, false);
 
-	exampleChildEntity2 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "sphere.obj", "brick.png", "Child 2");
+	exampleChildEntity2 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "monkey.obj", "brick.png", "Child 2");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleChildEntity2, BMath::Vector3(2.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleChildEntity2);
 	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity2, false);
 
 	Behemoth::LightFactory lightFactory{};
 	pointLight = lightFactory.CreatePointLight(registry);
-	registry.AddComponent<Behemoth::MoveComponent>(pointLight, BMath::Vector3(0.0f,0.0f,-2.0f));
+	registry.AddComponent<Behemoth::MoveComponent>(pointLight, BMath::Vector3(0.0f, 0.0f, -2.0f));
 
 	LOGMESSAGE(General, "Main Scene constructed\n");
- }
+}
 
-void MainScene::Initalize()
+void TestScene::Initalize()
 {
 	// Function called after scene constructor 
 	// Can be used for additional initialization steps that are required post construction
 }
 
-void MainScene::ProcessEvent(Behemoth::Event& e)
+void TestScene::ProcessEvent(Behemoth::Event& e)
 {
 	// Processes general engine events such as window close, resize etc.
 	// Does not process window events, use static Input library to check mouse/keyboard/controller events
 }
 
-void MainScene::Update(const float deltaTime)
+void TestScene::Update(const float deltaTime)
 {
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(exampleParentEntity))
 	{
-		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(1.5f), BMath::Vector3(0, 1, 0));
+		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(1.5f), BMath::Vector3(0, 0, 1));
 	}
 
 	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::KC_Space))
 	{
-		Behemoth::Scene* testScene = new TestScene();
-		Behemoth::World::GetInstance().ChangeScene(testScene);
+		Behemoth::Scene* mainScene = new MainScene();
+		Behemoth::World::GetInstance().ChangeScene(mainScene);
 	}
 }
 
-void MainScene::Shutdown()
+void TestScene::Shutdown()
 {
 
 }

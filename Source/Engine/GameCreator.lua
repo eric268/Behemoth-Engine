@@ -35,9 +35,6 @@ function CreateProject(projectName)
         end
     end
 
-    -- CreateFile(projectDir, "pch.h", "#pragma once \n")
-    -- CreateFile(projectDir, "pch.cpp", "#include \"pch.h\" \n")
-
     local function copyFile(sourceFile, destinationFile)
         os.execute("copy /Y \"" .. sourceFile .. "\" \"" .. destinationFile .. "\"")
     end
