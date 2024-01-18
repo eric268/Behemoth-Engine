@@ -62,6 +62,7 @@ namespace Behemoth
 		// Maybe make a separate container for them to ensure they are last
 		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
 
+
 #ifdef DEBUG
 		// These are systems for rendering various debug tools
 		Behemoth::SystemManager::GetInstance().AddSystem<WireframeRenderSystem>();
@@ -69,7 +70,6 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<BoundingVolumeRenderSystem>();
 #endif
 
-		// Ensure sky sphere is always called before mesh renderer
 		Behemoth::SystemManager::GetInstance().AddSystem<SkySphereSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshRenderSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();

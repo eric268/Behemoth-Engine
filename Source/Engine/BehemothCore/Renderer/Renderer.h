@@ -35,13 +35,13 @@ namespace Behemoth
 		void AddLine(const Line& line);
 		void FreeResourceOverflow();
 		void ClearResources();
+		inline std::uint32_t GetCurrentPrimitiveCount() { return primitivesToDraw.size(); }
 
 		std::mutex primitiveMutex;
 		std::mutex lineMutex;
 
 	private:
 		Renderer();
-
 		void SortPrimitivesByDepth();
 	};
 }

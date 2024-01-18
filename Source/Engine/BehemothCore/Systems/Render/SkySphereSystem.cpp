@@ -16,6 +16,8 @@ namespace Behemoth
 		CameraComponent* cameraComp = CameraHelper::GetMainCamera(registry);
 		TransformComponent* cameraTransform = CameraHelper::GetMainCameraTransform(registry);
 
+		std::uint32_t renderSlotIndex = Renderer::GetInstance().GetCurrentPrimitiveCount();
+
 		for (const auto& [entity, transformComp, skySphereComp] : registry.Get<TransformComponent, SkySphereComponent>())
 		{
 			if (!skySphereComp->isInitalized)
@@ -26,7 +28,8 @@ namespace Behemoth
 
 			BMath::Matrix4x4f viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
 
-			ProcessSphere(transformComp, skySphereComp, viewProjMatrix);
+			ProcessSphere(transformComp, skySphereComp, viewProjMatrix, renderSlotIndex);
+			renderSlotIndex += skySphereComp->mesh.meshPrimitives.size();
 		}
 
 		Renderer::GetInstance().FreeResourceOverflow();
@@ -46,7 +49,7 @@ namespace Behemoth
 
 		skySphereComponent->isInitalized = true;
 	}
-	void SkySphereSystem::ProcessSphere(TransformComponent* transformComp, SkySphereComponent* skySphereComponent, const BMath::Matrix4x4f& viewProjMatrix)
+	void SkySphereSystem::ProcessSphere(TransformComponent* transformComp, SkySphereComponent* skySphereComponent, const BMath::Matrix4x4f& viewProjMatrix, int renderSlotIndex)
 	{
 		const MeshData& meshData = skySphereComponent->mesh.meshData;
 

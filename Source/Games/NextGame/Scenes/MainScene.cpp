@@ -15,6 +15,8 @@
 #include "GameComponents/CameraControllerComponent.h"
 #include "Components/UIComponents.h"
 
+#include "Factories/SkySphereFactory.h"
+
 MainScene::MainScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
@@ -26,34 +28,24 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 
-	skySphere = registry.CreateEntity("Sky Sphere");
-	registry.AddComponent<Behemoth::TransformComponent>(skySphere);
-	registry.AddComponent<Behemoth::SkySphereComponent>(skySphere, "brick.png", BMath::Vector2(8.0f, 8.0f), true);
-	registry.AddComponent<Behemoth::ScalingComponent>(skySphere, BMath::Vector3(900.0f));
-  	registry.AddComponent<Behemoth::RotationComponent>(skySphere, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0,0,1)));
-  
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "brick.png", { 8.0, 8.0 });
+
   	Behemoth::GameObjectFactory gameObjectFactory{};
 	exampleParentEntity = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleParentEntity);
 	registry.AddComponent<Behemoth::ScalingComponent>(exampleParentEntity, BMath::Vector3(0.5f));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleParentEntity, false);
-	registry.AddComponent<Behemoth::WireframeComponent>(exampleParentEntity, "cube.obj");
 
 	exampleChildEntity1 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "cube.obj", "brick.png", "Child 1");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleChildEntity1, BMath::Vector3(-2.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleChildEntity1);
-	registry.AddComponent<Behemoth::ScalingComponent>(exampleChildEntity1, BMath::Vector3(1.0, 1.0, 1.0));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity1, false);
-	registry.AddComponent<Behemoth::WireframeComponent>(exampleChildEntity1, "cube.obj");
-	registry.AddComponent<Behemoth::StaticComponent>(exampleChildEntity1);
 
 	exampleChildEntity2 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "sphere.obj", "brick.png", "Child 2");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleChildEntity2, BMath::Vector3(2.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleChildEntity2);
-	registry.AddComponent<Behemoth::ScalingComponent>(exampleChildEntity2, BMath::Vector3(1.0, 1.0, 1.0));
 	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity2, false);
-	registry.AddComponent<Behemoth::WireframeComponent>(exampleChildEntity2, "cube.obj");
 
 	Behemoth::LightFactory lightFactory{};
 	pointLight = lightFactory.CreatePointLight(registry);

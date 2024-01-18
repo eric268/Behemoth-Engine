@@ -178,6 +178,7 @@
     <ClInclude Include="BehemothCore\Factories\CameraFactory.h" />
     <ClInclude Include="BehemothCore\Factories\GameObjectFactory.h" />
     <ClInclude Include="BehemothCore\Factories\LightFactories.h" />
+    <ClInclude Include="BehemothCore\Factories\SkySphereFactory.h" />
     <ClInclude Include="BehemothCore\Geometry\Line.h" />
     <ClInclude Include="BehemothCore\Geometry\Mesh.h" />
     <ClInclude Include="BehemothCore\Geometry\MeshLoader.h" />
@@ -244,6 +245,7 @@
     <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp" />
     <ClCompile Include="BehemothCore\Factories\GameObjectFactory.cpp" />
     <ClCompile Include="BehemothCore\Factories\LightFactories.cpp" />
+    <ClCompile Include="BehemothCore\Factories\SkySphereFactory.cpp" />
     <ClCompile Include="BehemothCore\Geometry\Mesh.cpp" />
     <ClCompile Include="BehemothCore\Geometry\MeshLoader.cpp" />
     <ClCompile Include="BehemothCore\Geometry\Plane.cpp" />

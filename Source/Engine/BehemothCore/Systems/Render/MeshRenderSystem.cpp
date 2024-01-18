@@ -25,18 +25,18 @@ namespace Behemoth
 				return std::get<1>(tuple1)->mesh.meshPrimitives.size() < std::get<1>(tuple2)->mesh.meshPrimitives.size();
 			});
 
-		std::uint32_t renderSlotIndex = 0;
-		std::uint32_t totalPrimitives = 0;
+		std::uint32_t renderSlotIndex = Renderer::GetInstance().GetCurrentPrimitiveCount();
+		std::uint32_t primitivesToDraw = 0;
 
 		// ** Order of multiplication matters here **
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
 		for (const auto& [entity, meshComp, transformComp] : components)
 		{
-			totalPrimitives += meshComp->mesh.meshPrimitives.size();
+			primitivesToDraw += meshComp->mesh.meshPrimitives.size();
 		}
 
-		ReserveResources(totalPrimitives);
+		ReserveResources(primitivesToDraw);
 
 		for (const auto& [entity, meshComp, transformComp] : components)
 		{

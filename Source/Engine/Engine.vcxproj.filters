@@ -311,6 +311,7 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
+    <ClInclude Include="BehemothCore\Factories\SkySphereFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Application\GameLoop.cpp">
@@ -461,5 +462,6 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
+    <ClCompile Include="BehemothCore\Factories\SkySphereFactory.cpp" />
   </ItemGroup>
 </Project>
