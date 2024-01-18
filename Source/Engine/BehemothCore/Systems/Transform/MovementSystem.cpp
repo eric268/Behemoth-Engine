@@ -10,7 +10,6 @@ namespace Behemoth
 {
 	void MovementSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-
 		auto components = registry.Get<TransformComponent, MoveComponent>();
 
 		// Need to sort the move components in order before applying move. Parent entities must be moved before their children.
@@ -42,8 +41,6 @@ namespace Behemoth
 
 			UpdateLocalTransform(registry, entity, transformComp, deltaLocation);
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
-
-			transformComp->isDirty = true;
 			transformComp->worldPosition = BMath::Vector3(transformComp->worldTransform._41, transformComp->worldTransform._42, transformComp->worldTransform._43);
 
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);

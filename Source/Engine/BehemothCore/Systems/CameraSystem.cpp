@@ -13,6 +13,7 @@ namespace Behemoth
 
 		for (auto& [entity, cameraComp, transformComp] : components)
 		{
+			// Only update camera if its transform has changed
 			if (cameraComp->isDirty)
 			{
 				UpdatePerspectiveMatrix(cameraComp, transformComp);

@@ -53,13 +53,6 @@ MainScene::MainScene()
 	pointLight = lightFactory.CreatePointLight(registry);
 	registry.AddComponent<Behemoth::MoveComponent>(pointLight, BMath::Vector3(0.0f,0.0f,-2.0f));
 
-
-	auto debugObject = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
-	registry.AddComponent<MoveComponent>(debugObject, BMath::Vector3(3.0f, 0.0f, -5.0f));
-	registry.AddComponent<OBBColliderComponent>(debugObject);
-	registry.AddComponent<ScalingComponent>(debugObject, BMath::Vector3(1.0f));
-	registry.AddComponent<RigidBodyComponent>(debugObject, false);
-
 	LOGMESSAGE(General, "Main Scene constructed\n");
  }
 

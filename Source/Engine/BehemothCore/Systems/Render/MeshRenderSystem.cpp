@@ -56,7 +56,6 @@ namespace Behemoth
 			ThreadPool::GetInstance().Enqueue(std::bind(&MeshRenderSystem::ProcessMesh, this, std::ref(meshComp->mesh), cameraTransformComp, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty, renderSlotIndex));
 			renderSlotIndex += meshComp->mesh.meshPrimitives.size();
 			transformComp->isDirty = false;
-
 		}
 
 		ThreadPool::GetInstance().WaitForCompletion();
@@ -68,6 +67,8 @@ namespace Behemoth
 	{
 		const MeshData& meshData = mesh.meshData;
 
+		// Only need to load this if the transform is dirty otherwise the world space locations of the model are still correct from laster render pass
+		// need to find a good way to only include if is dirty
 		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
 
 		int numVerticies = 3;
@@ -80,7 +81,7 @@ namespace Behemoth
 
 			Primitive& primitive = mesh.meshPrimitives[i];
 
-			// Only need to update the verticies if matrix dirty
+			// Only need to update the verticies if matrix dirty, otherwise reuse the previous pass' world space vertex data
 			if (isDirty)
 			{
 				for (int j = 0; j < numVerticies; j++)

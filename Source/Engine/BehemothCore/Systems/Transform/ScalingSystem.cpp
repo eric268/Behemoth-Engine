@@ -15,12 +15,8 @@ namespace Behemoth
 		// Iterate over the container backwards because we want to remove all of these components once the scaling is completed
 		for (const auto& [entity, scalingComp, transformComp] : components)
 		{
-// 			if (BMath::Vector3::Equals(scalingComp->scalingVector, transformComp->localScale) && !transformComp->parentIsDirty)
-// 			{
-// 				continue;
-// 			}
-
 			ScaleEntities(registry, scalingComp, transformComp, entity);
+			transformComp->isDirty = true;
 			registry.RemoveComponent<ScalingComponent>(entity);
 		}
 	}
@@ -31,7 +27,6 @@ namespace Behemoth
 
 		TransformHelper::UpdateWorldTransform(registry, handle, transformComp);
 		TransformHelper::NotifyChildrenTransformChange(registry, handle);
-		transformComp->isDirty = true;
 	}
 
 	void ScalingSystem::UpdateLocalScale(TransformComponent* transformComp, const BMath::Vector3& oldScale, const BMath::Vector3& newScale)
