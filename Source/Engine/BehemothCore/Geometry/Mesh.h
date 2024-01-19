@@ -13,7 +13,8 @@ namespace Behemoth
 {
 	struct MeshData
 	{
-		std::string modelFileName;
+		MeshData() : modelFileName(), totalPrimitives(0), triangleVertexCount(0), quadVertexCount(0),maxVertexDistance(0.0f) {}
+		std::string  modelFileName;
 		std::uint32_t totalPrimitives;
 		std::uint32_t triangleVertexCount;
 		std::uint32_t quadVertexCount;
@@ -22,7 +23,9 @@ namespace Behemoth
 
 	struct MaterialData
 	{
-		std::string textureFileName;
+		MaterialData() :textureFileName(), uvScale(), diffuse(), specular(), shininess(0.0f) {}
+
+		std::string    textureFileName;
 		BMath::Vector2 uvScale;
 		BMath::Vector3 diffuse;
 		BMath::Vector3 specular;
@@ -36,9 +39,9 @@ namespace Behemoth
 		Mesh(const std::string& modelPath, const std::string& texturePath = "", const BMath::Vector2 uv = {1.0f, 1.0f});
 		void GenerateMesh(const MeshData& meshData, const std::vector<VertexData>& vertexData);
 
-		MaterialData materialData;
-		MeshData meshData;
 		std::vector<Primitive> meshPrimitives;
+		MeshData meshData;
+		MaterialData materialData;
 
 	private:
 		void GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVerticies, int vertexOffset);

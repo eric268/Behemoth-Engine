@@ -18,42 +18,48 @@ namespace Behemoth
 
 
 		if (maxPos1.x < minPos2.x || minPos1.x > maxPos2.x)
+		{
 			return false;
+		}
 		if (maxPos1.y < minPos2.y || minPos1.y > maxPos2.y)
+		{
 			return false;
+		}
 		if (maxPos1.z < minPos2.z || minPos1.z > maxPos2.z)
+		{
 			return false;
+		}
 
 		return true;
 	}
 	bool BroadAABBPlaneCollision(const AABBCollider& collider, const Plane& p)
 	{
-		float radius = collider.worldExtents[0] * std::abs(p.normal[0]) + collider.worldExtents[1] * std::abs(p.normal[1]) + collider.worldExtents[2] * std::abs(p.normal[2]);
+		float radius = collider.worldExtents[0] * std::abs(p.normal[0]) + 
+					   collider.worldExtents[1] * std::abs(p.normal[1]) + 
+					   collider.worldExtents[2] * std::abs(p.normal[2]);
 
 		float distance = BMath::Vector3::Dot(p.normal, collider.worldPosition) - p.d;
-
 		return std::abs(distance) <= radius;
 	}
 
 	bool BroadSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
 	{
 		float distance = BMath::Vector3::SquaredDistance(sphere1.position, sphere2.position);
-		float rad = sphere1.radius + sphere2.radius;
-		return distance <= (rad * rad);
+		float radius = sphere1.radius + sphere2.radius;
+		return distance <= (radius * radius);
 	}
 
 	bool BroadSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
 	{
-		float squaredDist = 0;
+		float squaredDist = 0.0f;
 		float squaredRad = sphere.radius * sphere.radius;
 
 		for (int axis = 0; axis < 3; axis++)
 		{
 			float diff = 0;
+			float spherePos = sphere.position[axis];
 			float minVal = box.worldPosition[axis] - box.worldExtents[axis];
 			float maxVal = box.worldPosition[axis] + box.worldExtents[axis];
-
-			float spherePos = sphere.position[axis];
 
 			if (spherePos < minVal)
 			{
@@ -63,10 +69,8 @@ namespace Behemoth
 			{
 				diff = spherePos - maxVal;
 			}
-
 			squaredDist += diff * diff;
 		}
-
 		return squaredDist <= squaredRad;
 	}
 
@@ -80,19 +84,18 @@ namespace Behemoth
 			intersectionP = p1 + ab * dist;
 			return true;
 		}
-
 		return false;
 	}
 	bool BroadLineAABBIntersection(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
 	{
-		BMath::Vector3 boxMin = box.worldPosition - box.worldExtents;  // Minimum corner of the AABB
-		BMath::Vector3 boxMax = box.worldPosition + box.worldExtents;  // Maximum corner of the AABB
+		BMath::Vector3 boxMin = box.worldPosition - box.worldExtents;
+		BMath::Vector3 boxMax = box.worldPosition + box.worldExtents;
 
-		Point boxCenter = (boxMin + boxMax) * 0.5f;  // Center point of the AABB
-		BMath::Vector3 boxExtentsHalf = boxMax - boxCenter; // Half extents of the AABB
-		Point lineMidpoint = (lineStart + lineEnd) * 0.5f;  // Midpoint of the line segment
-		BMath::Vector3 lineHalfVector = lineEnd - lineMidpoint;  // Vector from midpoint to end of the line segment
-		lineMidpoint = lineMidpoint - boxCenter;  // Translate line midpoint into box's local space
+		Point boxCenter = (boxMin + boxMax) * 0.5f; 
+		BMath::Vector3 boxExtentsHalf = boxMax - boxCenter;
+		Point lineMidpoint = (lineStart + lineEnd) * 0.5f;
+		BMath::Vector3 lineHalfVector = lineEnd - lineMidpoint; 
+		lineMidpoint = lineMidpoint - boxCenter; 
 
 		// Absolute values of the line's half vector components
 		float absLineHalfVectorX = std::abs(lineHalfVector.x);
@@ -144,6 +147,7 @@ namespace Behemoth
 	{
 		float rBox1, rBox2;
 		BMath::Matrix3x3 rotationMatrix, absRotationMatrix;
+
 		// Compute rotation matrix expressing b in a’s coordinate frame
 		for (int i = 0; i < 3; i++)
 		{
@@ -153,8 +157,6 @@ namespace Behemoth
 			}
 		}
 
-
-		// Compute translation vector t
 		BMath::Vector3 dirVec = box2.position - box1.position;
 
 		dirVec = BMath::Vector3(BMath::Vector3::Dot(dirVec, box1.orientation[0]), BMath::Vector3::Dot(dirVec, box1.orientation[1]), BMath::Vector3::Dot(dirVec, box1.orientation[2]));
@@ -168,7 +170,8 @@ namespace Behemoth
 				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + EPSILON;
 			}
 		}
-		// Test axes L = A0, L = A1, L = A2
+
+		// Check if any vertex of box1 is beyond the extents of box2 along box1's axes
 		for (int i = 0; i < 3; i++) 
 		{
 			rBox1 = box1.extents[i];
@@ -178,8 +181,8 @@ namespace Behemoth
 				return false;
 			}
 		}
-		// Test axes L = B0, L = B1, L = B2
 
+		// Check if any vertex of box2 is beyond the extents of box1 along box2's axes
 		for (int i = 0; i < 3; i++) 
 		{
 			rBox1 = box1.extents[0] * absRotationMatrix.data[0][i] + box1.extents[1] * absRotationMatrix.data[1][i] + box1.extents[2] * absRotationMatrix.data[2][i];
@@ -191,7 +194,8 @@ namespace Behemoth
 			}
 		}
 
-		// Test axis L = A0 x B0
+		// Following tests are checking if there is an edge - edge collision
+
 		rBox1 = box1.extents[1] * absRotationMatrix.data[2][0] + box1.extents[2] * absRotationMatrix.data[1][0];
 		rBox2 = box2.extents[1] * absRotationMatrix.data[0][2] + box2.extents[2] * absRotationMatrix.data[0][1];
 		if (std::abs(dirVec[2] * rotationMatrix.data[1][0] - dirVec[1] * rotationMatrix.data[2][0]) > rBox1 + rBox2)
@@ -199,7 +203,6 @@ namespace Behemoth
 			return false;
 		}
 
-		// Test axis L = A0 x B1
 		rBox1 = box1.extents[1] * absRotationMatrix.data[2][1] + box1.extents[2] * absRotationMatrix.data[1][1];
 		rBox2 = box2.extents[0] * absRotationMatrix.data[0][2] + box2.extents[2] * absRotationMatrix.data[0][0];
 		if (std::abs(dirVec[2] * rotationMatrix.data[1][1] - dirVec[1] * rotationMatrix.data[2][1]) > rBox1 + rBox2)
@@ -207,7 +210,6 @@ namespace Behemoth
 			return false;
 		}
 
-		// Test axis L = A0 x B2
 		rBox1 = box1.extents[1] * absRotationMatrix.data[2][2] + box1.extents[2] * absRotationMatrix.data[1][2];
 		rBox2 = box2.extents[0] * absRotationMatrix.data[0][1] + box2.extents[1] * absRotationMatrix.data[0][0];
 		if (std::abs(dirVec[2] * rotationMatrix.data[1][2] - dirVec[1] * rotationMatrix.data[2][2]) > rBox1 + rBox2)
@@ -215,7 +217,6 @@ namespace Behemoth
 			return false;
 		}
 
-		// Test axis L = A1 x B0
 		rBox1 = box1.extents[0] * absRotationMatrix.data[2][0] + box1.extents[2] * absRotationMatrix.data[0][0];
 		rBox2 = box2.extents[1] * absRotationMatrix.data[1][2] + box2.extents[2] * absRotationMatrix.data[1][1];
 		if (std::abs(dirVec[0] * rotationMatrix.data[2][0] - dirVec[2] * rotationMatrix.data[0][0]) > rBox1 + rBox2)
@@ -223,7 +224,6 @@ namespace Behemoth
 			return false;
 		}
 
-		// Test axis L = A1 x B1
 		rBox1 = box1.extents[0] * absRotationMatrix.data[2][1] + box1.extents[2] * absRotationMatrix.data[0][1];
 		rBox2 = box2.extents[0] * absRotationMatrix.data[1][2] + box2.extents[2] * absRotationMatrix.data[1][0];
 		if (std::abs(dirVec[0] * rotationMatrix.data[2][1] - dirVec[2] * rotationMatrix.data[0][1]) > rBox1 + rBox2)
@@ -231,7 +231,6 @@ namespace Behemoth
 			return false;
 		}
 
-		// Test axis L = A1 x B2
 		rBox1 = box1.extents[0] * absRotationMatrix.data[2][2] + box1.extents[2] * absRotationMatrix.data[0][2];
 		rBox2 = box2.extents[0] * absRotationMatrix.data[1][1] + box2.extents[1] * absRotationMatrix.data[1][0];
 		if (std::abs(dirVec[0] * rotationMatrix.data[2][2] - dirVec[2] * rotationMatrix.data[0][2]) > rBox1 + rBox2)
@@ -239,7 +238,6 @@ namespace Behemoth
 			return false;
 		}
 
-		// Test axis L = A2 x B0
 		rBox1 = box1.extents[0] * absRotationMatrix.data[1][0] + box1.extents[1] * absRotationMatrix.data[0][0];
 		rBox2 = box2.extents[1] * absRotationMatrix.data[2][2] + box2.extents[2] * absRotationMatrix.data[2][1];
 		if (std::abs(dirVec[1] * rotationMatrix.data[0][0] - dirVec[0] * rotationMatrix.data[1][0]) > rBox1 + rBox2)
@@ -247,14 +245,13 @@ namespace Behemoth
 			return false;
 		}
 
-		// Test axis L = A2 x B1
 		rBox1 = box1.extents[0] * absRotationMatrix.data[1][1] + box1.extents[1] * absRotationMatrix.data[0][1];
 		rBox2 = box2.extents[0] * absRotationMatrix.data[2][2] + box2.extents[2] * absRotationMatrix.data[2][0];
 		if (std::abs(dirVec[1] * rotationMatrix.data[0][1] - dirVec[0] * rotationMatrix.data[1][1]) > rBox1 + rBox2)
 		{
 			return false;
 		}
-		// Test axis L = A2 x B2
+
 		rBox1 = box1.extents[0] * absRotationMatrix.data[1][2] + box1.extents[1] * absRotationMatrix.data[0][2];
 		rBox2 = box2.extents[0] * absRotationMatrix.data[2][1] + box2.extents[1] * absRotationMatrix.data[2][0];
 		if (std::abs(dirVec[1] * rotationMatrix.data[0][2] - dirVec[0] * rotationMatrix.data[1][2]) > rBox1 + rBox2)
@@ -269,54 +266,54 @@ namespace Behemoth
 	bool BroadOBBPlaneCollision(const OBBCollider& box, const Plane& p)
 	{
 		float radius = box.extents[0] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[0])) +
-			box.extents[1] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[1])) +
-			box.extents[2] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[2]));
+					   box.extents[1] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[1])) +
+					   box.extents[2] * std::abs(BMath::Vector3::Dot(p.normal, box.orientation[2]));
 
 		float distance = BMath::Vector3::Dot(p.normal, box.position);
 		return std::abs(distance) <= radius;
 	}
 
-
-	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider)
+	bool RayIntersectsAABB(const Ray& ray, const AABBCollider& aabb)
 	{
-		BMath::Vector3 min = collider.worldPosition - collider.worldExtents;
-		BMath::Vector3 max = collider.worldPosition + collider.worldExtents;
+		BMath::Vector3 aabbMin = aabb.worldPosition - aabb.worldExtents;
+		BMath::Vector3 aabbMax = aabb.worldPosition + aabb.worldExtents;
 
-		float minDist = 0.0f;
-		float maxDist = std::numeric_limits<float>::max();
+		float nearestIntersectionDist = 0.0f;
+		float farthestIntersectionDist = std::numeric_limits<float>::max();
 
-		for (int i = 0; i < 3; i++)
+		for (int axis = 0; axis < 3; axis++)
 		{
-			// If ray is parallel then check if the origin of the ray is not inside the box
-			if (std::abs(ray.direction[i]) < EPSILON)
+			// Check for ray parallel to AABB's planes
+			if (std::abs(ray.direction[axis]) < EPSILON)
 			{
-				if (ray.origin[i] < min[i] || ray.origin[i] > max[i])
+				// Ray is parallel and outside of AABB
+				if (ray.origin[axis] < aabbMin[axis] || ray.origin[axis] > aabbMax[axis])
 				{
 					return false;
 				}
 			}
 			else
 			{
-				float inverseDirection = 1.0f / ray.direction[i];
-				float t0 = (min[i] - ray.origin[i]) * inverseDirection;
-				float t1 = (max[i] - ray.origin[i]) * inverseDirection;
+				float rayInverseDirection = 1.0f / ray.direction[axis];
+				float intersectionDistMin = (aabbMin[axis] - ray.origin[axis]) * rayInverseDirection;
+				float intersectionDistMax = (aabbMax[axis] - ray.origin[axis]) * rayInverseDirection;
 
-				if (t0 > t1)
+				if (intersectionDistMin > intersectionDistMax)
 				{
-					std::swap(t0, t1);
+					std::swap(intersectionDistMin, intersectionDistMax);
 				}
 
-				if (t0 > minDist)
+				if (intersectionDistMin > nearestIntersectionDist)
 				{
-					minDist = t0;
+					nearestIntersectionDist = intersectionDistMin;
 				}
 
-				if (t1 > maxDist)
+				if (intersectionDistMax < farthestIntersectionDist)
 				{
-					maxDist = t1;
+					farthestIntersectionDist = intersectionDistMax;
 				}
 
-				if (minDist > maxDist)
+				if (nearestIntersectionDist > farthestIntersectionDist)
 				{
 					return false;
 				}
@@ -325,6 +322,7 @@ namespace Behemoth
 
 		return true;
 	}
+
 
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere)
 	{
@@ -343,7 +341,6 @@ namespace Behemoth
 		}
 
 		float discriminant = raySphereDirectionDot * raySphereDirectionDot - sqDistToSphere;
-
 		if (discriminant < 0.0f)
 		{
 			return false;

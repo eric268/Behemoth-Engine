@@ -9,10 +9,20 @@ namespace Behemoth
 		enum class EventType
 		{
 			None = 0,
-			WindowResize, WindowClose, WindowMove,
-			KeyPressed, KeyReleased, KeyHeld,
-			MouseDown, MouseUp, MouseMove, MouseScrollWheel, MouseDrag,
-			ControllerPressed, ControllerMove, ControllerTriggerPressed
+			WindowResize, 
+			WindowClose,
+			WindowMove,
+			KeyPressed,
+			KeyReleased,
+			KeyHeld,
+			MouseDown,
+			MouseUp,
+			MouseMove,
+			MouseScrollWheel,
+			MouseDrag,
+			ControllerPressed,
+			ControllerMove,
+			ControllerTriggerPressed
 		};
 
 		enum EventFlags : uint16_t
@@ -36,10 +46,9 @@ namespace Behemoth
 		virtual ~Event() = default;
 		virtual Events::EventType GetEventType() = 0;
 		virtual uint16_t GetEventFlags() = 0;
-		virtual const char* GetEventName() = 0;
 	};
 
-	// Need to find a way to polymorphically 
+	// Need to find a better way then comparing the type names
 	class EventHandler
 	{
 	public:

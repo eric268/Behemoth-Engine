@@ -4,7 +4,7 @@
 
 namespace Behemoth
 {
-	class Plane
+	struct Plane
 	{
 	public:
 		Plane();
@@ -12,8 +12,6 @@ namespace Behemoth
 		BMath::Vector3 normal;
 		float d;
 
-
-		static Plane TransformPlane(const Plane& plane, const BMath::BMatrix4x4 m);
 		static inline BMath::Vector3 GetPointOnPlane(const Plane& plane) { return plane.normal * plane.d; }
 		static inline float CalculatePlaneOffset(const BMath::Vector3& normal, const BMath::Vector3& point) 
 		{ 
@@ -23,6 +21,5 @@ namespace Behemoth
 		// Point Plane
 		static BMath::Vector3 GetClosestPointOnPlane(const BMath::Vector3 point, const Plane& plane);
 		static float GetDistBetweenPointPlane(const BMath::Vector3 point, const Plane& plane);
-		static float DistToOrigin(const BMath::Vector3 point, const Plane& plane);
 	};
 }

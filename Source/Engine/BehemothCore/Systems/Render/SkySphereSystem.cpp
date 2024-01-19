@@ -8,6 +8,7 @@
 #include "Core/ResourceManager.h"
 #include "Geometry/Mesh.h"
 #include "Renderer/Renderer.h"
+#include "Core/Stopwatch.h"
 
 namespace Behemoth
 {
@@ -18,7 +19,10 @@ namespace Behemoth
 
 		std::uint32_t renderSlotIndex = Renderer::GetInstance().GetCurrentPrimitiveCount();
 
-		for (const auto& [entity, transformComp, skySphereComp] : registry.Get<TransformComponent, SkySphereComponent>())
+		for (const auto& [
+			entity, 
+				transformComp,
+				skySphereComp] : registry.Get<TransformComponent, SkySphereComponent>())
 		{
 			if (!skySphereComp->isInitalized)
 			{
@@ -28,13 +32,15 @@ namespace Behemoth
 
 			BMath::BMatrix4x4 viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
 
-			ProcessSphere(transformComp, skySphereComp, viewProjMatrix, renderSlotIndex);
+			ProcessSphere(transformComp, skySphereComp, cameraTransform, viewProjMatrix, renderSlotIndex);
 			renderSlotIndex += skySphereComp->mesh.meshPrimitives.size();
 		}
 
-		Renderer::GetInstance().FreeResourceOverflow();
+		Renderer::GetInstance().FreePrimitiveResourceOverflow();
 	}
 
+	// Since this primitive should only exist once in the scene it is fine to store the verticies directly inside the component
+	// Otherwise the models verticies are stored in the resource manager and loaded for rendering
 	void SkySphereSystem::InitalizeSphere(SkySphereComponent* skySphereComponent)
 	{
 		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVerticies(skySphereComponent->mesh.meshData.modelFileName);
@@ -47,20 +53,43 @@ namespace Behemoth
 			skySphereComponent->verticies[i] = vertexData[i].vertex;
 		}
 
+		// Want all of the "sky sphere" primitives to be drawn first since they should always be considered the furthest possible
+		for (auto& primitive : skySphereComponent->mesh.meshPrimitives)
+		{
+			primitive.depth = std::numeric_limits<float>::max();
+		}
+
 		skySphereComponent->isInitalized = true;
 	}
-	void SkySphereSystem::ProcessSphere(TransformComponent* transformComp, SkySphereComponent* skySphereComponent, const BMath::BMatrix4x4& viewProjMatrix, int renderSlotIndex)
+
+	// Should be very similar to the mesh render class except their is no back face culling since we will be 
+	void SkySphereSystem::ProcessSphere(
+		TransformComponent* transformComp, 
+		SkySphereComponent* skySphereComponent,
+		TransformComponent* cameraTransform,
+		const BMath::BMatrix4x4& viewProjMatrix, 
+		int renderSlotIndex)
 	{
 		const MeshData& meshData = skySphereComponent->mesh.meshData;
+
 
 		ReserveResources(meshData.totalPrimitives);
 		int primitiveIndex = 0;
 		int numVerticies = 3;
+
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
 			if (vertexIndex >= meshData.triangleVertexCount)
 			{
 				numVerticies = 4;
+				int completeTriangles = meshData.triangleVertexCount / 3;
+				int remainingVerticies = vertexIndex - meshData.triangleVertexCount;
+				int completeQuads = remainingVerticies / 4;
+				primitiveIndex = completeTriangles + completeQuads;
+			}
+			else
+			{
+				primitiveIndex = vertexIndex / 3;
 			}
 
 			Primitive& primitive = skySphereComponent->mesh.meshPrimitives[i];
@@ -77,7 +106,13 @@ namespace Behemoth
 			{
 				vertexIndex += numVerticies;
 			}
-			
+
+			// We can invert this function result since we are inside the sphere, so primitives pointing in the same direction as the 
+			// camera (back face) should be renderer, and primitives pointing back at the camera should be culled (front faces)
+			if (!CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
+			{
+				continue;
+			}
 
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
@@ -89,14 +124,12 @@ namespace Behemoth
 				continue;
 			}
 
-			// Want to always render this first to be in front of all other primtives
-			primitive.depth = std::numeric_limits<float>::max();
-
 			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, primitiveIndex);
 			primitiveIndex++;
 		}
 	}
 
+	// Want to keep sky sphere at cameras origin, but not include rotation so it appears we are looking around the world
 	void SkySphereSystem::FollowCamera(TransformComponent* transformComp, const BMath::Vector3& cameraPosition)
 	{
 		transformComp->worldPosition = cameraPosition;

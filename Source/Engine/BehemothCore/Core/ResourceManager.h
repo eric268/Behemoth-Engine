@@ -13,6 +13,8 @@
 
 namespace Behemoth
 {
+	// TODO:
+	// Split manager into separate managers for textures, mesh, sound etc.
 	class ResourceManager
 	{
 	public:

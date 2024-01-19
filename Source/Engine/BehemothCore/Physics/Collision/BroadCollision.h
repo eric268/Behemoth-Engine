@@ -1,6 +1,8 @@
 #pragma once
 #include "Components/PhysicsComponents.h"
 
+// Class that contains broad collision detection functions
+// Majority of functions do not generate any contact data
 namespace Behemoth
 {
 	class Ray;
@@ -9,12 +11,15 @@ namespace Behemoth
 
 	using Point = BMath::Vector3;
 
+	// AABB
 	bool BroadAABBCollision(const AABBCollider& box1, const AABBCollider& box2);
 	bool BroadAABBPlaneCollision(const AABBCollider& box, const Plane& p);
 
+	// Sphere
 	bool BroadSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2);
 	bool BroadSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box);
 
+	// OBB
 	bool BroadOBBCollision(const OBBCollider& box1, const OBBCollider& box2);
 	bool BroadOBBPlaneCollision(const OBBCollider& box, const Plane& p);
 
@@ -22,7 +27,7 @@ namespace Behemoth
 	bool BroadLinePlaneIntersection(const Point& p1, const Point& p2, const Plane& plane, float& dist, Point& intersectionP);
 	bool BroadLineAABBIntersection(const Point& p1, const Point& p2, const AABBCollider& box);
 
-	// Raycasts
+	// Ray casts
 	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider);
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere);
 

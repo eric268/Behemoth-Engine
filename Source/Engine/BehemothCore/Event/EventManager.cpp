@@ -16,30 +16,37 @@ namespace Behemoth
 	void EventManager::BindEventCallbacks()
 	{
 		// Window Callbacks
+
+		// Resize
 		glutReshapeFunc([](int width, int height)
 		{
 			WindowResizeEvent e(width, height);
 			EventManager::GetInstance().OnEventDelegate(e);
 		});
 
+		// Move
 		glutPositionFunc([](int x, int y)
 		{
 			WindowMoveEvent e(x, y);
 			EventManager::GetInstance().OnEventDelegate(e);
 		});
 
+		// Close
 		glutCloseFunc([]()
 		{
 			WindowCloseEvent e;
 			EventManager::GetInstance().OnEventDelegate(e);
 		});
 
-		// Keyboard callbacks
-		// keyboard down - Uses ASCII for input mapping
+		// Keyboard pressed
 		glutKeyboardFunc([](unsigned char key, int x, int y)
 		{
+			// Temporary solution to remap capital letters to lower case letters
 			if (key >= 65 && key <= 90)
+			{
 				key += 32;
+			}
+				
 			// Do a check for key down events to see if it is held or this is the first press
 			KeyCode code = static_cast<KeyCode>(key);
 			KeyDownEvent e(code);
@@ -49,8 +56,12 @@ namespace Behemoth
 		// keyboard up
 		glutKeyboardUpFunc([](unsigned char key, int x, int y)
 		{
+			// Temporary solution to remap capital letters to lower case letters
 			if (key >= 65 && key <= 90)
+			{
 				key += 32;
+			}
+
 			KeyCode code = static_cast<KeyCode>(key);
 			KeyReleasedEvent e(code);
 			EventManager::GetInstance().OnEventDelegate(e);
@@ -74,6 +85,8 @@ namespace Behemoth
 		});
 
 		// Mouse Callbacks
+
+		// Mouse buttons
 		glutMouseFunc([] (int button, int state, int x, int y)
 		{
 			MouseCode code = static_cast<MouseCode>(button);

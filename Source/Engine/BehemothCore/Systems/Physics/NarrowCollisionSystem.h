@@ -21,7 +21,6 @@ namespace Behemoth
 	private:
 
 		template <typename T, typename U>
-		// requires HasCollider<T,U>
 		bool IsCollision(TransformComponent* transform1, TransformComponent* transform2, T* collider1, U* collider2, ContactData& data)
 		{
 			if (!collider1 || !collider2 || !(collider1->collisionType & collider2->collisionLayer))
@@ -41,6 +40,10 @@ namespace Behemoth
 			return CheckCollision(collider1->collider, collider2->collider, data);
 		}
 
-		void GenerateCollisionData(ECS::Registry& registry, const ECS::EntityHandle& dynamicHandle, const ECS::EntityHandle& hitHandle, const ContactData& contactData);
+		void GenerateCollisionData(
+			ECS::Registry& registry,
+			const ECS::EntityHandle& dynamicHandle,
+			const ECS::EntityHandle& hitHandle,
+			const ContactData& contactData);
 	};
 }

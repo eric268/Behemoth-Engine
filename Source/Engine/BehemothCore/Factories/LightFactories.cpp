@@ -6,7 +6,6 @@
 
 namespace Behemoth
 {
-
 	ECS::EntityHandle LightFactory::CreatePointLight(ECS::Registry& registry, const std::string& name)
 	{
 		ECS::EntityHandle entity = registry.CreateEntity(name);
@@ -17,9 +16,9 @@ namespace Behemoth
 
 		// Just used for debugging lights to visualize where they are in the world 
 #ifdef DEBUG
-		// registry.AddComponent<MeshComponent>(entity, "cube.obj", "brick.png", BMath::Vector2(0.5f, 0.5f), false);
-		// registry.AddComponent<ScalingComponent>(entity, BMath::Vector3(.2f, .2f, .2f));
-		// registry.AddComponent<MeshInitalizeComponent>(entity, false, false);
+		registry.AddComponent<MeshComponent>(entity, "cube.obj", "brick.png", BMath::Vector2(0.5f, 0.5f), false);
+		registry.AddComponent<ScalingComponent>(entity, BMath::Vector3(.2f, .2f, .2f));
+		registry.AddComponent<MeshInitalizeComponent>(entity, false, false);
 #endif
 		return entity;
 	}

@@ -25,7 +25,7 @@ MainScene::MainScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 5));
+	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 10));
 
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);

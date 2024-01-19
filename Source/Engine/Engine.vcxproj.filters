@@ -121,9 +121,6 @@
     <ClInclude Include="BehemothCore\ECS\System.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Event\ControllerEvents.h">
-      <Filter>Event</Filter>
-    </ClInclude>
     <ClInclude Include="BehemothCore\Event\Event.h">
       <Filter>Event</Filter>
     </ClInclude>

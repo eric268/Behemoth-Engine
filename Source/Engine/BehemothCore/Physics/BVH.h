@@ -77,7 +77,7 @@ namespace Behemoth
 			}
 			else
 			{
-				root = GenerateNode(registry, entityHandles, GenerateCollider(data), BColors::GetColor(BColors::Red));
+				root = GenerateNode(registry, entityHandles, GenerateCollider(data), Behemoth::GetColor(Behemoth::Red));
 			}
 
 			GenerateBVHTree(registry, entityHandles, root, data, 1);

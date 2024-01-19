@@ -7,6 +7,7 @@
 #include "Core/ResourceManager.h"
 #include "Geometry/Line.h"
 #include "Misc/TransformHelper.h"
+#include "Core/Stopwatch.h"
 
 namespace Behemoth
 {
@@ -17,14 +18,17 @@ namespace Behemoth
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
-		std::sort(components.begin(), components.end(),
-			[&](std::tuple<ECS::Entity, WireframeComponent*, TransformComponent*> tuple1, std::tuple<ECS::Entity, WireframeComponent*, TransformComponent*> tuple2)
-			{
-				return std::get<1>(tuple1)->mesh.meshPrimitives.size() < std::get<1>(tuple2)->mesh.meshPrimitives.size();
-			});
 
 		// ** Order of multiplication matters here **
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
+
+		int totalPrimitives = 0;
+		for (const auto& [entity, wireframeComp, transformComp] : components)
+		{
+			totalPrimitives += wireframeComp->mesh.meshPrimitives.size();
+		}
+
+		ReserveResources(totalPrimitives);
 
 		for (const auto& [entity, wireframeComp, transformComp] : components)
 		{
@@ -44,8 +48,6 @@ namespace Behemoth
 	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::BMatrix4x4& transformMatrix, const BMath::BMatrix4x4& viewProjMatrix, bool isDirty, BMath::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
-
-		ReserveResources(meshData.totalPrimitives);
 
 		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
 

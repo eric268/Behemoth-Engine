@@ -73,7 +73,7 @@ namespace Behemoth
 		// Assign children to current node
 		if (leftComponents.size() > 1)
 		{
-			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), BColors::GetColor(BColors::Blue));
+			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), Behemoth::GetColor(Behemoth::Blue));
 			GenerateBVHTree(registry, entityHandles, node->leftChild, leftComponents, depth + 1);
 		}
 		else if (leftComponents.size())
@@ -83,7 +83,7 @@ namespace Behemoth
 
 		if (rightComponents.size() > 1)
 		{
-			node->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), BColors::GetColor(BColors::Green));
+			node->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), Behemoth::GetColor(Behemoth::Green));
 			GenerateBVHTree(registry, entityHandles, node->rightChild, rightComponents, depth + 1);
 		}
 		else if (rightComponents.size())

@@ -15,11 +15,11 @@ namespace Behemoth
 
 		bool handled = eventHandler.ProcessEvent<Behemoth::WindowResizeEvent>([&](Behemoth::WindowResizeEvent keyEvent)
 			{
-				ECS::Entity cameraEntity = Behemoth::CameraHelper::GetMainCameraEntity(registry);
+				const ECS::EntityHandle cameraHandle = Behemoth::CameraHelper::GetMainCameraEntity(registry);
 
-				if (cameraEntity.GetIdentifier() != NULL_ENTITY)
+				if (cameraHandle.ID != NULL_ENTITY)
 				{
-					Behemoth::CameraComponent* cameraComponent = registry.GetComponent<Behemoth::CameraComponent>(cameraEntity);
+					Behemoth::CameraComponent* cameraComponent = registry.GetComponent<Behemoth::CameraComponent>(cameraHandle);
 					if (cameraComponent)
 					{
 						cameraComponent->isDirty = true;

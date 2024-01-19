@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "CameraHelper.h"
+#include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Math/Vector.h"
 #include "Core/Log.h"
-#include "ECS/Registry.h"
 #include "Components/Components.h"
 
 #include <cassert>
@@ -38,8 +39,6 @@ namespace Behemoth
 				return camera;
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
-		assert(nullptr);
-
 		return nullptr;
 	}
 
@@ -51,8 +50,6 @@ namespace Behemoth
 				return transformComp;
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
-		assert(nullptr);
-
 		return nullptr;
 	}
 
@@ -64,21 +61,19 @@ namespace Behemoth
 				return transform->worldPosition;
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
-		assert(nullptr);
-
-		return{};
+		return BMath::Vector3::Zero();
 	}
 
-	ECS::Entity CameraHelper::GetMainCameraEntity(ECS::Registry& registry)
+	const ECS::EntityHandle& CameraHelper::GetMainCameraEntity(ECS::Registry& registry)
 	{
 		for (const auto& [entity, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
 		{
 			if (camera->isMain)
+			{
 				return entity;
+			}
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
-		assert(nullptr);
-
 		return registry.CreateNullEntity();
 	}
 

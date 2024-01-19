@@ -4,10 +4,6 @@
 
 #include "NextAPI/App/app.h"
 
-// stl
-#include <algorithm>
-#include <iostream>
-
 namespace Behemoth
 {
 	Renderer::Renderer() {}
@@ -33,6 +29,10 @@ namespace Behemoth
 
 	void Renderer::AddPrimitive(Primitive* primitive, int index)
 	{
+		if (index > primitivesToDraw.size())
+		{
+			LOGMESSAGE(Error, "Primitive Container overflow");
+		}
 		primitivesToDraw[index] = primitive;
 	}
 
@@ -41,7 +41,7 @@ namespace Behemoth
 		linesToDraw.push_back(line);
 	}
 
-	void Renderer::FreeResourceOverflow()
+	void Renderer::FreePrimitiveResourceOverflow()
 	{
 		primitivesToDraw.erase(std::remove(primitivesToDraw.begin(), primitivesToDraw.end(), nullptr), primitivesToDraw.end());
 	}

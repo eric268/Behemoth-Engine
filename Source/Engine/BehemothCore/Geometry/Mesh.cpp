@@ -9,25 +9,29 @@ namespace Behemoth
 		meshData{},
 		materialData{}
 	{
-		meshData.modelFileName = "";
-		materialData.textureFileName = "";
-		materialData.uvScale = { 0,0 };
-		materialData.diffuse = BMath::Vector3(0.0f);
-		materialData.specular = BMath::Vector3(0.0f);
-		materialData.shininess = 0.0f;
+		meshData.modelFileName =						"";
+		materialData.textureFileName =					"";
+		materialData.uvScale =							{ 0,0 };
+		materialData.diffuse =							BMath::Vector3(0.0f);
+		materialData.specular =							BMath::Vector3(0.0f);
+		materialData.shininess							= 0.0f;
 	}
 
 
-	Mesh::Mesh(const std::string& modelPath, const std::string& texturePath, const BMath::Vector2 uv):
-		meshData{},
-		materialData{}
+	Mesh::Mesh(
+		const std::string& modelPath,
+		const std::string& texturePath,
+		const BMath::Vector2 uv)
+		:
+		meshData(),
+		materialData()
 	{
-		meshData.modelFileName = modelPath;
-		materialData.textureFileName = texturePath;
-		materialData.uvScale = uv;
-		materialData.diffuse = BMath::Vector3(0.8f, 0.8f, 0.8f);
-		materialData.specular = BMath::Vector3(1.0f, 1.0f, 1.0f);
-		materialData.shininess = 32.0f;
+		meshData.modelFileName =						modelPath;
+		materialData.textureFileName =					texturePath;
+		materialData.uvScale =							uv;
+		materialData.diffuse =							BMath::Vector3(0.8f, 0.8f, 0.8f);
+		materialData.specular =							BMath::Vector3(1.0f, 1.0f, 1.0f);
+		materialData.shininess =						32.0f;
 	}
 
 	void Mesh::GenerateMesh(const MeshData& meshData, const std::vector<VertexData>& vertexData)
@@ -71,7 +75,6 @@ namespace Behemoth
 			p.specular	= materialData.specular;
 			p.shininess = materialData.shininess;
 			
-
 			meshPrimitives.push_back(std::move(p));
 		}
 	}

@@ -1,19 +1,18 @@
 #pragma once
-#include "ECS/Entity.h"
-#include "ECS/Registry.h"
 
-// stl
 #include <string>
+
+namespace ECS
+{
+	class Registry;
+	struct EntityHandle;
+}
 
 namespace Behemoth
 {
-	class CameraFactory
+	struct CameraFactory
 	{
-	public:
-		CameraFactory() = default;
 		ECS::EntityHandle CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name = "Camera");
-
-	private:
 	};
 }
 

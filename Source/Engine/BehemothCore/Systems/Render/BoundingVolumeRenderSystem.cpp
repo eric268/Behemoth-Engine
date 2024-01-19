@@ -13,7 +13,6 @@ namespace Behemoth
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
 
-		// ** Order of multiplication matters here **
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
 		for (const auto& [entity, boundingVolumeComp, transformComp] : components)

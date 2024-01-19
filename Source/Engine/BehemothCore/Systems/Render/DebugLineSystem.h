@@ -29,8 +29,13 @@ namespace Behemoth
 		bool CullLineSegement(Point& p1, Point& p2, const Plane* worldFrustmPlanes);
 		void ProcessLine(const Point&, const Point& p2, const BMath::BMatrix4x4& viewProjMatrix, BMath::Vector3 color);
 		void AddLineToRenderer(Line& line);
-		void UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle handle, DebugLineComponent* lineComponent);
 		void DestroyExpiredLines(ECS::Registry& registry, std::vector<ECS::EntityHandle>& linesToDestroy);
+
+		void UpdateLineDisplayLifetime(
+			const float deltaTime,
+			std::vector<ECS::EntityHandle>& linesToDestroy,
+			ECS::EntityHandle handle, 
+			DebugLineComponent* lineComponent);
 	};
 }
 

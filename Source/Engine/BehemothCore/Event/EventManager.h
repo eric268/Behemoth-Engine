@@ -16,7 +16,6 @@ namespace Behemoth
 		EventManager& operator= (const EventManager& obj) = delete;
 
 		static EventManager& GetInstance();
-
 		void BindEventCallbacks();
 
 		template<typename T>

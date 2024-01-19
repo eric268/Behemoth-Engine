@@ -22,8 +22,8 @@ namespace ECS
 		// Need to find a better way to handle type erasure and storing/accessing templated Component Pool types
 		virtual std::vector<Entity>& GetEntities()
 		{
-			std::vector<Entity> data;
-			return data;
+			LOGMESSAGE(MessageType::Error, "No child component pool type found of IComponentPool type");
+			throw std::runtime_error("No child component pool type found of IComponentPool type");
 		}
 
 		virtual void RemoveComponent(const Entity& e) {}

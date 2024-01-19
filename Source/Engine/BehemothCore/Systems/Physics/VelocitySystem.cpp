@@ -30,8 +30,7 @@ namespace Behemoth
 			if (parentTransform)
 			{
 				// If object is a child, move in parents local space
-				BMath::BMatrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
-
+				BMath::BMatrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform,  parentTransform->worldScale);
 				deltaPosition = parentTransformNoScale * deltaPosition;
 			}
 
@@ -49,7 +48,11 @@ namespace Behemoth
 		}
 	}
 
-	void VelocitySystem::UpdateLocalTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, BMath::Vector3 deltaPosition)
+	void VelocitySystem::UpdateLocalTransform(
+		ECS::Registry& registry, 
+		const ECS::EntityHandle& handle,
+		TransformComponent* transformComp,
+		BMath::Vector3 deltaPosition)
 	{
 		transformComp->localTransform._41 += deltaPosition.x;
 		transformComp->localTransform._42 += deltaPosition.y;

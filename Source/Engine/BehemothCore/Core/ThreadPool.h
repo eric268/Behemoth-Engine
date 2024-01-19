@@ -19,16 +19,7 @@ namespace Behemoth
 		~ThreadPool();
 
 		static ThreadPool& GetInstance();
-
-		void Enqueue(const std::function<void()>& task) 
-		{
-			{
-				std::unique_lock<std::mutex> lock(queueMutex);
-				tasks.push(task);
-			}
-			condition.notify_one();
-		}
-
+		void Enqueue(const std::function<void()>& task);
 		void WaitForCompletion();
 
 	private:

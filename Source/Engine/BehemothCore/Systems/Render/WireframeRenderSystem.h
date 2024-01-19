@@ -10,7 +10,6 @@ namespace Behemoth
 	class WireframeRenderSystem : public RenderSystem
 	{
 	public:
-		WireframeRenderSystem() = default;
 		void Run(const float deltaTime, ECS::Registry& registry) override;
 	
 	protected:

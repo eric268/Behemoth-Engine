@@ -19,7 +19,14 @@ namespace Behemoth
 	public:
 		Primitive();
 		Primitive(std::string& path, std::string& textureName);
-		Primitive(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[]);
+		Primitive(
+			const std::string& path,
+			const std::string& textureName,
+			PrimitiveType type,
+			BMath::Vector4 verticies[],
+			BMath::Vector3 normals[],
+			BMath::Vector2 uv[]);
+
 		~Primitive();
 
 		Primitive(const Primitive& obj);
@@ -58,7 +65,6 @@ namespace Behemoth
 		}
 
 	private:
-
 		inline void CopyVertexData(const BMath::Vector4* verticies, const BMath::Vector3* normals, const BMath::Vector2* uv) 
 		{
 			std::memcpy(this->verticies, verticies, sizeof(BMath::Vector4) * 4);
@@ -68,7 +74,7 @@ namespace Behemoth
 
 		CSimpleSprite* sprite;
 		std::string textureName;
-
+		// Used for lighting
 		BMath::Vector3 color;
 	};
 }

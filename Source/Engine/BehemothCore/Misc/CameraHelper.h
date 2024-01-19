@@ -1,14 +1,11 @@
 #pragma once
 
 #include "Math/MathCore.h"
-#include "ECS/Entity.h"
-// stl
-#include <tuple>
-#include <vector>
 
 namespace ECS
 {
 	class Registry;
+	struct EntityHandle;
 }
 
 namespace Behemoth
@@ -21,9 +18,9 @@ namespace Behemoth
 	public:
 		static BMath::BMatrix4x4 LookAt(const BMath::Vector3& eye, const BMath::Vector3& target, const BMath::Vector3& up);
 		static BMath::Vector3 GetMainCameraPostition(ECS::Registry& registry);
-		static ECS::Entity GetMainCameraEntity(ECS::Registry& registry);
+		static const ECS::EntityHandle& GetMainCameraEntity(ECS::Registry& registry);
 		static CameraComponent* GetMainCamera(ECS::Registry& registry);
 		static TransformComponent* GetMainCameraTransform(ECS::Registry& registry);
-};
+	};
 }
 

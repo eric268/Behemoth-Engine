@@ -9,7 +9,11 @@ namespace Behemoth
 {
 	void CollisionResolutionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, transformComp, velocityComp, collisionData] : registry.Get<TransformComponent, VelocityComponent,  CollisionDataComponent>())
+		for (const auto& [
+                       entity, 
+                transformComp, 
+                velocityComp, 
+                collisionData] : registry.Get<TransformComponent, VelocityComponent,  CollisionDataComponent>())
 		{
  			BMath::Vector3 offsetPosition;
  			BMath::Vector3 offsetVelocity;

@@ -7,13 +7,9 @@
 
 namespace Behemoth
 {
-	class LightFactory
+	struct LightFactory
 	{
-	public:
-		LightFactory() = default;
 		ECS::EntityHandle CreatePointLight(ECS::Registry& registry, const std::string& name = "Point Light");
-
-	private:
 	};
 }
 

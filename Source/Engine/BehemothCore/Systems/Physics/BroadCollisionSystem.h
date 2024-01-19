@@ -4,6 +4,7 @@
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
 #include "Physics/BVH.h"
+#include "Physics/Collision/ColliderHelper.h"
 
 #include <vector>
 #include <tuple>
@@ -32,16 +33,21 @@ namespace Behemoth
 		{
 			auto bvhComponent = registry.Get<BVHRootComponent<T>>();
 
-			for (const auto& [dynamicEntity, type, velocity, transform, collider] : dynamicEntities)
+			for (const auto& [
+							dynamicEntity, 
+					type, 
+					velocity,
+					transform,
+					collider] : dynamicEntities)
 			{
-				
-				collider->collider.worldExtents = transform->worldScale * collider->extents;
-				collider->collider.worldPosition = transform->worldPosition;
+				SetCollider(transform, collider);
+// 				collider->collider.worldExtents = transform->worldScale * collider->extents;
+// 				collider->collider.worldPosition = transform->worldPosition;
 
 				for (const auto& [entities, bvhRootComp] : bvhComponent)
 				{
 					std::vector<ECS::EntityHandle> nodeHandles;
- 					// This is for AABB do a separate one for lines or other collider types
+
 					if (CheckAABBCollision(dynamicEntity, collider->collider, bvhRootComp->rootNode, nodeHandles))
 					{
 						// Check if entity already has a collision pairs component
@@ -61,6 +67,10 @@ namespace Behemoth
 			}
 		}
 
-		bool CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root, std::vector<ECS::EntityHandle>& nodeHandles);
+		bool CheckAABBCollision(
+			ECS::EntityHandle handle,
+			const AABBCollider& collider,
+			std::shared_ptr<BVHNode> root,
+			std::vector<ECS::EntityHandle>& nodeHandles);
 	};
 }

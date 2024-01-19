@@ -1,7 +1,7 @@
 #pragma once
 #include "Math/Vector.h"
 
-namespace BColors
+namespace Behemoth
 {
 	enum BColor
 	{

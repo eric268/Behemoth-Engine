@@ -9,9 +9,8 @@ namespace ECS
 
 namespace Behemoth
 {
-	class SkySphereFactory
+	struct SkySphereFactory
 	{
-	public:
 		static ECS::EntityHandle CreateSkySphere(ECS::Registry& registry, const std::string& texturePath, const BMath::Vector2& uvScale);
 	};
 }

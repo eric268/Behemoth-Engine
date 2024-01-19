@@ -9,7 +9,10 @@ namespace Behemoth
 {
 	void RigidBodySystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, rigidBodyComp, velocityComp] : registry.Get<RigidBodyComponent, VelocityComponent>())
+		for (const auto& [
+					    entity, 
+				rigidBodyComp, 
+				velocityComp] : registry.Get<RigidBodyComponent, VelocityComponent>())
 		{
 			if (!rigidBodyComp->affectedByGravity)
 			{

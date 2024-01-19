@@ -20,6 +20,18 @@ namespace Behemoth
 	inline void SetCollider(const TransformComponent* transform, T* colliderComponent);
 
 	template<>
+	inline void SetCollider(const TransformComponent* transform, BVHColliderComponent* component)
+	{
+		if (!transform || !component)
+		{
+			return;
+		}
+
+		component->collider.worldExtents = transform->worldScale * component->extents;
+		component->collider.worldPosition = transform->worldPosition;
+	}
+
+	template<>
 	inline void SetCollider(const TransformComponent* transform, AABBColliderComponent* component)
 	{
 		if (!transform || !component)

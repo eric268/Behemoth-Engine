@@ -3,20 +3,12 @@
 
 namespace Behemoth
 {
-
-
 	ThreadPool& ThreadPool::GetInstance()
 	{
 		static ThreadPool instance;
 		return instance;
-	}
 
-	void ThreadPool::WaitForCompletion()
-	{
-		std::unique_lock<std::mutex> lock(queueMutex);
-		completionCondition.wait(lock, [this] { return this->tasks.empty() && this->activeTasks == 0; });
 	}
-
 	ThreadPool::ThreadPool() : stop(false)
 	{
 		int numThreads = (int)(std::thread::hardware_concurrency() * 0.5);
@@ -65,5 +57,20 @@ namespace Behemoth
 		{
 			worker.join();
 		}
+	}
+
+	void ThreadPool::Enqueue(const std::function<void()>& task)
+	{
+		{
+			std::unique_lock<std::mutex> lock(queueMutex);
+			tasks.push(task);
+		}
+		condition.notify_one();
+	}
+
+	void ThreadPool::WaitForCompletion()
+	{
+		std::unique_lock<std::mutex> lock(queueMutex);
+		completionCondition.wait(lock, [this] { return this->tasks.empty() && this->activeTasks == 0; });
 	}
 }

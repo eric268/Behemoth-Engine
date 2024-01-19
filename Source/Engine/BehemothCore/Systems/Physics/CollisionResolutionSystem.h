@@ -10,12 +10,9 @@ namespace ECS
 
 namespace Behemoth
 {
-	class CollisionResolutionSystem
+	struct CollisionResolutionSystem
 	{
 	public:
 		void Run(const float deltaTime, ECS::Registry& regsitry);
-
-	private:
-
 	};
 }

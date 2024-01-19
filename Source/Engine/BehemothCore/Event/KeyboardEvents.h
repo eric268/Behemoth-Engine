@@ -14,7 +14,6 @@ namespace Behemoth
 
 		virtual EventType GetEventType() = 0;
 		virtual uint16_t GetEventFlags() = 0;
-		virtual const char* GetEventName() = 0;
 
 		const KeyCode GetKeyCode() const { return keyCode; }
 
@@ -27,10 +26,8 @@ namespace Behemoth
 	{
 	public:
 		KeyDownEvent(KeyCode keyCode) : KeyboardEvent(keyCode) {}
-		static EventType GetStaticEventType() { return EventType::KeyPressed; }
 		virtual EventType GetEventType()   override { return EventType::KeyPressed; }
 		virtual uint16_t GetEventFlags()   override { return EventFlags::Input | EventFlags::Keyboard; }
-		virtual const char* GetEventName() override { return "KeyDownEvent"; }
 	};
 
 	class KeyReleasedEvent : public KeyboardEvent
@@ -38,17 +35,7 @@ namespace Behemoth
 	public:
 		KeyReleasedEvent(KeyCode keyCode) : KeyboardEvent(keyCode) {}
 
-		static EventType GetStaticEventType() { return EventType::KeyReleased; }
 		virtual EventType GetEventType()   override { return EventType::KeyReleased; }
 		virtual uint16_t GetEventFlags()   override { return EventFlags::Input | EventFlags::Keyboard; }
-		virtual const char* GetEventName() override { return "KeyReleasedEvent"; }
-	};
-
-	class KeyHeldEvent : public KeyboardEvent
-	{
-	public:
-
-	private:
-
 	};
 }

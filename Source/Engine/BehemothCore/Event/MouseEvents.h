@@ -13,7 +13,6 @@ namespace Behemoth
 
 		virtual EventType GetEventType() = 0;
 		virtual uint16_t GetEventFlags() = 0;
-		virtual const char* GetEventName() = 0;
 		const std::pair<float, float> GetMousePos() const { return { xPos, yPos }; }
 
 	protected:
@@ -26,10 +25,8 @@ namespace Behemoth
 	public:
 		MouseMoveEvent(int x, int y) : MouseEvent(x, y) {}
 
-		static EventType GetStaticEventType() { return EventType::MouseMove; }
 		virtual EventType GetEventType() override { return EventType::MouseMove; }
 		virtual uint16_t GetEventFlags() override { return EventFlags::Input | EventFlags::Mouse | EventFlags::MouseMove; }
-		virtual const char* GetEventName() { return "Mouse Move Event"; }
 	private:
 
 	};
@@ -39,10 +36,8 @@ namespace Behemoth
 	public:
 		MouseDragEvent(int x, int y) : MouseEvent(x, y) {}
 
-		static EventType GetStaticEventType() { return EventType::MouseDrag; }
 		virtual EventType GetEventType() override { return EventType::MouseDrag; }
 		virtual uint16_t GetEventFlags() override { return EventFlags::Input | EventFlags::Mouse | EventFlags::MouseDrag; }
-		virtual const char* GetEventName() { return "Mouse Drag Event"; }
 	};
 
 	class MouseDownEvent : public MouseEvent
@@ -50,10 +45,8 @@ namespace Behemoth
 	public:
 		MouseDownEvent(MouseCode code, int x, int y) : MouseEvent(x, y), code(code) {}
 
-		static EventType GetStaticEventType() { return EventType::MouseDown; }
 		virtual EventType GetEventType() override { return EventType::MouseDown; }
 		virtual uint16_t GetEventFlags() override { return EventFlags::Input | EventFlags::Mouse | EventFlags::MouseClick; }
-		virtual const char* GetEventName() { return "Mouse Down Event"; }
 
 		const MouseCode GetMouseCode() const { return code; }
 	private:
@@ -65,10 +58,8 @@ namespace Behemoth
 	public:
 		MouseUpEvent(MouseCode code, int x, int y) : MouseEvent(x, y), code(code) {}
 
-		static EventType GetStaticEventType() { return EventType::MouseUp; }
 		virtual EventType GetEventType() override { return EventType::MouseUp; }
 		virtual uint16_t GetEventFlags() override { return EventFlags::Input | EventFlags::Mouse | EventFlags::MouseClick; }
-		virtual const char* GetEventName() { return "Mouse Up Event"; }
 
 		const MouseCode GetMouseCode() const { return code; }
 	private:

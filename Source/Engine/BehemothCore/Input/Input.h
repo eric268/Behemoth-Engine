@@ -45,6 +45,7 @@ namespace Behemoth
 		static bool OnEvent(Event& event);
 
 	private:
+		// Declare within Input to keep type saftey
 		static void OnKeyDown(const KeyDownEvent& event);
 		static void OnKeyReleased(const KeyReleasedEvent& event);
 		static void OnMouseDown(const MouseDownEvent& event);

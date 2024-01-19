@@ -19,18 +19,14 @@ namespace Behemoth
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
 		TransformComponent* cameraTransformComp = CameraHelper::GetMainCameraTransform(registry);
 
-		std::sort(components.begin(), components.end(),
-			[&](std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple1, std::tuple<ECS::Entity, MeshComponent*, TransformComponent*> tuple2)
-			{
-				return std::get<1>(tuple1)->mesh.meshPrimitives.size() < std::get<1>(tuple2)->mesh.meshPrimitives.size();
-			});
-
+		// Used for primitive indexes in renderer, allows for multi-threading without having to lock the renderers primitive container
 		std::uint32_t renderSlotIndex = Renderer::GetInstance().GetCurrentPrimitiveCount();
 		std::uint32_t primitivesToDraw = 0;
 
-		// ** Order of multiplication matters here **
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
+		// Count total number of possible primitives to render so that renderer primitive container is only resized once
+		// Will free unused space at the end
 		for (const auto& [entity, meshComp, transformComp] : components)
 		{
 			primitivesToDraw += meshComp->mesh.meshPrimitives.size();
@@ -46,20 +42,36 @@ namespace Behemoth
 				continue;
 			}
 
+			// Check if the bounding volume is inside the frustum, if not skip rendering this primitive entirely 
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolume))
 			{
 				continue;
 			}
 
+			// Process primitive render calculations on worker thread
+			ThreadPool::GetInstance().Enqueue(std::bind(
+				&MeshRenderSystem::ProcessMesh, 
+				this, 
+				std::ref(meshComp->mesh),
+				cameraTransformComp,
+				transformComp->worldTransform,
+				viewProjMatrix, 
+				transformComp->isDirty,
+				renderSlotIndex));
 
-			ThreadPool::GetInstance().Enqueue(std::bind(&MeshRenderSystem::ProcessMesh, this, std::ref(meshComp->mesh), cameraTransformComp, transformComp->worldTransform, viewProjMatrix, transformComp->isDirty, renderSlotIndex));
+			// Increase the index for the next primitive
 			renderSlotIndex += meshComp->mesh.meshPrimitives.size();
+
+			// Can finally set it's transform to not dirty, this should be the only place that will set transforms isDirty to false
 			transformComp->isDirty = false;
 		}
 
+		// Ensure that we have finished processing all primitives before freeing unused space and moving to lighting calculations
 		ThreadPool::GetInstance().WaitForCompletion();
-		Renderer::GetInstance().FreeResourceOverflow();
+
+		//Free unused space in render's primitive container
+		Renderer::GetInstance().FreePrimitiveResourceOverflow();
 	}
 
 
@@ -74,6 +86,7 @@ namespace Behemoth
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
+			// If we have finished rendering all the triangle primitives move to quads
 			if (vertexIndex >= meshData.triangleVertexCount)
 			{
 				numVerticies = 4;
@@ -94,21 +107,27 @@ namespace Behemoth
 				vertexIndex += numVerticies;
 			}
 
+			// Check if primitive face is in direction of camera or if it can be culled
 			if (CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
 			{
 				continue;
 			}
 
+			// Store what will become the NDC coordinates in a separate container
+			// This is so we can use the primtives world space vertex info later in places such as lighting
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
 
+			// Multiplies the primitive by the view projection matrix, gets the depth to be used for draw order
 			primitive.depth = ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
  
+			// Ensure primitive is inside the view frustum
 			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
 			{
 				continue;
 			}
 
+			// Finally add the primitive to the renderer to be drawn
 			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, renderSlotIndex);
 			renderSlotIndex++;
 		}
@@ -119,7 +138,7 @@ namespace Behemoth
 
 		BMath::Vector3 p1 = BMath::Vector3(primitiveVerts[0]) - cameraLocation;
 		BMath::Vector3 p2 = BMath::Vector3(primitiveVerts[1]) - cameraLocation;
-		BMath::Vector3 p3 = BMath::Vector3(primitiveVerts[2]) - cameraLocation;
+/*		BMath::Vector3 p3 = BMath::Vector3(primitiveVerts[2]) - cameraLocation;*/
 
 		if (BMath::Vector3::Dot(forwardVec, p1) < 0 || BMath::Vector3::Dot(forwardVec, p2) < 0 /*|| BMath::Vector3::Dot(forwardVec, p3) < 0*/)
 		{
@@ -128,10 +147,10 @@ namespace Behemoth
 
 		 BMath::Vector3 n1 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[1] - primitiveVerts[0], primitiveVerts[2] - primitiveVerts[0]));
 		 BMath::Vector3 n2 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[2] - primitiveVerts[1], primitiveVerts[0] - primitiveVerts[1]));
-		 BMath::Vector3 n3 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[0] - primitiveVerts[1], primitiveVerts[1] - primitiveVerts[2]));
+/*		 BMath::Vector3 n3 = BMath::Vector3(BMath::Vector4::Cross(primitiveVerts[0] - primitiveVerts[1], primitiveVerts[1] - primitiveVerts[2]));*/
 
 		// Back-face culling - if normals are not pointing towards camera cull the primitive
-		return (BMath::Vector3::Dot(n1, p1) > 0 && BMath::Vector3::Dot(n2, p2) > 0 && BMath::Vector3::Dot(n3, p3) > 0);
+		return (BMath::Vector3::Dot(n1, p1) > 0 && BMath::Vector3::Dot(n2, p2) > 0 /*&& BMath::Vector3::Dot(n3, p3) > 0*/);
 	}
 
 
@@ -140,7 +159,6 @@ namespace Behemoth
 		primitive.SetSpriteVerticies(numVerticies, vertex);
 		Renderer::GetInstance().AddPrimitive(&primitive, renderSlotIndex);
 	}
-
 
 	void MeshRenderSystem::ReserveResources(int numPrimitives)
 	{

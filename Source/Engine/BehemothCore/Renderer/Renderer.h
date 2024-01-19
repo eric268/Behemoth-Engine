@@ -1,18 +1,11 @@
 #pragma once
-
-#include "Math/MathCore.h"
 #include "Geometry/Line.h"
-
-
-// stl
-#include <vector>
-#include <atomic>
-#include <mutex>
 
 namespace Behemoth
 {
 	class Primitive;
 	class Vector4;
+	struct Line;
 
 	class Renderer
 	{
@@ -33,12 +26,9 @@ namespace Behemoth
 		void AddPrimitive(Primitive* primitive, int index);
 		void ReserveLines(std::size_t numLines);
 		void AddLine(const Line& line);
-		void FreeResourceOverflow();
+		void FreePrimitiveResourceOverflow();
 		void ClearResources();
 		inline std::uint32_t GetCurrentPrimitiveCount() { return primitivesToDraw.size(); }
-
-		std::mutex primitiveMutex;
-		std::mutex lineMutex;
 
 	private:
 		Renderer();

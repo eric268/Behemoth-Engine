@@ -76,7 +76,7 @@ namespace Behemoth
 			auto duration = std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - start);
 
 			std::string output = "Duration: " + std::to_string(duration.count()) + UnitOfMeasurment<T>::name();
-			std::cout << std::to_string(duration.count()) << std::endl;
+			std::cout << std::to_string(duration.count()) << '\n';
 
 			if (outputToLog)
 			{
@@ -90,7 +90,6 @@ namespace Behemoth
 			if (file.is_open())
 			{
 				std::string configuration = "Config: ";
-
 #ifdef DEBUG
 				configuration += "Debug ";
 #elif RELEASE
