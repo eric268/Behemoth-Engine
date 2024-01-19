@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Math/Vector.h"
 #include "Math/MathCore.h"
 #include "NextAPI/App/SimpleSprite.h"
 

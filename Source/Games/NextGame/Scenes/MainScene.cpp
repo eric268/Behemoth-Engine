@@ -28,17 +28,16 @@ MainScene::MainScene()
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 25));
-	registry.AddComponent<Behemoth::RotationComponent>(mainCameraHandle, BMath::Quaternion(BMath::BRotation(0, 0, 0)));
 
 	secondCameraHandle = cameraFactory.CreateCamera(registry, false, "Second Camera");
-	registry.AddComponent<RotationComponent>(secondCameraHandle, BMath::Quaternion(BMath::BRotation(0, 0, 0)));
+	registry.AddComponent<RotationComponent>(secondCameraHandle, BMath::Quaternion(DEGREE_TO_RAD(20), BMath::Vector3(1, 0, 0)));
 
 
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "rock.png", { 8.0, 8.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "brick.png", { 8.0, 8.0 });
 
   	GameObjectFactory gameObjectFactory{};
 	exampleParentEntity = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
@@ -76,14 +75,7 @@ void MainScene::ProcessEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
-	Behemoth::TransformComponent* t = registry.GetComponent<Behemoth::TransformComponent>(exampleParentEntity);
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(exampleParentEntity))
-	{
-		BMath::BRotation rot = t->localEulerAngles;
-		rot.pitch +=  DEGREE_TO_RAD(5.f);
-
-		parentRotationComponent->quat = BMath::Quaternion(rot);
-	}
+	registry.AddComponent<Behemoth::RotationComponent>(exampleParentEntity, BMath::Quaternion(DEGREE_TO_RAD(5.0f), BMath::Vector3(0, 1, 0)), true);
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(mainCameraHandle))
 	{
@@ -139,7 +131,6 @@ void MainScene::Update(const float deltaTime)
 		registry.RemoveComponent<ChildComponent>(secondCameraHandle);
 		registry.AddComponent<MoveComponent>(secondCameraHandle, BMath::Vector3(0, 0, 25));
 		// registry.DestroyEntity(projectileObject);
-		registry.AddComponent<RotationComponent>(secondCameraHandle, BMath::Quaternion(BMath::BRotation(0, 0, 0)));
 	}
 }
 

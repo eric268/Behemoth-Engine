@@ -11,7 +11,6 @@ namespace Behemoth
 		ECS::EntityHandle entity = registry.CreateEntity(name);
 		registry.AddComponent<CameraComponent>(entity, isMain);
 		registry.AddComponent<VelocityComponent>(entity);
-		registry.AddComponent<RotationComponent>(entity);
 		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<MoveComponent>(entity, BMath::Vector3(0.0f, 0.0f, 0.0f));
 		

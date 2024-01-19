@@ -5,7 +5,6 @@
 #include "Math/Quaternion.h"
 #include "ECS/Entity.h"
 #include "Math/Matrix.h"
-#include "Math/BRotation.h"
 
 #include <functional>
 
@@ -63,7 +62,6 @@ namespace Behemoth
 			upVector							(BMath::Vector3::Up()),
 			worldPosition						(BMath::Vector3(0.0f)),
 			localPosition						(BMath::Vector3(0.0f)),
-			localEulerAngles					(BMath::BRotation()),
 			worldScale							(BMath::Vector3(1.0f)),
 			localScale							(BMath::Vector3(1.0f)),
 			isDirty								(true),
@@ -77,7 +75,6 @@ namespace Behemoth
 		BMath::Vector3	upVector;
 		BMath::Vector3	worldPosition;
 		BMath::Vector3	localPosition;
-		BMath::BRotation localEulerAngles;
 		BMath::Vector3 worldScale;
 		BMath::Vector3 localScale;
 		bool isDirty;
@@ -106,10 +103,11 @@ namespace Behemoth
 
 	struct RotationComponent : public ECS::Component
 	{
-		RotationComponent()	:quat (BMath::Quaternion::Identity()) {}
-		RotationComponent(BMath::Quaternion q) : quat (q) {}
+		RotationComponent()	:quat (BMath::Quaternion::Identity()), isAdditive(false) {}
+		RotationComponent(BMath::Quaternion q, bool additive = false) : quat (q), isAdditive(additive) {}
 
 		BMath::Quaternion quat;
+		bool isAdditive;
 	};
 
 	struct ScalingComponent : public ECS::Component

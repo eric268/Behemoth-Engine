@@ -15,6 +15,7 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
+	int counter = 0;
 	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle secondCameraHandle;
 

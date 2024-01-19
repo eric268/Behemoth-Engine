@@ -21,11 +21,9 @@ namespace Behemoth
 // 	  		}
 
 			BMath::BMatrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
-			transformComp->localEulerAngles = BMath::Quaternion::QuatToEuler(rotationComp->quat);
-			rotationComp->quat = BMath::Quaternion::Identity();
 
 			// Ensure local transform is updated first
-			ApplyRotation(transformComp, rotationMatrix);
+			ApplyRotation(transformComp, rotationMatrix, rotationComp->isAdditive);
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 
@@ -47,14 +45,19 @@ namespace Behemoth
 			{
 				RotateMeshNormals(meshComp, rotationMatrix);
 			}
+
+			registry.RemoveComponent<RotationComponent>(entity);
 		}
 	}
 
-	void RotationSystem::ApplyRotation(TransformComponent* transformComp, const BMath::BMatrix4x4& rotationMatrix)
+	void RotationSystem::ApplyRotation(TransformComponent* transformComp, const BMath::BMatrix4x4& rotationMatrix, bool isAdditive)
 	{
-		BMath::BMatrix4x4 transformNoRotation = TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
+		BMath::BMatrix4x4 transform = (isAdditive) ? 
+												transformComp->localTransform : 
+												TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
 
-		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transformNoRotation;
+		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
+
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++) 

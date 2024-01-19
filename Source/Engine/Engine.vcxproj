@@ -189,6 +189,7 @@
     <ClInclude Include="BehemothCore\Input\InputCodes.h" />
     <ClInclude Include="BehemothCore\Input\InputMapping.h" />
     <ClInclude Include="BehemothCore\Math\MathCore.h" />
+    <ClInclude Include="BehemothCore\Math\MathDefines.h" />
     <ClInclude Include="BehemothCore\Math\Matrix.h" />
     <ClInclude Include="BehemothCore\Math\Quaternion.h" />
     <ClInclude Include="BehemothCore\Math\Vector.h" />

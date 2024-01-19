@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MathCore.h"
+#include "Vector.h"
 
 
 namespace BMath

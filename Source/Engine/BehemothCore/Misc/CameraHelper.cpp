@@ -2,7 +2,7 @@
 #include "CameraHelper.h"
 #include "ECS/Registry.h"
 #include "ECS/Entity.h"
-#include "Math/Vector.h"
+#include "Math/MathCore.h"
 #include "Core/Log.h"
 #include "Components/Components.h"
 
