@@ -28,6 +28,9 @@ namespace Behemoth
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 
+			transformComp->forwardVector = GetForwardVector(transformComp->localTransform);
+			transformComp->rightVector = GetRightVector(transformComp->localTransform);
+
 			transformComp->isDirty = true;
 
 			// If this entity has a camera component we need to update the view matrix as well after a rotation

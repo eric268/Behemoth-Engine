@@ -125,25 +125,3 @@ namespace Behemoth
 		return BMath::Vector3::Magnitude(result);
 	}
 }
-
-
-
-// 		auto m =  cameraComponent->projMatrix * cameraComponent->viewMatrix;
-// 
-// 		cameraComponent->worldSpaceFrustum[0].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(0)).Normalize();
-// 		cameraComponent->worldSpaceFrustum[0].d = (m.data[3][3] + m.data[0][3]);
-// 
-// 		cameraComponent->worldSpaceFrustum[1].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(0)).Normalize();
-// 		cameraComponent->worldSpaceFrustum[1].d = (m.data[3][3] - m.data[0][3]);
-// 
-// 		cameraComponent->worldSpaceFrustum[2].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(1)).Normalize();
-// 		cameraComponent->worldSpaceFrustum[2].d = (m.data[3][3] + m.data[1][3]);
-// 
-// 		cameraComponent->worldSpaceFrustum[3].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(1)).Normalize();
-// 		cameraComponent->worldSpaceFrustum[3].d = (m.data[3][3] - m.data[1][3]);
-// 
-// 		cameraComponent->worldSpaceFrustum[4].normal = BMath::Vector3(m.GetRow(3) + m.GetRow(2)).Normalize();
-// 		cameraComponent->worldSpaceFrustum[4].d = cameraComponent->nearClippingPlane;
-// 
-// 		cameraComponent->worldSpaceFrustum[5].normal = BMath::Vector3(m.GetRow(3) - m.GetRow(2)).Normalize();
-// 		cameraComponent->worldSpaceFrustum[5].d = cameraComponent->farClippingPlane;

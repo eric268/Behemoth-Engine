@@ -27,6 +27,7 @@ MainScene::MainScene()
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 10));
 
+
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
@@ -38,7 +39,6 @@ MainScene::MainScene()
 	registry.AddComponent<MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<OBBColliderComponent>(exampleParentEntity);
 	registry.AddComponent<RigidBodyComponent>(exampleParentEntity, false);
-	registry.AddComponent<CameraControllerComponent>(exampleParentEntity, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
 	registry.AddComponent<ScalingComponent>(exampleParentEntity, BMath::Vector3(1.5f));
 
 	exampleChildEntity1 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "cube.obj", "brick.png", "Child 1");
@@ -74,6 +74,21 @@ void MainScene::Update(const float deltaTime)
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(exampleParentEntity))
 	{
 		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(1.5f), BMath::Vector3(0, 1, 0));
+	}
+
+	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(mainCameraHandle))
+	{
+		float rot = 0.0f;
+		if (Input::IsKeyHeld(KeyCode::KC_C))
+		{
+			rot += 5;
+		}
+		if (Input::IsKeyHeld(KeyCode::KC_Z))
+		{
+			rot -= 5;
+		}
+
+		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(rot), BMath::Vector3(0, 1, 0));
 	}
 }
 
