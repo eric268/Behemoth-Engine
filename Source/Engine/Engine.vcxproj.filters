@@ -308,6 +308,7 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
+    <ClInclude Include="BehemothCore\Physics\ProjectileMotion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Audio\SoundClip.cpp">
@@ -461,5 +462,6 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
+    <ClCompile Include="BehemothCore\Physics\ProjectileMotion.cpp" />
   </ItemGroup>
 </Project>

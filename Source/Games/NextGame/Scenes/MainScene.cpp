@@ -17,6 +17,8 @@
 
 #include "Factories/SkySphereFactory.h"
 
+#include "Physics/ProjectileMotion.h"
+
 #include "TestScene.h"
 
 using namespace Behemoth;
@@ -78,17 +80,23 @@ void MainScene::Update(const float deltaTime)
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(mainCameraHandle))
 	{
-		float rot = 0.0f;
-		if (Input::IsKeyHeld(KeyCode::KC_C))
-		{
-			rot += 5;
-		}
-		if (Input::IsKeyHeld(KeyCode::KC_Z))
-		{
-			rot -= 5;
-		}
+	}
 
-		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(rot), BMath::Vector3(0, 1, 0));
+	if (Input::IsKeyDown(KeyCode::KC_Space))
+	{
+		GameObjectFactory gameObjectFactory{};
+
+		auto cameraComp = registry.GetComponent<TransformComponent>(mainCameraHandle);
+		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(50.0f, cameraComp->forwardVector.x, DEGREE_TO_RAD(45.0f));
+		vel.z *= -1.0f;
+
+		ECS::EntityHandle projectileObject = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png");
+		registry.AddComponent<VelocityComponent>(projectileObject, vel);
+		registry.AddComponent<RigidBodyComponent>(projectileObject, true);
+		BMath::Vector3 pos = cameraComp->worldPosition + cameraComp->forwardVector * 1.5f;
+		registry.AddComponent<MoveComponent>(projectileObject, pos);
+		registry.AddComponent<ScalingComponent>(projectileObject, BMath::Vector3(0.25f));
+
 	}
 }
 

@@ -203,6 +203,7 @@
     <ClInclude Include="BehemothCore\Physics\Collision\CollisionData.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\CollisionMask.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\NarrowCollision.h" />
+    <ClInclude Include="BehemothCore\Physics\ProjectileMotion.h" />
     <ClInclude Include="BehemothCore\Physics\Ray.h" />
     <ClInclude Include="BehemothCore\Renderer\Renderer.h" />
     <ClInclude Include="BehemothCore\Systems\AudioSystem.h" />
@@ -258,6 +259,7 @@
     <ClCompile Include="BehemothCore\Physics\BoundingGenerator.cpp" />
     <ClCompile Include="BehemothCore\Physics\Collision\BroadCollision.cpp" />
     <ClCompile Include="BehemothCore\Physics\Collision\NarrowCollision.cpp" />
+    <ClCompile Include="BehemothCore\Physics\ProjectileMotion.cpp" />
     <ClCompile Include="BehemothCore\Physics\Ray.cpp" />
     <ClCompile Include="BehemothCore\Renderer\Renderer.cpp" />
     <ClCompile Include="BehemothCore\Systems\AudioSystem.cpp" />
