@@ -104,18 +104,6 @@ namespace BMath
 			std::abs(v1.z - v2.z) <= epsilon;
 	}
 
-	Vector3& Vector3::RotateVector(Vector3& vec, const Matrix4x4<float>& rotationMatrix, float w)
-	{
-		Vector4 v = rotationMatrix * Vector4(vec, w);
-
-		vec.x = v.x;
-		vec.y = v.y;
-		vec.z = v.z;
-
-		Vector3::Normalize(vec);
-		return vec;
-	}
-
 	Vector3 Vector3::Reflect(const Vector3& lightDir, const Vector3& normal)
 	{
 		return BMath::Vector3::Normalize(lightDir - (normal *  Vector3::Dot(normal, lightDir) * 2.0f));

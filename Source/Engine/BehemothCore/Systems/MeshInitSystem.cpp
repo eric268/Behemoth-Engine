@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "MeshInitSystem.h"
+#include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "Components/PhysicsComponents.h"
-#include "ECS/Registry.h"
 #include "Geometry/Mesh.h"
 #include "Core/ResourceManager.h"
 #include "Core/Log.h"
@@ -15,42 +16,35 @@ namespace Behemoth
 {
 	void MeshInitSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		// Will need to get the sparse set container no matter what since the .Get<>() returns a tuple and iterating backwards is difficult
-		// This way we can do a very quick and easy check to see if there are any meshes that need to be initialized
-		// most likely this check will fail and exit early so want to do this before calling .Get on the registry
-		auto components = registry.Get<MeshInitalizeComponent>();
-
-		for (const auto& [entity, meshInitComp] : components)
+		for (const auto& [entity, meshInitComp] : registry.Get<MeshInitalizeComponent>())
 		{
 			MeshComponent* meshComponent = registry.GetComponent<MeshComponent>(entity);
 			if (meshComponent)
 			{
 				InitMesh(meshComponent->mesh);
 
-
+				// Automatically generates an AABB collider for bounding volume hierarchy collision detection (broad collision detection)
 				if (meshInitComp->initBroadCollider)
 				{
 					InitAABBBoundingVolume(registry, meshComponent, entity);
 				}
-
+				// Automatically generates a bounding sphere to encompass the mesh for frustum culling
 				if (meshInitComp->initBoundingVolume)
 				{
 					InitSphereBoundingVolume(registry, meshComponent, entity);
 				}
 			}
-
+			// Only need to initialize wire frame meshes when debugging
 #ifdef DEBUG
-
 			WireframeComponent* wireframeMesh = registry.GetComponent<WireframeComponent>(entity);
 			if (wireframeMesh)
 			{
 				InitMesh(wireframeMesh->mesh);
 			}
 #endif
-
+			// Remove this component once initialization has completed
 			registry.RemoveComponent<MeshInitalizeComponent>(entity);
 		}
-
 	}
 
 	void MeshInitSystem::InitMesh(Mesh& mesh)
@@ -107,7 +101,7 @@ namespace Behemoth
 			if (TransformComponent* transformComp = registry.GetComponent<TransformComponent>(handle))
 			{
 				scale = transformComp->worldScale;
-				BMath::Matrix3x3f rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
+				BMath::BMatrix3x3 rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
 				GetRotatedAABB(baseCollider, rot,  rotatedCollider);
 			}
 			else
@@ -122,7 +116,7 @@ namespace Behemoth
 		}
 	}
 
-	void MeshInitSystem::GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3<float>& rotation,  AABBCollider& result)
+	void MeshInitSystem::GetRotatedAABB(const AABBCollider& a, const BMath::BMatrix3x3& rotation,  AABBCollider& result)
 	{
 		for (int i = 0; i < 3; i++)
 		{

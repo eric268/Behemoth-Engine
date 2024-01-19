@@ -2,9 +2,6 @@
 #include "ECS/Component.h"
 #include "Audio/SoundClip.h"
 
-#include <string>
-#include <functional>
-
 namespace Behemoth
 {
 	struct AudioComponent : ECS::Component
@@ -27,6 +24,7 @@ namespace Behemoth
 			isPlaying(false), 
 			destroyEntityOnFinished(destroyOnComplete) {}
 		
+		// Callback for when audio has finished playing
 		std::function<void()> onAudioFinished;
 		SoundClip soundClip;
 		std::string audioFilePath;

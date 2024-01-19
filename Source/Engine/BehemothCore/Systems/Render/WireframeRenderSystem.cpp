@@ -41,7 +41,7 @@ namespace Behemoth
 		}
 	}
 
-	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::Matrix4x4f& transformMatrix, const BMath::Matrix4x4f& viewProjMatrix, bool isDirty, BMath::Vector3 color)
+	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::BMatrix4x4& transformMatrix, const BMath::BMatrix4x4& viewProjMatrix, bool isDirty, BMath::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -103,9 +103,9 @@ namespace Behemoth
 		Renderer::GetInstance().ReserveLines(numPrimitives * 4);
 	}
 
-	BMath::Matrix4x4f WireframeRenderSystem::GetWireframeTransform(const BMath::Matrix4x4f& ownerTransform, const BMath::Vector3& ownerWorldScale, const BMath::Vector3& wireframeScale, const bool allowRotation)
+	BMath::BMatrix4x4 WireframeRenderSystem::GetWireframeTransform(const BMath::BMatrix4x4& ownerTransform, const BMath::Vector3& ownerWorldScale, const BMath::Vector3& wireframeScale, const bool allowRotation)
 	{
-		BMath::Matrix4x4 scaledMatrix = BMath::Matrix4x4f::Identity();
+		BMath::Matrix4x4 scaledMatrix = BMath::BMatrix4x4::Identity();
 		for (int i = 0; i < 3; i++)
 		{
 			scaledMatrix.data[i][i] = wireframeScale[i];

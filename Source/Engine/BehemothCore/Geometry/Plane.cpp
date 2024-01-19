@@ -5,7 +5,7 @@ namespace Behemoth
 {
 	Plane::Plane() : normal(BMath::Vector3()), d(0.0f) {}
 
-	Plane Plane::TransformPlane(const Plane& plane, const BMath::Matrix4x4f matrix)
+	Plane Plane::TransformPlane(const Plane& plane, const BMath::BMatrix4x4 matrix)
 	{
 		BMath::Vector4 transformedNormal = matrix * BMath::Vector4(plane.normal.x, plane.normal.y, plane.normal.z, 0.0f);
 		BMath::Vector3 normal = BMath::Vector3(transformedNormal.x, transformedNormal.y, transformedNormal.z).Normalize();

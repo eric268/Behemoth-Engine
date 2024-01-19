@@ -57,7 +57,6 @@ namespace BMath
 
 		static Vector3 Normalize(const Vector3& v1);
 		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
-		static Vector3& RotateVector(Vector3& vec, const Matrix4x4<float>& rotationMatrix, float w = 1.0f);
 		static Vector3 Reflect(const Vector3& lightDir, const Vector3& normal);
 
 		inline std::string Print()

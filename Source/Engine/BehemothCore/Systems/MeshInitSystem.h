@@ -1,10 +1,10 @@
 #pragma once
-#include "ECS/Entity.h"
 #include "Math/Matrix.h"
 
 namespace ECS
 {
 	class Registry;
+	class EntityHandle;
 }
 
 namespace Behemoth
@@ -29,7 +29,7 @@ namespace Behemoth
 
 		void InitAABBBoundingVolume(ECS::Registry&, MeshComponent* meshComp, const ECS::EntityHandle& hanlde);
 
-		void GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3<float>& rotation, AABBCollider& result);
+		void GetRotatedAABB(const AABBCollider& a, const BMath::BMatrix3x3& rotation, AABBCollider& result);
 	};
 
 }

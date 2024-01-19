@@ -9,7 +9,7 @@ namespace ECS
 
 namespace Behemoth
 {
-	class TransformComponent;
+	struct TransformComponent;
 
 	class TransformHelper
 	{
@@ -19,12 +19,12 @@ namespace Behemoth
 		static void UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp);
 
 		// delete this 
-		static BMath::Matrix4x4f GetWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Matrix4x4f& localTransform);
-		static BMath::Matrix3x3f GetWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Matrix3x3f& localTransform);
+		static BMath::BMatrix4x4 GetWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::BMatrix4x4& localTransform);
+		static BMath::BMatrix3x3 GetWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::BMatrix3x3& localTransform);
 
 		static TransformComponent* GetParentTransformComp(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
-		static BMath::Matrix4x4f GetParentTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
-		static BMath::Matrix3x3f GetParentRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
+		static BMath::BMatrix4x4 GetParentTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
+		static BMath::BMatrix3x3 GetParentRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
 		static BMath::Vector3 GetParentScale(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
 		static BMath::Vector3 GetParentPosition(ECS::Registry& registry, const ECS::EntityHandle& entityHandle);
 
@@ -32,13 +32,13 @@ namespace Behemoth
 		static BMath::Vector3 GetWorldPosition(ECS::Registry& registry, const ECS::EntityHandle& entityHanldle, const BMath::Vector3& localPosition);
 		static BMath::Vector3 GetWorldScale(ECS::Registry& registry, const ECS::EntityHandle& entityHanldle, const BMath::Vector3& localScale);
 
-		static BMath::Matrix4x4f GetTransformNoRotation(const BMath::Matrix4x4f& position, const BMath::Vector3& scale);
-		static BMath::Matrix4x4f RemoveScale(const BMath::Matrix4x4f& transform, const BMath::Vector3& scale);
+		static BMath::BMatrix4x4 GetTransformNoRotation(const BMath::BMatrix4x4& position, const BMath::Vector3& scale);
+		static BMath::BMatrix4x4 RemoveScale(const BMath::BMatrix4x4& transform, const BMath::Vector3& scale);
 
-		static BMath::Matrix3x3f ExtractRotationMatrix(const  BMath::Matrix4x4f& transformMatrix);
-		static BMath::Matrix3x3f ExtractRotationMatrix(const  BMath::Matrix4x4f& transformMatrix, BMath::Vector3 scale);
-		static BMath::Vector3 ExtractScale(const  BMath::Matrix4x4f& transformMatrix);
-		static BMath::Vector3 ExtractPosition(const  BMath::Matrix4x4f& transformMatrix);
+		static BMath::BMatrix3x3 ExtractRotationMatrix(const  BMath::BMatrix4x4& transformMatrix);
+		static BMath::BMatrix3x3 ExtractRotationMatrix(const  BMath::BMatrix4x4& transformMatrix, BMath::Vector3 scale);
+		static BMath::Vector3 ExtractScale(const  BMath::BMatrix4x4& transformMatrix);
+		static BMath::Vector3 ExtractPosition(const  BMath::BMatrix4x4& transformMatrix);
 
 		static void NotifyChildrenTransformChange(ECS::Registry& registry, ECS::EntityHandle handle);
 	};

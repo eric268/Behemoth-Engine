@@ -184,7 +184,7 @@ namespace Behemoth
 
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::Matrix4x4d boxTransform = BMath::Matrix4x4d::Identity();
+		BMath::BMatrix4x4d boxTransform = BMath::BMatrix4x4d::Identity();
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -198,7 +198,7 @@ namespace Behemoth
 		boxTransform._42 = box.position.y;
 		boxTransform._43 = box.position.z;
 
-		BMath::Vector3 localToSphere = BMath::Vector3(BMath::Matrix4x4d::Inverse(boxTransform) * BMath::Vector4(sphere.position, 1.0f));
+		BMath::Vector3 localToSphere = BMath::Vector3(BMath::BMatrix4x4d::Inverse(boxTransform) * BMath::Vector4(sphere.position, 1.0f));
 
 		BMath::Vector3 closestPoint(0.0f);
 
@@ -353,8 +353,8 @@ namespace Behemoth
 	{
 		real rBox1, rBox2;
 
-		BMath::Matrix3x3d rotationMatrix{};
-		BMath::Matrix3x3d absRotationMatrix{};
+		BMath::BMatrix3x3d rotationMatrix{};
+		BMath::BMatrix3x3d absRotationMatrix{};
 
 		int bestIndex = -1;
 		int DEBUG_bestIndex = -1;

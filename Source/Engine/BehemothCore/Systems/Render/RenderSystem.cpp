@@ -41,7 +41,7 @@ namespace Behemoth
 		return true;
 	}
 
-	void RenderSystem::TransformVertex(const Primitive& primitive, const BMath::Matrix4x4f& transformMatrix, BMath::Vector4 vertex[], const int numVerticies)
+	void RenderSystem::TransformVertex(const Primitive& primitive, const BMath::BMatrix4x4& transformMatrix, BMath::Vector4 vertex[], const int numVerticies)
 	{
 		for (int j = 0; j < numVerticies; j++)
 		{
@@ -49,7 +49,7 @@ namespace Behemoth
 		}
 	}
 
-	float RenderSystem::ProcessVertex(const BMath::Matrix4x4f& viewProjMatrix, BMath::Vector4 vertex[], int numVerticies)
+	float RenderSystem::ProcessVertex(const BMath::BMatrix4x4& viewProjMatrix, BMath::Vector4 vertex[], int numVerticies)
 	{
 		float depth = 0.0f;
 

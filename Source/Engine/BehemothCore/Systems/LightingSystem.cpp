@@ -77,7 +77,7 @@ namespace Behemoth
 		primitive->AddLighting(diffuse + specular);
 	}
 
-	void LightingSystem::CalculatePointLights(Primitive* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4f& viewMatrix)
+	void LightingSystem::CalculatePointLights(Primitive* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::BMatrix4x4& viewMatrix)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
 

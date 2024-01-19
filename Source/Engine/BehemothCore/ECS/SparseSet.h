@@ -112,7 +112,7 @@ namespace ECS
 			entity_identifier identifier = entity.GetIdentifier();
 			std::uint32_t id = Entity::GetIdentifier(sparse[identifier]);
 			std::uint32_t version = Entity::GetVersion(sparse[identifier]);
-			long long val = id + version;
+			std::size_t val = id + version;
  			return (identifier < sparse.size() && val < NULL_VERSION);
 		}
 

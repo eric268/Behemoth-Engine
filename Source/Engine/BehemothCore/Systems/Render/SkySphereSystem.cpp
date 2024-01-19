@@ -26,7 +26,7 @@ namespace Behemoth
 			}
 			 FollowCamera(transformComp, cameraTransform->worldPosition);
 
-			BMath::Matrix4x4f viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
+			BMath::BMatrix4x4 viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
 
 			ProcessSphere(transformComp, skySphereComp, viewProjMatrix, renderSlotIndex);
 			renderSlotIndex += skySphereComp->mesh.meshPrimitives.size();
@@ -49,7 +49,7 @@ namespace Behemoth
 
 		skySphereComponent->isInitalized = true;
 	}
-	void SkySphereSystem::ProcessSphere(TransformComponent* transformComp, SkySphereComponent* skySphereComponent, const BMath::Matrix4x4f& viewProjMatrix, int renderSlotIndex)
+	void SkySphereSystem::ProcessSphere(TransformComponent* transformComp, SkySphereComponent* skySphereComponent, const BMath::BMatrix4x4& viewProjMatrix, int renderSlotIndex)
 	{
 		const MeshData& meshData = skySphereComponent->mesh.meshData;
 

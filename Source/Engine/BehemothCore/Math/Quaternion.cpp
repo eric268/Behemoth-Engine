@@ -118,7 +118,7 @@ namespace BMath
 		return *this;
 	}
 
-	Matrix4x4f Quaternion::QuaternionToMatrix(const Quaternion& q) 
+	BMatrix4x4 Quaternion::QuaternionToMatrix(const Quaternion& q) 
 	{
 		float xx = q.x * q.x;
 		float yy = q.y * q.y;
@@ -130,7 +130,7 @@ namespace BMath
 		float wy = q.w * q.y;
 		float wz = q.w * q.z;
 
-		Matrix4x4f rotMatrix;
+		BMatrix4x4 rotMatrix;
 		rotMatrix._11 = 1 - 2 * (yy + zz);
 		rotMatrix._12 = 2 * (xy - wz);
 		rotMatrix._13 = 2 * (xz + wy);

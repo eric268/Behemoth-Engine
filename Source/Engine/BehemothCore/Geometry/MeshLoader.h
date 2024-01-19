@@ -8,7 +8,7 @@
 
 namespace Behemoth
 {
-	class AABBCollider;
+	struct AABBCollider;
 
 	class MeshLoader
 	{

@@ -31,7 +31,7 @@ namespace Behemoth
 
 	void ScalingSystem::UpdateLocalScale(TransformComponent* transformComp, const BMath::Vector3& oldScale, const BMath::Vector3& newScale)
 	{
-		BMath::Matrix4x4f m = TransformHelper::RemoveScale(transformComp->localTransform, oldScale);
+		BMath::BMatrix4x4 m = TransformHelper::RemoveScale(transformComp->localTransform, oldScale);
 
 		for (int i = 0; i < 3; i++)
 		{

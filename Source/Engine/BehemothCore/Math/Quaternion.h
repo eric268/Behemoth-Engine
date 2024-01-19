@@ -20,7 +20,7 @@ namespace BMath
 		Quaternion& Conjugate();
 
 		static Quaternion Identity() { return Quaternion(); }
-		static Matrix4x4f QuaternionToMatrix(const Quaternion& q);
+		static BMatrix4x4 QuaternionToMatrix(const Quaternion& q);
 		static Quaternion Normalize(const Quaternion& q);
 		bool Equals(const Quaternion& q, float e = EPSILON) const;
 		static bool Equals(const Quaternion& q1, const Quaternion& q2, float e = 1e-2);

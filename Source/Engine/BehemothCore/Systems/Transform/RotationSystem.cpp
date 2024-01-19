@@ -20,7 +20,7 @@ namespace Behemoth
   				continue;
 	  		}
 
-			BMath::Matrix4x4f rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
+			BMath::BMatrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 			rotationComp->quat = BMath::Quaternion::Identity();
 
 			// Ensure local transform is updated first
@@ -45,9 +45,9 @@ namespace Behemoth
 		}
 	}
 
-	void RotationSystem::ApplyRotation(BMath::Matrix4x4f& transform, const BMath::Matrix4x4f& rotationMatrix)
+	void RotationSystem::ApplyRotation(BMath::BMatrix4x4& transform, const BMath::BMatrix4x4& rotationMatrix)
 	{
-		BMath::Matrix4x4f rotatedTransformMatrix = rotationMatrix * transform;
+		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++) 
@@ -57,7 +57,7 @@ namespace Behemoth
 		}
 	}
 
-	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4f& rotationMatrix)
+	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::BMatrix4x4& rotationMatrix)
 	{
 		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
 		{
@@ -73,11 +73,11 @@ namespace Behemoth
 
 	void RotationSystem::UpdateMeshNormalsFromParentRotation(TransformComponent* transformComp, MeshComponent* meshComponent)
 	{
-		BMath::Matrix3x3f extractedLocal = TransformHelper::ExtractRotationMatrix(transformComp->localTransform);
-		BMath::Matrix3x3f extractedWorld = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
+		BMath::BMatrix3x3 extractedLocal = TransformHelper::ExtractRotationMatrix(transformComp->localTransform);
+		BMath::BMatrix3x3 extractedWorld = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
 
-		BMath::Matrix3x3f inverseLocal = BMath::Matrix3x3<float>::Inverse(extractedLocal);
-		BMath::Matrix3x3f diffInRotation = extractedWorld * inverseLocal;
+		BMath::BMatrix3x3 inverseLocal = BMath::BMatrix3x3::Inverse(extractedLocal);
+		BMath::BMatrix3x3 diffInRotation = extractedWorld * inverseLocal;
 
 		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
 		{
@@ -86,17 +86,17 @@ namespace Behemoth
 	}
 
 
-	BMath::Vector3 RotationSystem::GetForwardVector(const BMath::Matrix4x4f& transformMatrix)
+	BMath::Vector3 RotationSystem::GetForwardVector(const BMath::BMatrix4x4& transformMatrix)
 	{
 		return  BMath::Vector3(-transformMatrix._13, -transformMatrix._23, -transformMatrix._33).Normalize();
 	}
 
-	BMath::Vector3 RotationSystem::GetUpVector(const BMath::Matrix4x4f& transformMatrix)
+	BMath::Vector3 RotationSystem::GetUpVector(const BMath::BMatrix4x4& transformMatrix)
 	{
 		return  BMath::Vector3(transformMatrix._12, -transformMatrix._22, -transformMatrix._32).Normalize();
 	}
 
-	BMath::Vector3 RotationSystem::GetRightVector(const BMath::Matrix4x4f& transformMatrix)
+	BMath::Vector3 RotationSystem::GetRightVector(const BMath::BMatrix4x4& transformMatrix)
 	{
 		return BMath::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();
 	}

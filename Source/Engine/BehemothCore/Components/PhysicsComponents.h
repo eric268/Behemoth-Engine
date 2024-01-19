@@ -14,7 +14,7 @@
 
 namespace Behemoth
 {
-	class BVHNode;
+	struct BVHNode;
 
 	// Physics Components
 	struct RigidBodyComponent : public ECS::Component

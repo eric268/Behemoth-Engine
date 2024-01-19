@@ -22,7 +22,7 @@ namespace Behemoth
 	private:
 		void CalculateAmbientLights(Primitive* primitive, const AmbientLightComponent* light);
 		void CalculateDirectionalLights(Primitive* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos);
-		void CalculatePointLights(Primitive* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4f& viewMatrix);
+		void CalculatePointLights(Primitive* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::BMatrix4x4& viewMatrix);
 		BMath::Vector3 GetPrimitivePosition(Primitive* primitive);
 
 		BMath::Vector3 CalculateDiffuseLighting(const BMath::Vector3& surfaceNormal,

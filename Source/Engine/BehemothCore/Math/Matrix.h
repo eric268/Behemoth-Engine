@@ -52,8 +52,8 @@ namespace BMath
 			};
 		};
 	};
-	using Matrix2x2f = Matrix2x2<float>;
-	using Matrix2x2d = Matrix2x2<double>;
+	using BMatrix2x2 = Matrix2x2<float>;
+	using BMatrix2x2d = Matrix2x2<double>;
 
 	template <FloatOrDouble T = float>
 	class Matrix3x3 : public Matrix
@@ -220,8 +220,8 @@ namespace BMath
 		}
 	};
 
-	using Matrix3x3f = Matrix3x3<float>;
-	using Matrix3x3d = Matrix3x3<double>;
+	using BMatrix3x3 = Matrix3x3<float>;
+	using BMatrix3x3d = Matrix3x3<double>;
 
 	template <FloatOrDouble T = double>
 	class Matrix4x4 : public Matrix
@@ -470,8 +470,8 @@ namespace BMath
 		}
 	};
 
-	using Matrix4x4f = Matrix4x4<float>;
-	using Matrix4x4d = Matrix4x4<double>;
+	using BMatrix4x4 = Matrix4x4<float>;
+	using BMatrix4x4d = Matrix4x4<double>;
 }
 
 
