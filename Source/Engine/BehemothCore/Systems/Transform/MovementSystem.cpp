@@ -51,10 +51,10 @@ namespace Behemoth
 
 	void MovementSystem::UpdateLocalTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, BMath::Vector3 deltaLocation)
 	{
-		transformComp->localTransform._41 += deltaLocation.x;
-		transformComp->localTransform._42 += deltaLocation.y;
-		transformComp->localTransform._43 += deltaLocation.z;
-		transformComp->localPosition += deltaLocation;
+		transformComp->localTransform._41 = deltaLocation.x;
+		transformComp->localTransform._42 = deltaLocation.y;
+		transformComp->localTransform._43 = deltaLocation.z;
+		transformComp->localPosition      = deltaLocation;
 		transformComp->isDirty = true;
 	}
 

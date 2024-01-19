@@ -17,6 +17,7 @@ public:
 private:
 	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle secondCameraHandle;
+
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle pointLight;
 	ECS::EntityHandle skySphere;
@@ -25,5 +26,6 @@ private:
 	ECS::EntityHandle exampleChildEntity1;
 	ECS::EntityHandle exampleChildEntity2;
 
+	ECS::EntityHandle projectileObject;
 };
             

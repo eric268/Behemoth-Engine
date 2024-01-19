@@ -6,12 +6,7 @@
 #include "Components/LightComponents.h"
 #include "Misc/CameraHelper.h"
 
-#define ENABLE_LIGHTING
-
-// stl
-#include <algorithm>
-#include <iostream>
-#include <string>
+// #define ENABLE_LIGHTING
 
 namespace Behemoth
 {

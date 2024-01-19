@@ -15,21 +15,23 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-  			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
-  			{
-  				continue;
-	  		}
+//   			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
+//   			{
+//   				continue;
+// 	  		}
 
 			BMath::BMatrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
+			transformComp->localEulerAngles = BMath::Quaternion::QuatToEuler(rotationComp->quat);
 			rotationComp->quat = BMath::Quaternion::Identity();
 
 			// Ensure local transform is updated first
-			ApplyRotation(transformComp->localTransform, rotationMatrix);
+			ApplyRotation(transformComp, rotationMatrix);
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 
 			transformComp->forwardVector = GetForwardVector(transformComp->localTransform);
 			transformComp->rightVector = GetRightVector(transformComp->localTransform);
+			transformComp->upVector = GetUpVector(transformComp->localTransform);
 
 			transformComp->isDirty = true;
 
@@ -48,14 +50,16 @@ namespace Behemoth
 		}
 	}
 
-	void RotationSystem::ApplyRotation(BMath::BMatrix4x4& transform, const BMath::BMatrix4x4& rotationMatrix)
+	void RotationSystem::ApplyRotation(TransformComponent* transformComp, const BMath::BMatrix4x4& rotationMatrix)
 	{
-		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
+		BMath::BMatrix4x4 transformNoRotation = TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
+
+		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transformNoRotation;
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++) 
 			{
-				transform.data[i][j] = rotatedTransformMatrix.data[i][j];
+				transformComp->localTransform.data[i][j] = rotatedTransformMatrix.data[i][j];
 			}
 		}
 	}
@@ -96,7 +100,7 @@ namespace Behemoth
 
 	BMath::Vector3 RotationSystem::GetUpVector(const BMath::BMatrix4x4& transformMatrix)
 	{
-		return  BMath::Vector3(transformMatrix._12, -transformMatrix._22, -transformMatrix._32).Normalize();
+		return  BMath::Vector3(transformMatrix._12, transformMatrix._22, transformMatrix._32).Normalize();
 	}
 
 	BMath::Vector3 RotationSystem::GetRightVector(const BMath::BMatrix4x4& transformMatrix)

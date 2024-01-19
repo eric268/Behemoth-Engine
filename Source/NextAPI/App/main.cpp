@@ -155,7 +155,7 @@ void Idle()
 
 		if (App::IsKeyPressed(APP_QUIT_KEY))
 		{		
-			exit(0);
+			glutLeaveMainLoop();
 		}
 		gUpdateDeltaTime.Start();
 	}
@@ -164,15 +164,6 @@ void Idle()
 
 // Break here and use the diagnostics debug view to check for user mem leaks.
 void CheckMemCallback()
-{
-
-}
-
-void Idle2()
-{
-
-}
-void Display2()
 {
 
 }

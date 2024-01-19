@@ -1,5 +1,6 @@
 #pragma once
 #include "MathCore.h"
+#include "BRotation.h"
 
 namespace BMath
 {
@@ -9,6 +10,7 @@ namespace BMath
 		// Constructors
 		Quaternion();
 		Quaternion(float w, float x, float y, float z);
+		Quaternion(const BRotation& bRotation);
 		Quaternion(const float angle, const BMath::Vector3 &axis);
 
 		// inline functions
@@ -30,6 +32,7 @@ namespace BMath
 		bool operator==(const Quaternion& q) const;
 		Quaternion& operator= (const Quaternion& q);
 
+		static BRotation QuatToEuler(const Quaternion& q);
 		Quaternion& SetFromAxisAngle(const float angle, const BMath::Vector3& axis);
 
 		union 

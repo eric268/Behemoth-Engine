@@ -27,18 +27,22 @@ MainScene::MainScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 10));
+	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 25));
+	registry.AddComponent<Behemoth::RotationComponent>(mainCameraHandle, BMath::Quaternion(BMath::BRotation(0, 0, 0)));
+
+	secondCameraHandle = cameraFactory.CreateCamera(registry, false, "Second Camera");
+	registry.AddComponent<RotationComponent>(secondCameraHandle, BMath::Quaternion(BMath::BRotation(0, 0, 0)));
 
 
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "brick.png", { 8.0, 8.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "rock.png", { 8.0, 8.0 });
 
   	GameObjectFactory gameObjectFactory{};
 	exampleParentEntity = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
-	registry.AddComponent<MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 0.0f, -5.0f));
+	registry.AddComponent<MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 0.0f, 0.0f));
 	registry.AddComponent<OBBColliderComponent>(exampleParentEntity);
 	registry.AddComponent<RigidBodyComponent>(exampleParentEntity, false);
 	registry.AddComponent<ScalingComponent>(exampleParentEntity, BMath::Vector3(1.5f));
@@ -55,7 +59,6 @@ MainScene::MainScene()
 	pointLight = lightFactory.CreatePointLight(registry);
 	registry.AddComponent<Behemoth::MoveComponent>(pointLight, BMath::Vector3(0.0f,0.0f,-2.0f));
 
-	LOGMESSAGE(General, "Main Scene constructed\n");
  }
 
 void MainScene::Initalize()
@@ -73,30 +76,70 @@ void MainScene::ProcessEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
+	Behemoth::TransformComponent* t = registry.GetComponent<Behemoth::TransformComponent>(exampleParentEntity);
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(exampleParentEntity))
 	{
-		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(1.5f), BMath::Vector3(0, 1, 0));
+		BMath::BRotation rot = t->localEulerAngles;
+		rot.pitch +=  DEGREE_TO_RAD(5.f);
+
+		parentRotationComponent->quat = BMath::Quaternion(rot);
 	}
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(mainCameraHandle))
 	{
+		float rot = 0.0f;
+		if (Input::IsKeyHeld(KeyCode::KC_Z))
+		{
+			rot -= 2.0f;
+		}
+		if (Input::IsKeyHeld(KeyCode::KC_C))
+		{
+			rot += 2.0f;
+		}
+		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(rot), BMath::Vector3(0, 1, 0));
+	}
+//  
+ 	if (Input::IsKeyDown(KeyCode::KC_Space))
+ 	{
+ 		GameObjectFactory gameObjectFactory{};
+ 
+ 		auto mainCameraTransform = registry.GetComponent<TransformComponent>(mainCameraHandle);
+ 		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(15.0f, 0, DEGREE_TO_RAD(45.0f));
+ 		vel.z *= -1.0f;
+ 
+ 		projectileObject = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Parent Projectile");
+ 		registry.AddComponent<VelocityComponent>(projectileObject, vel);
+ 		registry.AddComponent<RigidBodyComponent>(projectileObject, true);
+
+ 		// BMath::Vector3 pos = mainCameraTransform->worldPosition + mainCameraTransform->forwardVector * 1.5f;
+ 
+ 		BMath::Vector3 pos = BMath::Vector3(0,0,25);
+ 
+ 		registry.AddComponent<MoveComponent>(projectileObject, pos);
+ 		registry.AddComponent<ScalingComponent>(projectileObject, BMath::Vector3(0.5f));
+
+ 		auto parent =registry.AddComponent<ParentComponent>(projectileObject);
+
+// 		auto child = gameObjectFactory.AddChildObject(registry, projectileObject, "sphere.obj", "brick.obj", "Child Projectile");
+// 		registry.AddComponent<MoveComponent>(child, BMath::Vector3(0, 0, 1));
+ 
+		auto mainCameraComponent = registry.GetComponent<CameraComponent>(mainCameraHandle);
+		mainCameraComponent->isMain = false;
+		auto secondCameraComponent = registry.GetComponent<CameraComponent>(secondCameraHandle);
+		secondCameraComponent->isMain = true;
+ 
+  		registry.AddComponent<ChildComponent>(secondCameraHandle, projectileObject);
+  		parent->childHandles.push_back(secondCameraHandle);
+  
+  		registry.AddComponent<MoveComponent>(secondCameraHandle, BMath::Vector3(0, 3, 6));
 	}
 
-	if (Input::IsKeyDown(KeyCode::KC_Space))
+	if (Input::IsKeyDown(KeyCode::KC_B))
 	{
-		GameObjectFactory gameObjectFactory{};
-
-		auto cameraComp = registry.GetComponent<TransformComponent>(mainCameraHandle);
-		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(50.0f, cameraComp->forwardVector.x, DEGREE_TO_RAD(45.0f));
-		vel.z *= -1.0f;
-
-		ECS::EntityHandle projectileObject = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png");
-		registry.AddComponent<VelocityComponent>(projectileObject, vel);
-		registry.AddComponent<RigidBodyComponent>(projectileObject, true);
-		BMath::Vector3 pos = cameraComp->worldPosition + cameraComp->forwardVector * 1.5f;
-		registry.AddComponent<MoveComponent>(projectileObject, pos);
-		registry.AddComponent<ScalingComponent>(projectileObject, BMath::Vector3(0.25f));
-
+		registry.RemoveComponent<ChildComponent>(secondCameraHandle);
+		registry.AddComponent<MoveComponent>(secondCameraHandle, BMath::Vector3(0, 0, 25));
+		// registry.DestroyEntity(projectileObject);
+		registry.AddComponent<RotationComponent>(secondCameraHandle, BMath::Quaternion(BMath::BRotation(0, 0, 0)));
 	}
 }
 

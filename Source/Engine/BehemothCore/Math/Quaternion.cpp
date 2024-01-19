@@ -5,6 +5,15 @@ namespace BMath
 {
 	Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {}
 	Quaternion::Quaternion(float w, float x, float y, float z) : w(w), x(x), y(y), z(z) {}
+
+	Quaternion::Quaternion(const BRotation& bRotation)
+	{
+		Quaternion pitch = SetFromAxisAngle(bRotation.pitch, BMath::Vector3::Right());
+		Quaternion yaw =   SetFromAxisAngle(bRotation.yaw, BMath::Vector3::Up());
+		Quaternion roll =  SetFromAxisAngle(bRotation.roll, BMath::Vector3::Forward());
+
+		*this = yaw * pitch * roll;
+	}
 	Quaternion::Quaternion(const float angle, const BMath::Vector3& axis) : w(1), x(0), y(0), z(0)
 	{
 		SetFromAxisAngle(angle, axis);
@@ -104,11 +113,32 @@ namespace BMath
 	}
 
 
+	BRotation Quaternion::QuatToEuler(const Quaternion& q)
+	{
+		BRotation rotation;
+		// pitch
+		rotation.pitch = std::atan2(2.0 * (q.w * q.x + q.y * q.z), 1.0 - 2.0 * (q.x * q.x + q.y * q.y));
+		// Yaw
+		double sinYaw = 2.0 * (q.w * q.y - q.z * q.x);
+		if (std::abs(sinYaw) >= 1)
+		{
+			rotation.yaw = std::copysign(B_PI / 2, sinYaw); // use 90 degrees if out of range
+		}
+		else
+		{
+			rotation.yaw = std::asin(sinYaw);
+		}
+		// Roll
+		rotation.roll = std::atan2(2.0 * (q.w * q.z + q.x * q.y), 1.0 - 2.0 * (q.y * q.y + q.z * q.z));
+
+		return rotation;
+	}
+
 	// Directly set the quaternion from an axis-angle representation (axis must be normalized)
 	Quaternion& Quaternion::SetFromAxisAngle(const float angle, const BMath::Vector3& axis)
 	{
 		BMath::Vector3 normalizedAxis = BMath::Vector3::Normalize(axis);
-		float halfAngle = angle / 2;
+		float halfAngle = angle *0.5f;
 		float sinHalfAngle = sin(halfAngle);
 		w = cos(halfAngle);
 		x = normalizedAxis.x * sinHalfAngle;

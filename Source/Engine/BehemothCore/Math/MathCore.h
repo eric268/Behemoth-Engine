@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Matrix.h"
-#include "Vector.h"
+#include "BRotation.h"
 
 #define B_PI 3.14159
 #define DEGREE_TO_RAD(x) ((x) * B_PI/ 180.0f)
