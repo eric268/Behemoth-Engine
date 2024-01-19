@@ -2,7 +2,6 @@
 
 // Application
 #include "Core/ResourceManager.h"
-#include "Core/ThreadPool.h"
 
 // ECS
 #include "ECS/Registry.h"
@@ -12,6 +11,7 @@
 #include "Factories/CameraFactory.h"
 #include "Factories/LightFactories.h"
 #include "Factories/GameObjectFactory.h"
+#include "Factories/SkySphereFactory.h"
 
 // Events
 #include "Event/WindowEvents.h"

@@ -20,26 +20,13 @@ namespace Behemoth
 
 		static ThreadPool& GetInstance();
 
-		template<class F, class... Args>
-		auto Enqueue(F&& f, Args&&... args) -> std::future<typename std::invoke_result<F, Args...>::type>
+		void Enqueue(const std::function<void()>& task) 
 		{
-			using return_type = typename std::invoke_result<F, Args...>::type;
-
-			auto task = std::make_shared<std::packaged_task<return_type()>>(
-				std::bind(std::forward<F>(f), std::forward<Args>(args)...));
-
-			std::future<return_type> res = task->get_future();
 			{
 				std::unique_lock<std::mutex> lock(queueMutex);
-				if (stop) 
-				{
-					LOGMESSAGE(Error, "enqueue on stopped ThreadPool");
-					throw;
-				}
-				tasks.emplace([task]() { (*task)(); });
+				tasks.push(task);
 			}
 			condition.notify_one();
-			return res;
 		}
 
 		void WaitForCompletion();

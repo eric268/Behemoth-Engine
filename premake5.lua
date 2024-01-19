@@ -1,8 +1,16 @@
-workspace "BehemothEngine"
+newoption
+{
+     trigger = "prj",
+     value = "NAME",
+     description = "Specify the name of the game you wish to create"
+}
 
-     if not _OPTIONS["prj"] and not _OPTIONS["new"] then
-          _OPTIONS["prj"] = "NextGame"
-     end
+if not _OPTIONS["prj"] and not _OPTIONS["new"] then
+     _OPTIONS["prj"] = "NextGame"
+end
+
+workspace (_OPTIONS["prj"])
+
    -- os.execute("rmdir /s /q .vs")
    architecture "x64"
    configurations { "Debug", "Release", "Dist" }
@@ -11,12 +19,6 @@ workspace "BehemothEngine"
    outputdir = "%{wks.location}/Build/bin/%{cfg.buildcfg}/%{cfg.system}/"
    objectdir = "%{wks.location}/Build/obj/%{cfg.buildcfg}/%{cfg.system}/"
 
-   newoption
-   {
-        trigger = "prj",
-        value = "NAME",
-        description = "Specify the name of the game you wish to create"
-   }
 
    newoption
    {
@@ -25,7 +27,6 @@ workspace "BehemothEngine"
    }
 
    group "Engine"
-
         include "Source/Engine"
         
             include "Source/EntryPoint"

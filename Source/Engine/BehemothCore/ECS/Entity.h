@@ -44,6 +44,11 @@ namespace ECS
 			return name;
 		}
 
+		void SetName(const std::string& n)
+		{
+			name = n;
+		}
+
 		void SetIDToNull()
 		{
 			ID = 0xFFFFFFFF;
@@ -77,26 +82,26 @@ namespace ECS
 		{
 			return ID >> 16;
 		}
-		
-	public:
-		friend class Registry;
 
-		Entity(std::string name) : name(name), ID(0) {}
-
-		// Only want to be able to use this in Registry class to point to next recycled entity ID
 		inline void SetIdentifier(const entity_identifier newIdentifier)
 		{
 			ID = (ID & 0xFFFF0000) | newIdentifier;
 		}
 
-		inline void SetID(const entity_id newID)
-		{
-			ID = newID;
-		}
-
 		bool IsValid()
 		{
 			return ID != 0xFFFFFFFF;
+		}
+		
+	private:
+		friend class Registry;
+
+		// Only want the registry class to be able to create entities
+		Entity(std::string name) : name(name), ID(0) {}
+
+		inline void SetID(const entity_id newID)
+		{
+			ID = newID;
 		}
 
 		entity_id ID;

@@ -150,8 +150,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BehemothCore\Core\ResourceManager.h" />
-    <ClInclude Include="BehemothCore\Core\ThreadPool.h" />
     <ClInclude Include="BehemothCore\Audio\SoundClip.h" />
     <ClInclude Include="BehemothCore\BehemothEngine.h" />
     <ClInclude Include="BehemothCore\Components\AudioComponents.h" />
@@ -160,9 +158,12 @@
     <ClInclude Include="BehemothCore\Components\PhysicsComponents.h" />
     <ClInclude Include="BehemothCore\Components\RenderComponents.h" />
     <ClInclude Include="BehemothCore\Components\UIComponents.h" />
+    <ClInclude Include="BehemothCore\Core\Log.h" />
+    <ClInclude Include="BehemothCore\Core\ResourceManager.h" />
+    <ClInclude Include="BehemothCore\Core\Stopwatch.h" />
+    <ClInclude Include="BehemothCore\Core\ThreadPool.h" />
     <ClInclude Include="BehemothCore\ECS\Component.h" />
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h" />
-    <ClInclude Include="BehemothCore\ECS\ECSCore.h" />
     <ClInclude Include="BehemothCore\ECS\Entity.h" />
     <ClInclude Include="BehemothCore\ECS\Generator.h" />
     <ClInclude Include="BehemothCore\ECS\Page.h" />
@@ -194,8 +195,6 @@
     <ClInclude Include="BehemothCore\Math\Vector.h" />
     <ClInclude Include="BehemothCore\Misc\BColors.h" />
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h" />
-    <ClInclude Include="BehemothCore\Core\Log.h" />
-    <ClInclude Include="BehemothCore\Core\Stopwatch.h" />
     <ClInclude Include="BehemothCore\Misc\TransformHelper.h" />
     <ClInclude Include="BehemothCore\Physics\BVH.h" />
     <ClInclude Include="BehemothCore\Physics\BoundingGenerator.h" />
@@ -237,10 +236,11 @@
     <ClInclude Include="BehemothCore\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BehemothCore\Audio\SoundClip.cpp" />
     <ClCompile Include="BehemothCore\Core\GameLoop.cpp" />
+    <ClCompile Include="BehemothCore\Core\Log.cpp" />
     <ClCompile Include="BehemothCore\Core\ResourceManager.cpp" />
     <ClCompile Include="BehemothCore\Core\ThreadPool.cpp" />
-    <ClCompile Include="BehemothCore\Audio\SoundClip.cpp" />
     <ClCompile Include="BehemothCore\Event\EventManager.cpp" />
     <ClCompile Include="BehemothCore\Factories\CameraFactory.cpp" />
     <ClCompile Include="BehemothCore\Factories\GameObjectFactory.cpp" />
@@ -254,7 +254,6 @@
     <ClCompile Include="BehemothCore\Math\Quaternion.cpp" />
     <ClCompile Include="BehemothCore\Math\Vector.cpp" />
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp" />
-    <ClCompile Include="BehemothCore\Core\Log.cpp" />
     <ClCompile Include="BehemothCore\Misc\TransformHelper.cpp" />
     <ClCompile Include="BehemothCore\Physics\BVH.cpp" />
     <ClCompile Include="BehemothCore\Physics\BoundingGenerator.cpp" />

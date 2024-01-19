@@ -20,13 +20,19 @@ namespace Behemoth
 	{
 		ImageComponent() : image(), isVisible(false), screenPosition() {}
 
-		ImageComponent(std::string filepath, BMath::Vector2 position, BMath::Vector2 dimensions, bool isVisible = true) : 
-			image(filepath, dimensions),
-			screenPosition(position),
-			isVisible(isVisible)  {}
+		ImageComponent(
+			std::string filepath,
+			BMath::Vector2 position,
+			BMath::Vector2 dimensions,
+			bool isVisible =					true) 
+			: 
+			image								(filepath, dimensions),
+			screenPosition						(position),
+			isVisible(isVisible)  
+		{}
 
 		Image image;
 		bool isVisible;
 		BMath::Vector2 screenPosition;
 	};
-}
+}																											

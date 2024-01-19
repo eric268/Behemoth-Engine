@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LightingSystem.h"
 #include "Renderer/Renderer.h"
-
+#include "Geometry/Primitives.h"
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
 #include "Misc/CameraHelper.h"

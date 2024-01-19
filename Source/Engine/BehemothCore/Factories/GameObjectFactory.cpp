@@ -1,12 +1,19 @@
 #include "pch.h"
 #include "GameObjectFactory.h"
+#include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "Components/PhysicsComponents.h"
 
 namespace Behemoth
 {
-	ECS::EntityHandle GameObjectFactory::CreateGameObject(ECS::Registry& registry, std::string modelFilePath, std::string texturePath, std::string entityName, BMath::Vector2 uvScale)
+	ECS::EntityHandle GameObjectFactory::CreateGameObject(
+		ECS::Registry& registry,
+		std::string modelFilePath,
+		std::string texturePath,
+		std::string entityName,
+		BMath::Vector2 uvScale)
 	{
 		ECS::EntityHandle entity = registry.CreateEntity(entityName);
 		registry.AddComponent<MeshComponent>(entity, modelFilePath, texturePath, uvScale);
@@ -18,7 +25,12 @@ namespace Behemoth
 		return entity;
 	}
 
-	ECS::EntityHandle GameObjectFactory::AddChildObject(ECS::Registry& registry, ECS::EntityHandle parentHandle, std::string modelFilePath, std::string texturePath, std::string entityName)
+	ECS::EntityHandle GameObjectFactory::AddChildObject(
+		ECS::Registry& registry,
+		const ECS::EntityHandle& parentHandle,
+		std::string modelFilePath,
+		std::string texturePath,
+		std::string entityName)
 	{
 		if (!registry.IsValidHandle(parentHandle))
 		{

@@ -2,7 +2,6 @@
 #include "BroadCollision.h"
 #include "Math/MathCore.h"
 #include "Colliders.h"
-#include "ECS/ECSCore.h"
 #include "Physics/Collision/Colliders.h"
 #include "Geometry/Plane.h"
 #include "Physics/Ray.h"
@@ -326,48 +325,6 @@ namespace Behemoth
 
 		return true;
 	}
-
-// 	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider, float& minDist, Point& collisionPoint)
-// 	{
-// 		BMath::Vector3 min = collider.worldPosition - collider.worldExtents;
-// 		BMath::Vector3 max = collider.worldPosition + collider.worldExtents;
-// 
-// 		minDist = 0.0f;
-// 		float maxDist = std::numeric_limits<float>::max();
-// 
-// 		for (int i = 0; i < 3; i++)
-// 		{
-// 			// If ray is parallel then check if the origin of the ray is not inside the box
-// 			if (std::abs(ray.direction[i]) < EPSILON)
-// 			{
-// 				if (ray.origin[i] < min[i] || ray.origin[i] > max[i])
-// 				{
-// 					return false;
-// 				}
-// 			}
-// 
-// 			float inverseDirection = 1.0f / ray.direction[i];
-// 			float t0 = (min[i] - ray.origin[i]) * inverseDirection;
-// 			float t1 = (max[i] - ray.origin[i]) * inverseDirection;
-// 
-// 			if (inverseDirection < 0.0f)
-// 			{
-// 				std::swap(t0, t1);
-// 			}
-// 
-// 			minDist = std::max(minDist, t0);
-// 			maxDist = std::max(maxDist, t1);
-// 
-// 			if (minDist < maxDist)
-// 			{
-// 				return false;
-// 			}
-// 		}
-// 
-// 		collisionPoint = ray.origin + ray.direction * minDist;
-// 		return true;
-// 	}
-
 
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere)
 	{

@@ -52,9 +52,6 @@ namespace Behemoth
 	private:
 		SystemManager() = default;
 
-		
-		// ECS::SparseSet<std::shared_ptr<ECS::ISystem>> sparseSet;
-
 		std::unordered_map<int, int> systemTypeID;
 		std::vector<std::shared_ptr<ECS::ISystem>> systemContainer;
 		std::vector<std::shared_ptr<ECS::ISystem>> initSystemContainer;

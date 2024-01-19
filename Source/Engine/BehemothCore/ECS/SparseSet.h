@@ -25,15 +25,9 @@ namespace ECS
 	class SparseSet
 	{
 	public:
-		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_ENTITY), index {}
+		SparseSet(const std::uint16_t maxSize = DEFAULT_SPARSE_SIZE) : maxSize(maxSize), sparse(maxSize, NULL_ENTITY), index()
 		{
 			Generator::Value<T>();
-		}
-
-		~SparseSet()
-		{
-
-			LOGMESSAGE(General, std::string("Sparse set: ") + typeid(T).name() + " destroyed");
 		}
 
 		void RemoveComponent(Entity entity)
@@ -44,14 +38,21 @@ namespace ECS
 				return;
 			}
 
-			dense[sparse[identifier]].name = "Deleted";
+			dense[sparse[identifier]].SetName("Deleted");
 
+			// Use dense identifier to signal the next recycled entity to be reused
 			if (available > 0)
 			{
 				dense[sparse[identifier]].SetIdentifier(next);
 			}
 
+			// Next is used to track the position of the next recycled entity to be used
 			next = sparse[identifier];
+
+			// Null version is used to indicate that an ID has been recycled and is therefore not valid
+			// This is important because sparse identifiers are used to track position of entity in dense array so we can't use that.
+			// Could use the dense identifier for this but then we would have to use the entity identifier, through the sparse to get dense version
+			// this way we can skip one of those steps
 			Entity::SetVersion(sparse[identifier], NULL_VERSION);
 			available++;
 		}
@@ -63,9 +64,9 @@ namespace ECS
 			if (Contains(entity))
 			{
 				RemoveComponent(entity);
-
 			}
 
+			// Use one of the recycled entities instead of creating a new one
 			if (available > 0 && next != NULL_IDENTIFIER)
 			{
 				entity_identifier identifier = next;

@@ -24,10 +24,10 @@
     <ClInclude Include="Scenes\MainScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h" />
     <ClInclude Include="Scenes\TestScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -39,9 +39,9 @@
     <ClCompile Include="Scenes\MainScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Scenes\TestScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
 </Project>

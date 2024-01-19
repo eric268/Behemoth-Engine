@@ -17,6 +17,9 @@ namespace ECS
 			return std::size_t{};
 		}
 
+		// This function should never be called, just a virtual function for ComponentPool
+		// cannot be a pure virtual class/function since I need to create IComponentPools from componentPool pointers
+		// Need to find a better way to handle type erasure and storing/accessing templated Component Pool types
 		virtual std::vector<Entity>& GetEntities()
 		{
 			std::vector<Entity> data;

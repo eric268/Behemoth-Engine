@@ -30,7 +30,6 @@ namespace BMath
 		bool operator==(const Quaternion& q) const;
 		Quaternion& operator= (const Quaternion& q);
 
-
 		Quaternion& SetFromAxisAngle(const float angle, const BMath::Vector3& axis);
 
 		union 

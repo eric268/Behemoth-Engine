@@ -2,9 +2,6 @@
 
 #include "Vector.h"
 #include "Core/Log.h"
-// stl
-#include <memory>
-#include <cassert>
 
 namespace BMath
 {
@@ -128,13 +125,13 @@ namespace BMath
 		{
 			Matrix3x3 result{};
 
-			for (int col = 0; col < 3; col++)
+			for (int i = 0; i < 3; i++)
 			{
-				for (int row = 0; row < 3; row++)
+				for (int j = 0; j < 3; j++)
 				{
-					result.data[col][row] = data[col][0] * m.data[0][row] +
-						data[col][1] * m.data[1][row] +
-						data[col][2] * m.data[2][row];
+					result.data[i][j] = data[i][0] * m.data[0][j] +
+						data[i][1] * m.data[1][j] +
+						data[i][2] * m.data[2][j];
 				}
 			}
 			return result;
@@ -154,18 +151,22 @@ namespace BMath
 			Matrix2x2<T> m2{};
 			int subRow = 0, subCol = 0;
 
-			for (int col = 0; col < 3; col++)
+			for (int i = 0; i < 3; i++)
 			{
-				if (col == skipCol)
+				if (i == skipCol)
+				{
 					continue;
+				}
 
 				subRow = 0;
-				for (int row = 0; row < 3; row++)
+				for (int j = 0; j < 3; j++)
 				{
-					if (row == skipRow)
+					if (j == skipRow)
+					{
 						continue;
+					}
 
-					m2.data[subCol][subRow] = m.data[col][row];
+					m2.data[subCol][subRow] = m.data[i][j];
 					subRow++;
 				}
 				subCol++;
@@ -181,23 +182,23 @@ namespace BMath
 			if (det == 0.0f)
 				return {};
 
-			for (int col = 0; col < 3; col++)
+			for (int i = 0; i < 3; i++)
 			{
-				for (int row = 0; row < 3; row++)
+				for (int j = 0; j < 3; j++)
 				{
-					m2.data[col][row] = Matrix2x2<T>::Determinant(GetSubMatrix(m, col, row));
-					m2.data[col][row] *= ((col + row) % 2 == 0) ? 1.0f : -1.0f;
+					m2.data[i][j] = Matrix2x2<T>::Determinant(GetSubMatrix(m, i, j));
+					m2.data[i][j] *= ((i + j) % 2 == 0) ? 1.0f : -1.0f;
 
 				}
 			}
 
 			m2 = Matrix3x3::Transpose(m2);
 
-			for (int col = 0; col < 3; col++)
+			for (int i = 0; i < 3; i++)
 			{
-				for (int row = 0; row < 3; row++)
+				for (int j = 0; j < 3; j++)
 				{
-					m2.data[col][row] /= det;
+					m2.data[i][j] /= det;
 				}
 			}
 
@@ -207,11 +208,11 @@ namespace BMath
 		static Matrix3x3 Transpose(const Matrix3x3& m)
 		{
 			Matrix3x3 m2{};
-			for (int col = 0; col < 3; col++)
+			for (int i = 0; i < 3; i++)
 			{
-				for (int row = 0; row < 3; row++)
+				for (int j = 0; j < 3; j++)
 				{
-					m2.data[col][row] = m.data[row][col];
+					m2.data[i][j] = m.data[j][i];
 
 				}
 			}
@@ -249,16 +250,16 @@ namespace BMath
 
 		Matrix4x4(std::initializer_list<std::initializer_list<T>> list) : Matrix(4)
 		{
-			int row = 0;
+			int i = 0;
 			for (const auto& l : list)
 			{
-				int col = 0;
+				int j = 0;
 				for (const T val : l)
 				{
-					data[row][col] = val;
-					col++;
+					data[i][j] = val;
+					j++;
 				}
-				row++;
+				i++;
 			}
 		}
 
@@ -307,11 +308,11 @@ namespace BMath
 		static Matrix4x4 Transpose(const Matrix4x4<T>& m)
 		{
 			Matrix4x4<T> m2{};
-			for (int col = 0; col < 4; col++)
+			for (int i = 0; i < 4; i++)
 			{
-				for (int row = 0; row < 4; row++)
+				for (int j = 0; j < 4; j++)
 				{
-					m2.data[col][row] = m.data[row][col];
+					m2.data[i][j] = m.data[j][i];
 
 				}
 			}
@@ -326,12 +327,12 @@ namespace BMath
 			if (det == 0.0f)
 				return {};
 
-			for (int col = 0; col < 4; col++)
+			for (int i = 0; i < 4; i++)
 			{
-				for (int row = 0; row < 4; row++)
+				for (int j = 0; j < 4; j++)
 				{
-					m2.data[col][row] = Matrix3x3<T>::Determinant(GetSubMatrix(m, col, row));
-					m2.data[col][row] *= ((col + row) % 2 == 0) ? 1.0f : -1.0f;
+					m2.data[i][j] = Matrix3x3<T>::Determinant(GetSubMatrix(m, i, j));
+					m2.data[i][j] *= ((i + j) % 2 == 0) ? 1.0f : -1.0f;
 
 				}
 			}
@@ -354,18 +355,22 @@ namespace BMath
 			Matrix3x3<T> m2{};
 			int subRow = 0, subCol = 0;
 
-			for (int col = 0; col < 4; col++)
+			for (int i = 0; i < 4; i++)
 			{
-				if (col == skipCol)
+				if (i == skipCol)
+				{
 					continue;
+				}
 
 				subRow = 0;
-				for (int row = 0; row < 4; row++)
+				for (int j = 0; j < 4; j++)
 				{
-					if (row == skipRow)
+					if (j == skipRow)
+					{
 						continue;
+					}
 
-					m2.data[subCol][subRow] = m.data[col][row];
+					m2.data[subCol][subRow] = m.data[i][j];
 					subRow++;
 				}
 				subCol++;
@@ -401,14 +406,14 @@ namespace BMath
 		{
 			Matrix4x4<T> result;
 
-			for (int col = 0; col < 4; col++)
+			for (int i = 0; i < 4; i++)
 			{
-				for (int row = 0; row < 4; row++)
+				for (int j = 0; j < 4; j++)
 				{
-					result.data[col][row] = data[col][0] * m.data[0][row] +
-						data[col][1] * m.data[1][row] +
-						data[col][2] * m.data[2][row] +
-						data[col][3] * m.data[3][row];
+					result.data[i][j] = data[i][0] * m.data[0][j] +
+						data[i][1] * m.data[1][j] +
+						data[i][2] * m.data[2][j] +
+						data[i][3] * m.data[3][j];
 				}
 			}
 			return result;
@@ -419,15 +424,15 @@ namespace BMath
 			Matrix4x4 result;
 
 			const int n = m.Size();
-			for (int col = 0; col < n; col++)
+			for (int i = 0; i < n; i++)
 			{
-				for (int row = 0; row < n; row++)
+				for (int j = 0; j < n; j++)
 				{
-					result.data[col][row] = 0;
+					result.data[i][j] = 0;
 
 					for (int k = 0; k < n; k++)
 					{
-						result.data[col][row] += data[k][row] * m.data[col][k];
+						result.data[i][j] += data[k][j] * m.data[i][k];
 					}
 				}
 			}
@@ -464,7 +469,7 @@ namespace BMath
 				m._22 = cosTheta;
 				break;
 			default:
-				LOGMESSAGE(MessageType::Warning, "Invalid axis passed to rotation");
+				LOGMESSAGE(Warning, "Invalid axis passed to rotation");
 			}
 			return m;
 		}

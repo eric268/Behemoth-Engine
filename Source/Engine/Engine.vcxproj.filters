@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Application">
-      <UniqueIdentifier>{D9DE78AF-4594-F1A4-CE88-EB7B3A3DE8A8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{6B7DD516-5735-1764-C03C-F0BFAC13B254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
@@ -63,12 +63,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BehemothCore\Core\ResourceManager.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Core\ThreadPool.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="BehemothCore\Audio\SoundClip.h">
       <Filter>Audio</Filter>
     </ClInclude>
@@ -91,13 +85,22 @@
     <ClInclude Include="BehemothCore\Components\UIComponents.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Core\Log.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Core\ResourceManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Core\Stopwatch.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Core\ThreadPool.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Component.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\ComponentPool.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\ECS\ECSCore.h">
       <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\ECS\Entity.h">
@@ -191,12 +194,6 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Core\Log.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Core\Stopwatch.h">
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Misc\TransformHelper.h">
@@ -316,17 +313,20 @@
     <ClInclude Include="BehemothCore\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BehemothCore\Core\GameLoop.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Core\ResourceManager.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Core\ThreadPool.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="BehemothCore\Audio\SoundClip.cpp">
       <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Core\GameLoop.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Core\Log.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Core\ResourceManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Core\ThreadPool.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Event\EventManager.cpp">
       <Filter>Event</Filter>
@@ -365,9 +365,6 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Core\Log.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Misc\TransformHelper.cpp">

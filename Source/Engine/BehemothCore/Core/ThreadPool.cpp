@@ -62,6 +62,8 @@ namespace Behemoth
 		}
 		condition.notify_all();
 		for (std::thread& worker : workers)
+		{
 			worker.join();
+		}
 	}
 }

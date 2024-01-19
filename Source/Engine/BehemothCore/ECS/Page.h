@@ -7,31 +7,18 @@
 
 #define DEFAULT_PAGE_SIZE 4096
 
-
 namespace ECS
 {
+	// This class is the container for ECS components. This container paginates the data into arrays.
+	// This ensure pointer stability since only a vector of unique pointers, which point to the component arrays,
+	// may need to be moved if additional pages are added
 	template <typename T>
 	class Pages
 	{
 	public:
 		using page_ptr = std::unique_ptr<T[]>;
 
-		std::size_t pageSize;
-
 		Pages(std::size_t size = DEFAULT_PAGE_SIZE) : pageSize(size) {}
-
-		std::vector<page_ptr> pages;
-
-		inline void AddPage()
-		{
-			pages.push_back(std::make_unique<T[]>(pageSize));
-		}
-		inline T* GetPage(std::size_t index)
-		{
-			std::size_t i = index / pageSize;
-			assert(pages.size() > i);
-			return pages[i].get();
-		}
 
 		T& Add(const std::uint32_t identifier, T component)
 		{
@@ -60,5 +47,14 @@ namespace ECS
 
 			return pages[pageIndex][elementIndex];
 		}
+
+	private:
+		inline void AddPage()
+		{
+			pages.push_back(std::make_unique<T[]>(pageSize));
+		}
+
+		std::vector<page_ptr> pages;
+		std::size_t pageSize;
 	};
 }

@@ -36,10 +36,6 @@ namespace ECS
 		Registry() = default;
 		Registry(Registry&& obj) = delete;
 		Registry(const Registry& other) = delete;
-		~Registry()
-		{
-			std::cout << "Registry destructor called\n";
-		}
 
 		std::string GetName(EntityHandle entityHandle)
 		{
@@ -61,8 +57,7 @@ namespace ECS
 
 		bool IsValidHandle(EntityHandle entityHandle)
 		{
-			Entity entity = GetEntityFromHandle(entityHandle);
-			return entity.IsValid();
+			return GetEntityFromHandle(entityHandle).IsValid();
 		}
 
 		EntityHandle CreateEntity(std::string name = "Entity")
@@ -99,7 +94,13 @@ namespace ECS
 			Entity entity = GetEntityFromHandle(handle);
 			if (entity.IsValid())
 			{
-				return AddComponent<T>(entity, std::forward<Args>(parameters)...);
+				// Create component
+				T component(std::forward<Args>(parameters)...);
+				size_t index = Generator::Value<T>();
+				auto set = GetComponent<T>();
+				// this will return a pointer to the paginated component location, so it is ok that we are creating and returning 
+				// the component in the same function, does not cause dangling pointer/reference
+				return set->AddComponent(entity, component);
 			}
 			else
 			{
@@ -120,13 +121,11 @@ namespace ECS
 			return nullptr;
 		}
 
-		template<IsComponent T, typename ... Args>
-		T* AddComponent(Entity entity, Args&& ... parameters)
+		template<IsComponent T>
+		T* GetComponent(Entity entity)
 		{
-			T component(std::forward<Args>(parameters)...);
-			size_t index = Generator::Value<T>();
 			auto set = GetComponent<T>();
-			return set->AddComponent(entity, component);
+			return set->GetComponent(entity);
 		}
 
 		template<IsComponent T>
@@ -138,13 +137,6 @@ namespace ECS
 				auto set = GetComponent<T>();
 				set->RemoveComponent(entity);
 			}
-		}
-
-		template<IsComponent T>
-		T* GetComponent(Entity entity)
-		{
-			auto set = GetComponent<T>();
-			return set->GetComponent(entity);
 		}
 
 		template <IsComponent ...T>
@@ -165,16 +157,6 @@ namespace ECS
 		}
 
 		template<IsComponent... T>
-		std::vector<std::tuple<Entity, T*...>> Group()
-		{
-			auto componentSets = std::make_tuple((GetComponent<T>()) ...);
-			SortSets(componentSets);
-			std::vector<std::tuple<Entity, T*...>> group = GetSets<T...>(componentSets);
-
-			return group;
-		}
-
-		template<IsComponent... T>
 		std::vector<std::tuple<Entity, T*...>> Get()
 		{
 			auto componentSets = std::make_tuple((GetComponent<T>()) ...);
@@ -183,6 +165,7 @@ namespace ECS
 			return group;
 		}
 
+		// Returns all the component of type T
 		template<typename T>
 		std::shared_ptr<ComponentPool<T>> GetComponent()
 		{
@@ -275,29 +258,6 @@ namespace ECS
 				}, tuple);
 		}
 
-		template<IsTuple T>
-		void SortSets(T& tuple)
-		{
-			// First sort the arrays so that 
-			auto compare = [&](const Entity& e1, const Entity& e2)
-			{
-				bool lhs = ContainsEntity(tuple, e1);
-				bool rhs = ContainsEntity(tuple, e2);
-				if (lhs == rhs)
-				{
-					return e1.GetIdentifier() < e2.GetIdentifier();
-				}
-				else
-				{
-					return lhs > rhs;
-				}
-			};
-
-			std::apply([&](auto&... sets)
-				{
-					(..., sets->Sort(compare));
-				}, tuple);
-		}
 
 		template<IsComponent ... T, IsTuple U>
 		std::vector<std::tuple<Entity, T*...>> GetSets(U tuple)

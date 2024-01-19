@@ -45,7 +45,6 @@ namespace Behemoth
 		BMath::Vector3 target = transformComponent->worldPosition + transformComponent->forwardVector;
 
 		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->worldPosition, target, BMath::Vector3::Up());
-		cameraComponent->inverseTransposeViewMatrix = BMath::BMatrix4x4::Transpose(BMath::BMatrix4x4::Inverse(cameraComponent->viewMatrix));
 	}
 
 	void CameraSystem::UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transformComp)
