@@ -14,6 +14,8 @@ public:
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
+	float counter = 0.1;
+
 private:
 	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle environmentLighting;

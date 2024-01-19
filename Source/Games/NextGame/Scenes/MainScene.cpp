@@ -25,8 +25,7 @@ MainScene::MainScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	registry.AddComponent<CameraControllerComponent>(mainCameraHandle, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 0));
+	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 5));
 
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
@@ -38,8 +37,9 @@ MainScene::MainScene()
 	exampleParentEntity = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
 	registry.AddComponent<MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<OBBColliderComponent>(exampleParentEntity);
-	registry.AddComponent<ScalingComponent>(exampleParentEntity, BMath::Vector3(1.5f));
 	registry.AddComponent<RigidBodyComponent>(exampleParentEntity, false);
+	registry.AddComponent<CameraControllerComponent>(exampleParentEntity, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
+	registry.AddComponent<ScalingComponent>(exampleParentEntity, BMath::Vector3(0.5f));
 
 	exampleChildEntity1 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "cube.obj", "brick.png", "Child 1");
 	registry.AddComponent<MoveComponent>(exampleChildEntity1, BMath::Vector3(-5.0f, 0.0f, 0.0f));
@@ -60,6 +60,7 @@ void MainScene::Initalize()
 {
 	// Function called after scene constructor 
 	// Can be used for additional initialization steps that are required post construction
+	SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
 }
 
 void MainScene::ProcessEvent(Behemoth::Event& e)
@@ -73,11 +74,6 @@ void MainScene::Update(const float deltaTime)
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(exampleParentEntity))
 	{
 		parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(1.5f), BMath::Vector3(0, 1, 0));
-	}
-
-	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::KC_Space))
-	{
-		registry.AddComponent<ScalingComponent>(exampleParentEntity, BMath::Vector3(1.f));
 	}
 }
 
