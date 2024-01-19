@@ -39,14 +39,14 @@ MainScene::MainScene()
 	registry.AddComponent<OBBColliderComponent>(exampleParentEntity);
 	registry.AddComponent<RigidBodyComponent>(exampleParentEntity, false);
 	registry.AddComponent<CameraControllerComponent>(exampleParentEntity, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
-	registry.AddComponent<ScalingComponent>(exampleParentEntity, BMath::Vector3(0.5f));
+	registry.AddComponent<ScalingComponent>(exampleParentEntity, BMath::Vector3(1.5f));
 
 	exampleChildEntity1 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "cube.obj", "brick.png", "Child 1");
-	registry.AddComponent<MoveComponent>(exampleChildEntity1, BMath::Vector3(-5.0f, 0.0f, 0.0f));
+	registry.AddComponent<MoveComponent>(exampleChildEntity1, BMath::Vector3(-3.0f, 0.0f, 0.0f));
 	registry.AddComponent<RigidBodyComponent>(exampleChildEntity1, false);
 
 	exampleChildEntity2 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "sphere.obj", "brick.png", "Child 2");
-	registry.AddComponent<MoveComponent>(exampleChildEntity2, BMath::Vector3(5.0f, 0.0f, 0.0f));
+	registry.AddComponent<MoveComponent>(exampleChildEntity2, BMath::Vector3(3.0f, 0.0f, 0.0f));
 	registry.AddComponent<RigidBodyComponent>(exampleChildEntity2, false);
 
 	Behemoth::LightFactory lightFactory{};

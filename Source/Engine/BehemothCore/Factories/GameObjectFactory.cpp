@@ -14,7 +14,6 @@ namespace Behemoth
 		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<VelocityComponent>(entity);
 		registry.AddComponent<RotationComponent>(entity);
-		registry.AddComponent<ScalingComponent>(entity, BMath::Vector3(1.0f));
 
 		return entity;
 	}
@@ -32,7 +31,6 @@ namespace Behemoth
 		if (!parentComp)
 		{
 			registry.AddComponent<ParentComponent>(parentHandle);
-
 			// Ensure that component has been added successfully
 			parentComp = registry.GetComponent<ParentComponent>(parentHandle);
 			if (!parentComp)

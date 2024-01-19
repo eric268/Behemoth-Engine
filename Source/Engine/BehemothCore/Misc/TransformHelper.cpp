@@ -29,54 +29,17 @@ namespace Behemoth
 				transformComp->worldTransform._41 = transformComp->worldPosition.x;
 				transformComp->worldTransform._42 = transformComp->worldPosition.y;
 				transformComp->worldTransform._43 = transformComp->worldPosition.z;
+				transformComp->worldScale = parentTransform->worldScale * transformComp->localScale;
+				transformComp->parentIsDirty = false;
 			}
 		}
 		else
 		{
 			transformComp->worldTransform = transformComp->localTransform;
 			transformComp->worldPosition = transformComp->localPosition;
+			transformComp->worldScale = transformComp->localScale;
 			transformComp->isDirty = true;
 		}
-	}
-
-	BMath::BMatrix4x4 TransformHelper::GetWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::BMatrix4x4& localTransform)
-	{
-		BMath::BMatrix4x4 worldTransform = localTransform;
-
-		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
-		{
-			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
-			if (parentTransform)
-			{
-				worldTransform =  parentTransform->worldTransform * localTransform;
-			}
-			else
-			{
-				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
-			}
-		}
-
-		return worldTransform;
-	}
-	BMath::BMatrix3x3 TransformHelper::GetWorldRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::BMatrix3x3& localRotation)
-	{
-		BMath::BMatrix3x3 worldRotation = localRotation;
-
-		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
-		{
-			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
-			if (parentTransform)
-			{
-				BMath::BMatrix3x3 parentRotation = ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
-
-				worldRotation = parentRotation * localRotation;
-			}
-			else
-			{
-				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
-			}
-		}
-		return worldRotation;
 	}
 
 	TransformComponent* TransformHelper::GetParentTransformComp(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
@@ -103,69 +66,6 @@ namespace Behemoth
 			return transform->worldTransform;
 		}
 		return BMath::BMatrix4x4::Identity();
-	}
-
-	BMath::BMatrix3x3 TransformHelper::GetParentRotation(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
-	{
-		return ExtractRotationMatrix(GetParentTransform(registry, entityHandle));
-	}
-
-	BMath::Vector3 TransformHelper::GetParentScale(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
-	{
-		if (TransformComponent* transform = GetParentTransformComp(registry, entityHandle))
-		{
-			return transform->worldScale;
-		}
-		return BMath::Vector3(1.0f);
-	}
-
-	BMath::Vector3 TransformHelper::GetParentPosition(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
-	{
-		if (TransformComponent* transform = GetParentTransformComp(registry, entityHandle))
-		{
-			return transform->worldPosition;
-		}
-		return BMath::Vector3(0.0f);
-	}
-
-	BMath::Vector3 TransformHelper::GetWorldPosition(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Vector3& localPosition)
-	{
-		BMath::Vector3 worldPosition = localPosition;
-
-		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
-		{
-			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
-			if (parentTransform)
-			{
-				worldPosition += parentTransform->worldPosition;
-			}
-			else
-			{
-				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
-			}
-		}
-
-		return worldPosition;
-	}
-
-	BMath::Vector3 TransformHelper::GetWorldScale(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, const BMath::Vector3& localScale)
-	{
-		BMath::Vector3 worldScale = localScale;
-
-		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
-		{
-			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
-			if (parentTransform)
-			{
-				worldScale *= parentTransform->worldScale;
-			}
-			else
-			{
-				LOGMESSAGE(MessageType::Error, "Parent transform not found for entity: " + registry.GetName(entityHandle));
-			}
-		}
-
-		return worldScale;
 	}
 
 	BMath::BMatrix4x4 TransformHelper::GetTransformNoRotation(const BMath::BMatrix4x4& m, const BMath::Vector3& scale)
@@ -240,24 +140,6 @@ namespace Behemoth
 			}
 		}
 		return m;
-	}
-
-	BMath::Vector3 TransformHelper::ExtractScale(const  BMath::BMatrix4x4& transformMatrix)
-	{
-		BMath::Vector3 scale{};
-
-		for (int i = 0; i < 3; i++)
-		{
-			scale[i] = sqrt(transformMatrix.data[i][0] * transformMatrix.data[i][0] +
-								transformMatrix.data[i][1] * transformMatrix.data[i][1] +
-								transformMatrix.data[i][2] * transformMatrix.data[i][2]);
-		}
-		return scale;
-	}
-
-	BMath::Vector3 TransformHelper::ExtractPosition(const BMath::BMatrix4x4& transformMatrix)
-	{
-		return BMath::Vector3(transformMatrix._41, transformMatrix._42, transformMatrix._43);
 	}
 
 	void TransformHelper::NotifyChildrenTransformChange(ECS::Registry& registry, ECS::EntityHandle handle)

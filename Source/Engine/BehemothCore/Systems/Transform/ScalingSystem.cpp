@@ -24,7 +24,6 @@ namespace Behemoth
 	void ScalingSystem::ScaleEntities(ECS::Registry& registry, ScalingComponent* scalingComp, TransformComponent* transformComp, const ECS::EntityHandle& handle)
 	{
 		UpdateLocalScale(transformComp, transformComp->localScale, scalingComp->scalingVector);
-
 		TransformHelper::UpdateWorldTransform(registry, handle, transformComp);
 		TransformHelper::NotifyChildrenTransformChange(registry, handle);
 	}
@@ -40,9 +39,7 @@ namespace Behemoth
 				m.data[i][j] *= newScale[i];
 			}
 		}
-
 		transformComp->localTransform = m;
 		transformComp->localScale = newScale;
-
 	}
 }
