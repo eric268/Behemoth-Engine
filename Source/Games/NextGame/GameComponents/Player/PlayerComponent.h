@@ -17,7 +17,7 @@ struct PlayerComponent : public ECS::Component
 		cameraSpringArm(springArm),
 		projectileHandle(proj),
 		playerMeshHandle(mesh),
-		arrowMeshHandle(arrowMeshHandle),
+		arrowMeshHandle(arrowMesh),
 		chargeSpeed(chargeSpeed),
 		currentPower(0.0f)
 	{}

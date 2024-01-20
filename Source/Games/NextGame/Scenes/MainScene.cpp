@@ -34,8 +34,6 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
-
-
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 10));
 
 	GameObjectFactory gameObjectFactory{};
@@ -72,107 +70,7 @@ void MainScene::ProcessEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
-// 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerCharacter.playerMeshHandle))
-// 	{
-// 		if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(playerCharacter.playerHandle))
-// 		{
-// 			float speed = velocity->velocity.Magnitude();
-// 			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocity->velocity.z, 0.0f, -velocity->velocity.x));
-// 			parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(5.0f), dir);
-// 			parentRotationComponent->isAdditive = true;
-// 
-// 		}
-// 	}
-// 
-// 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerCharacter.projectileHandle))
-// 	{
-// 		auto input = Input::GetRightControllerAnaloge(0);
-// 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
-// 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
-// 
-// 		TransformComponent* projectileTransform = registry.GetComponent<TransformComponent>(playerCharacter.projectileHandle);
-// 
-// 		if (input.x != 0.0f)
-// 		{
-// 			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), projectileTransform->upVector);
-// 		}
-// 
-// 		if (input.y != 0.0f)
-// 		{
-// 			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), projectileTransform->rightVector);
-// 		}
-// 
-// 		parentRotationComponent->quat = (quatX * quatY).Normalize();
-// 
-// 		// parentRotationComponent->quat = quatX * quatY;
-// 		parentRotationComponent->isAdditive = true;
-// 	}
 
-// 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(cameraSpringArm))
-// 	{
-// 		auto input = Input::GetLeftControllerAnaloge(0);
-// 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
-// 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
-// 
-// 		TransformComponent* t = registry.GetComponent<TransformComponent>(cameraSpringArm);
-// 
-// 		if (input.x != 0.0f)
-// 		{
-// 			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(t->upVector));
-// 		}
-// 
-// 		if (input.y != 0.0f)
-// 		{
-// 			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(t->rightVector));
-// 		}
-// 
-// 		parentRotationComponent->quat = quatY * quatX;
-// 		parentRotationComponent->isAdditive = true;
-// 	}
-
-// 	//  
-// 	if (Input::IsKeyReleased(KeyCode::KC_Space) || Input::GetRightControllerTrigger(0) == 0.0f)
-// 	{
-// 		if (counter > 0.0f)
-// 		{
-// 			MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(playerCharacter.arrowMeshHandle);
-// 			if (arrowMesh)
-// 			{
-// 				arrowMesh->isVisible = false;
-// 			}
-// 
-// 			TransformComponent* playerTransform = registry.GetComponent<TransformComponent>(playerCharacter.projectileHandle);
-// 
-// 			BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(counter, playerTransform->forwardVector);
-// 
-// 			auto playerVelocity = registry.AddComponent<VelocityComponent>(playerCharacter.playerHandle);
-// 			playerVelocity->velocity = vel;
-// 
-// 			auto playerRigidBody = registry.AddComponent<RigidBodyComponent>(playerCharacter.playerHandle);
-// 			playerRigidBody->affectedByGravity = true;
-// 
-// 			counter = 0.0f;
-// 		}
-// 	}
-// 	if (Input::IsKeyHeld(KeyCode::KC_Space) || Input::GetRightControllerTrigger(0) > 0.0f)
-// 	{
-// 		float powerCharge = counter + deltaTime * powerChargeSpeed * Input::GetRightControllerTrigger(0);
-// 
-// 		counter = std::min(100.0f, powerCharge);
-// 		std::cout << counter << std::endl;
-// 	}
-
-// 	if (Input::IsKeyDown(KeyCode::KC_B))
-// 	{
-// 		VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(playerCharacter.playerHandle);
-// 		velocityComponent->velocity = BMath::Vector3(0.0f);
-// 
-// 		MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(playerCharacter.arrowMeshHandle);
-// 		if (arrowMesh)
-// 		{
-// 			arrowMesh->isVisible = true;
-// 		}
-// 	}
 }
 
 void MainScene::InitalizeSystems()

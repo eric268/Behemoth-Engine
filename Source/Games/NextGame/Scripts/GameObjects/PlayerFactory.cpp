@@ -19,6 +19,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	// Create a child component that will handle projectile aiming 
 	const ECS::EntityHandle projectileHandle = registry.CreateEntity("Projectile");
 	registry.AddComponent<TransformComponent>(projectileHandle);
+	registry.AddComponent<RotationComponent>(projectileHandle);
 
 	// Create child component that will be the projectile mesh
 	const ECS::EntityHandle playerMeshHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "Projectile Mesh");

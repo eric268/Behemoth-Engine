@@ -26,6 +26,7 @@ namespace Behemoth
 	{
 		prevKeyState = currentKeyState;
 		prevMouseState = currentMouseState;
+		prevControllerButtonState = currentControllerButtonState;
 
 		ProcessControllerInput();
 	}
@@ -39,7 +40,6 @@ namespace Behemoth
 				currentControllerButtonState[controller][button] = CSimpleControllers::GetInstance().GetController(controller).CheckButton(Behemoth::controllerButtonMap[button], false);
 			}
 		}
-		prevControllerButtonState = currentControllerButtonState;
 	}
 
 	bool Input::OnEvent(Event& event)

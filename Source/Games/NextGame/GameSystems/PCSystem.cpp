@@ -11,20 +11,17 @@ using namespace Behemoth;
 
 void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
-	for (const auto& [
-				   entity,
-					   playerComp,
-			pcComponent,
-			velocityComp]: registry.Get<PlayerComponent, PCComponent, VelocityComponent>())
+	for (const auto& [entity, playerComp, pcComponent]: registry.Get<PlayerComponent, PCComponent>())
 	{
 		IncreasePower(deltaTime, playerComp, pcComponent);
 		DecreasePower(deltaTime, playerComp, pcComponent);
+
 		Look(deltaTime, registry, playerComp, pcComponent);
 		Aim(deltaTime, registry, playerComp, pcComponent);
-
 		Fire(registry, entity, playerComp, pcComponent);
 
 		SwapCamera(pcComponent);
+		RotateMeshWhileMoving(registry, entity, playerComp);
 	}
 }
 
@@ -84,6 +81,7 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 			playerRigidBody->affectedByGravity = true;
 		}
 
+		SetArrowMeshVisibility(registry, playerComponent, false);
 		// Reset charge amount, could keep it previous amount of set it to default like 50
 		playerComponent->currentPower = 0.0f;
 	}
@@ -93,7 +91,7 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 {
 	AnalogInput input = Input::GetLeftControllerAnaloge(0);
 
-	// No look input
+// 	// No look input
 	if (input == AnalogInput())
 	{
 		return;
@@ -131,7 +129,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		return;
 	}
 
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
+	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
 	{
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
@@ -149,7 +147,6 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		}
 
 		parentRotationComponent->quat = (quatX * quatY).Normalize();
-
 		parentRotationComponent->isAdditive = true;
 	}
 }
@@ -160,7 +157,28 @@ void PCSystem::SwapCamera(PCComponent* pcComponent)
 
 }
 
-void PCSystem::SetArrowMeshVisibility(ECS::Registry& registry, const ECS::EntityHandle& entity, bool isVisible)
+void PCSystem::SetArrowMeshVisibility(ECS::Registry& registry, PlayerComponent* playerComponent, bool isVisible)
 {
+	MeshComponent* arrowMeshComponent = registry.GetComponent<MeshComponent>(playerComponent->arrowMeshHandle);
+	if (!arrowMeshComponent)
+	{
+		LOGMESSAGE(Error, "Unable to get arrow mesh component");
+		return;
+	}
+	
+	arrowMeshComponent->isVisible = isVisible;
+}
 
+void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent)
+{
+	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->playerMeshHandle))
+	{
+		if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(entity))
+		{
+			float speed = velocity->velocity.Magnitude();
+			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocity->velocity.z, 0.0f, -velocity->velocity.x));
+			parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(5.0f), dir);
+			parentRotationComponent->isAdditive = true;
+		}
+	}
 }

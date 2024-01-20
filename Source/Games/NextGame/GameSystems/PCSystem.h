@@ -23,6 +23,8 @@ private:
 	void Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, PlayerComponent* playerComponent, PCComponent* pcComponent);
 	void SwapCamera(PCComponent* pcComponent);
 
-	void SetArrowMeshVisibility(ECS::Registry& registry, const ECS::EntityHandle& entity, bool isVisible);
+	void SetArrowMeshVisibility(ECS::Registry& registry, PlayerComponent* playerComponent, bool isVisible);
+
+	void RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent);
 };
 
