@@ -43,10 +43,11 @@ MainScene::MainScene()
 	
 
 	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
-	registry.AddComponent<MoveComponent>(groundEntity, BMath::Vector3(0, -1, 0));
-	registry.AddComponent<ScalingComponent>(groundEntity, BMath::Vector3(10, 1, 10));
+	registry.AddComponent<MoveComponent>(groundEntity, BMath::Vector3(0, 0, 0));
+	registry.AddComponent<ScalingComponent>(groundEntity, BMath::Vector3(10, 1.1f, 10));
 	registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1.0f));
 	registry.AddComponent<StaticComponent>(groundEntity);
+	registry.AddComponent<RotationComponent>(groundEntity, BMath::Quaternion(DEGREE_TO_RAD(1), BMath::Vector3(1,0,0)));
 	// registry.AddComponent<WireframeComponent>(groundEntity, "plane.obj", BMath::Vector3(1, 0.1, 1));
 
 
@@ -159,8 +160,13 @@ void MainScene::Update(const float deltaTime)
 	}
 
 	//  
-	if (Input::IsKeyHeld(KeyCode::KC_Space))
+	if (Input::IsKeyDown(KeyCode::KC_Space) || Input::GetRightControllerTrigger(0) > 0.0f)
 	{
+		MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(arrowIconEntity);
+		if (arrowMesh)
+		{
+			arrowMesh->isVisible = false;
+		}
 
 		TransformComponent* playerTransform = registry.GetComponent<TransformComponent>(projectileEntity);
 
@@ -198,6 +204,12 @@ void MainScene::Update(const float deltaTime)
 	{
 		VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(playerEntity);
 		velocityComponent->velocity = BMath::Vector3(0.0f);
+
+		MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(arrowIconEntity);
+		if (arrowMesh)
+		{
+			arrowMesh->isVisible = true;
+		}
 	}
 }
 

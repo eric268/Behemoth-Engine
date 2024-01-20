@@ -85,7 +85,7 @@ namespace Behemoth
 			// InitMesh(boundingVolume->mesh, std::ref(Path));
 			SphereCollider collider = ResourceManager::GetInstance().GetMeshSphereBounds(meshComp->modelFileName);
 			boundingVolume->radius = collider.radius;
-			boundingVolume->localPosition = collider.position;
+			boundingVolume->localPosition = collider.center;
 		}
 	}
 

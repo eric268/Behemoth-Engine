@@ -61,7 +61,7 @@ namespace Behemoth
 
 	bool NarrowRaySphereCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::Vector3 rayToSphereVector = ray.origin - sphere.position;
+		BMath::Vector3 rayToSphereVector = ray.origin - sphere.center;
 		real directionMagnitudeSquared = BMath::Vector3::Dot<real>(ray.direction, ray.direction);
 		real projectionOntoRay = 2.0f * BMath::Vector3::Dot<real>(ray.direction, rayToSphereVector);
 		real sphereEquationConstant = BMath::Vector3::Dot<real>(rayToSphereVector, rayToSphereVector) - sphere.radius * sphere.radius;
@@ -91,7 +91,7 @@ namespace Behemoth
 
 		contactData.depth = collisionTime;
 		contactData.collisionPoint = ray.origin + ray.direction * collisionTime;
-		contactData.collisionNormal = (contactData.collisionPoint - sphere.position) / sphere.radius;
+		contactData.collisionNormal = (contactData.collisionPoint - sphere.center) / sphere.radius;
 
 		return true;
 	}
@@ -99,8 +99,8 @@ namespace Behemoth
 
 	bool NarrowSphereSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2, ContactData& contactData)
 	{
-		BMath::Vector3 positionOne = sphere1.position;
-		BMath::Vector3 positionTwo = sphere2.position;
+		BMath::Vector3 positionOne = sphere1.center;
+		BMath::Vector3 positionTwo = sphere2.center;
 
 		BMath::Vector3 midline = positionOne - positionTwo;
 		real size = BMath::Vector3::Magnitude(midline);
@@ -119,7 +119,7 @@ namespace Behemoth
 
 	bool NarrowSpherePlaneCollision(const SphereCollider& sphere, const Plane& plane, ContactData& contactData)
 	{
-		BMath::Vector3 spherePosition = sphere.position;
+		BMath::Vector3 spherePosition = sphere.center;
 		real distanceFromPlane = BMath::Vector3::Dot<real>(plane.normal, spherePosition) - sphere.radius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
 
 		if (distanceFromPlane >= 0.0f)
@@ -191,28 +191,28 @@ namespace Behemoth
 			{
 				rot.data[i][j] = box.orientation[i][j];
 			}
- 		}
-		BMath::Vector3 localToSphere = BMath::BMatrix3x3::Inverse(rot) * BMath::Vector3(sphere.position - box.position);
+		}
+		BMath::Vector3 localToSphere = BMath::BMatrix3x3::Inverse(rot) * BMath::Vector3(sphere.center - box.position);
 
- 		BMath::Vector3 closestPoint(0.0f);
+		BMath::Vector3 closestPoint(0.0f);
 
- 		for (int i = 0; i < 3; ++i)
- 		{
- 			real value = localToSphere[i];
- 			if (value > box.extents[i])
- 			{
- 				value = box.extents[i];
- 			}
- 			if (value < -box.extents[i])
- 			{
- 				value = -box.extents[i];
- 			}
- 			closestPoint[i] = value;
- 		}
+		for (int i = 0; i < 3; ++i)
+		{
+			real value = localToSphere[i];
+			if (value > box.extents[i])
+			{
+				value = box.extents[i];
+			}
+			if (value < -box.extents[i])
+			{
+				value = -box.extents[i];
+			}
+			closestPoint[i] = value;
+		}
 
 		closestPoint = rot * closestPoint + box.position;
 
-		BMath::Vector3 toSphere = sphere.position - closestPoint;
+		BMath::Vector3 toSphere = sphere.center - closestPoint;
 		float distSquared = BMath::Vector3::SquaredMagnitude(toSphere);
 
 		if (distSquared > sphere.radius * sphere.radius)
@@ -370,7 +370,7 @@ namespace Behemoth
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + 1e-6;
+				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + 1e-5;
 			}
 		}
 

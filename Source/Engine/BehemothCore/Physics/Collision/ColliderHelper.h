@@ -51,7 +51,7 @@ namespace Behemoth
 			return;
 		}
 
-		component->collider.position = transform->worldPosition;
+		component->collider.center = transform->worldPosition;
 		component->collider.radius = std::max(transform->worldScale[0], std::max(transform->worldScale[1], transform->worldScale[2])) * component->radius;
 	}
 

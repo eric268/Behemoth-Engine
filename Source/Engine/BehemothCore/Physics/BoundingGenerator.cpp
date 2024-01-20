@@ -57,7 +57,7 @@ namespace Behemoth
 			return false;
 		}
 
-		collider.position = position;
+		collider.center = position;
 		collider.radius = radius;
 		return true;
 	}

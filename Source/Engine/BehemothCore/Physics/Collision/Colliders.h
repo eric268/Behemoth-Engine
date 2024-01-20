@@ -24,7 +24,7 @@ namespace Behemoth
 	struct SphereCollider
 	{
 		SphereCollider() : radius(1.0f) {}
-		BMath::Vector3 position;
+		BMath::Vector3 center;
 		float radius;
 	};
 

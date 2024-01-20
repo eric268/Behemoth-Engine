@@ -32,8 +32,6 @@ namespace Behemoth
 
 	void Input::ProcessControllerInput()
 	{
-		prevControllerButtonState = currentControllerButtonState;
-
 		for (int controller = 0; controller < MAX_CONTROLLERS; controller++)
 		{
 			for (int button = 0; button < Behemoth::ControllerCode::NUM_CC; button++)
@@ -41,6 +39,7 @@ namespace Behemoth
 				currentControllerButtonState[controller][button] = CSimpleControllers::GetInstance().GetController(controller).CheckButton(Behemoth::controllerButtonMap[button], false);
 			}
 		}
+		prevControllerButtonState = currentControllerButtonState;
 	}
 
 	bool Input::OnEvent(Event& event)
