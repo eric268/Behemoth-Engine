@@ -17,6 +17,7 @@ public:
 private:
 	int counter = 0;
 	ECS::EntityHandle mainCameraHandle;
+	ECS::EntityHandle cameraSpringArm;
 
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle pointLight;

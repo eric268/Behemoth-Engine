@@ -9,26 +9,29 @@ namespace Behemoth
 	void TransformHelper::UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp)
 	{
 		TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, handle);
-		if (parentTransform && transformComp->parentIsDirty)
+		if (parentTransform)
 		{
-			// Combine parent's world transform with child's local transform
-			BMath::BMatrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform, parentTransform->worldScale) *
-				TransformHelper::RemoveScale(transformComp->localTransform, transformComp->localScale);
-
-			for (int i = 0; i < 3; i++)
+			// if (transformComp->parentIsDirty)
 			{
-				for (int j = 0; j < 3; j++)
-				{
-					transformComp->worldTransform.data[i][j] = combinedTransform.data[i][j] * transformComp->worldScale[i];
-				}
-			}
+				// Combine parent's world transform with child's local transform
+				BMath::BMatrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform, parentTransform->worldScale) *
+					TransformHelper::RemoveScale(transformComp->localTransform, transformComp->localScale);
 
-			transformComp->worldPosition = BMath::Vector3(combinedTransform._41, combinedTransform._42, combinedTransform._43);
-			transformComp->worldTransform._41 = transformComp->worldPosition.x;
-			transformComp->worldTransform._42 = transformComp->worldPosition.y;
-			transformComp->worldTransform._43 = transformComp->worldPosition.z;
-			transformComp->worldScale = parentTransform->worldScale * transformComp->localScale;
-			transformComp->parentIsDirty = false;
+				for (int i = 0; i < 3; i++)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						transformComp->worldTransform.data[i][j] = combinedTransform.data[i][j] * transformComp->worldScale[i];
+					}
+				}
+
+				transformComp->worldPosition = BMath::Vector3(combinedTransform._41, combinedTransform._42, combinedTransform._43);
+				transformComp->worldTransform._41 = transformComp->worldPosition.x;
+				transformComp->worldTransform._42 = transformComp->worldPosition.y;
+				transformComp->worldTransform._43 = transformComp->worldPosition.z;
+				transformComp->worldScale = parentTransform->worldScale * transformComp->localScale;
+				transformComp->parentIsDirty = false;
+			}
 		}
 		else
 		{

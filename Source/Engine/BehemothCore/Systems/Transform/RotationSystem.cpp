@@ -15,10 +15,10 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-//   			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
-//   			{
-//   				continue;
-// 	  		}
+			//   			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
+			//   			{
+			//   				continue;
+			// 	  		}
 
 			BMath::BMatrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 
@@ -34,14 +34,14 @@ namespace Behemoth
 			transformComp->isDirty = true;
 
 			// If this entity has a camera component we need to update the view matrix as well after a rotation
-			
+
 			if (CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity))
 			{
 				cameraComponent->isDirty = true;
 			}
 
 			// If this entity has a mesh component then we need to update the mesh normals after a rotation
-			if (MeshComponent*  meshComp = registry.GetComponent<MeshComponent>(entity))
+			if (MeshComponent* meshComp = registry.GetComponent<MeshComponent>(entity))
 			{
 				RotateMeshNormals(meshComp, rotationMatrix);
 			}
@@ -52,15 +52,15 @@ namespace Behemoth
 
 	void RotationSystem::ApplyRotation(TransformComponent* transformComp, const BMath::BMatrix4x4& rotationMatrix, bool isAdditive)
 	{
-		BMath::BMatrix4x4 transform = (isAdditive) ? 
-												transformComp->localTransform : 
-												TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
+		BMath::BMatrix4x4 transform = (isAdditive) ?
+			transformComp->localTransform :
+			TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
 
 		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
 
 		for (int i = 0; i < 3; i++)
 		{
-			for (int j = 0; j < 3; j++) 
+			for (int j = 0; j < 3; j++)
 			{
 				transformComp->localTransform.data[i][j] = rotatedTransformMatrix.data[i][j];
 			}

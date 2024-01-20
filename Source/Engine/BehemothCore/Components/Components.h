@@ -59,6 +59,7 @@ namespace Behemoth
 		TransformComponent() :	
 			worldTransform						(BMath::BMatrix4x4::Identity()),
 			localTransform						(BMath::BMatrix4x4::Identity()),
+			quaternion							(BMath::Quaternion::Identity()),
 			forwardVector						(BMath::Vector3::Forward()),
 			rightVector							(BMath::Vector3::Right()),
 			upVector							(BMath::Vector3::Up()),
@@ -72,6 +73,7 @@ namespace Behemoth
 
 		BMath::BMatrix4x4 worldTransform;
 		BMath::BMatrix4x4 localTransform;
+		BMath::Quaternion quaternion;
 		BMath::Vector3 forwardVector;
 		BMath::Vector3 rightVector;
 		BMath::Vector3	upVector;
@@ -105,8 +107,8 @@ namespace Behemoth
 
 	struct RotationComponent : public ECS::Component
 	{
-		RotationComponent()	:quat (BMath::Quaternion::Identity()), isAdditive(true) {}
-		RotationComponent(BMath::Quaternion q, bool additive = true) : quat (q), isAdditive(additive) {}
+		RotationComponent()	:quat (BMath::Quaternion::Identity()), isAdditive(false) {}
+		RotationComponent(BMath::Quaternion q, bool additive = false) : quat (q), isAdditive(additive) {}
 
 		BMath::Quaternion quat;
 		bool isAdditive;

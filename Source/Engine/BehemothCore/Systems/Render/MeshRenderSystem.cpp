@@ -25,6 +25,14 @@ namespace Behemoth
 
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
+		// Want to ensure that we use the world forward vector in case the camera is a child of another object, meaning its local
+		// forward vector maybe different then the actual direction it is facing
+		BMath::Vector3 cameraWorldFwdVec = BMath::Vector3(-mainCamera->viewMatrix._13,
+ 														   -mainCamera->viewMatrix._23,
+ 														   -mainCamera->viewMatrix._33).Normalize();
+
+		BMath::Vector3 cameraWorldFwdVec2 = cameraTransformComp->forwardVector;
+
 		// Count total number of possible primitives to render so that renderer primitive container is only resized once
 		// Will free unused space at the end
 		for (const auto& [entity, meshComp, transformComp] : components)
@@ -46,7 +54,7 @@ namespace Behemoth
 			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolume))
 			{
-				continue;
+				// continue;
 			}
 
 			// Process primitive render calculations on worker thread
@@ -57,6 +65,7 @@ namespace Behemoth
 				cameraTransformComp,
 				transformComp->worldTransform,
 				viewProjMatrix, 
+				cameraWorldFwdVec,
 				transformComp->isDirty,
 				renderSlotIndex));
 
@@ -75,7 +84,14 @@ namespace Behemoth
 	}
 
 
-	void MeshRenderSystem::ProcessMesh(Mesh& mesh, TransformComponent* cameraTransform, const BMath::BMatrix4x4& transformMatrix, const BMath::BMatrix4x4& viewProjMatrix, bool isDirty, int renderSlotIndex)
+	void MeshRenderSystem::ProcessMesh(
+		Mesh& mesh,
+		TransformComponent* cameraTransform,
+		const BMath::BMatrix4x4& transformMatrix,
+		const BMath::BMatrix4x4& viewProjMatrix,
+		const BMath::Vector3& cameraWorldFwdVec,
+		bool isDirty,
+		int renderSlotIndex)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -108,7 +124,7 @@ namespace Behemoth
 			}
 
 			// Check if primitive face is in direction of camera or if it can be culled
-			if (CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
+			if (CullBackFace(cameraTransform->worldPosition, cameraWorldFwdVec, primitive.verticies))
 			{
 				continue;
 			}

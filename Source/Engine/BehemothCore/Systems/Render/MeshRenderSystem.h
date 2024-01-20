@@ -27,6 +27,7 @@ namespace Behemoth
 			TransformComponent* cameraTransform,
 			const BMath::BMatrix4x4& transform, 
 			const BMath::BMatrix4x4& viewProjMatrix,
+			const BMath::Vector3& worldForwardVector,
 			bool dirty,
 			int renderSlotIndex);
 	};

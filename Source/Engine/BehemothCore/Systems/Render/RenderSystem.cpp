@@ -19,7 +19,7 @@ namespace Behemoth
 				primitiveVerts[i].y < -primitiveVerts[i].w ||
 				primitiveVerts[i].y >  primitiveVerts[i].w ||
 				primitiveVerts[i].z > primitiveVerts[i].w ||
-				primitiveVerts[i].z < -1.0f)
+				primitiveVerts[i].z < 0.0f)
 				numVerticiesOutsideFrustrum++;
 		}
 
