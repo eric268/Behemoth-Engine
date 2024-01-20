@@ -12,7 +12,6 @@ namespace Behemoth
 {
 	struct CollisionResolutionSystem
 	{
-	public:
 		void Run(const float deltaTime, ECS::Registry& regsitry);
 	};
 }

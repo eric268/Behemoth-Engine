@@ -310,6 +310,7 @@
     <ClInclude Include="BehemothCore\pch.h" />
     <ClInclude Include="BehemothCore\Physics\ProjectileMotion.h" />
     <ClInclude Include="BehemothCore\Math\MathDefines.h" />
+    <ClInclude Include="BehemothCore\Physics\Collision\PhysicsMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Audio\SoundClip.cpp">

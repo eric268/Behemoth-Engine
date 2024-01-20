@@ -206,10 +206,10 @@ void PCSystem::SlowPlayerOnGround(ECS::Registry& registry, const ECS::EntityHand
 			}
 		}
 
-		if (isCollidingWithGround)
-		{
-			velocity->velocity *= 0.95f;
-		}
+// 		if (isCollidingWithGround)
+// 		{
+// 			velocity->velocity *= 0.95f;
+// 		}
 
 		if (BMath::Vector3::SquaredMagnitude(velocity->velocity) <=  1.0f)
 		{

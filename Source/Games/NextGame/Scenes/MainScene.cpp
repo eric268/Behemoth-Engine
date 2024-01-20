@@ -20,6 +20,7 @@
 #include "Physics/ProjectileMotion.h"
 
 #include "GameSystems/PCSystem.h"
+#include "Physics/Collision/PhysicsMaterial.h"
 
 #include "TestScene.h"
 
@@ -40,15 +41,17 @@ MainScene::MainScene()
 	obstacleHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png");
 	registry.AddComponent<ScalingComponent>(obstacleHandle, BMath::Vector3(3, 3, 0.1));
 	registry.AddComponent<MoveComponent>(obstacleHandle, BMath::Vector3(0, 10, 0));
-	registry.AddComponent<OBBColliderComponent>(obstacleHandle);
 	registry.AddComponent<StaticComponent>(obstacleHandle);
+	auto obstacleCollider = registry.AddComponent<OBBColliderComponent>(obstacleHandle);
+	obstacleCollider->physicsMaterial = PhysicsMaterial(0.75, 1.0f);
 
 	
 
 	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
 	registry.AddComponent<MoveComponent>(groundEntity, BMath::Vector3(0, 0, 0));
 	registry.AddComponent<ScalingComponent>(groundEntity, BMath::Vector3(10, 1.1f, 10));
-	registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1.0f));
+	auto groundCollider = registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1.0f));
+	groundCollider->physicsMaterial = PhysicsMaterial(0.85, 0.95);
 	registry.AddComponent<StaticComponent>(groundEntity);
 	registry.AddComponent<RotationComponent>(groundEntity, BMath::Quaternion(DEGREE_TO_RAD(1), BMath::Vector3(1,0,0)));
 	// registry.AddComponent<WireframeComponent>(groundEntity, "plane.obj", BMath::Vector3(1, 0.1, 1));

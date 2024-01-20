@@ -12,7 +12,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 
 	// Create the main player / root component of the player
 	const ECS::EntityHandle playerHandle = gameObjectFactory.CreateGameObject(registry, "", "", "Player");
-	registry.AddComponent<RigidBodyComponent>(playerHandle, false);
+	registry.AddComponent<RigidBodyComponent>(playerHandle, false, true);
 	registry.AddComponent<MoveComponent>(playerHandle, spawnLocation);
 	registry.AddComponent<OBBColliderComponent>(playerHandle);
 

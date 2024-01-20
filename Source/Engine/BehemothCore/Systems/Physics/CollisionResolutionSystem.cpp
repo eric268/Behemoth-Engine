@@ -25,9 +25,14 @@ namespace Behemoth
 				float velocityAlongNormal = BMath::Vector3::Dot(newVelocity, collision.data.collisionNormal);
 				if (velocityAlongNormal < 0) 
 				{
-					newVelocity -= collision.data.collisionNormal * velocityAlongNormal;
+					float bounce = velocityAlongNormal * collision.data.physicsMaterial.restitution;
+					newVelocity -= collision.data.collisionNormal * (velocityAlongNormal + bounce);
 				}
+
+				newVelocity *= (1.0f - collision.data.physicsMaterial.dampening * deltaTime);
 			}
+
+
 
 			registry.AddComponent<MoveComponent>(entity, offsetPosition);
 			velocityComp->velocity = newVelocity;

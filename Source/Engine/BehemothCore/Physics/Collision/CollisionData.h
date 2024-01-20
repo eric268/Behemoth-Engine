@@ -1,6 +1,7 @@
 #pragma once
 #include "Math/Vector.h"
 #include "ECS/Entity.h"
+#include "Physics/Collision/PhysicsMaterial.h"
 
 #include <vector>
 
@@ -19,6 +20,7 @@ namespace Behemoth
 		ECS::EntityHandle handle;
 		BMath::Vector3 collisionPoint;
 		BMath::Vector3 collisionNormal;
+		PhysicsMaterial physicsMaterial;
 		double depth;
 	};
 

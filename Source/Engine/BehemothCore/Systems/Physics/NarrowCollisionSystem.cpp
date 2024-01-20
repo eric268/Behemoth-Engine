@@ -4,6 +4,7 @@
 #include "Physics/Collision/Colliders.h"
 #include "Components/Components.h"
 #include "Physics/Collision/ColliderHelper.h"
+#include "Physics/Collision/PhysicsMaterial.h"
 
 namespace Behemoth
 {
@@ -39,6 +40,7 @@ namespace Behemoth
 							{
 								if (IsCollision(dynamicTransform, hitTransform, collider1, collider2, contactData))
 								{
+									contactData.physicsMaterial = collider2->physicsMaterial;
 									GenerateCollisionData(registry, dynamicEntity, hitEntityHandle, contactData);
 								}
 							}; (..., CheckHitColliders(dynamicCollider, hitColliders));

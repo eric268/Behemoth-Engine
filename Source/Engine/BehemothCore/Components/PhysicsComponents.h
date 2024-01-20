@@ -6,6 +6,7 @@
 #include "Physics/Collision/CollisionMask.h"
 #include "Physics/Collision/Colliders.h"
 #include "Physics/Collision/CollisionData.h"
+#include "Physics/Collision/PhysicsMaterial.h"
 
 #include <string>
 #include <vector>
@@ -19,9 +20,10 @@ namespace Behemoth
 	// Physics Components
 	struct RigidBodyComponent : public ECS::Component
 	{
-		RigidBodyComponent() : affectedByGravity(true) {}
-		RigidBodyComponent(bool gravity) : affectedByGravity(gravity) {}
+		RigidBodyComponent() : affectedByGravity(true), simulatePhysics(true) {}
+		RigidBodyComponent(bool gravity, bool simPhysics) : affectedByGravity(gravity), simulatePhysics(simPhysics) {}
 		bool affectedByGravity;
+		bool simulatePhysics;
 	};
 
 	// Collider Components
@@ -29,18 +31,20 @@ namespace Behemoth
 	{
 	protected:
 		ColliderComponent(
-			bool enabled =								true,
-			BMask::CollisionType collisionType =		BMask::CollisionType::StaticType,
-			BMask::CollisionLayer collisionLayer =		BMask::CollisionLayer::EnvObject) 
+			bool enabled = true,
+			BMask::CollisionType collisionType = BMask::CollisionType::StaticType,
+			BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject)
 			:
 			isEnabled									(enabled),
 			collisionType								(collisionType),
-			collisionLayer								(collisionLayer) 
+			collisionLayer								(collisionLayer),
+			physicsMaterial								(PhysicsMaterial::None())
 		{}
 	public:
 		bool isEnabled;
 		BMask::CollisionType collisionType;
 		BMask::CollisionLayer collisionLayer;
+		PhysicsMaterial physicsMaterial;
 	};
 														
 	// Broad collision components

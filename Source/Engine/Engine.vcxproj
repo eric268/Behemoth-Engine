@@ -204,6 +204,7 @@
     <ClInclude Include="BehemothCore\Physics\Collision\CollisionData.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\CollisionMask.h" />
     <ClInclude Include="BehemothCore\Physics\Collision\NarrowCollision.h" />
+    <ClInclude Include="BehemothCore\Physics\Collision\PhysicsMaterial.h" />
     <ClInclude Include="BehemothCore\Physics\ProjectileMotion.h" />
     <ClInclude Include="BehemothCore\Physics\Ray.h" />
     <ClInclude Include="BehemothCore\Renderer\Renderer.h" />
