@@ -103,6 +103,28 @@ namespace BMath
 		return *this;
 	}
 
+	Quaternion Quaternion::DecomposeSwingTwist(const BMath::Quaternion& q, const BMath::Vector3& direction) 
+	{
+		BMath::Vector3 quatVector(q.x, q.y, q.z);
+		BMath::Vector3 proj = Vector3::VectorProject(quatVector, direction);
+		BMath::Quaternion twist(proj.x, proj.y, proj.z, q.w);
+		twist.Normalize(); // Ensure it's a valid rotation
+		return twist;
+	}
+
+	BMath::Quaternion DecomposeTwist(const BMath::Quaternion& q, const BMath::Vector3& twistAxis) 
+	{
+		// Project q's vector part onto twistAxis
+		BMath::Vector3 qVec(q.x, q.y, q.z);
+		float dotProduct = BMath::Vector3::Dot(qVec, twistAxis); // Assuming Vector3.Dot() method exists
+		BMath::Vector3 projectedVec = twistAxis * dotProduct;
+
+		// Construct twist quaternion
+		BMath::Quaternion twist(projectedVec.x, projectedVec.y, projectedVec.z, q.w);
+		twist.Normalize(); // Normalize to ensure it's a valid rotation quaternion
+		return twist;
+	}
+
 
 	// Directly set the quaternion from an axis-angle representation (axis must be normalized)
 	Quaternion& Quaternion::SetFromAxisAngle(const float angle, const BMath::Vector3& axis)

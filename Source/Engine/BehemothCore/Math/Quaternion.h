@@ -32,6 +32,9 @@ namespace BMath
 
 		Quaternion& SetFromAxisAngle(const float angle, const BMath::Vector3& axis);
 
+		static Quaternion DecomposeSwingTwist(const Quaternion& q, const BMath::Vector3& direction);
+		static BMath::Quaternion DecomposeTwist(const BMath::Quaternion& q, const BMath::Vector3& twistAxis);
+
 		union
 		{
 			float data[4];

@@ -59,6 +59,18 @@ namespace BMath
 		static Vector3 Cross(const Vector3& v1, const Vector3& v2);
 		static Vector3 Reflect(const Vector3& lightDir, const Vector3& normal);
 
+		static BMath::Vector3 VectorProject(const BMath::Vector3& a, const BMath::Vector3& b) 
+		{
+			float dotProduct = Vector3::Dot(a,b); // Assuming there's a Dot method for Vector3
+			float magnitudeSquared = Vector3::Dot(b,b);
+			if (magnitudeSquared == 0.0f) 
+			{
+				// Avoid division by zero
+				return BMath::Vector3(0.0f, 0.0f, 0.0f);
+			}
+			return b * (dotProduct / magnitudeSquared);
+		}
+
 		inline std::string Print()
 		{
 			return std::string(" X: " + std::to_string(x) + " Y: " + std::to_string(y) + " Z: " + std::to_string(z));

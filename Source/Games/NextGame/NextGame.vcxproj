@@ -148,19 +148,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameComponents\CameraControllerComponent.h" />
+    <ClInclude Include="GameComponents\PCComponent.h" />
     <ClInclude Include="GameSystems\CameraControllerSystem.h" />
+    <ClInclude Include="GameSystems\PCSystem.h" />
     <ClInclude Include="Scenes\MainScene.h" />
     <ClInclude Include="Scenes\TestScene.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Scripts\GameObjects\PlayerProjectile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp" />
     <ClCompile Include="GameSystems\CameraControllerSystem.cpp" />
+    <ClCompile Include="GameComponents\PCComponent.cpp" />
+    <ClCompile Include="GameSystems\PCSystem.cpp" />
     <ClCompile Include="Scenes\MainScene.cpp" />
     <ClCompile Include="Scenes\TestScene.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Scripts\GameObjects\PlayerProjectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Engine\Engine.vcxproj">

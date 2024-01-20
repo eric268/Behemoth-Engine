@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BehemothEngine.h"
+#include "Scripts/GameObjects/PlayerProjectile.h"
 
 class MainScene : public Behemoth::Scene
 {
@@ -15,24 +16,19 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
+	float counter = 0.0f;
+	float powerChargeSpeed = 10.0f;
+
+	ECS::EntityHandle obstacleHandle;
 
 	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle cameraSpringArm;
-	ECS::EntityHandle projectileMeshHandle;
 
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle pointLight;
 	ECS::EntityHandle skySphere;
-
-	ECS::EntityHandle exampleParentEntity;
-	ECS::EntityHandle exampleChildEntity1;
-	ECS::EntityHandle exampleChildEntity2;
-
-	ECS::EntityHandle projectileEntity;
-	ECS::EntityHandle arrowIconEntity;
-
-	ECS::EntityHandle playerEntity;
-
 	ECS::EntityHandle groundEntity;
+
+	PlayerProjectile playerCharacter;
 };
             

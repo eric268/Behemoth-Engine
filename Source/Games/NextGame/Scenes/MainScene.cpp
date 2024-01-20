@@ -21,6 +21,8 @@
 
 #include "TestScene.h"
 
+#include "Scripts/GameObjects/PlayerProjectile.h"
+
 using namespace Behemoth;
 
 MainScene::MainScene()
@@ -40,6 +42,14 @@ MainScene::MainScene()
 
 	GameObjectFactory gameObjectFactory{};
 
+	playerCharacter.InitalizePlayer(registry);
+
+	obstacleHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png");
+	registry.AddComponent<ScalingComponent>(obstacleHandle, BMath::Vector3(3, 3, 0.1));
+	registry.AddComponent<MoveComponent>(obstacleHandle, BMath::Vector3(0, 10, 0));
+	registry.AddComponent<OBBColliderComponent>(obstacleHandle);
+	registry.AddComponent<StaticComponent>(obstacleHandle);
+
 	
 
 	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
@@ -52,40 +62,15 @@ MainScene::MainScene()
 
 
 
-	playerEntity = gameObjectFactory.CreateGameObject(registry, "", "", "Player");
-	registry.AddComponent<RigidBodyComponent>(playerEntity, false);
-	registry.AddComponent<MoveComponent>(playerEntity, BMath::Vector3(0, 10, 10));
-	registry.AddComponent<OBBColliderComponent>(playerEntity);
-	// registry.AddComponent<WireframeComponent>(playerEntity, "cube.obj", BMath::Vector3(1));
-
-	projectileEntity = registry.CreateEntity("Projectile");
-	registry.AddComponent<TransformComponent>(projectileEntity);
-
- 	projectileMeshHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "Projectile Mesh");
- 	registry.AddComponent<RigidBodyComponent>(playerEntity, false);
-
-
-	arrowIconEntity = gameObjectFactory.CreateGameObject(registry, "arrow.obj", "arrow.jpg", "Arrow icon");
-	registry.AddComponent<ScalingComponent>(arrowIconEntity, BMath::Vector3(0.25));
-	registry.AddComponent<MoveComponent>(arrowIconEntity, BMath::Vector3(0, 0, -3));
-
-	BMath::Quaternion q1 = BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(0, 0, 1));
-	BMath::Quaternion q2 = BMath::Quaternion(DEGREE_TO_RAD(90), BMath::Vector3(1, 0, 0));
-	registry.AddComponent<RotationComponent>(arrowIconEntity, q1 * q2, true);
-
 	// gameObjectFactory.AddChildObject(registry, projectileEntity, mainCameraHandle);
 
 	CameraComponent* mainCameraComp = registry.GetComponent<CameraComponent>(mainCameraHandle);
-	mainCameraComp->focusedEntity = playerEntity;
+	mainCameraComp->focusedEntity = playerCharacter.playerHandle;
 
 
-	gameObjectFactory.AddChildObject(registry, playerEntity, cameraSpringArm);
+	gameObjectFactory.AddChildObject(registry, playerCharacter.playerHandle, cameraSpringArm);
 	gameObjectFactory.AddChildObject(registry, cameraSpringArm, mainCameraHandle);
 
-	gameObjectFactory.AddChildObject(registry, playerEntity, projectileEntity);
-	gameObjectFactory.AddChildObject(registry, projectileEntity, arrowIconEntity);
-	gameObjectFactory.AddChildObject(registry, projectileEntity, projectileMeshHandle);
-	
 }
 
 void MainScene::Initalize()
@@ -103,9 +88,9 @@ void MainScene::ProcessEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(projectileMeshHandle))
+	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerCharacter.playerMeshHandle))
 	{
-		if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(playerEntity))
+		if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(playerCharacter.playerHandle))
 		{
 			float speed = velocity->velocity.Magnitude();
 			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocity->velocity.z, 0.0f, -velocity->velocity.x));
@@ -115,25 +100,27 @@ void MainScene::Update(const float deltaTime)
 		}
 	}
 
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(projectileEntity))
+	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerCharacter.projectileHandle))
 	{
 		auto input = Input::GetRightControllerAnaloge(0);
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
-		TransformComponent* t = registry.GetComponent<TransformComponent>(projectileEntity);
+		TransformComponent* projectileTransform = registry.GetComponent<TransformComponent>(playerCharacter.projectileHandle);
 
 		if (input.x != 0.0f)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), t->upVector);
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), projectileTransform->upVector);
 		}
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), t->rightVector);
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), projectileTransform->rightVector);
 		}
 
-		parentRotationComponent->quat = quatX * quatY;
+		parentRotationComponent->quat = (quatX * quatY).Normalize();
+
+		// parentRotationComponent->quat = quatX * quatY;
 		parentRotationComponent->isAdditive = true;
 	}
 
@@ -160,52 +147,43 @@ void MainScene::Update(const float deltaTime)
 	}
 
 	//  
-	if (Input::IsKeyDown(KeyCode::KC_Space) || Input::GetRightControllerTrigger(0) > 0.0f)
+	if (Input::IsKeyReleased(KeyCode::KC_Space) || Input::GetRightControllerTrigger(0) == 0.0f)
 	{
-		MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(arrowIconEntity);
-		if (arrowMesh)
+		if (counter > 0.0f)
 		{
-			arrowMesh->isVisible = false;
+			MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(playerCharacter.arrowMeshHandle);
+			if (arrowMesh)
+			{
+				arrowMesh->isVisible = false;
+			}
+
+			TransformComponent* playerTransform = registry.GetComponent<TransformComponent>(playerCharacter.projectileHandle);
+
+			BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(counter, playerTransform->forwardVector);
+
+			auto playerVelocity = registry.AddComponent<VelocityComponent>(playerCharacter.playerHandle);
+			playerVelocity->velocity = vel;
+
+			auto playerRigidBody = registry.AddComponent<RigidBodyComponent>(playerCharacter.playerHandle);
+			playerRigidBody->affectedByGravity = true;
+
+			counter = 0.0f;
 		}
+	}
+	if (Input::IsKeyHeld(KeyCode::KC_Space) || Input::GetRightControllerTrigger(0) > 0.0f)
+	{
+		float powerCharge = counter + deltaTime * powerChargeSpeed * Input::GetRightControllerTrigger(0);
 
-		TransformComponent* playerTransform = registry.GetComponent<TransformComponent>(projectileEntity);
-
-
-		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(5.0f, playerTransform->forwardVector);
-	
-		auto playerVelocity = registry.AddComponent<VelocityComponent>(playerEntity);
-		playerVelocity->velocity = vel;
-
-		auto playerRigidBody = registry.AddComponent<RigidBodyComponent>(playerEntity);
-		playerRigidBody->affectedByGravity = true;
-
-		// counter += deltaTime;
-// 		if (std::abs(counter) > 2)
-// 		{
-// 			// counter = (counter > 0 ? 1 : -1); // Limit counter to range [-2, 2]
-// 		}
-// 
-// 		TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(projectileEntity);
-// 		TransformComponent* childTransform = registry.GetComponent<TransformComponent>(arrowIconEntity);
-// 
-// 		BMath::Vector3 newScale = BMath::Vector3(0.25f) + BMath::Vector3(counter * 3); // initialScaleOfChild should be defined elsewhere
-// 		childTransform->localScale = newScale;
-// 
-// 		float movementFactor = 0.05f;
-// 		BMath::Vector3 movement = parentTransform->forwardVector * movementFactor * counter;
-// 
-// 		std::cout << newScale.Print() << std::endl;
-// 
-// 		registry.AddComponent<ScalingComponent>(arrowIconEntity, BMath::Vector3(0.5));
-//  		registry.AddComponent<MoveComponent>(arrowIconEntity,  movement);
+		counter = std::min(100.0f, powerCharge);
+		std::cout << counter << std::endl;
 	}
 
 	if (Input::IsKeyDown(KeyCode::KC_B))
 	{
-		VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(playerEntity);
+		VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(playerCharacter.playerHandle);
 		velocityComponent->velocity = BMath::Vector3(0.0f);
 
-		MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(arrowIconEntity);
+		MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(playerCharacter.arrowMeshHandle);
 		if (arrowMesh)
 		{
 			arrowMesh->isVisible = true;
