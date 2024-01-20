@@ -41,7 +41,15 @@ namespace Behemoth
 								if (IsCollision(dynamicTransform, hitTransform, collider1, collider2, contactData))
 								{
 									contactData.physicsMaterial = collider2->physicsMaterial;
-									GenerateCollisionData(registry, dynamicEntity, hitEntityHandle, contactData);
+									if (collider2->isTrigger)
+									{
+										GenerateData<TriggerDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
+									}
+									else
+									{
+										GenerateData<CollisionDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
+									}
+
 								}
 							}; (..., CheckHitColliders(dynamicCollider, hitColliders));
 
@@ -53,24 +61,28 @@ namespace Behemoth
 			}
 		}
 	}
-	void NarrowCollisionSystem::GenerateCollisionData(ECS::Registry& registry, const ECS::EntityHandle& dynamicHandle, const ECS::EntityHandle& hitHandle, const ContactData& contactData)
-	{
-		CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(dynamicHandle);
-		if (!collisionDataComp)
-		{
-			collisionDataComp = registry.AddComponent<CollisionDataComponent>(dynamicHandle);
-		}
-
-		if (collisionDataComp)
-		{
-			BMath::Vector3 hitVelocity{};
-
-			if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitHandle))
-			{
-				hitVelocity = hitVelocityComponent->velocity;
-			}
-			CollisionData collisionData(contactData, hitHandle, hitVelocity);
-			collisionDataComp->data.push_back(collisionData);
-		}
-	}
+// 	void NarrowCollisionSystem::GenerateCollisionData(
+// 		ECS::Registry& registry,
+// 		const ECS::EntityHandle& dynamicHandle,
+// 		const ECS::EntityHandle& hitHandle,
+// 		const ContactData& contactData)
+// 	{
+// 		CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(dynamicHandle);
+// 		if (!collisionDataComp)
+// 		{
+// 			collisionDataComp = registry.AddComponent<CollisionDataComponent>(dynamicHandle);
+// 		}
+// 
+// 		if (collisionDataComp)
+// 		{
+// 			BMath::Vector3 hitVelocity{};
+// 
+// 			if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitHandle))
+// 			{
+// 				hitVelocity = hitVelocityComponent->velocity;
+// 			}
+// 			CollisionData collisionData(contactData, hitHandle, hitVelocity);
+// 			collisionDataComp->data.push_back(collisionData);
+// 		}
+// 	}
 }

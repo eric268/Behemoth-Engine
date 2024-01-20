@@ -14,6 +14,7 @@ namespace Behemoth
 	{
 		registry.RemoveAllComopnents<BroadCollisionPairsComponent>();
 		registry.RemoveAllComopnents<CollisionDataComponent>();
+		registry.RemoveAllComopnents<TriggerDataComponent>();
 
 		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, BVHColliderComponent>();
 		CheckCollision<StaticComponent>(registry, dynamicEntities, deltaTime);

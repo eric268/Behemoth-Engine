@@ -46,6 +46,14 @@ MainScene::MainScene()
 	auto obstacleCollider = registry.AddComponent<OBBColliderComponent>(obstacleHandle);
 	obstacleCollider->physicsMaterial = PhysicsMaterial(0.75, 1.0f);
 
+	ECS::EntityHandle obstacleHandle2 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png");
+	registry.AddComponent<ScalingComponent>(obstacleHandle2, BMath::Vector3(3, 3, 1.5));
+	registry.AddComponent<MoveComponent>(obstacleHandle2, BMath::Vector3(7, 10, 0));
+	registry.AddComponent<RotationComponent>(obstacleHandle2, BMath::Quaternion(DEGREE_TO_RAD(-25.0f), BMath::Vector3(0, 1, 0)), true);
+	registry.AddComponent<StaticComponent>(obstacleHandle2);
+	auto obstacleCollider2 = registry.AddComponent<OBBColliderComponent>(obstacleHandle2);
+	obstacleCollider2->physicsMaterial = PhysicsMaterial(0.75, 1.0f);
+
 	
 
 	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
@@ -74,7 +82,13 @@ void MainScene::ProcessEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
-
+	if (TriggerDataComponent* triggerData = registry.GetComponent<TriggerDataComponent>(playerCharacter))
+	{
+		if (triggerData->data.size() > 0)
+		{
+			std::cout << "Trigger overlap\n";
+		}
+	}
 }
 
 void MainScene::InitalizeSystems()

@@ -40,10 +40,31 @@ namespace Behemoth
 			return CheckCollision(collider1->collider, collider2->collider, data);
 		}
 
-		void GenerateCollisionData(
+		template <typename T>
+		void GenerateData(
 			ECS::Registry& registry,
 			const ECS::EntityHandle& dynamicHandle,
 			const ECS::EntityHandle& hitHandle,
-			const ContactData& contactData);
+			const ContactData& contactData)
+		{
+			T* data = registry.GetComponent<T>(dynamicHandle);
+			if (!data)
+			{
+				data = registry.AddComponent<T>(dynamicHandle);
+			}
+
+			if (data)
+			{
+				BMath::Vector3 hitVelocity{};
+
+				if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitHandle))
+				{
+					hitVelocity = hitVelocityComponent->velocity;
+				}
+				CollisionData collisionData(contactData, hitHandle, hitVelocity);
+				data->data.push_back(collisionData);
+			}
+		}
+		
 	};
 }
