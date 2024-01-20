@@ -27,6 +27,8 @@ namespace Behemoth
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 
+			rotationComp->quat = BMath::Quaternion::Identity();
+
 			transformComp->forwardVector = GetForwardVector(transformComp->localTransform);
 			transformComp->rightVector = GetRightVector(transformComp->localTransform);
 			transformComp->upVector = GetUpVector(transformComp->localTransform);
@@ -46,7 +48,7 @@ namespace Behemoth
 				RotateMeshNormals(meshComp, rotationMatrix);
 			}
 
-			registry.RemoveComponent<RotationComponent>(entity);
+			// registry.RemoveComponent<RotationComponent>(entity);
 		}
 	}
 
@@ -56,15 +58,15 @@ namespace Behemoth
 			transformComp->localTransform :
 			TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
 
-		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
+		transformComp->localTransform = rotationMatrix * transform;
 
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				transformComp->localTransform.data[i][j] = rotatedTransformMatrix.data[i][j];
-			}
-		}
+// 		for (int i = 0; i < 3; i++)
+// 		{
+// 			for (int j = 0; j < 3; j++)
+// 			{
+// 				transformComp->localTransform.data[i][j] = rotatedTransformMatrix.data[i][j];
+// 			}
+// 		}
 	}
 
 	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::BMatrix4x4& rotationMatrix)
@@ -98,16 +100,16 @@ namespace Behemoth
 
 	BMath::Vector3 RotationSystem::GetForwardVector(const BMath::BMatrix4x4& transformMatrix)
 	{
-		return  BMath::Vector3(-transformMatrix._13, -transformMatrix._23, -transformMatrix._33).Normalize();
+		return  BMath::Vector3(-transformMatrix._31, -transformMatrix._32, -transformMatrix._33).Normalize();
 	}
 
 	BMath::Vector3 RotationSystem::GetUpVector(const BMath::BMatrix4x4& transformMatrix)
 	{
-		return  BMath::Vector3(transformMatrix._12, transformMatrix._22, transformMatrix._32).Normalize();
+		return  BMath::Vector3(transformMatrix._21, transformMatrix._22, transformMatrix._23).Normalize();
 	}
 
 	BMath::Vector3 RotationSystem::GetRightVector(const BMath::BMatrix4x4& transformMatrix)
 	{
-		return BMath::Vector3(transformMatrix._11, transformMatrix._21, transformMatrix._31).Normalize();
+		return BMath::Vector3(transformMatrix._11, transformMatrix._12, transformMatrix._13).Normalize();
 	}
 }

@@ -103,17 +103,19 @@ void MainScene::Update(const float deltaTime)
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
+		TransformComponent* t = registry.GetComponent<TransformComponent>(projectileEntity);
+
 		if (input.x != 0.0f)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(1.0f, 0.0f, 0.0f));
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), t->upVector);
 		}
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.x), BMath::Vector3(0.0f, 1.0f, 0.0f));
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), t->rightVector);
 		}
 
-		parentRotationComponent->quat = quatY * quatX;
+		parentRotationComponent->quat = quatX * quatY;
 		parentRotationComponent->isAdditive = true;
 	}
 
@@ -123,14 +125,16 @@ void MainScene::Update(const float deltaTime)
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
+		TransformComponent* t = registry.GetComponent<TransformComponent>(cameraSpringArm);
+
 		if (input.x != 0.0f)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(1.0f, 0.0f, 0.0f));
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(t->upVector));
 		}
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.x), BMath::Vector3(0.0f, 1.0f, 0.0f));
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(t->rightVector));
 		}
 
 		parentRotationComponent->quat = quatY * quatX;
@@ -138,8 +142,11 @@ void MainScene::Update(const float deltaTime)
 	}
 
 	//  
-	//  	if (Input::IsKeyDown(KeyCode::KC_Space))
-	//  	{
+	if (Input::IsKeyDown(KeyCode::KC_Space))
+	{
+		TransformComponent* t = registry.GetComponent<TransformComponent>(projectileEntity);
+
+	}
 	//  
 	//  		auto mainCameraTransform = registry.GetComponent<TransformComponent>(mainCameraHandle);
 	//  		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(15.0f, 0, DEGREE_TO_RAD(45.0f));
