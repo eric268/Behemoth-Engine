@@ -28,9 +28,10 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="GameComponents\PCComponent.h" />
-    <ClInclude Include="Scripts\GameObjects\PlayerProjectile.h" />
+    <ClInclude Include="GameComponents\Player\PCComponent.h" />
+    <ClInclude Include="Scripts\GameObjects\PlayerFactory.h" />
     <ClInclude Include="GameSystems\PCSystem.h" />
+    <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -46,8 +47,7 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="GameComponents\PCComponent.cpp" />
-    <ClCompile Include="Scripts\GameObjects\PlayerProjectile.cpp" />
+    <ClCompile Include="Scripts\GameObjects\PlayerFactory.cpp" />
     <ClCompile Include="GameSystems\PCSystem.cpp" />
   </ItemGroup>
 </Project>

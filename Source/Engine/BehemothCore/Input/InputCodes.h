@@ -6,6 +6,18 @@ namespace Behemoth
 	{
 		float x;
 		float y;
+
+		AnalogInput() : x(0.0f), y(0.0f) {}
+		AnalogInput(float x, float y) : x(x), y(y) {}
+
+		bool operator == (AnalogInput& obj)
+		{
+			return x == obj.x && y == obj.y;
+		}
+		bool operator != (AnalogInput& obj)
+		{
+			return !(*this == obj);
+		}
 	};
 
 	enum KeyCode : uint16_t
