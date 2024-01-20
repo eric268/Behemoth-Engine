@@ -39,8 +39,9 @@ MainScene::MainScene()
 
 	GameObjectFactory gameObjectFactory{};
 	obstacleHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png");
-	registry.AddComponent<ScalingComponent>(obstacleHandle, BMath::Vector3(3, 3, 0.1));
-	registry.AddComponent<MoveComponent>(obstacleHandle, BMath::Vector3(0, 10, 0));
+	registry.AddComponent<ScalingComponent>(obstacleHandle, BMath::Vector3(3, 3, 1.5));
+	registry.AddComponent<MoveComponent>(obstacleHandle, BMath::Vector3(-5, 10, 0));
+	registry.AddComponent<RotationComponent>(obstacleHandle, BMath::Quaternion(DEGREE_TO_RAD(25.0f), BMath::Vector3(0,1,0)), true);
 	registry.AddComponent<StaticComponent>(obstacleHandle);
 	auto obstacleCollider = registry.AddComponent<OBBColliderComponent>(obstacleHandle);
 	obstacleCollider->physicsMaterial = PhysicsMaterial(0.75, 1.0f);
