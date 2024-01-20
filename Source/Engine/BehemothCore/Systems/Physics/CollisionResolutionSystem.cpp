@@ -1,4 +1,4 @@
-#include "pch.h"
+ #include "pch.h"
 #include "CollisionResolutionSystem.h"
 #include "ECS/Registry.h"
 #include "Physics/Collision/Colliders.h"
@@ -26,7 +26,7 @@ namespace Behemoth
   			}
   
  			registry.AddComponent<MoveComponent>(entity, offsetPosition);
-			velocityComp->velocity += offsetVelocity * 0.99f;
+			velocityComp->velocity += offsetVelocity * 0.96f;
 		}
 	}
 }

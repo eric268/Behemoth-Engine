@@ -42,7 +42,7 @@ namespace Behemoth
 	class BVHFactory
 	{
 	public:
-		BVHFactory(bool drawColliders = false);
+		BVHFactory();
 		~BVHFactory();
 
 		template <typename ...T>
@@ -58,6 +58,8 @@ namespace Behemoth
 			return CreateBVHTree<T...>(registry, entityHandles);
 		}
 
+		bool drawDebugColliders;
+	
 	private:
 
 		template <typename ...T>
@@ -115,7 +117,6 @@ namespace Behemoth
 
 		void DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles);
 		std::shared_ptr<BVHNode> root;
-		bool drawDebugColliders;
 	};
 }
 

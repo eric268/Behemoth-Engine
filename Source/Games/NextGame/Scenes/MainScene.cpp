@@ -38,23 +38,27 @@ MainScene::MainScene()
 	registry.AddComponent<RotationComponent>(cameraSpringArm);
 
 	GameObjectFactory gameObjectFactory{};
+
+	ECS::EntityHandle testObject = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png");
+	registry.AddComponent<StaticComponent>(testObject);
+	registry.AddComponent<OBBColliderComponent>(testObject);
 	
 
 	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
-	registry.AddComponent<MoveComponent>(groundEntity, BMath::Vector3(0, -10, 0));
-	registry.AddComponent<ScalingComponent>(groundEntity, BMath::Vector3(100, 1, 100));
-	registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1, 1, 1));
+	registry.AddComponent<MoveComponent>(groundEntity, BMath::Vector3(0, -1, 0));
+	registry.AddComponent<ScalingComponent>(groundEntity, BMath::Vector3(10, 1, 10));
+	registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1, 0.2f, 1));
+	registry.AddComponent<StaticComponent>(groundEntity);
 	// registry.AddComponent<WireframeComponent>(groundEntity, "plane.obj", BMath::Vector3(1, 0.1, 1));
 
 	playerEntity = gameObjectFactory.CreateGameObject(registry, "", "", "Player");
-	registry.AddComponent<OBBColliderComponent>(playerEntity);
 	registry.AddComponent<RigidBodyComponent>(playerEntity, false);
 	registry.AddComponent<MoveComponent>(playerEntity, BMath::Vector3(0, 10, 10));
+	registry.AddComponent<SphereColliderComponent>(playerEntity);
 	// registry.AddComponent<WireframeComponent>(playerEntity, "cube.obj", BMath::Vector3(1));
 
 	projectileEntity = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "Projectile");
-	auto parent = registry.AddComponent<ParentComponent>(projectileEntity);
-	registry.AddComponent<RigidBodyComponent>(projectileEntity, false);
+	registry.AddComponent<RigidBodyComponent>(playerEntity, false);
 
 
 	arrowIconEntity = gameObjectFactory.CreateGameObject(registry, "arrow.obj", "arrow.jpg", "Arrow icon");
@@ -147,13 +151,14 @@ void MainScene::Update(const float deltaTime)
 		TransformComponent* playerTransform = registry.GetComponent<TransformComponent>(projectileEntity);
 
 
-		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(35.0f, playerTransform->forwardVector);
+		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(5.0f, playerTransform->forwardVector);
 	
 		auto playerVelocity = registry.AddComponent<VelocityComponent>(playerEntity);
 		playerVelocity->velocity = vel;
 
 		auto playerRigidBody = registry.AddComponent<RigidBodyComponent>(playerEntity);
 		playerRigidBody->affectedByGravity = true;
+
 		// counter += deltaTime;
 // 		if (std::abs(counter) > 2)
 // 		{

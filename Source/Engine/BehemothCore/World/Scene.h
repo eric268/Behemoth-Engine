@@ -30,7 +30,7 @@ namespace Behemoth
 		ECS::EntityHandle staticBVHHandle;
 		ECS::EntityHandle dynamicBVHHandle;
 
-		BVHFactory factory{};
+		BVHFactory factory;
 	};
 }
 
