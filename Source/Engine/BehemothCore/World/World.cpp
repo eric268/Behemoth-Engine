@@ -49,19 +49,19 @@ namespace Behemoth
 		// Keep these in this order
 		Behemoth::SystemManager::GetInstance().AddSystem<ScalingSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<RotationSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
 
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<TimerSystem>();
 
-		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<MovementSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<RigidBodySystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 
  		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
   		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
   		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
 
-		Behemoth::SystemManager::GetInstance().AddSystem<MovementSystem>();
 
 		// These systems should always be last and in this order
 		// Maybe make a separate container for them to ensure they are last

@@ -18,6 +18,7 @@ private:
 
 	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle cameraSpringArm;
+	ECS::EntityHandle projectileMeshHandle;
 
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle pointLight;

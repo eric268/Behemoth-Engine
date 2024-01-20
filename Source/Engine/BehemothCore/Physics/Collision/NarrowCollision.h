@@ -44,13 +44,20 @@ namespace Behemoth
 	template<>
 	inline bool CheckCollision(const SphereCollider& c1, const OBBCollider& c2, ContactData& contactData)
 	{
-		return NarrowSphereOBBCollision(c1, c2, contactData);
+		bool result = NarrowSphereOBBCollision(c1, c2, contactData);
+		if (result)
+			NarrowSphereOBBCollision(c1, c2, contactData);
+		return result;
 	}
 
 	template<>
 	inline bool CheckCollision(const OBBCollider& c1, const OBBCollider& c2, ContactData& contactData)
 	{
-		return NarrowOBBOBBCollision(c1, c2, contactData);
+		// return NarrowOBBOBBCollision(c1, c2, contactData);
+		bool result = NarrowOBBOBBCollision(c1, c2, contactData);
+		if (result)
+			NarrowOBBOBBCollision(c1, c2, contactData);
+		return result;
 	}
 
 	template<>

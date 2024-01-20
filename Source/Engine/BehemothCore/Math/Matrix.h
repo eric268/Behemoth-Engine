@@ -108,7 +108,7 @@ namespace BMath
 			return Vector3(data[row][0], data[row][1], data[row][2]);
 		}
 
-		Vector3 operator*(const Vector3 v) const
+		Vector3 operator*(Vector3 v)
 		{
 			Vector3 vec{};
 

@@ -70,7 +70,7 @@ namespace Behemoth
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				component->collider.orientation[i][j] = orientationMatrix.data[i][j] / transform->worldScale[i];;
+				component->collider.orientation[i][j] = orientationMatrix.data[i][j];
 			}
 		}
 	}

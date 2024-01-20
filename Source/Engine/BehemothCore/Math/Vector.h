@@ -254,6 +254,7 @@ namespace BMath
 		{
 			assert(vec.x != 0.0f && vec.y != 0.0f && vec.z != 0.0f);
 			x /= vec.x;
+			x /= vec.x;
 			y /= vec.y;
 			z /= vec.z;
 			return *this;

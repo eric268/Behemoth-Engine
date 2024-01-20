@@ -15,10 +15,10 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-			//   			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
-			//   			{
-			//   				continue;
-			// 	  		}
+//   			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && !transformComp->parentIsDirty)
+//   			{
+//   				continue;
+// 	  		}
 
 			BMath::BMatrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 
@@ -48,7 +48,7 @@ namespace Behemoth
 				RotateMeshNormals(meshComp, rotationMatrix);
 			}
 
-			// registry.RemoveComponent<RotationComponent>(entity);
+			//registry.RemoveComponent<RotationComponent>(entity);
 		}
 	}
 
@@ -58,15 +58,15 @@ namespace Behemoth
 			transformComp->localTransform :
 			TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
 
-		transformComp->localTransform = rotationMatrix * transform;
+		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
 
-// 		for (int i = 0; i < 3; i++)
-// 		{
-// 			for (int j = 0; j < 3; j++)
-// 			{
-// 				transformComp->localTransform.data[i][j] = rotatedTransformMatrix.data[i][j];
-// 			}
-// 		}
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				transformComp->localTransform.data[i][j] = rotatedTransformMatrix.data[i][j];
+			}
+		}
 	}
 
 	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::BMatrix4x4& rotationMatrix)

@@ -184,51 +184,45 @@ namespace Behemoth
 
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::BMatrix4x4d boxTransform = BMath::BMatrix4x4d::Identity();
-
+		BMath::BMatrix3x3 rot;
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				boxTransform.data[i][j] = box.orientation[i][j] * box.extents[i];
+				rot.data[i][j] = box.orientation[i][j];
 			}
-		}
+ 		}
+		BMath::Vector3 localToSphere = BMath::BMatrix3x3::Inverse(rot) * BMath::Vector3(sphere.position - box.position);
 
-		boxTransform._41 = box.position.x;
-		boxTransform._42 = box.position.y;
-		boxTransform._43 = box.position.z;
+ 		BMath::Vector3 closestPoint(0.0f);
 
-		BMath::Vector3 localToSphere = BMath::Vector3(BMath::BMatrix4x4d::Inverse(boxTransform) * BMath::Vector4(sphere.position, 1.0f));
+ 		for (int i = 0; i < 3; ++i)
+ 		{
+ 			real value = localToSphere[i];
+ 			if (value > box.extents[i])
+ 			{
+ 				value = box.extents[i];
+ 			}
+ 			if (value < -box.extents[i])
+ 			{
+ 				value = -box.extents[i];
+ 			}
+ 			closestPoint[i] = value;
+ 		}
 
-		BMath::Vector3 closestPoint(0.0f);
+		closestPoint = rot * closestPoint + box.position;
 
-		for (int i = 0; i < 3; ++i)
-		{
-			real value = localToSphere[i];
-			if (value > box.extents[i])
-			{
-				value = box.extents[i];
-			}
-			if (value < -box.extents[i])
-			{
-				value = -box.extents[i];
-			}
-			closestPoint[i] = value;
-		}
+		BMath::Vector3 toSphere = sphere.position - closestPoint;
+		float distSquared = BMath::Vector3::SquaredMagnitude(toSphere);
 
-		BMath::Vector3 diff = closestPoint - localToSphere;
-		real squareDist = BMath::Vector3::SquaredMagnitude(diff);
-
-		if (squareDist > sphere.radius * sphere.radius)
+		if (distSquared > sphere.radius * sphere.radius)
 		{
 			return false;
 		}
 
-		BMath::Vector3 worldContactPoint = BMath::Vector3(boxTransform * BMath::Vector4(closestPoint, 1.0f));
-		contactData.collisionPoint = worldContactPoint;
-		contactData.collisionNormal = diff.Normalize();
-		contactData.depth = sphere.radius - std::sqrt(squareDist);
-
+		contactData.collisionPoint = closestPoint;
+		contactData.collisionNormal = toSphere.Normalize();
+		contactData.depth = sphere.radius - std::sqrt(distSquared);
 		return true;
 	}
 
@@ -239,7 +233,7 @@ namespace Behemoth
 	{
 		bool result = NarrowOBBSphereCollision(box, sphere, collisionData);
 		// If we are checking sphere against OBB instead of the OBB against sphere, we have to invert the normal
-		collisionData.collisionNormal *= -1.0f;
+		// collisionData.collisionNormal *= -1.0f;
 		return result;
 	}
 
@@ -376,7 +370,7 @@ namespace Behemoth
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + 1e-4;
+				absRotationMatrix.data[i][j] = std::abs(rotationMatrix.data[i][j]) + 1e-6;
 			}
 		}
 

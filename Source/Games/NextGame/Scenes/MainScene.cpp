@@ -32,6 +32,7 @@ MainScene::MainScene()
 
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
+	registry.AddComponent<MoveComponent>(mainCameraHandle, BMath::Vector3(0, 0, 10));
 
 	cameraSpringArm = registry.CreateEntity("Spring arm");
 	registry.AddComponent<TransformComponent>(cameraSpringArm);
@@ -39,26 +40,28 @@ MainScene::MainScene()
 
 	GameObjectFactory gameObjectFactory{};
 
-	ECS::EntityHandle testObject = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png");
-	registry.AddComponent<StaticComponent>(testObject);
-	registry.AddComponent<OBBColliderComponent>(testObject);
 	
 
 	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
 	registry.AddComponent<MoveComponent>(groundEntity, BMath::Vector3(0, -1, 0));
 	registry.AddComponent<ScalingComponent>(groundEntity, BMath::Vector3(10, 1, 10));
-	registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1, 0.2f, 1));
+	registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1.0f));
 	registry.AddComponent<StaticComponent>(groundEntity);
 	// registry.AddComponent<WireframeComponent>(groundEntity, "plane.obj", BMath::Vector3(1, 0.1, 1));
+
+
 
 	playerEntity = gameObjectFactory.CreateGameObject(registry, "", "", "Player");
 	registry.AddComponent<RigidBodyComponent>(playerEntity, false);
 	registry.AddComponent<MoveComponent>(playerEntity, BMath::Vector3(0, 10, 10));
-	registry.AddComponent<SphereColliderComponent>(playerEntity);
+	registry.AddComponent<OBBColliderComponent>(playerEntity);
 	// registry.AddComponent<WireframeComponent>(playerEntity, "cube.obj", BMath::Vector3(1));
 
-	projectileEntity = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "Projectile");
-	registry.AddComponent<RigidBodyComponent>(playerEntity, false);
+	projectileEntity = registry.CreateEntity("Projectile");
+	registry.AddComponent<TransformComponent>(projectileEntity);
+
+ 	projectileMeshHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "Projectile Mesh");
+ 	registry.AddComponent<RigidBodyComponent>(playerEntity, false);
 
 
 	arrowIconEntity = gameObjectFactory.CreateGameObject(registry, "arrow.obj", "arrow.jpg", "Arrow icon");
@@ -71,8 +74,6 @@ MainScene::MainScene()
 
 	// gameObjectFactory.AddChildObject(registry, projectileEntity, mainCameraHandle);
 
-	registry.AddComponent<MoveComponent>(mainCameraHandle, BMath::Vector3(0, 0, 10));
-
 	CameraComponent* mainCameraComp = registry.GetComponent<CameraComponent>(mainCameraHandle);
 	mainCameraComp->focusedEntity = playerEntity;
 
@@ -82,6 +83,7 @@ MainScene::MainScene()
 
 	gameObjectFactory.AddChildObject(registry, playerEntity, projectileEntity);
 	gameObjectFactory.AddChildObject(registry, projectileEntity, arrowIconEntity);
+	gameObjectFactory.AddChildObject(registry, projectileEntity, projectileMeshHandle);
 	
 }
 
@@ -100,6 +102,18 @@ void MainScene::ProcessEvent(Behemoth::Event& e)
 
 void MainScene::Update(const float deltaTime)
 {
+	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(projectileMeshHandle))
+	{
+		if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(playerEntity))
+		{
+			float speed = velocity->velocity.Magnitude();
+			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocity->velocity.z, 0.0f, -velocity->velocity.x));
+			parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(5.0f), dir);
+			parentRotationComponent->isAdditive = true;
+
+		}
+	}
+
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(projectileEntity))
 	{
 		auto input = Input::GetRightControllerAnaloge(0);
@@ -178,8 +192,12 @@ void MainScene::Update(const float deltaTime)
 // 
 // 		registry.AddComponent<ScalingComponent>(arrowIconEntity, BMath::Vector3(0.5));
 //  		registry.AddComponent<MoveComponent>(arrowIconEntity,  movement);
+	}
 
-
+	if (Input::IsKeyDown(KeyCode::KC_B))
+	{
+		VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(playerEntity);
+		velocityComponent->velocity = BMath::Vector3(0.0f);
 	}
 }
 
