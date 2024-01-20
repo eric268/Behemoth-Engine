@@ -18,7 +18,9 @@ namespace Behemoth
 			{
 				UpdatePerspectiveMatrix(cameraComp, transformComp);
 				UpdateFrustrum(cameraComp, transformComp);
+				SetLook(registry, transformComp, cameraComp);
 				cameraComp->isDirty = false;
+				transformComp->isDirty = true;
 			}
 		}
 	}
@@ -41,10 +43,6 @@ namespace Behemoth
 		cameraComponent->projMatrix._33 = -(farPlane + nearPlane) / (farPlane - nearPlane);
 		cameraComponent->projMatrix._43 = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
 		cameraComponent->projMatrix._34 = -1.0f;
-
-		BMath::Vector3 target = transformComponent->worldPosition + transformComponent->forwardVector;
-
-		cameraComponent->viewMatrix = CameraHelper::LookAt(transformComponent->worldPosition, target, transformComponent->upVector);
 	}
 
 	void CameraSystem::UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transformComp)
@@ -105,23 +103,23 @@ namespace Behemoth
 		cameraComponent->worldSpaceFrustum[5].d = -BMath::Vector3::Dot(farCenter, zAxis);
 	}
 
-	float CameraSystem::GetDistance(const BMath::BMatrix4x4& m, int index)
+	void CameraSystem::SetLook(ECS::Registry& registry, TransformComponent* cameraTransform, CameraComponent* cameraComponent)
 	{
-		if (index > 3)
+		BMath::Vector3 target;
+
+		if (cameraComponent->focusedEntity.ID == NULL_ENTITY)
 		{
-			index = 0;
+			target = cameraTransform->worldPosition + cameraTransform->forwardVector;
+		}
+		else
+		{
+			TransformComponent* transform = registry.GetComponent<TransformComponent>(cameraComponent->focusedEntity);
+			if (transform)
+			{
+				target = transform->worldPosition;
+			}
 		}
 
-		static BMath::Vector3 normals[4] = 
-		{
-			BMath::Vector3(1,0,0), 
-			BMath::Vector3(-1,0,0), 
-			BMath::Vector3(0,1,0), 
-			BMath::Vector3(0,-1,0)
-		};
-
-		BMath::Vector4 transformedNormal = m * BMath::Vector4(normals[index], 1.0f);
-		BMath::Vector3 result = BMath::Vector3(transformedNormal) / transformedNormal.w;
-		return BMath::Vector3::Magnitude(result);
+		cameraComponent->viewMatrix = CameraHelper::LookAt(cameraTransform->worldPosition, target, BMath::Vector3::Up());
 	}
 }

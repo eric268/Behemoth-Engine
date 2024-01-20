@@ -15,6 +15,7 @@ namespace Behemoth
 		CameraComponent(
 			bool main =					false) 
 			:
+			focusedEntity				(NULL_ENTITY),
 			viewMatrix					(BMath::BMatrix4x4::Identity()),
 			projMatrix					(BMath::BMatrix4x4::Identity()),
 			FOV							(75.0f),
@@ -25,7 +26,8 @@ namespace Behemoth
 			isMain						(main),
 			isDirty						(true)
 			{}
-										
+									
+		ECS::EntityHandle focusedEntity;
 		Plane  worldSpaceFrustum[6];
 		BMath::BMatrix4x4 viewMatrix;
 		BMath::BMatrix4x4 projMatrix;
@@ -103,8 +105,8 @@ namespace Behemoth
 
 	struct RotationComponent : public ECS::Component
 	{
-		RotationComponent()	:quat (BMath::Quaternion::Identity()), isAdditive(false) {}
-		RotationComponent(BMath::Quaternion q, bool additive = false) : quat (q), isAdditive(additive) {}
+		RotationComponent()	:quat (BMath::Quaternion::Identity()), isAdditive(true) {}
+		RotationComponent(BMath::Quaternion q, bool additive = true) : quat (q), isAdditive(additive) {}
 
 		BMath::Quaternion quat;
 		bool isAdditive;

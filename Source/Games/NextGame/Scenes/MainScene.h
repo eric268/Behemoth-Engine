@@ -17,7 +17,6 @@ public:
 private:
 	int counter = 0;
 	ECS::EntityHandle mainCameraHandle;
-	ECS::EntityHandle secondCameraHandle;
 
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle pointLight;
@@ -27,6 +26,11 @@ private:
 	ECS::EntityHandle exampleChildEntity1;
 	ECS::EntityHandle exampleChildEntity2;
 
-	ECS::EntityHandle projectileObject;
+	ECS::EntityHandle projectileEntity;
+	ECS::EntityHandle arrowIconEntity;
+
+	ECS::EntityHandle playerEntity;
+
+	ECS::EntityHandle groundEntity;
 };
             

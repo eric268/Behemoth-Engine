@@ -12,6 +12,7 @@ namespace Behemoth
 		registry.AddComponent<CameraComponent>(entity, isMain);
 		registry.AddComponent<VelocityComponent>(entity);
 		registry.AddComponent<TransformComponent>(entity);
+		registry.AddComponent<RotationComponent>(entity);
 		registry.AddComponent<MoveComponent>(entity, BMath::Vector3(0.0f, 0.0f, 0.0f));
 		
 		return entity;

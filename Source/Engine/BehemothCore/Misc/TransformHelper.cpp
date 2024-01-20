@@ -9,7 +9,6 @@ namespace Behemoth
 	void TransformHelper::UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp)
 	{
 		TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, handle);
-
 		if (parentTransform && transformComp->parentIsDirty)
 		{
 			// Combine parent's world transform with child's local transform
@@ -30,7 +29,6 @@ namespace Behemoth
 			transformComp->worldTransform._43 = transformComp->worldPosition.z;
 			transformComp->worldScale = parentTransform->worldScale * transformComp->localScale;
 			transformComp->parentIsDirty = false;
-			
 		}
 		else
 		{

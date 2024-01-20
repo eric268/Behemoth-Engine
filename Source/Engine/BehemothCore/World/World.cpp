@@ -50,9 +50,9 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<ScalingSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<RotationSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
-
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
+
+		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<TimerSystem>();
 
 		Behemoth::SystemManager::GetInstance().AddSystem<Behemoth::RigidBodySystem>();

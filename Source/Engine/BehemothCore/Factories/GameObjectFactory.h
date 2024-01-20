@@ -20,12 +20,10 @@ namespace Behemoth
 			std::string entityName = "Game Object",
 			BMath::Vector2 uvScale = { 1,1 });
 
-		ECS::EntityHandle AddChildObject(
+		bool AddChildObject(
 			ECS::Registry& registry,
 			const ECS::EntityHandle& parentHandle,
-			std::string modelFilePath,
-			std::string texturePath,
-			std::string entityName = "Game Object");
+			const ECS::EntityHandle& childHandle);
 	};
 }
 

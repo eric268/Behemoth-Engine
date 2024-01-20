@@ -23,8 +23,6 @@
 #include "Math/MathCore.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
-#include "Math/BRotation.h"
-
 // Misc
 #include "Misc/CameraHelper.h"
 #include "Core/Log.h"
