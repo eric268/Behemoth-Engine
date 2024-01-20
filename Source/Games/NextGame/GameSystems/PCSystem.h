@@ -26,5 +26,7 @@ private:
 	void SetArrowMeshVisibility(ECS::Registry& registry, PlayerComponent* playerComponent, bool isVisible);
 
 	void RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent);
+
+	void SlowPlayerOnGround(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent);
 };
 

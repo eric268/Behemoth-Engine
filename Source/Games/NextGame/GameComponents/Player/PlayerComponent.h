@@ -19,7 +19,8 @@ struct PlayerComponent : public ECS::Component
 		playerMeshHandle(mesh),
 		arrowMeshHandle(arrowMesh),
 		chargeSpeed(chargeSpeed),
-		currentPower(0.0f)
+		currentPower(0.0f),
+		canFire(true)
 	{}
 
 	ECS::EntityHandle attachedCamera;
@@ -31,5 +32,6 @@ struct PlayerComponent : public ECS::Component
 
 	float currentPower;
 	float chargeSpeed;
+	bool canFire;
 };
 

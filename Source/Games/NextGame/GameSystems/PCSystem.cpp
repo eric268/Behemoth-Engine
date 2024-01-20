@@ -22,6 +22,7 @@ void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 
 		SwapCamera(pcComponent);
 		RotateMeshWhileMoving(registry, entity, playerComp);
+		SlowPlayerOnGround(registry, entity, playerComp);
 	}
 }
 
@@ -56,7 +57,7 @@ void PCSystem::DecreasePower(const float deltaTime, PlayerComponent* playerCompo
 void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
 	// No charge so skip firing check
-	if (playerComponent->currentPower <= 0.0f)
+	if (playerComponent->currentPower <= 0.0f || !playerComponent->canFire)
 	{
 		return;
 	}
@@ -82,6 +83,7 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 		}
 
 		SetArrowMeshVisibility(registry, playerComponent, false);
+		playerComponent->canFire = false;
 		// Reset charge amount, could keep it previous amount of set it to default like 50
 		playerComponent->currentPower = 0.0f;
 	}
@@ -179,6 +181,41 @@ void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityH
 			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocity->velocity.z, 0.0f, -velocity->velocity.x));
 			parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(5.0f), dir);
 			parentRotationComponent->isAdditive = true;
+		}
+	}
+}
+
+void PCSystem::SlowPlayerOnGround(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent)
+{
+	CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(entity);
+	if (!collisionData)
+	{
+		// Not colliding with ground so exit 
+		return;
+	}
+	bool isCollidingWithGround = false;
+	if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(entity))
+	{
+
+		for (const auto& data : collisionData->data)
+		{
+			if (data.data.collisionNormal == BMath::Vector3::Up())
+			{
+				isCollidingWithGround = true;
+				break;
+			}
+		}
+
+		if (isCollidingWithGround)
+		{
+			velocity->velocity *= 0.95f;
+		}
+
+		if (BMath::Vector3::SquaredMagnitude(velocity->velocity) <=  1.0f)
+		{
+			velocity->velocity = BMath::Vector3(0.0f);
+			SetArrowMeshVisibility(registry, playerComponent, true);
+			playerComponent->canFire = true;
 		}
 	}
 }
