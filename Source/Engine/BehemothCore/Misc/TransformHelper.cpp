@@ -11,7 +11,7 @@ namespace Behemoth
 		TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, handle);
 		if (parentTransform)
 		{
-			// if (transformComp->parentIsDirty)
+			if (transformComp->parentIsDirty)
 			{
 				// Combine parent's world transform with child's local transform
 				BMath::BMatrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform, parentTransform->worldScale) *

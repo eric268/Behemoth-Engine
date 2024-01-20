@@ -8,7 +8,7 @@ namespace Behemoth
 	{
 	public:
 
-		static BMath::Vector3 CalculateInitalVelocity(float power, float angleX, float angleY);
+		static BMath::Vector3 CalculateInitalVelocity(float power, const BMath::Vector3& direction);
 
 	private:
 

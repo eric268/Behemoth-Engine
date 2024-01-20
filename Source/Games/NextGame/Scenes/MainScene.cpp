@@ -38,7 +38,6 @@ MainScene::MainScene()
 	registry.AddComponent<RotationComponent>(cameraSpringArm);
 
 	GameObjectFactory gameObjectFactory{};
-
 	
 
 	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
@@ -142,48 +141,41 @@ void MainScene::Update(const float deltaTime)
 	}
 
 	//  
-	if (Input::IsKeyDown(KeyCode::KC_Space))
+	if (Input::IsKeyHeld(KeyCode::KC_Space))
 	{
-		TransformComponent* t = registry.GetComponent<TransformComponent>(projectileEntity);
+
+		TransformComponent* playerTransform = registry.GetComponent<TransformComponent>(projectileEntity);
+
+
+		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(35.0f, playerTransform->forwardVector);
+	
+		auto playerVelocity = registry.AddComponent<VelocityComponent>(playerEntity);
+		playerVelocity->velocity = vel;
+
+		auto playerRigidBody = registry.AddComponent<RigidBodyComponent>(playerEntity);
+		playerRigidBody->affectedByGravity = true;
+		// counter += deltaTime;
+// 		if (std::abs(counter) > 2)
+// 		{
+// 			// counter = (counter > 0 ? 1 : -1); // Limit counter to range [-2, 2]
+// 		}
+// 
+// 		TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(projectileEntity);
+// 		TransformComponent* childTransform = registry.GetComponent<TransformComponent>(arrowIconEntity);
+// 
+// 		BMath::Vector3 newScale = BMath::Vector3(0.25f) + BMath::Vector3(counter * 3); // initialScaleOfChild should be defined elsewhere
+// 		childTransform->localScale = newScale;
+// 
+// 		float movementFactor = 0.05f;
+// 		BMath::Vector3 movement = parentTransform->forwardVector * movementFactor * counter;
+// 
+// 		std::cout << newScale.Print() << std::endl;
+// 
+// 		registry.AddComponent<ScalingComponent>(arrowIconEntity, BMath::Vector3(0.5));
+//  		registry.AddComponent<MoveComponent>(arrowIconEntity,  movement);
+
 
 	}
-	//  
-	//  		auto mainCameraTransform = registry.GetComponent<TransformComponent>(mainCameraHandle);
-	//  		BMath::Vector3 vel = ProjectileMotion::CalculateInitalVelocity(15.0f, 0, DEGREE_TO_RAD(45.0f));
-	//  		vel.z *= -1.0f;
-	//  
-	//  		projectileEntity = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "brick.png", "Parent Projectile");
-	//  		registry.AddComponent<VelocityComponent>(projectileEntity, vel);
-	// 
-	//  		// BMath::Vector3 pos = mainCameraTransform->worldPosition + mainCameraTransform->forwardVector * 1.5f;
-	//  
-	//  		BMath::Vector3 pos = BMath::Vector3(0,0,25);
-	//  
-	//  		registry.AddComponent<MoveComponent>(projectileEntity, pos);
-	//  		registry.AddComponent<ScalingComponent>(projectileEntity, BMath::Vector3(0.5f));
-	// 
-	//  		auto parent =registry.AddComponent<ParentComponent>(projectileEntity);
-	// 
-	// // 		auto child = gameObjectFactory.AddChildObject(registry, projectileObject, "sphere.obj", "brick.obj", "Child Projectile");
-	// // 		registry.AddComponent<MoveComponent>(child, BMath::Vector3(0, 0, 1));
-	//  
-	// 		auto mainCameraComponent = registry.GetComponent<CameraComponent>(mainCameraHandle);
-	// 		mainCameraComponent->isMain = false;
-	// 		auto secondCameraComponent = registry.GetComponent<CameraComponent>(secondCameraHandle);
-	// 		secondCameraComponent->isMain = true;
-	//  
-	//   		registry.AddComponent<ChildComponent>(secondCameraHandle, projectileEntity);
-	//   		parent->childHandles.push_back(secondCameraHandle);
-	//   
-	//   		registry.AddComponent<MoveComponent>(secondCameraHandle, BMath::Vector3(0, 3, 6));
-	// 	}
-	// 
-	// 	if (Input::IsKeyDown(KeyCode::KC_B))
-	// 	{
-	// 		registry.RemoveComponent<ChildComponent>(secondCameraHandle);
-	// 		registry.AddComponent<MoveComponent>(secondCameraHandle, BMath::Vector3(0, 0, 25));
-	// 		// registry.DestroyEntity(projectileObject);
-	// 	}
 }
 
 void MainScene::Shutdown()

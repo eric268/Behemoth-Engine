@@ -15,7 +15,8 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
-	int counter = 0;
+	bool increase = true;
+	float counter = 0.0;
 	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle cameraSpringArm;
 
