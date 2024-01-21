@@ -11,9 +11,12 @@
 #include "Physics/Collision/CollisionMask.h"
 #include "Physics/Ray.h"
 
+#include "Components/UIComponents.h"
+
 #include "GameSystems/CameraControllerSystem.h"
 #include "GameComponents/CameraControllerComponent.h"
-#include "Components/UIComponents.h"
+#include "GameSystems/PlayerFellSystem.h"
+#include "GameSystems/PlayerRespawnSystem.h"
 
 #include "Factories/SkySphereFactory.h"
 
@@ -25,6 +28,8 @@
 #include "TestScene.h"
 
 #include "Scripts/GameObjects/PlayerFactory.h"
+
+#include "GameComponents/Player/PlayerComponent.h"
 
 using namespace Behemoth;
 
@@ -65,6 +70,18 @@ MainScene::MainScene()
 	registry.AddComponent<RotationComponent>(groundEntity, BMath::Quaternion(DEGREE_TO_RAD(1), BMath::Vector3(1,0,0)));
 	// registry.AddComponent<WireframeComponent>(groundEntity, "plane.obj", BMath::Vector3(1, 0.1, 1));
 
+
+	bottomOOBTrigger = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
+	registry.AddComponent<OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
+	registry.AddComponent<StaticComponent>(bottomOOBTrigger);
+	registry.AddComponent<ScalingComponent>(bottomOOBTrigger, BMath::Vector3(100, 1.0f, 100.0));
+	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -10, 10.0f));
+	registry.AddComponent<WireframeComponent>(bottomOOBTrigger, "cube.obj");
+	if (MeshComponent* mesh = registry.GetComponent<MeshComponent>(bottomOOBTrigger))
+	{
+		mesh->isVisible = false;
+	}
+
 }
 
 void MainScene::Initalize()
@@ -84,9 +101,12 @@ void MainScene::Update(const float deltaTime)
 {
 	if (TriggerDataComponent* triggerData = registry.GetComponent<TriggerDataComponent>(playerCharacter))
 	{
-		if (triggerData->data.size() > 0)
+		for (const auto& d : triggerData->data)
 		{
-			std::cout << "Trigger overlap\n";
+			if (d.otherHandle.ID == bottomOOBTrigger.ID)
+			{
+				registry.AddComponent<PlayerFellComponent>(playerCharacter, 3.0f);
+			}
 		}
 	}
 }
@@ -95,6 +115,8 @@ void MainScene::InitalizeSystems()
 {
 	SystemManager::GetInstance().AddSystem<PCSystem>();
 	SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
+	SystemManager::GetInstance().AddSystem<PlayerFellSystem>();
+	SystemManager::GetInstance().AddSystem<PlayerRespawnSystem>();
 }
 
 void MainScene::Shutdown()

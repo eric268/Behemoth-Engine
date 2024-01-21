@@ -32,6 +32,8 @@
     <ClInclude Include="Scripts\GameObjects\PlayerFactory.h" />
     <ClInclude Include="GameSystems\PCSystem.h" />
     <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
+    <ClInclude Include="GameSystems\PlayerFellSystem.h" />
+    <ClInclude Include="GameSystems\PlayerRespawnSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -49,5 +51,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Scripts\GameObjects\PlayerFactory.cpp" />
     <ClCompile Include="GameSystems\PCSystem.cpp" />
+    <ClCompile Include="GameSystems\PlayerFellSystem.cpp" />
+    <ClCompile Include="GameSystems\PlayerRespawnSystem.cpp" />
   </ItemGroup>
 </Project>

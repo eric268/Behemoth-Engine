@@ -152,6 +152,8 @@
     <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
     <ClInclude Include="GameSystems\CameraControllerSystem.h" />
     <ClInclude Include="GameSystems\PCSystem.h" />
+    <ClInclude Include="GameSystems\PlayerFellSystem.h" />
+    <ClInclude Include="GameSystems\PlayerRespawnSystem.h" />
     <ClInclude Include="Scenes\MainScene.h" />
     <ClInclude Include="Scenes\TestScene.h" />
     <ClInclude Include="pch.h" />
@@ -161,6 +163,8 @@
     <ClCompile Include="Application\game.cpp" />
     <ClCompile Include="GameSystems\CameraControllerSystem.cpp" />
     <ClCompile Include="GameSystems\PCSystem.cpp" />
+    <ClCompile Include="GameSystems\PlayerFellSystem.cpp" />
+    <ClCompile Include="GameSystems\PlayerRespawnSystem.cpp" />
     <ClCompile Include="Scenes\MainScene.cpp" />
     <ClCompile Include="Scenes\TestScene.cpp" />
     <ClCompile Include="pch.cpp">

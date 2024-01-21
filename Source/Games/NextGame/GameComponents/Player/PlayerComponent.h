@@ -11,7 +11,8 @@ struct PlayerComponent : public ECS::Component
 		const ECS::EntityHandle& proj,
 		const ECS::EntityHandle& mesh,
 		const ECS::EntityHandle& arrowMesh,
-		float chargeSpeed)
+		float chargeSpeed,
+		const BMath::Vector3& lastLoc)
 		:
 		attachedCamera(camera),
 		cameraSpringArm(springArm),
@@ -20,7 +21,8 @@ struct PlayerComponent : public ECS::Component
 		arrowMeshHandle(arrowMesh),
 		chargeSpeed(chargeSpeed),
 		currentPower(0.0f),
-		canFire(true)
+		canFire(true),
+		lastLocation(lastLoc)
 	{}
 
 	ECS::EntityHandle attachedCamera;
@@ -33,5 +35,18 @@ struct PlayerComponent : public ECS::Component
 	float currentPower;
 	float chargeSpeed;
 	bool canFire;
+	BMath::Vector3 lastLocation;
+};
+
+struct PlayerFellComponent : public ECS::Component
+{
+	PlayerFellComponent() : timeUntilRespawn(0.0f) {}
+	PlayerFellComponent(float timeTillRespawn) : timeUntilRespawn(timeTillRespawn) {}
+	float timeUntilRespawn;
+};
+
+struct PlayerRespawnComponent : public ECS::Component
+{
+	PlayerRespawnComponent() = default;
 };
 

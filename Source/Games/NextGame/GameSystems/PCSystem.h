@@ -27,6 +27,6 @@ private:
 
 	void RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent);
 
-	void SlowPlayerOnGround(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent);
+	void CheckPlayerLanded(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent);
 };
 

@@ -3,6 +3,7 @@
 #include "ECS/System.h"
 #include "ECS/Generator.h"
 #include "ECS/SparseSet.h"
+#include "Core/Stopwatch.h"
 
 #include <unordered_map>
 #include <vector>
@@ -37,7 +38,9 @@ namespace Behemoth
 		{
 			for (const auto& system : systemContainer)
 			{
+			
 				system->Run(deltaTime, registry);
+				
 			}
 		}
 

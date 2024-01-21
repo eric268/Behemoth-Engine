@@ -23,7 +23,7 @@ namespace Behemoth
 
 		for (const auto& [entity, transformComp, movementComp] : components)
 		{
-			if (movementComp->location == BMath::Vector3::Zero())
+			if (movementComp->location == BMath::Vector3::Zero() && movementComp->isAdditive)
 			{
 				continue;
 			}
@@ -31,18 +31,34 @@ namespace Behemoth
 			BMath::Vector3 deltaLocation = movementComp->location;
 
 			TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, entity);
-			if (parentTransform)
-			{
-				// If object is a child, move in parents local space
-				BMath::BMatrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
 
-				deltaLocation = parentTransformNoScale * deltaLocation;
+			if (movementComp->isAdditive)
+			{
+				if (parentTransform)
+				{
+					// If object is a child, move in parents local space
+					BMath::BMatrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
+
+					deltaLocation = parentTransformNoScale * deltaLocation;
+				}
+
+				UpdateLocalTransform(registry, entity, transformComp, deltaLocation);
+			}
+			else
+			{
+				if (parentTransform)
+				{
+					deltaLocation = movementComp->location - parentTransform->worldPosition;
+				}
+				transformComp->localPosition = deltaLocation;
+				transformComp->localTransform._41 = transformComp->localPosition.x;
+				transformComp->localTransform._42 = transformComp->localPosition.y;
+				transformComp->localTransform._43 = transformComp->localPosition.z;
 			}
 
-			UpdateLocalTransform(registry, entity, transformComp, deltaLocation);
+			transformComp->isDirty = true;
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			transformComp->worldPosition = BMath::Vector3(transformComp->worldTransform._41, transformComp->worldTransform._42, transformComp->worldTransform._43);
-
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 			MarkViewDirtyIfCamera(registry, entity);
 			registry.RemoveComponent<MoveComponent>(entity);
@@ -55,7 +71,7 @@ namespace Behemoth
 		transformComp->localTransform._42 += deltaLocation.y;
 		transformComp->localTransform._43 += deltaLocation.z;
 		transformComp->localPosition      += deltaLocation;
-		transformComp->isDirty = true;
+
 	}
 
 

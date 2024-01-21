@@ -11,18 +11,23 @@ using namespace Behemoth;
 
 void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
-	for (const auto& [entity, playerComp, pcComponent]: registry.Get<PlayerComponent, PCComponent>())
+	for (const auto& [entity, playerComponent, pcComponent]: registry.Get<PlayerComponent, PCComponent>())
 	{
-		IncreasePower(deltaTime, playerComp, pcComponent);
-		DecreasePower(deltaTime, playerComp, pcComponent);
+		IncreasePower(deltaTime, playerComponent, pcComponent);
+		DecreasePower(deltaTime, playerComponent, pcComponent);
 
-		Look(deltaTime, registry, playerComp, pcComponent);
-		Aim(deltaTime, registry, playerComp, pcComponent);
-		Fire(registry, entity, playerComp, pcComponent);
+		Look(deltaTime, registry, playerComponent, pcComponent);
+		Aim(deltaTime, registry, playerComponent, pcComponent);
+		Fire(registry, entity, playerComponent, pcComponent);
 
 		SwapCamera(pcComponent);
-		RotateMeshWhileMoving(registry, entity, playerComp);
-		SlowPlayerOnGround(registry, entity, playerComp);
+		RotateMeshWhileMoving(registry, entity, playerComponent);
+		CheckPlayerLanded(registry, entity, playerComponent);
+
+		if (playerComponent->canFire)
+		{
+			SetArrowMeshVisibility(registry, playerComponent, true);
+		}
 	}
 }
 
@@ -86,6 +91,7 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 		playerComponent->canFire = false;
 		// Reset charge amount, could keep it previous amount of set it to default like 50
 		playerComponent->currentPower = 0.0f;
+		playerComponent->lastLocation = playerTransform->worldPosition;
 	}
 }
 
@@ -185,7 +191,7 @@ void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityH
 	}
 }
 
-void PCSystem::SlowPlayerOnGround(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent)
+void PCSystem::CheckPlayerLanded(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent)
 {
 	CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(entity);
 	if (!collisionData)
@@ -193,28 +199,22 @@ void PCSystem::SlowPlayerOnGround(ECS::Registry& registry, const ECS::EntityHand
 		// Not colliding with ground so exit 
 		return;
 	}
-	bool isCollidingWithGround = false;
+	// bool isCollidingWithGround = false;
 	if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(entity))
 	{
 
-		for (const auto& data : collisionData->data)
-		{
-			if (data.data.collisionNormal == BMath::Vector3::Up())
-			{
-				isCollidingWithGround = true;
-				break;
-			}
-		}
-
-// 		if (isCollidingWithGround)
+// 		for (const auto& data : collisionData->data)
 // 		{
-// 			velocity->velocity *= 0.95f;
+// 			if (data.data.collisionNormal == BMath::Vector3::Up())
+// 			{
+// 				isCollidingWithGround = true;
+// 				break;
+// 			}
 // 		}
 
 		if (BMath::Vector3::SquaredMagnitude(velocity->velocity) <=  1.0f)
 		{
 			velocity->velocity = BMath::Vector3(0.0f);
-			SetArrowMeshVisibility(registry, playerComponent, true);
 			playerComponent->canFire = true;
 		}
 	}

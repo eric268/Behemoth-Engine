@@ -91,10 +91,11 @@ namespace Behemoth
 
 	struct MoveComponent : public ECS::Component
 	{
-		MoveComponent()	: location (BMath::Vector3(0.0f)) {}
-		MoveComponent(BMath::Vector3 vec) : location (vec) {}
+		MoveComponent()	: location (BMath::Vector3(0.0f)), isAdditive(true) {}
+		MoveComponent(BMath::Vector3 vec, bool isAdditive = true) : location (vec), isAdditive(isAdditive) {}
 
 		BMath::Vector3 location;
+		bool isAdditive;
 	};
 
 	struct VelocityComponent : public ECS::Component
@@ -140,7 +141,7 @@ namespace Behemoth
 	struct TimerComponent : public ECS::Component
 	{
 		TimerComponent() : duration(-1.0f), counter(0.0f), funcPtr(nullptr) {}
-		TimerComponent(std::function<void()> func, float time) : duration(time), counter(0.0f), funcPtr(func) {}
+		TimerComponent(float time, std::function<void()> func) : duration(time), counter(0.0f), funcPtr(func) {}
 
 		float counter;
 		float duration;

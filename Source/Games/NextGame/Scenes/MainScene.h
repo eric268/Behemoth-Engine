@@ -19,6 +19,7 @@ private:
 
 	ECS::EntityHandle obstacleHandle;
 
+	ECS::EntityHandle bottomOOBTrigger;
 
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle pointLight;

@@ -1,5 +1,8 @@
 #pragma once
 #include "Registry.h"
+#include "Core/Stopwatch.h"
+
+#include <iostream>
 
 namespace ECS
 {
@@ -24,7 +27,11 @@ namespace ECS
 
 		void Run(const float deltaTime, Registry& registry) override
 		{
-			instance.Run(deltaTime, registry);
+			{
+				// Behemoth::Stopwatch sw;
+				// std::cout << typeid(T).name() << std::endl;
+				instance.Run(deltaTime, registry);
+			}
 		}
 
 		T instance;
