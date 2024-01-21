@@ -31,6 +31,8 @@ private:
 	ECS::EntityHandle skySphere;
 	ECS::EntityHandle groundEntity;
 
+	ECS::EntityHandle parEntity;
+
 	ECS::EntityHandle playerCharacter;
 };
             

@@ -21,6 +21,7 @@ namespace Behemoth
 		static const ECS::EntityHandle& GetMainCameraEntity(ECS::Registry& registry);
 		static CameraComponent* GetMainCamera(ECS::Registry& registry);
 		static TransformComponent* GetMainCameraTransform(ECS::Registry& registry);
+		static BMath::Vector3 GetForwardVector(ECS::Registry& registry);
 	};
 }
 

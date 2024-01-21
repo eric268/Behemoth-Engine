@@ -3,7 +3,7 @@
 #include "GameComponents/Player/PlayerComponent.h"
 #include "Components/Components.h"
 #include "Factories/GameObjectFactory.h"
-#include "Scripts/GameObjects/PlayerFactory.h"
+#include "Scripts/PlayerFactory.h"
 
 using namespace Behemoth;
 

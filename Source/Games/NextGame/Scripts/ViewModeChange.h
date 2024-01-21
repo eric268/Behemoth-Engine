@@ -1,7 +1,7 @@
 #pragma once
 #include "BehemothEngine.h"
 #include "GameComponents/Player/PlayerComponent.h"
-#include "GameComponents/LevelComponents.h"
+#include "GameComponents/LevelViewComponent.h"
 
 struct ViewModeChange
 {

@@ -13,10 +13,10 @@
 
 #include "Components/UIComponents.h"
 
-#include "GameSystems/CameraControllerSystem.h"
-#include "GameComponents/CameraControllerComponent.h"
+
 #include "GameSystems/PlayerFellSystem.h"
 #include "GameSystems/PlayerRespawnSystem.h"
+#include "GameSystems/LevelViewSystem.h"
 
 #include "Factories/SkySphereFactory.h"
 
@@ -27,12 +27,12 @@
 
 #include "TestScene.h"
 
-#include "Scripts/GameObjects/PlayerFactory.h"
-#include "Scripts/GameObjects/LevelViewFactory.h"
+#include "Scripts/PlayerFactory.h"
+#include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
-#include "GameComponents/LevelComponents.h"
+#include "GameComponents/LevelViewComponent.h"
 
 using namespace Behemoth;
 
@@ -127,9 +127,9 @@ void MainScene::Update(const float deltaTime)
 void MainScene::InitalizeSystems()
 {
 	SystemManager::GetInstance().AddSystem<PCSystem>();
-	SystemManager::GetInstance().AddSystem<CameraControllerSystem>();
 	SystemManager::GetInstance().AddSystem<PlayerFellSystem>();
 	SystemManager::GetInstance().AddSystem<PlayerRespawnSystem>();
+	SystemManager::GetInstance().AddSystem<LevelViewSystem>();
 }
 
 void MainScene::Shutdown()

@@ -12,8 +12,6 @@
 #include "Physics/Collision/CollisionMask.h"
 #include "Physics/Ray.h"
 
-#include "GameSystems/CameraControllerSystem.h"
-#include "GameComponents/CameraControllerComponent.h"
 #include "Components/UIComponents.h"
 
 #include "Factories/SkySphereFactory.h"
@@ -22,7 +20,6 @@ TestScene::TestScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
-	registry.AddComponent<CameraControllerComponent>(mainCameraHandle, 5.0f, 0.33f, false, Behemoth::KeyCode::KC_W, Behemoth::KeyCode::KC_S, Behemoth::KeyCode::KC_A, Behemoth::KeyCode::KC_D, Behemoth::KeyCode::KC_E, Behemoth::KeyCode::KC_Q);
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 0));
 
 

@@ -13,6 +13,12 @@ void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [entity, playerComponent, pcComponent]: registry.Get<PlayerComponent, PCComponent>())
 	{
+		// Means we are in a different view mode, do dont allow input
+		if (!playerComponent->isActive)
+		{
+			continue;
+		}
+
 		IncreasePower(deltaTime, playerComponent, pcComponent);
 		DecreasePower(deltaTime, playerComponent, pcComponent);
 
@@ -20,7 +26,6 @@ void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 		Aim(deltaTime, registry, playerComponent, pcComponent);
 		Fire(registry, entity, playerComponent, pcComponent);
 
-		SwapCamera(pcComponent);
 		RotateMeshWhileMoving(registry, entity, playerComponent);
 		CheckPlayerLanded(registry, entity, playerComponent);
 
@@ -159,11 +164,6 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 	}
 }
 
-
-void PCSystem::SwapCamera(PCComponent* pcComponent)
-{
-
-}
 
 void PCSystem::SetArrowMeshVisibility(ECS::Registry& registry, PlayerComponent* playerComponent, bool isVisible)
 {

@@ -9,6 +9,7 @@ struct LevelViewComponent : public ECS::Component
 	LevelViewComponent(
 		bool isActive,
 		float movementSpeed,
+		float minZoomDistance,
 		float maxZoomDistance,
 		float currentZoomCounter,
 		float maxVertical,
@@ -16,6 +17,7 @@ struct LevelViewComponent : public ECS::Component
 		:
 		isActive									(isActive),
 		cameraMoveSpeed								(movementSpeed),
+		minZoomDistance								(minZoomDistance),
 		maxZoomDistance								(maxZoomDistance),
 		currentZoomCounter							(currentZoomCounter),
 		maxVerticalDistance							(maxVertical),
@@ -26,6 +28,7 @@ struct LevelViewComponent : public ECS::Component
 	bool isActive;
 	float cameraMoveSpeed;
 
+	float minZoomDistance;
 	float maxZoomDistance;
 	float currentZoomCounter;
 

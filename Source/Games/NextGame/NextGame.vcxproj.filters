@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameComponents\CameraControllerComponent.h">
-      <Filter>GameComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSystems\CameraControllerSystem.h">
-      <Filter>GameSystems</Filter>
-    </ClInclude>
     <ClInclude Include="Scenes\MainScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -29,21 +23,19 @@
     </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameComponents\Player\PCComponent.h" />
-    <ClInclude Include="Scripts\GameObjects\PlayerFactory.h" />
+    <ClInclude Include="Scripts\PlayerFactory.h" />
     <ClInclude Include="GameSystems\PCSystem.h" />
     <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
     <ClInclude Include="GameSystems\PlayerFellSystem.h" />
     <ClInclude Include="GameSystems\PlayerRespawnSystem.h" />
-    <ClInclude Include="GameComponents\LevelComponents.h" />
-    <ClInclude Include="Scripts\GameObjects\LevelViewFactory.h" />
+    <ClInclude Include="GameComponents\LevelViewComponent.h" />
+    <ClInclude Include="Scripts\LevelViewFactory.h" />
     <ClInclude Include="Scripts\ViewModeChange.h" />
+    <ClInclude Include="GameSystems\LevelViewSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
       <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSystems\CameraControllerSystem.cpp">
-      <Filter>GameSystems</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\MainScene.cpp">
       <Filter>Scenes</Filter>
@@ -52,11 +44,12 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Scripts\GameObjects\PlayerFactory.cpp" />
+    <ClCompile Include="Scripts\PlayerFactory.cpp" />
     <ClCompile Include="GameSystems\PCSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerFellSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerRespawnSystem.cpp" />
-    <ClCompile Include="Scripts\GameObjects\LevelViewFactory.cpp" />
+    <ClCompile Include="Scripts\LevelViewFactory.cpp" />
     <ClCompile Include="Scripts\ViewModeChange.cpp" />
+    <ClCompile Include="GameSystems\LevelViewSystem.cpp" />
   </ItemGroup>
 </Project>
