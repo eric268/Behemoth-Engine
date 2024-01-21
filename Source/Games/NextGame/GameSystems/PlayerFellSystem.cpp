@@ -20,6 +20,7 @@ void PlayerFellSystem::Run(const float deltaTime, ECS::Registry& registry)
  			springArmTransform->localTransform._43 = springArmTransform->localPosition.z;
  		}
 
+		playerComponent->isRespawning = true;
 		registry.RemoveComponent<Behemoth::ChildComponent>(playerComponent->cameraSpringArm);
 
 		ECS::EntityHandle timerEntity = registry.CreateEntity("Timer Component");

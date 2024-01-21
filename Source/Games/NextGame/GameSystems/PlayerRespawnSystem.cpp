@@ -29,7 +29,7 @@ void PlayerRespawnSystem::Run(const float deltaTime, ECS::Registry& registry)
 		velocityComponent->velocity = BMath::Vector3::Zero();
 		playerComponent->canFire = true;
 		rigidBodyComponent->affectedByGravity = false;
-
+		playerComponent->isRespawning = false;
 
 		registry.RemoveComponent<PlayerRespawnComponent>(entity);
 	}

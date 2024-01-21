@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "HoleTwoScene.h"
 #include "HoleThreeScene.h"
+#include "GameOverScene.h"
 
 #include "Scripts/PlayerScore.h"
 #include "Components/LightComponents.h"
@@ -13,7 +13,6 @@
 #include "Factories/SkySphereFactory.h"
 #include "Factories/GameObjectFactory.h"
 
-#include "Scripts/LevelHelper.h"
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
@@ -23,9 +22,9 @@
 #include "Scripts/GolfUIHelper.h"
 #include "Scripts/PlayerScore.h"
 
-HoleTwoScene::HoleTwoScene()
+HoleThreeScene::HoleThreeScene()
 {
-	environmentLighting = registry.CreateEntity("Environment Lighting");
+		environmentLighting = registry.CreateEntity("Environment Lighting");
 	Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	if (directionalLight)
 	{
@@ -69,31 +68,23 @@ HoleTwoScene::HoleTwoScene()
 	delayUntilSceneChange = 5.0f;
 	changeScene = false;
 }
-
-void HoleTwoScene::Initalize()
+void HoleThreeScene::Initalize()
 {
-	// Function called after scene constructor 
-	// Can be used for additional initialization steps that are required post construction
-}
 
-void HoleTwoScene::OnEvent(Behemoth::Event& e)
-{
-	// Processes general engine events such as window close, resize etc.
-	// Does not process window events, use static Input library to check mouse/keyboard/controller events
 }
-
-void HoleTwoScene::Update(const float deltaTime)
+void HoleThreeScene::Update(const float deltaTime)
 {
 	CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
-
-	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::KC_Space))
-	{
-		Behemoth::Scene* mainScene = new HoleThreeScene();
-		Behemoth::World::GetInstance().ChangeScene(mainScene);
-	}
 }
+void HoleThreeScene::OnEvent(Behemoth::Event& e)
+{
 
-void HoleTwoScene::Shutdown()
+}
+void HoleThreeScene::InitalizeSystems()
+{
+
+}
+void HoleThreeScene::Shutdown()
 {
 
 }

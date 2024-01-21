@@ -139,6 +139,18 @@ namespace ECS
 			}
 		}
 
+		template<IsComponent T>
+		bool Contains(EntityHandle handle)
+		{
+			Entity entity = GetEntityFromHandle(handle);
+			if (entity.IsValid())
+			{
+				auto set = GetComponent<T>();
+				return set->Contains(entity);
+			}
+			return false;
+		}
+
 		template <IsComponent ...T>
 		std::tuple<T*...> GetMultipleComponents(EntityHandle handle)
 		{

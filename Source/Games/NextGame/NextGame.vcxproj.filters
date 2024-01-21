@@ -40,6 +40,12 @@
     <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h" />
     <ClInclude Include="GameSystems\MovingObsSystem.h" />
     <ClInclude Include="Scripts\GolfUIHelper.h" />
+    <ClInclude Include="Scenes\MainMenuScene.h" />
+    <ClInclude Include="Scenes\HoleThreeScene.h" />
+    <ClInclude Include="Scenes\GameOverScene.h" />
+    <ClInclude Include="Scripts\PlayerScore.h" />
+    <ClInclude Include="Scripts\LevelHelper.h" />
+    <ClInclude Include="Scenes\GameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -65,5 +71,11 @@
     <ClCompile Include="Scripts\BarrierObject.cpp" />
     <ClCompile Include="GameSystems\MovingObsSystem.cpp" />
     <ClCompile Include="Scripts\GolfUIHelper.cpp" />
+    <ClCompile Include="Scenes\MainMenuScene.cpp" />
+    <ClCompile Include="Scenes\HoleThreeScene.cpp" />
+    <ClCompile Include="Scenes\GameOverScene.cpp" />
+    <ClCompile Include="Scripts\LevelHelper.cpp" />
+    <ClCompile Include="Scripts\PlayerScore.cpp" />
+    <ClCompile Include="Scenes\GameScene.cpp" />
   </ItemGroup>
 </Project>

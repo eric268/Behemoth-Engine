@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "HoleOneScene.h"
+#include "HoleTwoScene.h"
 
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
@@ -13,13 +14,6 @@
 
 #include "Components/UIComponents.h"
 
-
-#include "GameSystems/PlayerFellSystem.h"
-#include "GameSystems/PlayerRespawnSystem.h"
-#include "GameSystems/LevelViewSystem.h"
-#include "GameSystems/PlayerHUDSystem.h"
-#include "GameSystems/MovingObsSystem.h"
-
 #include "Factories/SkySphereFactory.h"
 
 #include "Physics/ProjectileMotion.h"
@@ -27,8 +21,9 @@
 #include "GameSystems/PCSystem.h"
 #include "Physics/Collision/PhysicsMaterial.h"
 
-#include "HoleTwoScene.h"
 
+
+#include "Scripts/LevelHelper.h"
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
@@ -36,6 +31,7 @@
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
 #include "Scripts/GolfUIHelper.h"
+#include "Scripts/PlayerScore.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
 #include "GameComponents/Level/LevelViewComponent.h"
@@ -45,6 +41,8 @@ using namespace Behemoth;
 
 HoleOneScene::HoleOneScene()
 {
+	PlayerScore::ResetScore();
+
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	if (directionalLight)
@@ -116,8 +114,6 @@ void HoleOneScene::Initalize()
 {
 	// Function called after scene constructor 
 	// Can be used for additional initialization steps that are required post construction
-	InitalizeSystems();
-
 }
 
 void HoleOneScene::OnEvent(Behemoth::Event& e)
@@ -126,16 +122,7 @@ void HoleOneScene::OnEvent(Behemoth::Event& e)
 
 void HoleOneScene::Update(const float deltaTime)
 {
-	if (TriggerDataComponent* triggerData = registry.GetComponent<TriggerDataComponent>(playerCharacter))
-	{
-		for (const auto& d : triggerData->data)
-		{
-			if (d.otherHandle.ID == bottomOOBTrigger.ID)
-			{
-				registry.AddComponent<PlayerFellComponent>(playerCharacter, 3.0f);
-			}
-		}
-	}
+	 CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
 
 	if (CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(playerCharacter))
 	{
@@ -157,6 +144,8 @@ void HoleOneScene::Update(const float deltaTime)
 				
 				LOGMESSAGE(General, "Goal Reached!");
 				playerComponent->levelComplete = true;
+
+				PlayerScore::AddScore(par, playerComponent->strokesUsed);
 
 				levelCompleteText = registry.CreateEntity("Level complete text");
 				registry.AddComponent<Behemoth::TextComponent>(levelCompleteText, GolfUIHelper::GetHoleResultText(par,  playerComponent->strokesUsed), BMath::Vector2(0, 0.5f));
@@ -188,21 +177,10 @@ void HoleOneScene::Update(const float deltaTime)
 		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
 	}
 
-
-	if (changeScene)
-	{
-		World::GetInstance().ChangeScene(new HoleTwoScene());
-	}
-}
-
-void HoleOneScene::InitalizeSystems()
-{
-	SystemManager::GetInstance().AddSystem<PCSystem>();
-	SystemManager::GetInstance().AddSystem<PlayerFellSystem>();
-	SystemManager::GetInstance().AddSystem<PlayerRespawnSystem>();
-	SystemManager::GetInstance().AddSystem<LevelViewSystem>();
-	SystemManager::GetInstance().AddSystem<PlayerHUDSystem>();
-	SystemManager::GetInstance().AddSystem<MovingObsSystem>();
+// 	if (changeScene)
+// 	{
+// 		World::GetInstance().ChangeScene(new HoleTwoScene());
+// 	}
 }
 
 void HoleOneScene::Shutdown()

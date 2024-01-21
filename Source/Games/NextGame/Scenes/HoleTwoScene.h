@@ -1,8 +1,9 @@
 #pragma once
 
-#include "BehemothEngine.h"
+#include "GameScene.h"
 
-class HoleTwoScene : public Behemoth::Scene
+class HoleTwoScene : public GameScene
+
 {
 public:
 	using Super = Behemoth::Scene;
@@ -15,13 +16,15 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
-	ECS::EntityHandle mainCameraHandle;
-	ECS::EntityHandle environmentLighting;
-	ECS::EntityHandle pointLight;
-	ECS::EntityHandle skySphere;
 
-	ECS::EntityHandle exampleParentEntity;
-	ECS::EntityHandle exampleChildEntity1;
-	ECS::EntityHandle exampleChildEntity2;
+	ECS::EntityHandle goalObject;
+	ECS::EntityHandle levelViewEntity;
+
+	ECS::EntityHandle parTextEntity;
+	ECS::EntityHandle levelCompleteText;
+
+	int par;
+	float delayUntilSceneChange;
+	bool changeScene;
 
 };

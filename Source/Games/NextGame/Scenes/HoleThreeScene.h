@@ -1,28 +1,24 @@
 #pragma once
 
-
 #include "GameScene.h"
 
-class HoleOneScene : public GameScene
+class HoleThreeScene : public GameScene
 {
 public:
 	using Super = Behemoth::Scene;
 
-	HoleOneScene();
+	HoleThreeScene();
 	void Initalize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
+	void InitalizeSystems();
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
+
 	ECS::EntityHandle goalObject;
 	ECS::EntityHandle levelViewEntity;
-
-	ECS::EntityHandle grassEntity;
-	ECS::EntityHandle sandTrap1;
-	ECS::EntityHandle sandTrap2;
-	ECS::EntityHandle obstacleHandle;
 
 	ECS::EntityHandle parTextEntity;
 	ECS::EntityHandle levelCompleteText;
@@ -31,4 +27,5 @@ private:
 	float delayUntilSceneChange;
 	bool changeScene;
 };
-            
+
+

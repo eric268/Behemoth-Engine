@@ -26,10 +26,10 @@ struct PlayerComponent : public ECS::Component
 		canFire										(true),
 		lastLocation								(lastLoc),
 		strokesUsed									(0),
-		levelComplete								(false)
+		levelComplete								(false),
+		isRespawning								(false)
 	{}
 
-	bool isActive;
 	ECS::EntityHandle attachedCamera;
 	ECS::EntityHandle cameraSpringArm;
 
@@ -39,6 +39,8 @@ struct PlayerComponent : public ECS::Component
 
 	ECS::EntityHandle hudHandle;
 
+	bool isActive;
+	bool isRespawning;
 	bool levelComplete;
 	int strokesUsed;
 	float currentPower;
