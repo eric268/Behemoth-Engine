@@ -39,9 +39,7 @@ HoleTwoScene::HoleTwoScene()
 	}
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
 
-	pointLight1 = LightFactory::CreatePointLight(registry, BMath::Vector3(-2, 10, 18), BMath::Vector3(0.75f), 1.5f,"light.jpg", true);
-	pointLight2 = LightFactory::CreatePointLight(registry, BMath::Vector3(2, 10, 18), BMath::Vector3(0.75f), 1.5f, "light.jpg", true);
-	
+	ConstructEnvironment(registry);
 
 	goalObject = CreateGoalObject(registry, BMath::Vector3(20, 2, -40), BMath::Vector3(3.0f), 45.0f);
 
@@ -111,6 +109,27 @@ void HoleTwoScene::Update(const float deltaTime)
 	{
 		Behemoth::World::GetInstance().ChangeScene(new HoleThreeScene());
 	}
+}
+
+void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		mainBarriers[i] = BarrierObject::CreateObstacle(registry, BMath::Vector3(-12 + (i * 20), 10, -40), BMath::Vector3(9, 15, 2), BMath::Quaternion());
+		registry.AddComponent<Behemoth::StaticComponent>(mainBarriers[i]);
+	}
+
+	grassPatch1 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -15), BMath::Vector3(15, 0.2, 30), BMath::Quaternion());
+
+	auto grassPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-45, 8, -75), BMath::Vector3(20, 0.2, 10), BMath::Quaternion());
+
+
+	auto sandPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-20, 8, -95), BMath::Vector3(20, 0.2, 10), BMath::Quaternion());
+
+	pointLight1 = LightFactory::CreatePointLight(registry, BMath::Vector3(0, 9, -15), BMath::Vector3(0.75f), 2.5f, "light.jpg", true);
+
+
+	pointLight2 = LightFactory::CreatePointLight(registry, BMath::Vector3(20, 15, -60), BMath::Vector3(1.0f), 2.5f, "light.jpg", true);
 }
 
 void HoleTwoScene::Shutdown()

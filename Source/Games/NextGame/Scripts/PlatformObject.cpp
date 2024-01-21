@@ -38,6 +38,10 @@ ECS::EntityHandle PlatformObject::CreateGrassPlatform(ECS::Registry& registry, c
 	{
 		registry.AddComponent<StaticComponent>(platform);
 	}
+	else
+	{
+		registry.AddComponent<RigidBodyComponent>(platform);
+	}
 	return platform;
 }
 
