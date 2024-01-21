@@ -29,7 +29,13 @@ namespace Behemoth
 			Primitive* primitive = Renderer::GetInstance().primitivesToDraw[i];
 			assert(primitive);
 
-#ifdef ENABLE_LIGHTING
+
+			if (!primitive->affectedByLighting)
+			{
+				primitive->SetLighting(BMath::Vector3(1.0f, 1.0f, 1.0f));
+				continue;
+			}
+
 			primitive->SetLighting(BMath::Vector3::Zero());
 
 			for (const auto& [ambientEntity, ambientLight] : ambientLightComponent)
@@ -47,9 +53,9 @@ namespace Behemoth
 			{
 				 CalculatePointLights(primitive, pointLight, mainCameraPosition, transformComp->worldPosition, mainCamera->viewMatrix);
 			}
-#else
-			primitive->SetLighting(BMath::Vector3(1.0f, 1.0f, 1.0f));
-#endif
+
+			
+
 		}
 	}
 

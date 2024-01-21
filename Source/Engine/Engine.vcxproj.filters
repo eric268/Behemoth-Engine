@@ -142,7 +142,7 @@
     <ClInclude Include="BehemothCore\Factories\GameObjectFactory.h">
       <Filter>Factories</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Factories\LightFactories.h">
+    <ClInclude Include="BehemothCore\Factories\LightFactory.h">
       <Filter>Factories</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Factories\SkySphereFactory.h">
@@ -337,7 +337,7 @@
     <ClCompile Include="BehemothCore\Factories\GameObjectFactory.cpp">
       <Filter>Factories</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Factories\LightFactories.cpp">
+    <ClCompile Include="BehemothCore\Factories\LightFactory.cpp">
       <Filter>Factories</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Factories\SkySphereFactory.cpp">

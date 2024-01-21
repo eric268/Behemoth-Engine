@@ -30,7 +30,8 @@ namespace Behemoth
 		sprite{ new CSimpleSprite(path.c_str())},
 		diffuse(BMath::Vector3(0.8f, 0.8f, 0.8f)),
 		specular(BMath::Vector3(1.0f, 1.0f, 1.0f)),
-		shininess(32.0f)
+		shininess(32.0f),
+		affectedByLighting(true)
 	{
 		verticies[0] = BMath::Vector4();
 		verticies[1] = BMath::Vector4();
@@ -38,14 +39,15 @@ namespace Behemoth
 		SetLighting(BMath::Vector3::Zero());
 	}
 
-	Primitive::Primitive(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[]) :
+	Primitive::Primitive(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[], bool affectedByLighting) :
 		textureName(textureName),
 		sprite{ new CSimpleSprite(path.c_str()) },
 		primitiveType(type),
 		depth(0.0),
 		diffuse(BMath::Vector3(0.8f, 0.8f, 0.8f)),
 		specular(BMath::Vector3(1.0f, 1.0f, 1.0f)),
-		shininess(32.0f)
+		shininess(32.0f),
+		affectedByLighting(affectedByLighting)
 	{
 		SetLighting(BMath::Vector3::Zero());
 		CopyVertexData(verticies, normals, uv);
@@ -64,6 +66,7 @@ namespace Behemoth
 		specular(obj.specular),
 		shininess(obj.shininess)
 	{
+		affectedByLighting = obj.affectedByLighting;
 		CopyVertexData(obj.verticies, obj.normals, obj.uv);
 		const std::string& str = Behemoth::ResourceManager::GetInstance().GetTexturePath(textureName);
 		sprite = new CSimpleSprite(str.c_str());
@@ -80,6 +83,7 @@ namespace Behemoth
 		specular = obj.specular;
 		shininess = obj.shininess;
 		textureName = obj.textureName;
+		affectedByLighting = obj.affectedByLighting;
 
 		SetSpriteUVs(primitiveType, uv);
 

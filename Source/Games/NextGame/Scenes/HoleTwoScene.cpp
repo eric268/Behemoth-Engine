@@ -7,12 +7,6 @@
 #include "Components/RenderComponents.h"
 #include "Components/UIComponents.h"
 
-#include "Systems/SystemManager.h"
-
-#include "Factories/CameraFactory.h"
-#include "Factories/SkySphereFactory.h"
-#include "Factories/GameObjectFactory.h"
-
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
@@ -44,6 +38,10 @@ HoleTwoScene::HoleTwoScene()
 		ambientLight->intensity = 0.5;
 	}
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
+
+	pointLight1 = LightFactory::CreatePointLight(registry, BMath::Vector3(-2, 10, 18), BMath::Vector3(0.75f), 1.5f,"light.jpg", true);
+	pointLight2 = LightFactory::CreatePointLight(registry, BMath::Vector3(2, 10, 18), BMath::Vector3(0.75f), 1.5f, "light.jpg", true);
+	
 
 	goalObject = CreateGoalObject(registry, BMath::Vector3(20, 2, -40), BMath::Vector3(3.0f), 45.0f);
 

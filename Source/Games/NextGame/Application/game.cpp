@@ -7,6 +7,6 @@
 void CreateApplication()
 {
     Behemoth::World::GetInstance().Init();
-    Behemoth::Scene* mainScene = new GameOverScene();
+    Behemoth::Scene* mainScene = new MainMenuScene();
     Behemoth::World::GetInstance().ChangeScene(mainScene);
 }

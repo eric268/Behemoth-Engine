@@ -9,7 +9,7 @@
 
 // Factories
 #include "Factories/CameraFactory.h"
-#include "Factories/LightFactories.h"
+#include "Factories/LightFactory.h"
 #include "Factories/GameObjectFactory.h"
 #include "Factories/SkySphereFactory.h"
 

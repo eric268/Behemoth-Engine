@@ -4,6 +4,7 @@
 #include "Components/RenderComponents.h"
 #include "Components/PhysicsComponents.h"
 #include "GameComponents/Player/PlayerComponent.h"
+#include "Components/AudioComponents.h"
 #include "Physics/ProjectileMotion.h"
 #include "Math/Quaternion.h"
 
@@ -48,6 +49,7 @@ void PCSystem::IncreasePower(const float deltaTime, PlayerComponent* playerCompo
 		playerComponent->currentPower += playerComponent->chargeSpeed * deltaTime;
 	}
 	playerComponent->currentPower = std::min(100.0f, playerComponent->currentPower);
+
 }
 
 void PCSystem::DecreasePower(const float deltaTime, PlayerComponent* playerComponent, PCComponent* pcComponent)
@@ -57,11 +59,11 @@ void PCSystem::DecreasePower(const float deltaTime, PlayerComponent* playerCompo
 	{
 		playerComponent->currentPower -= playerComponent->chargeSpeed * deltaTime * triggerInput;
 	}
-	else if (Input::IsKeyHeld(pcComponent->increasePowerKC))
+	else if (Input::IsKeyHeld(pcComponent->decreasePowerKC))
 	{
 		playerComponent->currentPower -= playerComponent->chargeSpeed * deltaTime;
 	}
-	playerComponent->currentPower = std::min(100.0f, playerComponent->currentPower);
+	playerComponent->currentPower = std::max(0.0f, playerComponent->currentPower);
 }
 
 void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, PlayerComponent* playerComponent, PCComponent* pcComponent)
@@ -97,6 +99,9 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 		// Reset charge amount, could keep it previous amount of set it to default like 50
 		playerComponent->lastLocation = playerTransform->worldPosition;
 		playerComponent->strokesUsed++;
+// 
+// 		ECS::EntityHandle tempAudioHandle = registry.CreateEntity("Temp swing audio");
+// 		registry.AddComponent<Behemoth::AudioComponent>(tempAudioHandle, "swing.wav");
 	}
 }
 
@@ -105,7 +110,7 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 	AnalogInput input = Input::GetLeftControllerAnaloge(0);
 
 	float keyInputX = Input::IsKeyHeld(pcComponent->lookLeftKC) - Input::IsKeyHeld(pcComponent->lookRightKC);
-	float keyInputY = Input::IsKeyHeld(pcComponent->lookUpKC) - Input::IsKeyHeld(pcComponent->lookDownKC);
+ 	float keyInputY = Input::IsKeyHeld(pcComponent->lookUpKC) - Input::IsKeyHeld(pcComponent->lookDownKC);
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->cameraSpringArm))
 	{
@@ -126,16 +131,16 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 		else if (keyInputX)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComponent->upVector));
-		}
+ 		}
 
 		if (input.y != 0.0f)
 		{
 			quatY = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(cameraComponent->rightVector));
 		}
-		else if (keyInputY)
-		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComponent->rightVector));
-		}
+ 		else if (keyInputY)
+ 		{
+ 			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComponent->rightVector));
+ 		}
 
 		parentRotationComponent->quat = quatY * quatX;
 		parentRotationComponent->isAdditive = true;
@@ -146,8 +151,8 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 {
 	AnalogInput input = Input::GetRightControllerAnaloge(0);
 
-	float keyInputX = Input::IsKeyHeld(pcComponent->aimRightKC) - Input::IsKeyHeld(pcComponent->aimLeftKC);
-	float keyInputY = Input::IsKeyHeld(pcComponent->aimDownKC) - Input::IsKeyHeld(pcComponent->aimUpKC);
+ 	float keyInputX = Input::IsKeyHeld(pcComponent->aimRightKC) - Input::IsKeyHeld(pcComponent->aimLeftKC);
+ 	float keyInputY = Input::IsKeyHeld(pcComponent->aimDownKC) - Input::IsKeyHeld(pcComponent->aimUpKC);
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
 	{
@@ -163,16 +168,16 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		else if (keyInputX)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), projectileTransform->upVector);
-		}
+ 		}
 
 		if (input.y != 0.0f)
 		{
 			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), projectileTransform->rightVector);
 		}
-		else if (keyInputY != 0.0f)
-		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), projectileTransform->rightVector);
-		}
+ 		else if (keyInputY != 0.0f)
+ 		{
+ 			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), projectileTransform->rightVector);
+ 		}
 
 		parentRotationComponent->quat = (quatX * quatY).Normalize();
 		parentRotationComponent->isAdditive = true;

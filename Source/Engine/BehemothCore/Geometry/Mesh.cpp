@@ -21,10 +21,12 @@ namespace Behemoth
 	Mesh::Mesh(
 		const std::string& modelPath,
 		const std::string& texturePath,
-		const BMath::Vector2 uv)
+		const BMath::Vector2 uv,
+		bool affectedByLighting)
 		:
 		meshData(),
-		materialData()
+		materialData(),
+		affectedByLighting(affectedByLighting)
 	{
 		meshData.modelFileName =						modelPath;
 		materialData.textureFileName =					texturePath;
@@ -69,7 +71,7 @@ namespace Behemoth
 				uv[j].y = vertexData[i + j].uv.y * materialData.uvScale.y;
 			}
 
-			Primitive p{ path, materialData.textureFileName, type, v, n, uv };
+			Primitive p{ path, materialData.textureFileName, type, v, n, uv, affectedByLighting};
 
 			p.diffuse	= materialData.diffuse;
 			p.specular	= materialData.specular;

@@ -4,24 +4,13 @@
 
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
-#include "Components/PhysicsComponents.h"
-#include "Components/RenderComponents.h"
 #include "Components/AudioComponents.h"
-
-#include "Physics/Collision/BroadCollision.h"
-#include "Physics/Collision/CollisionMask.h"
-#include "Physics/Ray.h"
 
 #include "Components/UIComponents.h"
 
 #include "Factories/SkySphereFactory.h"
 
-#include "Physics/ProjectileMotion.h"
-
 #include "GameSystems/PCSystem.h"
-#include "Physics/Collision/PhysicsMaterial.h"
-
-
 
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"

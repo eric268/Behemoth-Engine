@@ -17,15 +17,18 @@ namespace Behemoth
 			const std::string& modelName,
 			const std::string& textureName,
 			const BMath::Vector2 uvScale =		{ 1.0f,1.0f },
-			bool visible =						true) 
+			bool visible =						true,
+			bool affectedByLighting	=		    true) 
 			:
 			modelFileName						(modelName),
 			textureFileName						(textureName),
-			mesh								(modelName, textureName, uvScale),
-			isVisible							(visible)
+			mesh								(modelName, textureName, uvScale, affectedByLighting),
+			isVisible							(visible),
+			affectedByLighting(affectedByLighting)
 		{}
 														
 		bool isVisible;
+		bool affectedByLighting;
 		Mesh mesh;
 		std::string modelFileName;
 		std::string textureFileName;

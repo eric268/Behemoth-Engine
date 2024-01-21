@@ -60,8 +60,6 @@ namespace Behemoth
   		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
   		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
 
-		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
-
 #ifdef DEBUG
 		// These are systems for rendering various debug tools
 		Behemoth::SystemManager::GetInstance().AddSystem<WireframeRenderSystem>();
@@ -72,6 +70,8 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<SkySphereSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshRenderSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
+
+		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
 	}
 
 	void World::Update(const float deltaTime)

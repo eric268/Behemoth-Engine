@@ -26,7 +26,8 @@ namespace Behemoth
 			PrimitiveType type,
 			BMath::Vector4 verticies[],
 			BMath::Vector3 normals[],
-			BMath::Vector2 uv[]);
+			BMath::Vector2 uv[],
+			bool affectedByLighting);
 
 		~Primitive();
 
@@ -48,6 +49,7 @@ namespace Behemoth
 		BMath::Vector3 diffuse;
 		BMath::Vector3 specular;
 		float shininess;
+		bool affectedByLighting;
 
 		void SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[]);
 		void SetSpriteVerticies(const int numVerticies, const BMath::Vector4 vert[]);
