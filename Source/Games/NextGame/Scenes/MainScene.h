@@ -36,5 +36,6 @@ private:
 	ECS::EntityHandle parEntity;
 
 	ECS::EntityHandle playerCharacter;
+	ECS::EntityHandle teeOffPlatform;
 };
             

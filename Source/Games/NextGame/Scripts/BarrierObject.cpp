@@ -13,7 +13,6 @@ ECS::EntityHandle BarrierObject::CreateBarrier(
 	registry.AddComponent<Behemoth::ScalingComponent>(obstacleHandle, scale);
 	registry.AddComponent<Behemoth::MoveComponent>(obstacleHandle, location);
 	registry.AddComponent<Behemoth::RotationComponent>(obstacleHandle, q, true);
-	registry.AddComponent<Behemoth::StaticComponent>(obstacleHandle);
 
 	Behemoth::OBBColliderComponent* obstacleCollider = registry.AddComponent<Behemoth::OBBColliderComponent>(obstacleHandle);
 	obstacleCollider->physicsMaterial = Behemoth::PhysicsMaterial(0.75, 1.0f);

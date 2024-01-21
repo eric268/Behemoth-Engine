@@ -37,6 +37,8 @@
     <ClInclude Include="Scripts\PlatformObject.h" />
     <ClInclude Include="Scripts\PlatformPhysMats.h" />
     <ClInclude Include="Scripts\BarrierObject.h" />
+    <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h" />
+    <ClInclude Include="GameSystems\MovingObsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -60,5 +62,6 @@
     <ClCompile Include="Scripts\GoalObject.cpp" />
     <ClCompile Include="Scripts\PlatformObject.cpp" />
     <ClCompile Include="Scripts\BarrierObject.cpp" />
+    <ClCompile Include="GameSystems\MovingObsSystem.cpp" />
   </ItemGroup>
 </Project>

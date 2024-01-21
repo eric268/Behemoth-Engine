@@ -148,9 +148,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameComponents\Level\LevelViewComponent.h" />
+    <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h" />
     <ClInclude Include="GameComponents\Player\PCComponent.h" />
     <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
     <ClInclude Include="GameSystems\LevelViewSystem.h" />
+    <ClInclude Include="GameSystems\MovingObsSystem.h" />
     <ClInclude Include="GameSystems\PCSystem.h" />
     <ClInclude Include="GameSystems\PlayerFellSystem.h" />
     <ClInclude Include="GameSystems\PlayerHUDSystem.h" />
@@ -169,6 +171,7 @@
   <ItemGroup>
     <ClCompile Include="Application\game.cpp" />
     <ClCompile Include="GameSystems\LevelViewSystem.cpp" />
+    <ClCompile Include="GameSystems\MovingObsSystem.cpp" />
     <ClCompile Include="GameSystems\PCSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerFellSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerHUDSystem.cpp" />

@@ -14,21 +14,21 @@ public:
 		ECS::Registry& registry,
 		const BMath::Vector3& position,
 		const BMath::Vector3& scale,
-		const BMath::Quaternion& q,
+		const BMath::Quaternion& q = BMath::Quaternion(),
 		bool isStatic = true);
 
 	static ECS::EntityHandle CreateRockPlatform(
 		ECS::Registry& registry,
 		const BMath::Vector3& position,
 		const BMath::Vector3& scale,
-		const BMath::Quaternion& q,
+		const BMath::Quaternion& q = BMath::Quaternion(),
 		bool isStatic = true);
 
 	static ECS::EntityHandle CreateSandPlatform(
 		ECS::Registry& registry,
 		const BMath::Vector3& position,
 		const BMath::Vector3& scale,
-		const BMath::Quaternion& q,
+		const BMath::Quaternion& q = BMath::Quaternion(),
 		bool isStatic = true);
 
 private:

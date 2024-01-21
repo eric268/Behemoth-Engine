@@ -13,7 +13,7 @@ namespace BMath
 
 		// inline functions
 		inline float Length() const { return sqrt(x * x + y * y + z * z + w * w); }
-		inline bool operator!=(const Quaternion& q) const { return *this != q; }
+		inline bool operator!=(const Quaternion& q) const { return !(*this == q); }
 		inline Quaternion& Inverse() { return Conjugate().Normalize(); }
 
 		Quaternion Rotate(Quaternion& point) { return (*this) * point * Conjugate(); }

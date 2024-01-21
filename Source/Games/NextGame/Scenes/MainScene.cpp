@@ -18,6 +18,7 @@
 #include "GameSystems/PlayerRespawnSystem.h"
 #include "GameSystems/LevelViewSystem.h"
 #include "GameSystems/PlayerHUDSystem.h"
+#include "GameSystems/MovingObsSystem.h"
 
 #include "Factories/SkySphereFactory.h"
 
@@ -37,6 +38,7 @@
 
 #include "GameComponents/Player/PlayerComponent.h"
 #include "GameComponents/Level/LevelViewComponent.h"
+#include "GameComponents/Obstacles/MovingObsComponent.h"
 
 using namespace Behemoth;
 
@@ -49,22 +51,29 @@ MainScene::MainScene()
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 10));
 	
-	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 0, -15), BMath::Vector3(3.0f), 45.0f);
+	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 0, -20), BMath::Vector3(3.0f), 45.0f);
 
-	obstacleHandle = BarrierObject::CreateBarrier(registry, BMath::Vector3(0, 5, -10), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion());
+	obstacleHandle = BarrierObject::CreateBarrier(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
+	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 20.0f, 100.0f, 50.0f);
+	registry.AddComponent<Behemoth::VelocityComponent>(obstacleHandle);
+	registry.AddComponent<Behemoth::RigidBodyComponent>(obstacleHandle);
 
-	groundEntity = PlatformObject::CreateSandPlatform(
+	groundEntity = PlatformObject::CreateGrassPlatform(
 		registry,
-		BMath::Vector3(0,0,2),
-		BMath::Vector3(3, 1.0f, 5),
-		BMath::Quaternion(DEGREE_TO_RAD(10.0f), BMath::Vector3(0, 0, 1)));
+		BMath::Vector3(0,0,0),
+		BMath::Vector3(6, 1.0f, 8));
+
+	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+		registry,
+		BMath::Vector3(0, 9, 9),
+		BMath::Vector3(4, 1.0f, 4));
 
 
 	bottomOOBTrigger = GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
 	registry.AddComponent<OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
 	registry.AddComponent<StaticComponent>(bottomOOBTrigger);
 	registry.AddComponent<ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
-	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
+	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -18, 10.0f));
 	// registry.AddComponent<WireframeComponent>(bottomOOBTrigger, "cube.obj");
 
 	if (MeshComponent* mesh = registry.GetComponent<MeshComponent>(bottomOOBTrigger))
@@ -74,7 +83,6 @@ MainScene::MainScene()
 
 	LevelViewFactory levelViewFactory{};
 	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0.0f, 20.0f, -5.0f), 5, 20, 10, 0);
-
 	registry.AddComponent<TransformComponent>(levelViewEntity);
 	registry.AddComponent<RotationComponent>(levelViewEntity);
 }
@@ -144,6 +152,7 @@ void MainScene::InitalizeSystems()
 	SystemManager::GetInstance().AddSystem<PlayerRespawnSystem>();
 	SystemManager::GetInstance().AddSystem<LevelViewSystem>();
 	SystemManager::GetInstance().AddSystem<PlayerHUDSystem>();
+	SystemManager::GetInstance().AddSystem<MovingObsSystem>();
 }
 
 void MainScene::Shutdown()
