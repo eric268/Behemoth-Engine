@@ -45,28 +45,36 @@ using namespace Behemoth;
 MainScene::MainScene()
 {
 	environmentLighting = registry.CreateEntity("Environment Lighting");
-	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
-	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
+	DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
+	if (directionalLight)
+	{
+		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
+	}
+	AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
+	if (ambientLight)
+	{
+		ambientLight->intensity = 2;
+	}
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
-	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 12));
 	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
+
+	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
+
 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 		registry,
-		BMath::Vector3(0, 9, 12),
+		BMath::Vector3(0, 9, 18),
 		BMath::Vector3(4, 1.0f, 4));
 
-	barrierHandle = BarrierObject::CreateBarrier(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
-	registry.AddComponent<MovingObsComponent>(barrierHandle, BMath::Vector3::Up(), 20.0f, 100.0f, 50.0f);
-	registry.AddComponent<Behemoth::VelocityComponent>(barrierHandle);
-	registry.AddComponent<Behemoth::RigidBodyComponent>(barrierHandle);
+	obstacleHandle = BarrierObject::CreateObstacle(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
+	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 30.0f, 250.0f, 0.0f);
+	registry.AddComponent<Behemoth::VelocityComponent>(obstacleHandle);
+	registry.AddComponent<Behemoth::RigidBodyComponent>(obstacleHandle);
 
-	groundEntity = PlatformObject::CreateGrassPlatform(
+	grassEntity = PlatformObject::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0,0,0),
-		BMath::Vector3(6, 1.0f, 8));
-
-
+		BMath::Vector3(10, 1.0f, 6));
 
 	sandTrap1 = PlatformObject::CreateSandPlatform(
 		registry,
@@ -84,7 +92,6 @@ MainScene::MainScene()
 	registry.AddComponent<StaticComponent>(bottomOOBTrigger);
 	registry.AddComponent<ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
 	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
-	// registry.AddComponent<WireframeComponent>(bottomOOBTrigger, "cube.obj");
 
 	if (MeshComponent* mesh = registry.GetComponent<MeshComponent>(bottomOOBTrigger))
 	{
@@ -104,10 +111,8 @@ void MainScene::Initalize()
 	InitalizeSystems();
 }
 
-void MainScene::ProcessEvent(Behemoth::Event& e)
+void MainScene::OnEvent(Behemoth::Event& e)
 {
-	// Processes general engine events such as window close, resize etc.
-	// Does not process window events, use static Input library to check mouse/keyboard/controller events
 }
 
 void MainScene::Update(const float deltaTime)

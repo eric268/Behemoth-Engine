@@ -2,14 +2,14 @@
 #include "BarrierObject.h"
 #include "Factories/GameObjectFactory.h"
 
-ECS::EntityHandle BarrierObject::CreateBarrier(
+ECS::EntityHandle BarrierObject::CreateObstacle(
 	ECS::Registry& registry,
 	const BMath::Vector3& location,
 	const BMath::Vector3& scale,
 	const BMath::Quaternion& q,
 	bool isStatic)
 {
-	ECS::EntityHandle obstacleHandle = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "brick.png");
+	ECS::EntityHandle obstacleHandle = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "brick.png", "Obstacle", BMath::Vector2(4, 4));
 	registry.AddComponent<Behemoth::ScalingComponent>(obstacleHandle, scale);
 	registry.AddComponent<Behemoth::MoveComponent>(obstacleHandle, location);
 	registry.AddComponent<Behemoth::RotationComponent>(obstacleHandle, q, true);

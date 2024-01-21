@@ -9,30 +9,6 @@
 
 namespace Behemoth
 {
-	void Scene::OnEvent(Event& e)
-	{
-		Behemoth::EventHandler eventHandler{e};
-
-		bool handled = eventHandler.ProcessEvent<Behemoth::WindowResizeEvent>([&](Behemoth::WindowResizeEvent keyEvent)
-			{
-				const ECS::EntityHandle cameraHandle = Behemoth::CameraHelper::GetMainCameraEntity(registry);
-
-				if (cameraHandle.ID != NULL_ENTITY)
-				{
-					Behemoth::CameraComponent* cameraComponent = registry.GetComponent<Behemoth::CameraComponent>(cameraHandle);
-					if (cameraComponent)
-					{
-						cameraComponent->isDirty = true;
-					}
-				}
-			});
-
-		// If event is not handled by parent scene then propagate event to current active scene
-		if (!handled)
-		{
-			ProcessEvent(e);
-		}
-	}
 	void Scene::CreateScene()
 	{
 		Initalize();

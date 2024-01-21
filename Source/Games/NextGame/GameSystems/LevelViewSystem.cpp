@@ -39,7 +39,7 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 
 		if (input.x != 0.0f)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(cameraComponent->upVector));
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(-input.x), BMath::Vector3(cameraComponent->upVector));
 		}
 		else if (keyInputX)
 		{
@@ -49,7 +49,7 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(cameraComponent->rightVector));
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(cameraComponent->rightVector));
 		}
 		else if (keyInputY)
 		{

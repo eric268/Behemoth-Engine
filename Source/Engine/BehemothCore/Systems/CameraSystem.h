@@ -15,7 +15,7 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void UpdatePerspectiveMatrix(CameraComponent* component, const TransformComponent* transformComponent);
+		void InitalizeProjMatrix(CameraComponent* component, const TransformComponent* transformComponent);
 		void UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transform);
 		void SetLook(ECS::Registry& registry, TransformComponent* cameraTransform, CameraComponent* cameraComponent);
 	};

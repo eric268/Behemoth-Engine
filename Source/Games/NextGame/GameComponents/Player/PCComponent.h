@@ -12,31 +12,43 @@ public:
 		KeyCode incPowerKC,
 		KeyCode decPowerKC,
 		KeyCode fireKC,
-		KeyCode swapCamKC,
-// 		Behemoth::ControllerCode incPowerCC,
-// 		Behemoth::ControllerCode decPowerCC,
-		ControllerCode fireCC,
-		ControllerCode swapCamCC)
+		KeyCode aimLeftKC,
+		KeyCode aimRightKC,
+		KeyCode aimUpKC,
+		KeyCode aimDownKC,
+		KeyCode lookLeftKC,
+		KeyCode lookRightKC,
+		KeyCode lookUpKC,
+		KeyCode lookDownKC,
+		ControllerCode fireCC)
 		:
 		increasePowerKC(incPowerKC),
 		decreasePowerKC(decPowerKC),
 		fireProjectileKC(fireKC),
-		swapCameraViewKC(swapCamKC),
-// 		increasePowerCC(incPowerCC),
-// 		decreasePowerCC(decPowerCC),
-		fireProjectileCC(fireCC),
-		swapCameraViewCC(swapCamCC)
+		aimLeftKC(aimLeftKC),
+		aimRightKC(aimRightKC),
+		aimUpKC(aimUpKC),
+		aimDownKC(aimDownKC),
+		lookLeftKC(lookLeftKC),
+		lookRightKC(lookRightKC),
+		lookUpKC(lookUpKC),
+		lookDownKC(lookDownKC),
+		fireProjectileCC(fireCC)
 	{}
 	
 	Behemoth::KeyCode increasePowerKC;
 	Behemoth::KeyCode decreasePowerKC;
 	Behemoth::KeyCode fireProjectileKC;
-	Behemoth::KeyCode swapCameraViewKC;
+	Behemoth::KeyCode aimLeftKC;
+	Behemoth::KeyCode aimRightKC;
+	Behemoth::KeyCode aimUpKC;
+	Behemoth::KeyCode aimDownKC;
+	Behemoth::KeyCode lookLeftKC;
+	Behemoth::KeyCode lookRightKC;
+	Behemoth::KeyCode lookUpKC;
+	Behemoth::KeyCode lookDownKC;
 
-// 	Behemoth::ControllerCode increasePowerCC;
-// 	Behemoth::ControllerCode decreasePowerCC;
 	Behemoth::ControllerCode fireProjectileCC;
-	Behemoth::ControllerCode swapCameraViewCC;
 };
 
 struct ViewControllerComponent : public ECS::Component

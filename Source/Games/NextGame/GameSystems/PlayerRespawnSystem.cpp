@@ -28,7 +28,6 @@ void PlayerRespawnSystem::Run(const float deltaTime, ECS::Registry& registry)
 	 	registry.AddComponent<MoveComponent>(playerComponent->cameraSpringArm, playerComponent->lastLocation, false);
 		velocityComponent->velocity = BMath::Vector3::Zero();
 		playerComponent->canFire = true;
-		playerComponent->currentPower = 0.0f;
 		rigidBodyComponent->affectedByGravity = false;
 
 

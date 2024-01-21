@@ -27,7 +27,8 @@ namespace Behemoth
 			windowWidth					(0.0f),
 			windowHeight				(0.0f),
 			isMain						(main),
-			isDirty						(true)
+			isDirty						(true),
+			isInitalized				(false)
 			{}
 									
 		ECS::EntityHandle focusedEntity;
@@ -39,6 +40,7 @@ namespace Behemoth
 		BMath::Vector3 forwardVector;
 		BMath::Vector3 upVector;
 
+		bool isInitalized;
 		float FOV;
 		float nearClippingPlane;
 		float farClippingPlane;

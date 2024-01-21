@@ -3,6 +3,7 @@
 #include "Components/Components.h"
 #include "Misc/CameraHelper.h"
 #include "NextAPI/App/main.h"
+#include "NextAPI/App/AppSettings.h"
 #include "ECS/Entity.h"
 
 namespace Behemoth
@@ -13,10 +14,13 @@ namespace Behemoth
 
 		for (auto& [entity, cameraComp, transformComp] : components)
 		{
+			if (!cameraComp->isInitalized)
+			{
+				InitalizeProjMatrix(cameraComp, transformComp);
+			}
 			// Only update camera if its transform has changed
 			if (cameraComp->isDirty)
 			{
-				UpdatePerspectiveMatrix(cameraComp, transformComp);
 				UpdateFrustrum(cameraComp, transformComp);
 				SetLook(registry, transformComp, cameraComp);
 
@@ -30,12 +34,10 @@ namespace Behemoth
 		}
 	}
 
-	void CameraSystem::UpdatePerspectiveMatrix(CameraComponent* cameraComponent, const TransformComponent* transformComponent)
+	void CameraSystem::InitalizeProjMatrix(CameraComponent* cameraComponent, const TransformComponent* transformComponent)
 	{
-		RECT rect;
-		GetClientRect(MAIN_WINDOW_HANDLE, &rect);
-		cameraComponent->windowWidth = rect.right - rect.left;
-		cameraComponent->windowHeight = rect.bottom - rect.top;
+		cameraComponent->windowWidth = APP_VIRTUAL_WIDTH;
+		cameraComponent->windowHeight = APP_VIRTUAL_HEIGHT;
 
 		const float fovScale = 1.0f / (std::tan(DEGREE_TO_RAD(cameraComponent->FOV) * 0.5f));
 		const float aspectRatio = cameraComponent->windowWidth / cameraComponent->windowHeight;
@@ -48,6 +50,8 @@ namespace Behemoth
 		cameraComponent->projMatrix._33 = -(farPlane + nearPlane) / (farPlane - nearPlane);
 		cameraComponent->projMatrix._43 = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
 		cameraComponent->projMatrix._34 = -1.0f;
+
+		cameraComponent->isInitalized = true;
 	}
 
 	void CameraSystem::UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transformComp)

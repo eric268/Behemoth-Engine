@@ -79,9 +79,15 @@ void PlayerFactory::AddInputBindings(ECS::Registry& registry, const ECS::EntityH
 		KeyCode::KC_E,
 		KeyCode::KC_Q,
 		KeyCode::KC_Space,
-		KeyCode::KC_C,
-		ControllerCode::CC_R_SHOULDER,
-		ControllerCode::CC_Y);
+		KeyCode::KC_A,
+		KeyCode::KC_D,
+		KeyCode::KC_W,
+		KeyCode::KC_S,
+		KeyCode::KC_Left,
+		KeyCode::KC_Right,
+		KeyCode::KC_Up,
+		KeyCode::KC_Down,
+		ControllerCode::CC_R_SHOULDER);
 }
 
 void PlayerFactory::InitalizeHUD(ECS::Registry& registry, const ECS::EntityHandle& handle)

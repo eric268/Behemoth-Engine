@@ -32,7 +32,7 @@ void TestScene::Initalize()
 	// Can be used for additional initialization steps that are required post construction
 }
 
-void TestScene::ProcessEvent(Behemoth::Event& e)
+void TestScene::OnEvent(Behemoth::Event& e)
 {
 	// Processes general engine events such as window close, resize etc.
 	// Does not process window events, use static Input library to check mouse/keyboard/controller events
