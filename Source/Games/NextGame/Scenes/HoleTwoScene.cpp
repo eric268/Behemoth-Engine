@@ -29,19 +29,19 @@ HoleTwoScene::HoleTwoScene()
 	if (directionalLight)
 	{
 		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
-		directionalLight->intensity = 0.5f;
+		directionalLight->intensity = 1.8f;
 	}
 	
 	Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 	if (ambientLight)
 	{
-		ambientLight->intensity = 0.5;
+		ambientLight->intensity = 0.6;
 	}
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
 
 	ConstructEnvironment(registry);
 
-	goalObject = CreateGoalObject(registry, BMath::Vector3(20, 2, -40), BMath::Vector3(3.0f), 45.0f);
+	goalObject = CreateGoalObject(registry, BMath::Vector3(20, 15, -60), BMath::Vector3(3.0f), 45.0f);
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
 
@@ -53,7 +53,7 @@ HoleTwoScene::HoleTwoScene()
 	CreateOOBEntity(registry);
 
 	LevelViewFactory levelViewFactory{};
-	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 2, -20), 5, 20, 10, 0);
+	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(20, 15, -60), 5, 20, 10, 0);
 	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
 	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
 
@@ -115,21 +115,26 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		mainBarriers[i] = BarrierObject::CreateObstacle(registry, BMath::Vector3(-12 + (i * 20), 10, -40), BMath::Vector3(9, 15, 2), BMath::Quaternion());
-		registry.AddComponent<Behemoth::StaticComponent>(mainBarriers[i]);
+		mainBarriers[i] = BarrierObject::CreateObstacle(registry, BMath::Vector3(-12 + (i * 20), 20, -30), BMath::Vector3(9, 15, 2), BMath::Quaternion());
 	}
 
-	grassPatch1 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -15), BMath::Vector3(15, 0.2, 30), BMath::Quaternion());
-
-	auto grassPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-45, 8, -75), BMath::Vector3(20, 0.2, 10), BMath::Quaternion());
 
 
-	auto sandPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-20, 8, -95), BMath::Vector3(20, 0.2, 10), BMath::Quaternion());
+	grassPatch1 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -20), BMath::Vector3(15, 0.2, 40), BMath::Quaternion());
 
-	pointLight1 = LightFactory::CreatePointLight(registry, BMath::Vector3(0, 9, -15), BMath::Vector3(0.75f), 2.5f, "light.jpg", true);
+	auto grassPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(0, 8, -100), BMath::Vector3(25, 0.2, 30), BMath::Quaternion());
 
 
-	pointLight2 = LightFactory::CreatePointLight(registry, BMath::Vector3(20, 15, -60), BMath::Vector3(1.0f), 2.5f, "light.jpg", true);
+	auto sandPatch2 = PlatformObject::CreateSandPlatform(registry, BMath::Vector3(50, 8, -95), BMath::Vector3(20, 0.2, 30), BMath::Quaternion());
+
+	auto barrier2 = BarrierObject::CreateObstacle(
+		registry,
+		BMath::Vector3(35, 20, -50),
+		BMath::Vector3(5, 6, 10),
+		BMath::Quaternion(DEGREE_TO_RAD(45.0f),
+			BMath::Vector3(0, 1, 0)));
+
+
 }
 
 void HoleTwoScene::Shutdown()
