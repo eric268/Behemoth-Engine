@@ -33,7 +33,6 @@
     <ClInclude Include="Scripts\ViewModeChange.h" />
     <ClInclude Include="GameSystems\LevelViewSystem.h" />
     <ClInclude Include="GameSystems\PlayerHUDSystem.h" />
-    <ClInclude Include="Scripts\GoalObject.h" />
     <ClInclude Include="Scripts\PlatformObject.h" />
     <ClInclude Include="Scripts\PlatformPhysMats.h" />
     <ClInclude Include="Scripts\BarrierObject.h" />
@@ -64,7 +63,6 @@
     <ClCompile Include="Scripts\ViewModeChange.cpp" />
     <ClCompile Include="GameSystems\LevelViewSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerHUDSystem.cpp" />
-    <ClCompile Include="Scripts\GoalObject.cpp" />
     <ClCompile Include="Scripts\PlatformObject.cpp" />
     <ClCompile Include="Scripts\BarrierObject.cpp" />
     <ClCompile Include="GameSystems\MovingObsSystem.cpp" />

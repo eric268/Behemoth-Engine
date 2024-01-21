@@ -26,7 +26,6 @@
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
-#include "Scripts/GoalObject.h"
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
 #include "Scripts/PlayerScore.h"
@@ -54,7 +53,7 @@ HoleOneScene::HoleOneScene()
 	}
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
-	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
+	goalObject = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
 
@@ -83,17 +82,7 @@ HoleOneScene::HoleOneScene()
 		BMath::Vector3(20, -2, -20),
 		BMath::Vector3(7, 1.0f, 10));
 
-
-	bottomOOBTrigger = GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
-	registry.AddComponent<OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
-	registry.AddComponent<StaticComponent>(bottomOOBTrigger);
-	registry.AddComponent<ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
-	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
-
-	if (MeshComponent* mesh = registry.GetComponent<MeshComponent>(bottomOOBTrigger))
-	{
-		mesh->isVisible = false;
-	}
+	CreateOOBEntity(registry);
 
 	LevelViewFactory levelViewFactory{};
 	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 2, -20), 5, 20, 10, 0);

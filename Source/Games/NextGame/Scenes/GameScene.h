@@ -12,6 +12,10 @@ public:
 	bool CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle);
 	void OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle, int par);
 
+	ECS::EntityHandle CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle);
+
+	ECS::EntityHandle CreateOOBEntity(ECS::Registry& registry);
+
 protected:
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle skySphere;

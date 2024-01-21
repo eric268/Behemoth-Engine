@@ -3,7 +3,8 @@
 #include "Components/UIComponents.h"
 #include "GameComponents/Player/PlayerComponent.h"
 #include "Scripts/PlayerScore.h"
-
+#include "Factories/GameObjectFactory.h"
+#include "Components/RenderComponents.h"
 
 
 std::unordered_map<int, std::string> GameScene::holeResultsText =
@@ -117,4 +118,34 @@ void GameScene::OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playe
 	{
 		rigidBodyComponent->affectedByGravity = false;
 	}
+}
+
+ECS::EntityHandle GameScene::CreateOOBEntity(ECS::Registry& registry)
+{
+	bottomOOBTrigger = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
+
+	registry.AddComponent<Behemoth::OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
+	registry.AddComponent<Behemoth::StaticComponent>(bottomOOBTrigger);
+	registry.AddComponent<Behemoth::ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
+	registry.AddComponent<Behemoth::MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
+
+	if (Behemoth::MeshComponent* mesh = registry.GetComponent<Behemoth::MeshComponent>(bottomOOBTrigger))
+	{
+		mesh->isVisible = false;
+	}
+
+	return bottomOOBTrigger;
+}
+
+ECS::EntityHandle  GameScene::CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle)
+{
+	Behemoth::GameObjectFactory gameObjectFactory{};
+	ECS::EntityHandle goalHandle = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Goal Game Object");
+	registry.AddComponent<Behemoth::MoveComponent>(goalHandle, location);
+	registry.AddComponent<Behemoth::RotationComponent>(goalHandle, BMath::Quaternion(DEGREE_TO_RAD(rotationAngle), BMath::Vector3(0, 1, 0)));
+	registry.AddComponent<Behemoth::StaticComponent>(goalHandle);
+	registry.AddComponent<Behemoth::SphereColliderComponent>(goalHandle, 0.9f);
+	registry.AddComponent<Behemoth::ScalingComponent>(goalHandle, scale);
+
+	return goalHandle;
 }

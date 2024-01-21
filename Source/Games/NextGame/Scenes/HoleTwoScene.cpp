@@ -16,10 +16,17 @@
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
-#include "Scripts/GoalObject.h"
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
 #include "Scripts/PlayerScore.h"
+
+#include "GameSystems/PlayerFellSystem.h"
+#include "GameSystems/PlayerRespawnSystem.h"
+#include "GameSystems/LevelViewSystem.h"
+#include "GameSystems/PlayerHUDSystem.h"
+#include "GameSystems/MovingObsSystem.h"
+#include "GameSystems/PCSystem.h"
+
 
 HoleTwoScene::HoleTwoScene()
 {
@@ -28,15 +35,17 @@ HoleTwoScene::HoleTwoScene()
 	if (directionalLight)
 	{
 		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
+		directionalLight->intensity = 0.5f;
 	}
+	
 	Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 	if (ambientLight)
 	{
-		ambientLight->intensity = 2;
+		ambientLight->intensity = 0.5;
 	}
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
 
-	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
+	goalObject = CreateGoalObject(registry, BMath::Vector3(20, 2, -40), BMath::Vector3(3.0f), 45.0f);
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
 
@@ -45,16 +54,7 @@ HoleTwoScene::HoleTwoScene()
 		BMath::Vector3(0, 9, 18),
 		BMath::Vector3(4, 1.0f, 4));
 
-	bottomOOBTrigger = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
-	registry.AddComponent<Behemoth::OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
-	registry.AddComponent<Behemoth::StaticComponent>(bottomOOBTrigger);
-	registry.AddComponent<Behemoth::ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
-	registry.AddComponent<Behemoth::MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
-
-	if (Behemoth::MeshComponent* mesh = registry.GetComponent<Behemoth::MeshComponent>(bottomOOBTrigger))
-	{
-		mesh->isVisible = false;
-	}
+	CreateOOBEntity(registry);
 
 	LevelViewFactory levelViewFactory{};
 	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 2, -20), 5, 20, 10, 0);
@@ -73,6 +73,13 @@ void HoleTwoScene::Initalize()
 {
 	// Function called after scene constructor 
 	// Can be used for additional initialization steps that are required post construction
+
+	Behemoth::SystemManager::GetInstance().AddSystem<PCSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<PlayerFellSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<PlayerRespawnSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<LevelViewSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<PlayerHUDSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<MovingObsSystem>();
 }
 
 void HoleTwoScene::OnEvent(Behemoth::Event& e)
