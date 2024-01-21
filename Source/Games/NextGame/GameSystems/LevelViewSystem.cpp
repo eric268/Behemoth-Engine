@@ -22,11 +22,8 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 {
 	AnalogInput input = Input::GetLeftControllerAnaloge(0);
 
-	// 	// No look input
-	if (input == AnalogInput())
-	{
-		return;
-	}
+	float keyInputX = Input::IsKeyHeld(viewController->rotateLeftKC) - Input::IsKeyHeld(viewController->rotateRightKC);
+	float keyInputY = Input::IsKeyHeld(viewController->moveUpKC) - Input::IsKeyHeld(viewController->moveDownKC);
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(handle))
 	{
@@ -44,10 +41,19 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(cameraComponent->upVector));
 		}
+		else if (keyInputX)
+		{
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComponent->upVector));
+		}
+		
 
 		if (input.y != 0.0f)
 		{
 			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(cameraComponent->rightVector));
+		}
+		else if (keyInputY)
+		{
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComponent->rightVector));
 		}
 
 		parentRotationComponent->quat = quatY * quatX;
@@ -58,13 +64,24 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, ECS::EntityHandle, LevelViewComponent* levelView, ViewControllerComponent* viewController)
 {
 	AnalogInput input = Input::GetRightControllerAnaloge(0);
-
+	float keyInput = Input::IsKeyHeld(viewController->zoomOutKC) - Input::IsKeyHeld(viewController->zoomInKC);
 	// 	// No look input
-	if (input.y == 0.0f)
+
+	float delta = 0.0f;
+
+	// Prioritize controller input
+	if (input.y != 0.0f)
+	{
+		delta = -input.y * levelView->cameraMoveSpeed * deltaTime;
+	}
+	else if (keyInput != 0.0f)
+	{
+		delta = keyInput * levelView->cameraMoveSpeed * deltaTime;
+	}
+	else
 	{
 		return;
 	}
-	const float delta = -input.y * levelView->cameraMoveSpeed * deltaTime;
 
 	if (levelView->currentZoomCounter + delta < levelView->minZoomDistance || levelView->currentZoomCounter + delta > levelView->maxZoomDistance)
 	{

@@ -50,7 +50,7 @@ MainScene::MainScene()
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 12));
-	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 0, -20), BMath::Vector3(3.0f), 45.0f);
+	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 9, 12),
@@ -92,7 +92,7 @@ MainScene::MainScene()
 	}
 
 	LevelViewFactory levelViewFactory{};
-	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0.0f, 20.0f, -5.0f), 5, 20, 10, 0);
+	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 2, -20), 5, 20, 10, 0);
 	registry.AddComponent<TransformComponent>(levelViewEntity);
 	registry.AddComponent<RotationComponent>(levelViewEntity);
 }
