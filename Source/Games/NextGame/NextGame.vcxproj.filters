@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scenes\MainScene.h">
+    <ClInclude Include="Scenes\HoleOneScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\TestScene.h">
+    <ClInclude Include="Scenes\HoleTwoScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
@@ -39,15 +39,16 @@
     <ClInclude Include="Scripts\BarrierObject.h" />
     <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h" />
     <ClInclude Include="GameSystems\MovingObsSystem.h" />
+    <ClInclude Include="Scripts\GolfUIHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\MainScene.cpp">
+    <ClCompile Include="Scenes\HoleOneScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\TestScene.cpp">
+    <ClCompile Include="Scenes\HoleTwoScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
@@ -63,5 +64,6 @@
     <ClCompile Include="Scripts\PlatformObject.cpp" />
     <ClCompile Include="Scripts\BarrierObject.cpp" />
     <ClCompile Include="GameSystems\MovingObsSystem.cpp" />
+    <ClCompile Include="Scripts\GolfUIHelper.cpp" />
   </ItemGroup>
 </Project>

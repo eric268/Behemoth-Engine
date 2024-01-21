@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "TestScene.h"
-#include "MainScene.h"
+#include "HoleTwoScene.h"
+#include "HoleOneScene.h"
 
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
@@ -16,7 +16,7 @@
 
 #include "Factories/SkySphereFactory.h"
 
-TestScene::TestScene()
+HoleTwoScene::HoleTwoScene()
 {
 	Behemoth::CameraFactory cameraFactory{};
 	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
@@ -26,19 +26,19 @@ TestScene::TestScene()
 	LOGMESSAGE(General, "Main Scene constructed\n");
 }
 
-void TestScene::Initalize()
+void HoleTwoScene::Initalize()
 {
 	// Function called after scene constructor 
 	// Can be used for additional initialization steps that are required post construction
 }
 
-void TestScene::OnEvent(Behemoth::Event& e)
+void HoleTwoScene::OnEvent(Behemoth::Event& e)
 {
 	// Processes general engine events such as window close, resize etc.
 	// Does not process window events, use static Input library to check mouse/keyboard/controller events
 }
 
-void TestScene::Update(const float deltaTime)
+void HoleTwoScene::Update(const float deltaTime)
 {
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(exampleParentEntity))
 	{
@@ -47,12 +47,12 @@ void TestScene::Update(const float deltaTime)
 
 	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::KC_Space))
 	{
-		Behemoth::Scene* mainScene = new MainScene();
+		Behemoth::Scene* mainScene = new HoleOneScene();
 		Behemoth::World::GetInstance().ChangeScene(mainScene);
 	}
 }
 
-void TestScene::Shutdown()
+void HoleTwoScene::Shutdown()
 {
 
 }

@@ -167,7 +167,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(input.y), projectileTransform->rightVector);
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), projectileTransform->rightVector);
 		}
 		else if (keyInputY != 0.0f)
 		{

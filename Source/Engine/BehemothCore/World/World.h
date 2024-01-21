@@ -31,5 +31,6 @@ namespace Behemoth
 		World() = default;
 
 		Scene* currentScene;
+		Scene* newScene;
 	};
 }

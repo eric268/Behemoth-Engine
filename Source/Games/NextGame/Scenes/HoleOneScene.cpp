@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MainScene.h"
+#include "HoleOneScene.h"
 
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
@@ -27,7 +27,7 @@
 #include "GameSystems/PCSystem.h"
 #include "Physics/Collision/PhysicsMaterial.h"
 
-#include "TestScene.h"
+#include "HoleTwoScene.h"
 
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
@@ -35,6 +35,7 @@
 #include "Scripts/GoalObject.h"
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
+#include "Scripts/GolfUIHelper.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
 #include "GameComponents/Level/LevelViewComponent.h"
@@ -42,7 +43,7 @@
 
 using namespace Behemoth;
 
-MainScene::MainScene()
+HoleOneScene::HoleOneScene()
 {
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
@@ -102,20 +103,28 @@ MainScene::MainScene()
 	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 2, -20), 5, 20, 10, 0);
 	registry.AddComponent<TransformComponent>(levelViewEntity);
 	registry.AddComponent<RotationComponent>(levelViewEntity);
+
+	par = 2;
+	parTextEntity = registry.CreateEntity("Par Text Entity");
+	registry.AddComponent<TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
+
+	delayUntilSceneChange = 5.0f;
+	changeScene = false;
 }
 
-void MainScene::Initalize()
+void HoleOneScene::Initalize()
 {
 	// Function called after scene constructor 
 	// Can be used for additional initialization steps that are required post construction
 	InitalizeSystems();
+
 }
 
-void MainScene::OnEvent(Behemoth::Event& e)
+void HoleOneScene::OnEvent(Behemoth::Event& e)
 {
 }
 
-void MainScene::Update(const float deltaTime)
+void HoleOneScene::Update(const float deltaTime)
 {
 	if (TriggerDataComponent* triggerData = registry.GetComponent<TriggerDataComponent>(playerCharacter))
 	{
@@ -134,8 +143,32 @@ void MainScene::Update(const float deltaTime)
 		{
 			if (d.otherHandle.ID == goalObject.ID)
 			{
+				PlayerComponent* playerComponent = registry.GetComponent<PlayerComponent>(playerCharacter);
+				if (!playerComponent)
+				{
+					LOGMESSAGE(Error, "Unable to find player component");
+					break;
+				}
+				// Level complete process already happening
+				if (playerComponent->levelComplete)
+				{
+					break;
+				}
+				
 				LOGMESSAGE(General, "Goal Reached!");
+				playerComponent->levelComplete = true;
+
+				levelCompleteText = registry.CreateEntity("Level complete text");
+				registry.AddComponent<Behemoth::TextComponent>(levelCompleteText, GolfUIHelper::GetHoleResultText(par,  playerComponent->strokesUsed), BMath::Vector2(0, 0.5f));
+				
 				// Open level complete scene
+
+				ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
+				registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, 5.0f, [this]()
+					{
+						changeScene = true;
+					});
+
 
 				if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(playerCharacter))
 				{
@@ -146,10 +179,6 @@ void MainScene::Update(const float deltaTime)
 				{
 					rigidBodyComponent->affectedByGravity = false;
 				}
-				if (PlayerComponent* playerComponent = registry.GetComponent<PlayerComponent>(playerCharacter))
-				{
-					playerComponent->levelComplete = true;
-				}
 			}
 		}
 	}
@@ -158,9 +187,15 @@ void MainScene::Update(const float deltaTime)
 	{
 		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
 	}
+
+
+	if (changeScene)
+	{
+		World::GetInstance().ChangeScene(new HoleTwoScene());
+	}
 }
 
-void MainScene::InitalizeSystems()
+void HoleOneScene::InitalizeSystems()
 {
 	SystemManager::GetInstance().AddSystem<PCSystem>();
 	SystemManager::GetInstance().AddSystem<PlayerFellSystem>();
@@ -170,7 +205,7 @@ void MainScene::InitalizeSystems()
 	SystemManager::GetInstance().AddSystem<MovingObsSystem>();
 }
 
-void MainScene::Shutdown()
+void HoleOneScene::Shutdown()
 {
 
 }

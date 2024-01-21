@@ -3,18 +3,19 @@
 #include "BehemothEngine.h"
 
 
-class MainScene : public Behemoth::Scene
+class HoleOneScene : public Behemoth::Scene
 {
 public:
 	using Super = Behemoth::Scene;
 
-	MainScene();
+	HoleOneScene();
 	void Initalize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
 	void InitalizeSystems();
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
+	void NextHole();
 
 private:
 	ECS::EntityHandle environmentLighting;
@@ -33,5 +34,10 @@ private:
 	ECS::EntityHandle obstacleHandle;
 
 	ECS::EntityHandle parTextEntity;
+	ECS::EntityHandle levelCompleteText;
+
+	int par;
+	float delayUntilSceneChange;
+	bool changeScene;
 };
             

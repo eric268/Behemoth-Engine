@@ -38,9 +38,7 @@ namespace Behemoth
 		{
 			for (const auto& system : systemContainer)
 			{
-			
 				system->Run(deltaTime, registry);
-				
 			}
 		}
 

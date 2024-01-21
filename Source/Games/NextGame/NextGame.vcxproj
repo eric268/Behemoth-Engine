@@ -157,11 +157,12 @@
     <ClInclude Include="GameSystems\PlayerFellSystem.h" />
     <ClInclude Include="GameSystems\PlayerHUDSystem.h" />
     <ClInclude Include="GameSystems\PlayerRespawnSystem.h" />
-    <ClInclude Include="Scenes\MainScene.h" />
-    <ClInclude Include="Scenes\TestScene.h" />
+    <ClInclude Include="Scenes\HoleOneScene.h" />
+    <ClInclude Include="Scenes\HoleTwoScene.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Scripts\BarrierObject.h" />
     <ClInclude Include="Scripts\GoalObject.h" />
+    <ClInclude Include="Scripts\GolfUIHelper.h" />
     <ClInclude Include="Scripts\LevelViewFactory.h" />
     <ClInclude Include="Scripts\PlatformObject.h" />
     <ClInclude Include="Scripts\PlatformPhysMats.h" />
@@ -176,13 +177,14 @@
     <ClCompile Include="GameSystems\PlayerFellSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerHUDSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerRespawnSystem.cpp" />
-    <ClCompile Include="Scenes\MainScene.cpp" />
-    <ClCompile Include="Scenes\TestScene.cpp" />
+    <ClCompile Include="Scenes\HoleOneScene.cpp" />
+    <ClCompile Include="Scenes\HoleTwoScene.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scripts\BarrierObject.cpp" />
     <ClCompile Include="Scripts\GoalObject.cpp" />
+    <ClCompile Include="Scripts\GolfUIHelper.cpp" />
     <ClCompile Include="Scripts\LevelViewFactory.cpp" />
     <ClCompile Include="Scripts\PlatformObject.cpp" />
     <ClCompile Include="Scripts\PlayerFactory.cpp" />

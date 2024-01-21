@@ -2,12 +2,12 @@
 
 #include "BehemothEngine.h"
 
-class TestScene : public Behemoth::Scene
+class HoleTwoScene : public Behemoth::Scene
 {
 public:
 	using Super = Behemoth::Scene;
 
-	TestScene();
+	HoleTwoScene();
 	void Initalize() override;
 	void OnEvent(Behemoth::Event& e);
 	void Update(const float deltaTime) override;

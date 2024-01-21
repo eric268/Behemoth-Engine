@@ -21,9 +21,7 @@ namespace Behemoth
 			delete currentScene;
 		}
 
-
 		Renderer::GetInstance().ClearResources();
-
 
 		currentScene = newScene;
 
@@ -62,11 +60,7 @@ namespace Behemoth
   		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
   		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
 
-
-		// These systems should always be last and in this order
-		// Maybe make a separate container for them to ensure they are last
 		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
-
 
 #ifdef DEBUG
 		// These are systems for rendering various debug tools
@@ -87,6 +81,11 @@ namespace Behemoth
 			return;
 		}
 
+		if (newScene)
+		{
+			ChangeScene(newScene);
+		}
+
 		currentScene->Update(deltaTime);
 		currentScene->RecalculateBVH();
 	}
@@ -94,7 +93,9 @@ namespace Behemoth
 	void World::Shutdown()
 	{
 		if (!currentScene)
+		{
 			return;
+		}
 
 		currentScene->Shutdown();
 		delete currentScene;
