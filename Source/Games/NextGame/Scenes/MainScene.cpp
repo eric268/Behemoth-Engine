@@ -28,8 +28,11 @@
 #include "TestScene.h"
 
 #include "Scripts/GameObjects/PlayerFactory.h"
+#include "Scripts/GameObjects/LevelViewFactory.h"
+#include "Scripts/ViewModeChange.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
+#include "GameComponents/LevelComponents.h"
 
 using namespace Behemoth;
 
@@ -82,6 +85,11 @@ MainScene::MainScene()
 		mesh->isVisible = false;
 	}
 
+	LevelViewFactory levelViewFactory{};
+	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0.0f, 20.0f, -5.0f), 5, 20, 10, 0);
+
+	registry.AddComponent<TransformComponent>(levelViewEntity);
+	registry.AddComponent<RotationComponent>(levelViewEntity);
 }
 
 void MainScene::Initalize()
@@ -108,6 +116,11 @@ void MainScene::Update(const float deltaTime)
 				registry.AddComponent<PlayerFellComponent>(playerCharacter, 3.0f);
 			}
 		}
+	}
+
+	if (Input::IsControllerKeyDown(CC_Y) || Input::IsKeyDown(KC_C))
+	{
+		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
 	}
 }
 

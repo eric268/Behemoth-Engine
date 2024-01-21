@@ -2,21 +2,21 @@
 
 #include "BehemothEngine.h"
 
-
-class PCComponent : public ECS::Component
+using namespace Behemoth;
+struct PCComponent : public ECS::Component
 {
 public:
 	PCComponent() = default;
 
 	PCComponent(
-		Behemoth::KeyCode incPowerKC,
-		Behemoth::KeyCode decPowerKC,
-		Behemoth::KeyCode fireKC,
-		Behemoth::KeyCode swapCamKC,
+		KeyCode incPowerKC,
+		KeyCode decPowerKC,
+		KeyCode fireKC,
+		KeyCode swapCamKC,
 // 		Behemoth::ControllerCode incPowerCC,
 // 		Behemoth::ControllerCode decPowerCC,
-		Behemoth::ControllerCode fireCC,
-		Behemoth::ControllerCode swapCamCC)
+		ControllerCode fireCC,
+		ControllerCode swapCamCC)
 		:
 		increasePowerKC(incPowerKC),
 		decreasePowerKC(decPowerKC),
@@ -28,7 +28,6 @@ public:
 		swapCameraViewCC(swapCamCC)
 	{}
 	
-	
 	Behemoth::KeyCode increasePowerKC;
 	Behemoth::KeyCode decreasePowerKC;
 	Behemoth::KeyCode fireProjectileKC;
@@ -38,5 +37,41 @@ public:
 // 	Behemoth::ControllerCode decreasePowerCC;
 	Behemoth::ControllerCode fireProjectileCC;
 	Behemoth::ControllerCode swapCameraViewCC;
+};
+
+struct ViewControllerComponent : public ECS::Component
+{
+	ViewControllerComponent() = default;
+
+	ViewControllerComponent(
+		bool isActive,
+		KeyCode zoomInKC,
+		KeyCode zoomOutKC,
+		KeyCode rotateLeftKC,
+		KeyCode rotateRightKC,
+		KeyCode moveUpKC,
+		KeyCode moveDownKC,
+		ControllerCode moveUpCC,
+		ControllerCode moveDownCC)
+		:
+		zoomInKC(zoomInKC),
+		zoomOutKC(zoomOutKC),
+		rotateLeftKC(rotateLeftKC),
+		rotateRightKC(rotateRightKC),
+		moveUpKC(moveUpKC),
+		moveDownKC(moveDownKC),
+		moveUpCC(moveUpCC),
+		moveDownCC(moveDownCC)
+	{}
+
+	KeyCode zoomInKC;
+	KeyCode zoomOutKC;
+	KeyCode rotateLeftKC;
+	KeyCode rotateRightKC;
+	KeyCode moveUpKC;
+	KeyCode moveDownKC;
+
+	ControllerCode moveUpCC;
+	ControllerCode moveDownCC;
 };
 

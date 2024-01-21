@@ -52,7 +52,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	gameObjectFactory.AddChildObject(registry, cameraSpringArm, mainCameraHandle);
 
 	// Create and add a player component to easily reference child handles
-	registry.AddComponent<PlayerComponent>(playerHandle, mainCameraHandle, cameraSpringArm, projectileHandle, playerMeshHandle, arrowMeshHandle, 5.0f, spawnLocation);
+	registry.AddComponent<PlayerComponent>(playerHandle,true, mainCameraHandle, cameraSpringArm, projectileHandle, playerMeshHandle, arrowMeshHandle, 5.0f, spawnLocation);
 
 	// Bind input handling for player controller 
 	AddInputBindings(registry, playerHandle);

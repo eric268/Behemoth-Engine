@@ -2,6 +2,7 @@
 
 #include "BehemothEngine.h"
 
+
 class MainScene : public Behemoth::Scene
 {
 public:
@@ -16,6 +17,10 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
+
+	bool levelViewActive = false;
+
+	ECS::EntityHandle levelViewEntity;
 
 	ECS::EntityHandle obstacleHandle;
 

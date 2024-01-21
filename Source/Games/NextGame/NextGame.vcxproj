@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameComponents\CameraControllerComponent.h" />
+    <ClInclude Include="GameComponents\LevelComponents.h" />
     <ClInclude Include="GameComponents\Player\PCComponent.h" />
     <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
     <ClInclude Include="GameSystems\CameraControllerSystem.h" />
@@ -157,7 +158,9 @@
     <ClInclude Include="Scenes\MainScene.h" />
     <ClInclude Include="Scenes\TestScene.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Scripts\GameObjects\LevelViewFactory.h" />
     <ClInclude Include="Scripts\GameObjects\PlayerFactory.h" />
+    <ClInclude Include="Scripts\ViewModeChange.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp" />
@@ -170,7 +173,9 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Scripts\GameObjects\LevelViewFactory.cpp" />
     <ClCompile Include="Scripts\GameObjects\PlayerFactory.cpp" />
+    <ClCompile Include="Scripts\ViewModeChange.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Engine\Engine.vcxproj">
