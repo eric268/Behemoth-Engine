@@ -84,7 +84,7 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 
 		if (VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(handle))
 		{
-			velocityComponent->velocity = ProjectileMotion::CalculateInitalVelocity(playerComponent->currentPower, playerTransform->forwardVector);
+			velocityComponent->velocity = ProjectileMotion::CalculateInitalVelocity(playerComponent->currentPower * 0.5f, playerTransform->forwardVector);
 		}
 
 		if (RigidBodyComponent* playerRigidBody = registry.GetComponent<RigidBodyComponent>(handle))
@@ -97,6 +97,7 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 		// Reset charge amount, could keep it previous amount of set it to default like 50
 		playerComponent->currentPower = 0.0f;
 		playerComponent->lastLocation = playerTransform->worldPosition;
+		playerComponent->strokesUsed++;
 	}
 }
 

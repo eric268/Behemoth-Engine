@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LevelViewFactory.h"
 #include "Components/Components.h"
-#include "GameComponents/LevelViewComponent.h"
+#include "GameComponents/Level/LevelViewComponent.h"
 #include "Factories/CameraFactory.h"
 #include "Factories/GameObjectFactory.h"
 #include "GameComponents/Player/PCComponent.h"

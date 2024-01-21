@@ -28,10 +28,11 @@
     <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
     <ClInclude Include="GameSystems\PlayerFellSystem.h" />
     <ClInclude Include="GameSystems\PlayerRespawnSystem.h" />
-    <ClInclude Include="GameComponents\LevelViewComponent.h" />
+    <ClInclude Include="GameComponents\Level\LevelViewComponent.h" />
     <ClInclude Include="Scripts\LevelViewFactory.h" />
     <ClInclude Include="Scripts\ViewModeChange.h" />
     <ClInclude Include="GameSystems\LevelViewSystem.h" />
+    <ClInclude Include="GameSystems\PlayerHUDSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -51,5 +52,6 @@
     <ClCompile Include="Scripts\LevelViewFactory.cpp" />
     <ClCompile Include="Scripts\ViewModeChange.cpp" />
     <ClCompile Include="GameSystems\LevelViewSystem.cpp" />
+    <ClCompile Include="GameSystems\PlayerHUDSystem.cpp" />
   </ItemGroup>
 </Project>

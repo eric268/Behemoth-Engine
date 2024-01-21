@@ -13,6 +13,6 @@ namespace Behemoth
 	{
 		BMath::Vector3 color = Behemoth::GetColor(textColor);
 
-		App::Print(pos.x,pos.y ,text.c_str(), color.x, color.y, color.z);
+		App::Print(pos.x,pos.y ,text.c_str(), color.x, color.y, color.z, GLUT_BITMAP_TIMES_ROMAN_24);
 	}
 }

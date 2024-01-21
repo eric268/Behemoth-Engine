@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "LevelViewSystem.h"
-#include "GameComponents/LevelViewComponent.h"
+#include "GameComponents/Level/LevelViewComponent.h"
 #include "Misc/CameraHelper.h"
 
 void LevelViewSystem::Run(const float deltaTime, ECS::Registry& registry)

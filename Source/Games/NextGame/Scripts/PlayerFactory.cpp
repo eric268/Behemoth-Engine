@@ -3,6 +3,7 @@
 #include "Factories/GameObjectFactory.h"
 #include "GameComponents/Player/PCComponent.h"
 #include "GameComponents/Player/PlayerComponent.h"
+#include "Components/UIComponents.h"
 
 using namespace Behemoth;
 
@@ -39,6 +40,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	CameraComponent* mainCameraComp = registry.GetComponent<CameraComponent>(mainCameraHandle);
 	mainCameraComp->focusedEntity = playerHandle;
 
+
 	// Create camera spring arm for look functionality independent of aiming
 	const ECS::EntityHandle cameraSpringArm = registry.CreateEntity("Spring arm");
 	registry.AddComponent<TransformComponent>(cameraSpringArm);
@@ -52,10 +54,12 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	gameObjectFactory.AddChildObject(registry, cameraSpringArm, mainCameraHandle);
 
 	// Create and add a player component to easily reference child handles
-	registry.AddComponent<PlayerComponent>(playerHandle,true, mainCameraHandle, cameraSpringArm, projectileHandle, playerMeshHandle, arrowMeshHandle, 5.0f, spawnLocation);
+	registry.AddComponent<PlayerComponent>(playerHandle,true, mainCameraHandle, cameraSpringArm, projectileHandle, playerMeshHandle, arrowMeshHandle, 15.0f, spawnLocation);
 
 	// Bind input handling for player controller 
 	AddInputBindings(registry, playerHandle);
+
+	InitalizeHUD(registry, playerHandle);
 
 	return playerHandle;
 }
@@ -70,4 +74,22 @@ void PlayerFactory::AddInputBindings(ECS::Registry& registry, const ECS::EntityH
 		KeyCode::KC_C,
 		ControllerCode::CC_R_SHOULDER,
 		ControllerCode::CC_Y);
+}
+
+void PlayerFactory::InitalizeHUD(ECS::Registry& registry, const ECS::EntityHandle& handle)
+{
+	PlayerHUDComponent* playerHUD = registry.AddComponent<PlayerHUDComponent>(handle);
+	if (!playerHUD)
+	{
+		LOGMESSAGE(Error, "Unable to add player HUD");
+		return;
+	}
+
+	playerHUD->owningPlayerHandle = handle;
+
+	playerHUD->powerUIHandle = registry.CreateEntity("Player Power UI");
+	registry.AddComponent<TextComponent>(playerHUD->powerUIHandle, "Power: ", BMath::Vector2(0.85, 0.9));
+
+	playerHUD->strokesUIHandle = registry.CreateEntity("Player strokes UI");
+	registry.AddComponent<TextComponent>(playerHUD->strokesUIHandle, "Strokes: 0", BMath::Vector2(0.85, 0.8));
 }

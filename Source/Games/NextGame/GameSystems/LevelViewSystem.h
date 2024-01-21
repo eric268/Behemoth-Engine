@@ -1,7 +1,7 @@
 #pragma once
 #include "BehemothEngine.h"
 
-#include "GameComponents/LevelViewComponent.h"
+#include "GameComponents/Level/LevelViewComponent.h"
 #include "GameComponents/Player/PCComponent.h"
 
 class LevelViewSystem

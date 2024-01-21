@@ -24,7 +24,8 @@ struct PlayerComponent : public ECS::Component
 		chargeSpeed									(chargeSpeed),
 		currentPower								(0.0f),
 		canFire										(true),
-		lastLocation								(lastLoc)
+		lastLocation								(lastLoc),
+		strokesUsed									(0)
 	{}
 
 	bool isActive;
@@ -35,6 +36,9 @@ struct PlayerComponent : public ECS::Component
 	ECS::EntityHandle playerMeshHandle;
 	ECS::EntityHandle arrowMeshHandle;
 
+	ECS::EntityHandle hudHandle;
+
+	int strokesUsed;
 	float currentPower;
 	float chargeSpeed;
 	bool canFire;
@@ -51,4 +55,12 @@ struct PlayerFellComponent : public ECS::Component
 struct PlayerRespawnComponent : public ECS::Component
 {
 	PlayerRespawnComponent() = default;
+};
+
+struct PlayerHUDComponent : public ECS::Component
+{
+	PlayerHUDComponent() {}
+	ECS::EntityHandle strokesUIHandle;
+	ECS::EntityHandle powerUIHandle;
+	ECS::EntityHandle owningPlayerHandle;
 };

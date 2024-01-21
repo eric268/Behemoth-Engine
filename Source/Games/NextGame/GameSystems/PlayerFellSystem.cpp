@@ -7,7 +7,7 @@
 using namespace Behemoth;
 void PlayerFellSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
-	for (const auto [
+	for (const auto& [
 		entity, 
 			playerComponent, 
 			playerFellComponent] : registry.Get<PlayerComponent, PlayerFellComponent>())

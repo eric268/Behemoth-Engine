@@ -1,12 +1,6 @@
 #pragma once
 #include "BehemothEngine.h"
 
-namespace ECS
-{
-	class Registry;
-	class Entity;
-}
-
 class PlayerFellSystem
 {
 public:
