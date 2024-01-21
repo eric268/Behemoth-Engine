@@ -22,7 +22,7 @@ private:
 
 	ECS::EntityHandle levelViewEntity;
 
-	ECS::EntityHandle obstacleHandle;
+	ECS::EntityHandle barrierHandle;
 
 	ECS::EntityHandle bottomOOBTrigger;
 
@@ -32,6 +32,9 @@ private:
 	ECS::EntityHandle pointLight;
 	ECS::EntityHandle skySphere;
 	ECS::EntityHandle groundEntity;
+
+	ECS::EntityHandle sandTrap1;
+	ECS::EntityHandle sandTrap2;
 
 	ECS::EntityHandle parEntity;
 

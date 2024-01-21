@@ -8,7 +8,7 @@ using namespace Behemoth;
 ECS::EntityHandle PlatformObject::CreatePlatform(ECS::Registry& registry, const PhysicsMaterial& physicsMaterial, const std::string& modelPath, const std::string& texturePath, const std::string& name, const BMath::Vector2& uvScale)
 {
 	ECS::EntityHandle platform = GameObjectFactory::CreateGameObject(registry, modelPath, texturePath, name, uvScale);
-	AABBColliderComponent* colliderComp = registry.AddComponent<AABBColliderComponent>(platform, BMath::Vector3(1.1f));
+	OBBColliderComponent* colliderComp = registry.AddComponent<OBBColliderComponent>(platform, BMath::Vector3(1.1f));
 
 	if (!colliderComp)
 	{
@@ -33,13 +33,6 @@ ECS::EntityHandle PlatformObject::CreateGrassPlatform(ECS::Registry& registry, c
 	registry.AddComponent<MoveComponent>(platform, position);
 	registry.AddComponent<ScalingComponent>(platform, scale);
 	registry.AddComponent<RotationComponent>(platform, q);
-
-	// Fix this later, shouldn't be adding then removing a collider
-	if (q != BMath::Quaternion::Identity())
-	{
-		registry.AddComponent<Behemoth::OBBColliderComponent>(platform);
-		registry.RemoveComponent<Behemoth::AABBColliderComponent>(platform);
-	}
 
 	if (isStatic)
 	{

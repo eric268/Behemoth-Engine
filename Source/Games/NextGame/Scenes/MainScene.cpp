@@ -49,31 +49,41 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
-	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 10));
-	
+	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 12));
 	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 0, -20), BMath::Vector3(3.0f), 45.0f);
+	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+		registry,
+		BMath::Vector3(0, 9, 12),
+		BMath::Vector3(4, 1.0f, 4));
 
-	obstacleHandle = BarrierObject::CreateBarrier(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
-	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 20.0f, 100.0f, 50.0f);
-	registry.AddComponent<Behemoth::VelocityComponent>(obstacleHandle);
-	registry.AddComponent<Behemoth::RigidBodyComponent>(obstacleHandle);
+	barrierHandle = BarrierObject::CreateBarrier(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
+	registry.AddComponent<MovingObsComponent>(barrierHandle, BMath::Vector3::Up(), 20.0f, 100.0f, 50.0f);
+	registry.AddComponent<Behemoth::VelocityComponent>(barrierHandle);
+	registry.AddComponent<Behemoth::RigidBodyComponent>(barrierHandle);
 
 	groundEntity = PlatformObject::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0,0,0),
 		BMath::Vector3(6, 1.0f, 8));
 
-	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+
+
+	sandTrap1 = PlatformObject::CreateSandPlatform(
 		registry,
-		BMath::Vector3(0, 9, 9),
-		BMath::Vector3(4, 1.0f, 4));
+		BMath::Vector3(-20, -2, -20),
+		BMath::Vector3(7, 1.0f, 10));
+
+	sandTrap2 = PlatformObject::CreateSandPlatform(
+		registry,
+		BMath::Vector3(20, -2, -20),
+		BMath::Vector3(7, 1.0f, 10));
 
 
 	bottomOOBTrigger = GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
 	registry.AddComponent<OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
 	registry.AddComponent<StaticComponent>(bottomOOBTrigger);
 	registry.AddComponent<ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
-	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -18, 10.0f));
+	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
 	// registry.AddComponent<WireframeComponent>(bottomOOBTrigger, "cube.obj");
 
 	if (MeshComponent* mesh = registry.GetComponent<MeshComponent>(bottomOOBTrigger))
