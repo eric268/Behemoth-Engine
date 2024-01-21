@@ -26,6 +26,8 @@ private:
 
 	ECS::EntityHandle bottomOOBTrigger;
 
+	ECS::EntityHandle goalObject;
+
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle pointLight;
 	ECS::EntityHandle skySphere;

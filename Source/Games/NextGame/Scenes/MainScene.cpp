@@ -31,6 +31,7 @@
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
+#include "Scripts/GoalObject.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
 #include "GameComponents/Level/LevelViewComponent.h"
@@ -46,6 +47,7 @@ MainScene::MainScene()
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 10));
 	
+	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 0, -15), BMath::Vector3(3.0f), 45.0f);
 
 	GameObjectFactory gameObjectFactory{};
 	obstacleHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png");

@@ -33,6 +33,7 @@
     <ClInclude Include="Scripts\ViewModeChange.h" />
     <ClInclude Include="GameSystems\LevelViewSystem.h" />
     <ClInclude Include="GameSystems\PlayerHUDSystem.h" />
+    <ClInclude Include="Scripts\GoalObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -53,5 +54,6 @@
     <ClCompile Include="Scripts\ViewModeChange.cpp" />
     <ClCompile Include="GameSystems\LevelViewSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerHUDSystem.cpp" />
+    <ClCompile Include="Scripts\GoalObject.cpp" />
   </ItemGroup>
 </Project>
