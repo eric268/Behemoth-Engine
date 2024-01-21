@@ -54,6 +54,6 @@ std::string GameOverScene::GetFinalScoreText()
 		return std::string("Well done! You shot even with the course par!");
 	}
 
-	std::string result = (PlayerScore::GetScore() > 0) ? "Over" : "Under";
+	std::string result = (PlayerScore::GetScore() > 0) ? " over " : " under ";
 	return std::string("Well Done! You shot " + std::to_string(PlayerScore::GetScore()) + result + " par!");
 }

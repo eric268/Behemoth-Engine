@@ -5,7 +5,7 @@
 #include <memory>
 #include <cassert>
 
-#define DEFAULT_PAGE_SIZE 4096
+#define DEFAULT_PAGE_SIZE 512
 
 namespace ECS
 {

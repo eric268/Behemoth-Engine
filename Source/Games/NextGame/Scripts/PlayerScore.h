@@ -8,7 +8,7 @@ public:
 
 	static inline int GetScore() { return playerScore;  }
 
-	static inline void AddScore(int par, int strokesUsed) { playerScore += (par - strokesUsed); }
+	static inline void AddScore(int par, int strokesUsed) { playerScore += (strokesUsed - par); }
 
 private:
 	static int playerScore;

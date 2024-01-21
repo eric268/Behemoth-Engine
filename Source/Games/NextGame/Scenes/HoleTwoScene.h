@@ -16,10 +16,7 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
-
-	ECS::EntityHandle goalObject;
 	ECS::EntityHandle levelViewEntity;
-
 	ECS::EntityHandle parTextEntity;
 	ECS::EntityHandle levelCompleteText;
 

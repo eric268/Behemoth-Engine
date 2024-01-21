@@ -13,14 +13,12 @@
 #include "Factories/SkySphereFactory.h"
 #include "Factories/GameObjectFactory.h"
 
-#include "Scripts/LevelHelper.h"
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
 #include "Scripts/GoalObject.h"
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
-#include "Scripts/GolfUIHelper.h"
 #include "Scripts/PlayerScore.h"
 
 HoleTwoScene::HoleTwoScene()
@@ -38,6 +36,7 @@ HoleTwoScene::HoleTwoScene()
 	}
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
+	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
 
@@ -62,11 +61,11 @@ HoleTwoScene::HoleTwoScene()
 	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
 	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
 
-	par = 2;
+	par = 4;
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
 
-	delayUntilSceneChange = 5.0f;
+	delayUntilSceneChange = 3.0f;
 	changeScene = false;
 }
 
@@ -86,10 +85,26 @@ void HoleTwoScene::Update(const float deltaTime)
 {
 	CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
 
-	if (Behemoth::Input::IsKeyDown(Behemoth::KeyCode::KC_Space))
+	if (CheckLevelComplete(registry, playerCharacter))
 	{
-		Behemoth::Scene* mainScene = new HoleThreeScene();
-		Behemoth::World::GetInstance().ChangeScene(mainScene);
+		OnHoleComplete(registry, playerCharacter, par);
+
+		ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
+		registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
+			{
+				changeScene = true;
+			});
+	}
+
+
+	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
+	{
+		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
+	}
+
+	if (changeScene)
+	{
+		Behemoth::World::GetInstance().ChangeScene(new HoleThreeScene());
 	}
 }
 

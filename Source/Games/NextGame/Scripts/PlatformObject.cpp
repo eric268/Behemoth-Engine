@@ -25,7 +25,7 @@ ECS::EntityHandle PlatformObject::CreateGrassPlatform(ECS::Registry& registry, c
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Grass],
-		"plane.obj",
+		"plane5.obj",
 		"grass.png",
 		"Grass Platform",
 		BMath::Vector2(8,8));
@@ -46,7 +46,7 @@ ECS::EntityHandle PlatformObject::CreateRockPlatform(ECS::Registry& registry, co
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Rock],
-		"plane.obj",
+		"plane5.obj",
 		"asphalt.jpg",
 		"Rock Platform", 
 		BMath::Vector2(10.0,10.0));
@@ -67,7 +67,7 @@ ECS::EntityHandle PlatformObject::CreateSandPlatform(ECS::Registry& registry, co
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Sand],
-		"plane.obj",
+		"plane5.obj",
 		"sand.jpg",
 		"Sand Platform",
 		BMath::Vector2(5.0, 5.0));

@@ -23,14 +23,12 @@
 
 
 
-#include "Scripts/LevelHelper.h"
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
 #include "Scripts/GoalObject.h"
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
-#include "Scripts/GolfUIHelper.h"
 #include "Scripts/PlayerScore.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
@@ -106,7 +104,7 @@ HoleOneScene::HoleOneScene()
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
 
-	delayUntilSceneChange = 5.0f;
+	delayUntilSceneChange = 3.0f;
 	changeScene = false;
 }
 
@@ -124,63 +122,26 @@ void HoleOneScene::Update(const float deltaTime)
 {
 	 CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
 
-	if (CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(playerCharacter))
-	{
-		for (const auto& d : collisionData->data)
-		{
-			if (d.otherHandle.ID == goalObject.ID)
-			{
-				PlayerComponent* playerComponent = registry.GetComponent<PlayerComponent>(playerCharacter);
-				if (!playerComponent)
-				{
-					LOGMESSAGE(Error, "Unable to find player component");
-					break;
-				}
-				// Level complete process already happening
-				if (playerComponent->levelComplete)
-				{
-					break;
-				}
-				
-				LOGMESSAGE(General, "Goal Reached!");
-				playerComponent->levelComplete = true;
+	 if (CheckLevelComplete(registry, playerCharacter))
+	 {
+		 OnHoleComplete(registry, playerCharacter, par);
 
-				PlayerScore::AddScore(par, playerComponent->strokesUsed);
-
-				levelCompleteText = registry.CreateEntity("Level complete text");
-				registry.AddComponent<Behemoth::TextComponent>(levelCompleteText, GolfUIHelper::GetHoleResultText(par,  playerComponent->strokesUsed), BMath::Vector2(0, 0.5f));
-				
-				// Open level complete scene
-
-				ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
-				registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, 5.0f, [this]()
-					{
-						changeScene = true;
-					});
-
-
-				if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(playerCharacter))
-				{
-					velocity->velocity = BMath::Vector3::Zero();
-				}
-
-				if (RigidBodyComponent* rigidBodyComponent = registry.GetComponent<RigidBodyComponent>(playerCharacter))
-				{
-					rigidBodyComponent->affectedByGravity = false;
-				}
-			}
-		}
-	}
+		 ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
+		 registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
+			 {
+				 changeScene = true;
+			 });
+	 }
 
 	if (Input::IsControllerKeyDown(CC_Y) || Input::IsKeyDown(KC_C))
 	{
 		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
 	}
 
-// 	if (changeScene)
-// 	{
-// 		World::GetInstance().ChangeScene(new HoleTwoScene());
-// 	}
+	if (changeScene)
+	{
+		World::GetInstance().ChangeScene(new HoleTwoScene());
+	}
 }
 
 void HoleOneScene::Shutdown()

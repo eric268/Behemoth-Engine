@@ -19,7 +19,6 @@
 #include "Scripts/GoalObject.h"
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
-#include "Scripts/GolfUIHelper.h"
 #include "Scripts/PlayerScore.h"
 
 HoleThreeScene::HoleThreeScene()
@@ -37,6 +36,8 @@ HoleThreeScene::HoleThreeScene()
 	}
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
+
+	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
 
@@ -61,11 +62,11 @@ HoleThreeScene::HoleThreeScene()
 	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
 	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
 
-	par = 2;
+	par = 5;
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
 
-	delayUntilSceneChange = 5.0f;
+	delayUntilSceneChange = 3.0f;
 	changeScene = false;
 }
 void HoleThreeScene::Initalize()
@@ -75,6 +76,28 @@ void HoleThreeScene::Initalize()
 void HoleThreeScene::Update(const float deltaTime)
 {
 	CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
+
+	if (CheckLevelComplete(registry, playerCharacter))
+	{
+		OnHoleComplete(registry, playerCharacter, par);
+
+		ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
+		registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
+			{
+				changeScene = true;
+			});
+	}
+
+
+	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
+	{
+		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
+	}
+
+	if (changeScene)
+	{
+		Behemoth::World::GetInstance().ChangeScene(new GameOverScene());
+	}
 }
 void HoleThreeScene::OnEvent(Behemoth::Event& e)
 {

@@ -18,14 +18,9 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
-
 	ECS::EntityHandle teeOffPlatform;
-	ECS::EntityHandle goalObject;
-
 	ECS::EntityHandle levelViewEntity;
 	ECS::EntityHandle titleTextEntity;
-
-	ECS::EntityHandle playEntity;
 
 
 	float delayUntilSceneChange;

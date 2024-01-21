@@ -13,14 +13,12 @@
 #include "Factories/SkySphereFactory.h"
 #include "Factories/GameObjectFactory.h"
 
-#include "Scripts/LevelHelper.h"
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
 #include "Scripts/GoalObject.h"
 #include "Scripts/PlatformObject.h"
 #include "Scripts/BarrierObject.h"
-#include "Scripts/GolfUIHelper.h"
 #include "Scripts/PlayerScore.h"
 
 
@@ -53,7 +51,7 @@ MainMenuScene::MainMenuScene()
 
 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 		registry,
-		BMath::Vector3(0, 9, 18),
+		BMath::Vector3(0, 4, 0),
 		BMath::Vector3(4, 1.0f, 4));
 
 	bottomOOBTrigger = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
@@ -67,12 +65,12 @@ MainMenuScene::MainMenuScene()
 		mesh->isVisible = false;
 	}
 
-	playEntity = GameObjectFactory::CreateGameObject(registry, "plane.obj", "play.png", "Play Game Entity", { 1,-1 });
-	registry.AddComponent<MoveComponent>(playEntity, BMath::Vector3(3, 8, -15));
-	registry.AddComponent<OBBColliderComponent>(playEntity, BMath::Vector3(3.0f));
-	registry.AddComponent<Behemoth::StaticComponent>(playEntity);
-	registry.AddComponent<Behemoth::ScalingComponent>(playEntity, BMath::Vector3(4.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(playEntity, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)), true);
+	goalObject = GameObjectFactory::CreateGameObject(registry, "p5.obj", "play.png", "Play Game Entity", { 1,-1 });
+	registry.AddComponent<MoveComponent>(goalObject, BMath::Vector3(0, 10, -20));
+	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(3.0f));
+	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
+	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f));
+	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)), true);
 
 
 	titleTextEntity = registry.CreateEntity("Par Text Entity");
@@ -88,15 +86,9 @@ void MainMenuScene::Update(const float deltaTime)
 {
 	CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
 
-	if (CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(playerCharacter))
+	if (CheckLevelComplete(registry, playerCharacter))
 	{
-		for (const auto& d : collisionData->data)
-		{
-			if (d.otherHandle.ID == playEntity.ID)
-			{
-				World::GetInstance().ChangeScene(new HoleOneScene());
-			}
-		}
+		World::GetInstance().ChangeScene(new HoleOneScene());
 	}
 }
 
