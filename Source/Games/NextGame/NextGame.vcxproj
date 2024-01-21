@@ -158,8 +158,11 @@
     <ClInclude Include="Scenes\MainScene.h" />
     <ClInclude Include="Scenes\TestScene.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Scripts\BarrierObject.h" />
     <ClInclude Include="Scripts\GoalObject.h" />
     <ClInclude Include="Scripts\LevelViewFactory.h" />
+    <ClInclude Include="Scripts\PlatformObject.h" />
+    <ClInclude Include="Scripts\PlatformPhysMats.h" />
     <ClInclude Include="Scripts\PlayerFactory.h" />
     <ClInclude Include="Scripts\ViewModeChange.h" />
   </ItemGroup>
@@ -175,8 +178,10 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Scripts\BarrierObject.cpp" />
     <ClCompile Include="Scripts\GoalObject.cpp" />
     <ClCompile Include="Scripts\LevelViewFactory.cpp" />
+    <ClCompile Include="Scripts\PlatformObject.cpp" />
     <ClCompile Include="Scripts\PlayerFactory.cpp" />
     <ClCompile Include="Scripts\ViewModeChange.cpp" />
   </ItemGroup>

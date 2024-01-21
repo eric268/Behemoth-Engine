@@ -13,6 +13,8 @@ namespace Behemoth
 	struct ContactData;
 	class Plane;
 
+	bool NarrowSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box, ContactData& contactData);
+
 	bool NarrowRayOBBCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData);
 	bool NarrowRaySphereCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData);
 
@@ -54,6 +56,15 @@ namespace Behemoth
 	}
 
 	template<>
+	inline bool CheckCollision(const SphereCollider& sphere, const AABBCollider& box, ContactData& contactData)
+	{
+		bool result = NarrowSphereAABBCollision(sphere, box, contactData);
+		if (result)
+			NarrowSphereAABBCollision(sphere, box, contactData);
+		return result;
+	}
+
+	template<>
 	inline bool CheckCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
 	{
 		return  NarrowRaySphereCollision(ray, sphere, contactData);
@@ -63,6 +74,39 @@ namespace Behemoth
 	inline bool CheckCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData)
 	{
 		return NarrowRayOBBCollision(ray, box, contactData);
+	}
+
+
+	// TODO:
+	// Finish these narrow collision checks
+	template<>
+	inline bool CheckCollision(const AABBCollider& box1, const AABBCollider& box2, ContactData& contactData)
+	{
+		return false;
+	}
+
+	template<>
+	inline bool CheckCollision(const AABBCollider& box1, const SphereCollider& sphere, ContactData& contactData)
+	{
+		bool result = NarrowSphereAABBCollision(sphere, box1, contactData);
+		// Invert the normal since we are colliding from the other way
+		if (result)
+		{
+			contactData.collisionNormal *= -1.0f;
+		}
+		return result;
+	}
+
+	template<>
+	inline bool CheckCollision(const AABBCollider& box1, const OBBCollider& box2, ContactData& contactData)
+	{
+		return false;
+	}
+
+	template<>
+	inline bool CheckCollision(const OBBCollider& box1, const AABBCollider& box2, ContactData& contactData)
+	{
+		return false;
 	}
 }
 

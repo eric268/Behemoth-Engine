@@ -9,6 +9,30 @@
 
 namespace Behemoth
 {
+	bool NarrowSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box, ContactData& contactData)
+	{
+		BMath::Vector3 min = box.worldPosition - box.worldExtents;
+		BMath::Vector3 max = box.worldPosition + box.worldExtents;
+
+		BMath::Vector3 closestPoint;
+		closestPoint.x = std::max(min.x, std::min(sphere.center.x, max.x));
+		closestPoint.y = std::max(min.y, std::min(sphere.center.y, max.y));
+		closestPoint.z = std::max(min.z, std::min(sphere.center.z, max.z));
+
+		BMath::Vector3 difference = sphere.center - closestPoint;
+		float distance = BMath::Vector3::Magnitude(difference);
+		float distanceSquared = distance * distance;
+
+		if (distanceSquared < sphere.radius * sphere.radius)
+		{
+			contactData.collisionPoint = closestPoint;
+			contactData.collisionNormal = difference.Normalize();
+			contactData.depth = sphere.radius - distance;
+			return true;
+		}
+		return false;
+	}
+
 	bool NarrowRayOBBCollision(const Ray& ray, const OBBCollider& box, ContactData& contactData)
 	{
 		real collisionStartTime = (real)0.0;
@@ -242,7 +266,7 @@ namespace Behemoth
 	{
 		real pen = combinedBoxes - absDistance;
 
-		if (pen < 5e-4) // is parallel
+		if (pen < 1e-2) // is parallel
 		{
 			return;
 		}

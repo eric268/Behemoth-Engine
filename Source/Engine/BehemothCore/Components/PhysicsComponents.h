@@ -123,7 +123,7 @@ namespace Behemoth
 
 	template <typename ...T>
 	struct NarrowColliders {};
-	using NarrowColliderTypes = NarrowColliders<SphereColliderComponent, OBBColliderComponent>;
+	using NarrowColliderTypes = NarrowColliders<AABBColliderComponent, SphereColliderComponent, OBBColliderComponent>;
 
 	// Collision Resolution Components
 	struct CollisionDataComponent : public ECS::Component

@@ -25,7 +25,8 @@ struct PlayerComponent : public ECS::Component
 		currentPower								(0.0f),
 		canFire										(true),
 		lastLocation								(lastLoc),
-		strokesUsed									(0)
+		strokesUsed									(0),
+		levelComplete								(false)
 	{}
 
 	bool isActive;
@@ -38,6 +39,7 @@ struct PlayerComponent : public ECS::Component
 
 	ECS::EntityHandle hudHandle;
 
+	bool levelComplete;
 	int strokesUsed;
 	float currentPower;
 	float chargeSpeed;

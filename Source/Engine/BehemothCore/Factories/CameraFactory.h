@@ -12,7 +12,7 @@ namespace Behemoth
 {
 	struct CameraFactory
 	{
-		ECS::EntityHandle CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name = "Camera");
+		static ECS::EntityHandle CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name = "Camera");
 	};
 }
 

@@ -33,16 +33,21 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
-		TransformComponent* springArmTransform = registry.GetComponent<TransformComponent>(handle);
+		CameraComponent* cameraComponent = CameraHelper::GetMainCamera(registry);
+		if (!cameraComponent)
+		{
+			LOGMESSAGE(Error, "Error finding main camera component");
+			return;
+		}
 
 		if (input.x != 0.0f)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(springArmTransform->upVector));
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(cameraComponent->upVector));
 		}
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(springArmTransform->rightVector));
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(cameraComponent->rightVector));
 		}
 
 		parentRotationComponent->quat = quatY * quatX;
@@ -68,7 +73,14 @@ void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, ECS::
 
 	levelView->currentZoomCounter += delta;
 
-	std::cout << levelView->currentZoomCounter << std::endl;
-	BMath::Vector3 deltaPosition = CameraHelper::GetForwardVector(registry) * delta;
+	CameraComponent* cameraComponent = CameraHelper::GetMainCamera(registry);
+	if (!cameraComponent)
+	{
+		LOGMESSAGE(Error, "Error finding main camera component");
+		return;
+	}
+
+	
+	BMath::Vector3 deltaPosition = cameraComponent->forwardVector * delta;
 	registry.AddComponent<MoveComponent>(levelView->attachedCamera, deltaPosition);
 }

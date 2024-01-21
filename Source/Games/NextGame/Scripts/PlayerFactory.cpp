@@ -9,10 +9,8 @@ using namespace Behemoth;
 
 ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMath::Vector3& spawnLocation)
 {
-	GameObjectFactory gameObjectFactory{};
-
 	// Create the main player / root component of the player
-	const ECS::EntityHandle playerHandle = gameObjectFactory.CreateGameObject(registry, "", "", "Player");
+	const ECS::EntityHandle playerHandle = GameObjectFactory::CreateGameObject(registry, "", "", "Player");
 	registry.AddComponent<RigidBodyComponent>(playerHandle, false, true);
 	registry.AddComponent<MoveComponent>(playerHandle, spawnLocation);
 	registry.AddComponent<SphereColliderComponent>(playerHandle);
@@ -21,12 +19,13 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	const ECS::EntityHandle projectileHandle = registry.CreateEntity("Projectile");
 	registry.AddComponent<TransformComponent>(projectileHandle);
 	registry.AddComponent<RotationComponent>(projectileHandle);
+	registry.AddComponent<OBBColliderComponent>(playerHandle, BMath::Vector3(0.75f));
 
 	// Create child component that will be the projectile mesh
-	const ECS::EntityHandle playerMeshHandle = gameObjectFactory.CreateGameObject(registry, "sphere.obj", "rock.png", "Projectile Mesh");
+	const ECS::EntityHandle playerMeshHandle = GameObjectFactory::CreateGameObject(registry, "sphere10.obj", "golfball.png", "Projectile Mesh");
 
 	// Create an arrow child component to indicate aim direction
-	const ECS::EntityHandle arrowMeshHandle = gameObjectFactory.CreateGameObject(registry, "arrow.obj", "arrow.jpg", "Arrow icon");
+	const ECS::EntityHandle arrowMeshHandle = GameObjectFactory::CreateGameObject(registry, "arrow.obj", "arrow.jpg", "Arrow icon");
 	registry.AddComponent<ScalingComponent>(arrowMeshHandle, BMath::Vector3(0.25));
 	registry.AddComponent<MoveComponent>(arrowMeshHandle, BMath::Vector3(0, 0, -3));
 	BMath::Quaternion q1 = BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(0, 0, 1));
@@ -47,14 +46,23 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	registry.AddComponent<RotationComponent>(cameraSpringArm);
 
 	// Add necessary child component to respective parents in hierarchy
-	gameObjectFactory.AddChildObject(registry, playerHandle, projectileHandle);
-	gameObjectFactory.AddChildObject(registry, projectileHandle, arrowMeshHandle);
-	gameObjectFactory.AddChildObject(registry, projectileHandle, playerMeshHandle);
-	gameObjectFactory.AddChildObject(registry, playerHandle, cameraSpringArm);
-	gameObjectFactory.AddChildObject(registry, cameraSpringArm, mainCameraHandle);
+	GameObjectFactory::AddChildObject(registry, playerHandle, projectileHandle);
+	GameObjectFactory::AddChildObject(registry, projectileHandle, arrowMeshHandle);
+	GameObjectFactory::AddChildObject(registry, projectileHandle, playerMeshHandle);
+	GameObjectFactory::AddChildObject(registry, playerHandle, cameraSpringArm);
+	GameObjectFactory::AddChildObject(registry, cameraSpringArm, mainCameraHandle);
 
 	// Create and add a player component to easily reference child handles
-	registry.AddComponent<PlayerComponent>(playerHandle,true, mainCameraHandle, cameraSpringArm, projectileHandle, playerMeshHandle, arrowMeshHandle, 15.0f, spawnLocation);
+	registry.AddComponent<PlayerComponent>(
+		playerHandle
+		,true,
+		mainCameraHandle,
+		cameraSpringArm,
+		projectileHandle,
+		playerMeshHandle,
+		arrowMeshHandle,
+		20.0f,
+		spawnLocation);
 
 	// Bind input handling for player controller 
 	AddInputBindings(registry, playerHandle);

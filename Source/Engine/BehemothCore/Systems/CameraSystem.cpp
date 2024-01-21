@@ -19,6 +19,11 @@ namespace Behemoth
 				UpdatePerspectiveMatrix(cameraComp, transformComp);
 				UpdateFrustrum(cameraComp, transformComp);
 				SetLook(registry, transformComp, cameraComp);
+
+				cameraComp->rightVector = BMath::Vector3(cameraComp->viewMatrix._11, cameraComp->viewMatrix._21, cameraComp->viewMatrix._31);
+				cameraComp->upVector = BMath::Vector3(cameraComp->viewMatrix._12, cameraComp->viewMatrix._22, cameraComp->viewMatrix._32);
+				cameraComp->forwardVector = BMath::Vector3(cameraComp->viewMatrix._13, cameraComp->viewMatrix._23, cameraComp->viewMatrix._33);
+
 				cameraComp->isDirty = false;
 				transformComp->isDirty = true;
 			}

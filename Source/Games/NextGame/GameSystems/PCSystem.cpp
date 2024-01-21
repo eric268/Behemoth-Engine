@@ -29,7 +29,7 @@ void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 		RotateMeshWhileMoving(registry, entity, playerComponent);
 		CheckPlayerLanded(registry, entity, playerComponent);
 
-		if (playerComponent->canFire)
+		if (playerComponent->canFire && !playerComponent->levelComplete)
 		{
 			SetArrowMeshVisibility(registry, playerComponent, true);
 		}
@@ -67,7 +67,7 @@ void PCSystem::DecreasePower(const float deltaTime, PlayerComponent* playerCompo
 void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
 	// No charge so skip firing check
-	if (playerComponent->currentPower <= 0.0f || !playerComponent->canFire)
+	if (playerComponent->currentPower <= 0.0f || !playerComponent->canFire || playerComponent->levelComplete)
 	{
 		return;
 	}
@@ -84,7 +84,7 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 
 		if (VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(handle))
 		{
-			velocityComponent->velocity = ProjectileMotion::CalculateInitalVelocity(playerComponent->currentPower * 0.5f, playerTransform->forwardVector);
+			velocityComponent->velocity = ProjectileMotion::CalculateInitalVelocity(playerComponent->currentPower * 0.33f, playerTransform->forwardVector);
 		}
 
 		if (RigidBodyComponent* playerRigidBody = registry.GetComponent<RigidBodyComponent>(handle))
@@ -95,7 +95,7 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 		SetArrowMeshVisibility(registry, playerComponent, false);
 		playerComponent->canFire = false;
 		// Reset charge amount, could keep it previous amount of set it to default like 50
-		playerComponent->currentPower = 0.0f;
+		playerComponent->currentPower = 50.0f;
 		playerComponent->lastLocation = playerTransform->worldPosition;
 		playerComponent->strokesUsed++;
 	}
@@ -116,16 +116,21 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
-		TransformComponent* springArmTransform = registry.GetComponent<TransformComponent>(playerComponent->cameraSpringArm);
+		CameraComponent* cameraComponent = CameraHelper::GetMainCamera(registry);
+		if (!cameraComponent)
+		{
+			LOGMESSAGE(Error, "Error finding main camera component");
+			return;
+		}
 
 		if (input.x != 0.0f)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(springArmTransform->upVector));
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), BMath::Vector3(cameraComponent->upVector));
 		}
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(springArmTransform->rightVector));
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), BMath::Vector3(cameraComponent->rightVector));
 		}
 
 		parentRotationComponent->quat = quatY * quatX;

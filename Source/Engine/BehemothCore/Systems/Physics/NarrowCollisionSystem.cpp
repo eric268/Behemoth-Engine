@@ -61,28 +61,4 @@ namespace Behemoth
 			}
 		}
 	}
-// 	void NarrowCollisionSystem::GenerateCollisionData(
-// 		ECS::Registry& registry,
-// 		const ECS::EntityHandle& dynamicHandle,
-// 		const ECS::EntityHandle& hitHandle,
-// 		const ContactData& contactData)
-// 	{
-// 		CollisionDataComponent* collisionDataComp = registry.GetComponent<CollisionDataComponent>(dynamicHandle);
-// 		if (!collisionDataComp)
-// 		{
-// 			collisionDataComp = registry.AddComponent<CollisionDataComponent>(dynamicHandle);
-// 		}
-// 
-// 		if (collisionDataComp)
-// 		{
-// 			BMath::Vector3 hitVelocity{};
-// 
-// 			if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitHandle))
-// 			{
-// 				hitVelocity = hitVelocityComponent->velocity;
-// 			}
-// 			CollisionData collisionData(contactData, hitHandle, hitVelocity);
-// 			collisionDataComp->data.push_back(collisionData);
-// 		}
-// 	}
 }

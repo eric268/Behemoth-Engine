@@ -16,14 +16,12 @@ ECS::EntityHandle LevelViewFactory::CreateLevelViewEntity(
 	float maxHeight,
 	float currentHeight)
 {
-	GameObjectFactory gameObjectFactory{};
-	ECS::EntityHandle levelViewHandle = gameObjectFactory.CreateGameObject(registry, "", "", "Level view handle");
+	ECS::EntityHandle levelViewHandle = GameObjectFactory::CreateGameObject(registry, "", "", "Level view handle");
 	registry.AddComponent<TransformComponent>(levelViewHandle);
 	registry.AddComponent<MoveComponent>(levelViewHandle, spawnLocation);
 	registry.AddComponent<RotationComponent>(levelViewHandle, BMath::Quaternion(DEGREE_TO_RAD(90), BMath::Vector3(0,1,0)), true);
 
-	CameraFactory cameraFactory{};
-	ECS::EntityHandle cameraEntitiy = cameraFactory.CreateCamera(registry, false, "Level view camera");
+	ECS::EntityHandle cameraEntitiy = CameraFactory::CreateCamera(registry, false, "Level view camera");
 	registry.AddComponent<MoveComponent>(cameraEntitiy, BMath::Vector3(0, currentHeight, currentZoom));
 	CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(cameraEntitiy);
 	if (cameraComponent)
@@ -31,7 +29,7 @@ ECS::EntityHandle LevelViewFactory::CreateLevelViewEntity(
 		cameraComponent->focusedEntity = levelViewHandle;
 	}
 
-	gameObjectFactory.AddChildObject(registry, levelViewHandle, cameraEntitiy);
+	GameObjectFactory::AddChildObject(registry, levelViewHandle, cameraEntitiy);
 
 	LevelViewComponent* levelViewComponent = registry.AddComponent<LevelViewComponent>(
 		levelViewHandle,

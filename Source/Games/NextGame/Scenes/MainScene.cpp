@@ -32,6 +32,8 @@
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
 #include "Scripts/GoalObject.h"
+#include "Scripts/PlatformObject.h"
+#include "Scripts/BarrierObject.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
 #include "GameComponents/Level/LevelViewComponent.h"
@@ -49,41 +51,22 @@ MainScene::MainScene()
 	
 	goalObject = GoalObject::CreateGoal(registry, BMath::Vector3(0, 0, -15), BMath::Vector3(3.0f), 45.0f);
 
-	GameObjectFactory gameObjectFactory{};
-	obstacleHandle = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png");
-	registry.AddComponent<ScalingComponent>(obstacleHandle, BMath::Vector3(3, 3, 1.5));
-	registry.AddComponent<MoveComponent>(obstacleHandle, BMath::Vector3(-5, 10, 0));
-	registry.AddComponent<RotationComponent>(obstacleHandle, BMath::Quaternion(DEGREE_TO_RAD(25.0f), BMath::Vector3(0,1,0)), true);
-	registry.AddComponent<StaticComponent>(obstacleHandle);
-	auto obstacleCollider = registry.AddComponent<OBBColliderComponent>(obstacleHandle);
-	obstacleCollider->physicsMaterial = PhysicsMaterial(0.75, 1.0f);
+	obstacleHandle = BarrierObject::CreateBarrier(registry, BMath::Vector3(0, 5, -10), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion());
 
-	ECS::EntityHandle obstacleHandle2 = gameObjectFactory.CreateGameObject(registry, "cube.obj", "brick.png");
-	registry.AddComponent<ScalingComponent>(obstacleHandle2, BMath::Vector3(3, 3, 1.5));
-	registry.AddComponent<MoveComponent>(obstacleHandle2, BMath::Vector3(7, 10, 0));
-	registry.AddComponent<RotationComponent>(obstacleHandle2, BMath::Quaternion(DEGREE_TO_RAD(-25.0f), BMath::Vector3(0, 1, 0)), true);
-	registry.AddComponent<StaticComponent>(obstacleHandle2);
-	auto obstacleCollider2 = registry.AddComponent<OBBColliderComponent>(obstacleHandle2);
-	obstacleCollider2->physicsMaterial = PhysicsMaterial(0.75, 1.0f);
-
-	
-
-	groundEntity = gameObjectFactory.CreateGameObject(registry, "plane.obj", "brick.png", "Ground entity", { 8,8 });
-	registry.AddComponent<MoveComponent>(groundEntity, BMath::Vector3(0, 0, 0));
-	registry.AddComponent<ScalingComponent>(groundEntity, BMath::Vector3(10, 1.1f, 10));
-	auto groundCollider = registry.AddComponent<OBBColliderComponent>(groundEntity, BMath::Vector3(1.0f));
-	groundCollider->physicsMaterial = PhysicsMaterial(0.85, 0.95);
-	registry.AddComponent<StaticComponent>(groundEntity);
-	registry.AddComponent<RotationComponent>(groundEntity, BMath::Quaternion(DEGREE_TO_RAD(1), BMath::Vector3(1,0,0)));
-	// registry.AddComponent<WireframeComponent>(groundEntity, "plane.obj", BMath::Vector3(1, 0.1, 1));
+	groundEntity = PlatformObject::CreateSandPlatform(
+		registry,
+		BMath::Vector3(0,0,2),
+		BMath::Vector3(3, 1.0f, 5),
+		BMath::Quaternion(DEGREE_TO_RAD(10.0f), BMath::Vector3(0, 0, 1)));
 
 
-	bottomOOBTrigger = gameObjectFactory.CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
+	bottomOOBTrigger = GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
 	registry.AddComponent<OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
 	registry.AddComponent<StaticComponent>(bottomOOBTrigger);
 	registry.AddComponent<ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
 	registry.AddComponent<MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
 	// registry.AddComponent<WireframeComponent>(bottomOOBTrigger, "cube.obj");
+
 	if (MeshComponent* mesh = registry.GetComponent<MeshComponent>(bottomOOBTrigger))
 	{
 		mesh->isVisible = false;
@@ -118,6 +101,32 @@ void MainScene::Update(const float deltaTime)
 			if (d.otherHandle.ID == bottomOOBTrigger.ID)
 			{
 				registry.AddComponent<PlayerFellComponent>(playerCharacter, 3.0f);
+			}
+		}
+	}
+
+	if (CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(playerCharacter))
+	{
+		for (const auto& d : collisionData->data)
+		{
+			if (d.otherHandle.ID == goalObject.ID)
+			{
+				LOGMESSAGE(General, "Goal Reached!");
+				// Open level complete scene
+
+				if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(playerCharacter))
+				{
+					velocity->velocity = BMath::Vector3::Zero();
+				}
+
+				if (RigidBodyComponent* rigidBodyComponent = registry.GetComponent<RigidBodyComponent>(playerCharacter))
+				{
+					rigidBodyComponent->affectedByGravity = false;
+				}
+				if (PlayerComponent* playerComponent = registry.GetComponent<PlayerComponent>(playerCharacter))
+				{
+					playerComponent->levelComplete = true;
+				}
 			}
 		}
 	}

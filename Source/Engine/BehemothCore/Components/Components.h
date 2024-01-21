@@ -18,6 +18,9 @@ namespace Behemoth
 			focusedEntity				(NULL_ENTITY),
 			viewMatrix					(BMath::BMatrix4x4::Identity()),
 			projMatrix					(BMath::BMatrix4x4::Identity()),
+			forwardVector				(BMath::Vector3::Forward()),
+			rightVector					(BMath::Vector3::Right()),
+			upVector					(BMath::Vector3::Up()),
 			FOV							(75.0f),
 			nearClippingPlane			(0.1f),
 			farClippingPlane			(1000.0f),
@@ -31,6 +34,11 @@ namespace Behemoth
 		Plane  worldSpaceFrustum[6];
 		BMath::BMatrix4x4 viewMatrix;
 		BMath::BMatrix4x4 projMatrix;
+
+		BMath::Vector3 rightVector;
+		BMath::Vector3 forwardVector;
+		BMath::Vector3 upVector;
+
 		float FOV;
 		float nearClippingPlane;
 		float farClippingPlane;
