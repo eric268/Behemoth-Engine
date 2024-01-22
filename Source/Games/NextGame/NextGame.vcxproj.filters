@@ -7,69 +7,155 @@
     <Filter Include="GameComponents">
       <UniqueIdentifier>{657292E4-5140-86EA-3AD4-F6102641624F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameComponents\Level">
+      <UniqueIdentifier>{AC0B15CB-989A-9E94-41B9-B28F2D27AF3A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameComponents\Obstacles">
+      <UniqueIdentifier>{1496FAF4-00BB-4975-2906-2F05158A4893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameComponents\Player">
+      <UniqueIdentifier>{E19F7E37-4D0C-3A32-1600-D28F822B5C9A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GameSystems">
       <UniqueIdentifier>{5765DA56-C31A-534C-4C0F-4D23B8C34950}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{86EEB3D0-7290-DEA6-5B4B-F2FA478C65F7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{4D6F1AE8-B94E-9983-C266-245A2EC5FFE4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponents\Level\LevelViewComponent.h">
+      <Filter>GameComponents\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h">
+      <Filter>GameComponents\Obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\Player\PCComponent.h">
+      <Filter>GameComponents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\Player\PlayerComponent.h">
+      <Filter>GameComponents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\LevelViewSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\MovingObsSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\PCSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\PlayerFellSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\PlayerHUDSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\PlayerRespawnSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\GameOverScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\GameScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="Scenes\HoleOneScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\HoleThreeScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\HoleTwoScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\MainMenuScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\BarrierObject.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\LevelViewFactory.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PlatformObject.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PlatformPhysMats.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PlayerFactory.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\PlayerScore.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\ViewModeChange.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="GameComponents\Player\PCComponent.h" />
-    <ClInclude Include="Scripts\PlayerFactory.h" />
-    <ClInclude Include="GameSystems\PCSystem.h" />
-    <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
-    <ClInclude Include="GameSystems\PlayerFellSystem.h" />
-    <ClInclude Include="GameSystems\PlayerRespawnSystem.h" />
-    <ClInclude Include="GameComponents\Level\LevelViewComponent.h" />
-    <ClInclude Include="Scripts\LevelViewFactory.h" />
-    <ClInclude Include="Scripts\ViewModeChange.h" />
-    <ClInclude Include="GameSystems\LevelViewSystem.h" />
-    <ClInclude Include="GameSystems\PlayerHUDSystem.h" />
-    <ClInclude Include="Scripts\PlatformObject.h" />
-    <ClInclude Include="Scripts\PlatformPhysMats.h" />
-    <ClInclude Include="Scripts\BarrierObject.h" />
-    <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h" />
-    <ClInclude Include="GameSystems\MovingObsSystem.h" />
-    <ClInclude Include="Scenes\MainMenuScene.h" />
-    <ClInclude Include="Scenes\HoleThreeScene.h" />
-    <ClInclude Include="Scenes\GameOverScene.h" />
-    <ClInclude Include="Scripts\PlayerScore.h" />
-    <ClInclude Include="Scenes\GameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="GameSystems\LevelViewSystem.cpp">
+      <Filter>GameSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystems\MovingObsSystem.cpp">
+      <Filter>GameSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystems\PCSystem.cpp">
+      <Filter>GameSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystems\PlayerFellSystem.cpp">
+      <Filter>GameSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystems\PlayerHUDSystem.cpp">
+      <Filter>GameSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystems\PlayerRespawnSystem.cpp">
+      <Filter>GameSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\GameOverScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\GameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Scenes\HoleOneScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\HoleThreeScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\HoleTwoScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\MainMenuScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\BarrierObject.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\LevelViewFactory.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PlatformObject.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PlayerFactory.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\PlayerScore.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\ViewModeChange.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Scripts\PlayerFactory.cpp" />
-    <ClCompile Include="GameSystems\PCSystem.cpp" />
-    <ClCompile Include="GameSystems\PlayerFellSystem.cpp" />
-    <ClCompile Include="GameSystems\PlayerRespawnSystem.cpp" />
-    <ClCompile Include="Scripts\LevelViewFactory.cpp" />
-    <ClCompile Include="Scripts\ViewModeChange.cpp" />
-    <ClCompile Include="GameSystems\LevelViewSystem.cpp" />
-    <ClCompile Include="GameSystems\PlayerHUDSystem.cpp" />
-    <ClCompile Include="Scripts\PlatformObject.cpp" />
-    <ClCompile Include="Scripts\BarrierObject.cpp" />
-    <ClCompile Include="GameSystems\MovingObsSystem.cpp" />
-    <ClCompile Include="Scenes\MainMenuScene.cpp" />
-    <ClCompile Include="Scenes\HoleThreeScene.cpp" />
-    <ClCompile Include="Scenes\GameOverScene.cpp" />
-    <ClCompile Include="Scripts\PlayerScore.cpp" />
-    <ClCompile Include="Scenes\GameScene.cpp" />
   </ItemGroup>
 </Project>

@@ -10,36 +10,35 @@
 
 MainScene::MainScene()
 {
-	Behemoth::CameraFactory cameraFactory{};
-	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
+	mainCameraHandle = Behemoth::CameraFactory::CreateCamera(registry, true, "Main Camera");
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 0));
 
 	environmentLighting = registry.CreateEntity("Environment Lighting");
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "brick.png", { 8.0, 8.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
 
-	Behemoth::GameObjectFactory gameObjectFactory{};
-	exampleParentEntity = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
+	exampleParentEntity = Behemoth::GameObjectFactory::CreateGameObject(registry, "monkey.obj", "rock.png", "Example Parent");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 0.0f, -5.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleParentEntity);
 	registry.AddComponent<Behemoth::ScalingComponent>(exampleParentEntity, BMath::Vector3(0.5f));
-	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleParentEntity, false);
+	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleParentEntity, false, true);
 
-	exampleChildEntity1 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "cube.obj", "brick.png", "Child 1");
+
+
+	exampleChildEntity1 = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "brick.png", "Child 1");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleChildEntity1, BMath::Vector3(-2.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleChildEntity1);
-	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity1, false);
+	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity1, false, true);
+	Behemoth::GameObjectFactory::AddChildObject(registry, exampleParentEntity, exampleChildEntity1);
 
-	exampleChildEntity2 = gameObjectFactory.AddChildObject(registry, exampleParentEntity, "sphere.obj", "brick.png", "Child 2");
+	exampleChildEntity2 = Behemoth::GameObjectFactory::CreateGameObject(registry, "sphere.obj", "brick.png", "Child 2");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleChildEntity2, BMath::Vector3(2.0f, 0.0f, 0.0f));
 	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleChildEntity2);
-	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity2, false);
+	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity2, false, true);
+	Behemoth::GameObjectFactory::AddChildObject(registry, exampleParentEntity, exampleChildEntity2);
 
-	Behemoth::LightFactory lightFactory{};
-	pointLight = lightFactory.CreatePointLight(registry);
-	registry.AddComponent<Behemoth::MoveComponent>(pointLight, BMath::Vector3(0.0f, 0.0f, -2.0f));
 
 	LOGMESSAGE(General, "Main Scene constructed\n");
 }
@@ -50,10 +49,9 @@ void MainScene::Initalize()
 	// Can be used for additional initialization steps that are required post construction
 }
 
-void MainScene::ProcessEvent(Behemoth::Event& e)
+void MainScene::OnEvent(Behemoth::Event& e)
 {
-	// Processes general engine events such as window close, resize etc.
-	// Does not process window events, use static Input library to check mouse/keyboard/controller events
+
 }
 
 void MainScene::Update(const float deltaTime)

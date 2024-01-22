@@ -9,7 +9,7 @@ public:
 
 	MainScene();
 	void Initalize() override;
-	void ProcessEvent(Behemoth::Event& e) override;
+	void OnEvent(Behemoth::Event& e) override;
 	void Update(const float deltaTime) override;
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
