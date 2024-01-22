@@ -25,6 +25,11 @@ private:
 	ECS::EntityHandle levelViewEntity;
 	ECS::EntityHandle titleTextEntity;
 
+	ECS::EntityHandle controllerInstructions[6];
+	ECS::EntityHandle keyboardInstructions[6];
+
+	void CreateInstructionsText(ECS::Registry& registry);
+
 
 	float delayUntilSceneChange;
 	bool changeScene;

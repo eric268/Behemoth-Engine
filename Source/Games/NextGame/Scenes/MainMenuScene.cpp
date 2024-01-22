@@ -38,10 +38,11 @@ MainMenuScene::MainMenuScene()
 
 	CreateOOBEntity(registry);
 
-
+	CreateInstructionsText(registry);
 
 	titleTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(titleTextEntity, "Great Golf!", BMath::Vector2(-0.05f, 0.6f));
+
 }
 
 void MainMenuScene::Initalize()
@@ -106,4 +107,47 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 		registry,
 		BMath::Vector3(0, 4, 0),
 		BMath::Vector3(4, 1.0f, 4));
+}
+
+void MainMenuScene::CreateInstructionsText(ECS::Registry& registry)
+{
+	// Controller instructions
+	controllerInstructions[0] = registry.CreateEntity("Instructions text 1");
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[0], "Controller Controls", BMath::Vector2(-0.9, 0.8));
+
+	controllerInstructions[1] = registry.CreateEntity("Instructions text 2");
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[1], "Look - Left analog", BMath::Vector2(-0.9, 0.75));
+
+	controllerInstructions[2] = registry.CreateEntity("Instructions text 3");
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[2], "Aim - Right analog", BMath::Vector2(-0.9, 0.7));
+
+	controllerInstructions[3] = registry.CreateEntity("Instructions text 4");
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[3], "Power  up/down - left & right triggers", BMath::Vector2(-0.9, 0.65));
+
+	controllerInstructions[4] = registry.CreateEntity("Instructions text 5");
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[4], "Fire - Right shoulder", BMath::Vector2(-0.9, 0.6));
+
+	controllerInstructions[5] = registry.CreateEntity("Instructions text 6");
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[5], "Swap camera view - Y Button (In-game only)", BMath::Vector2(-0.9, 0.55));
+
+
+	// Controller instructions
+	keyboardInstructions[0] = registry.CreateEntity("Instructions text 1");
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[0], "Keyboard Controls", BMath::Vector2(-0.9, 0.4));
+
+	keyboardInstructions[1] = registry.CreateEntity("Instructions text 2");
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[1], "Look - Arrow Keys", BMath::Vector2(-0.9, 0.35));
+
+	keyboardInstructions[2] = registry.CreateEntity("Instructions text 3");
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[2], "Aim - WASD", BMath::Vector2(-0.9, 0.3));
+
+	keyboardInstructions[3] = registry.CreateEntity("Instructions text 4");
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[3], "Power  up/down - Q & E", BMath::Vector2(-0.9, 0.25));
+
+	keyboardInstructions[4] = registry.CreateEntity("Instructions text 5");
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[4], "Fire - Space", BMath::Vector2(-0.9, 0.2));
+
+	keyboardInstructions[5] = registry.CreateEntity("Instructions text 6");
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[5], "Swap camera view - C Key (In-game only)", BMath::Vector2(-0.9, 0.15));
+
 }
