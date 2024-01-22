@@ -151,12 +151,10 @@ namespace Behemoth
 			}
 			else
 			{
-				LOGMESSAGE(MessageType::Error, "Error loading broad collider for " + filepath);
 				return {};
 			}
 		}
 
-		LOGMESSAGE(MessageType::Error, "Error finding broad collider for " + filepath);
 		return {};
 	}
 }

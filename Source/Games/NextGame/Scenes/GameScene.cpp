@@ -84,7 +84,6 @@ bool GameScene::CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& p
 					return false;
 				}
 
-				LOGMESSAGE(General, "Goal Reached!");
 				playerComponent->levelComplete = true;
 
 				return true;

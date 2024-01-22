@@ -41,7 +41,7 @@ MainMenuScene::MainMenuScene()
 	CreateInstructionsText(registry);
 
 	titleTextEntity = registry.CreateEntity("Par Text Entity");
-	registry.AddComponent<Behemoth::TextComponent>(titleTextEntity, "Great Golf!", BMath::Vector2(-0.05f, 0.6f));
+	registry.AddComponent<Behemoth::TextComponent>(titleTextEntity, "Next Golf!", BMath::Vector2(-0.05f, 0.6f));
 
 }
 
@@ -150,4 +150,6 @@ void MainMenuScene::CreateInstructionsText(ECS::Registry& registry)
 	keyboardInstructions[5] = registry.CreateEntity("Instructions text 6");
 	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[5], "Swap camera view - C Key (In-game only)", BMath::Vector2(-0.9, 0.15));
 
+	ECS::EntityHandle goalText = registry.CreateEntity("Goal Text");
+	registry.AddComponent<Behemoth::TextComponent>(goalText, "Goal - Monkey head", BMath::Vector2(-0.9, 0.05));
 }

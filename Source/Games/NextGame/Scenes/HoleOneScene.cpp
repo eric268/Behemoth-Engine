@@ -23,8 +23,6 @@
 #include "GameComponents/Level/LevelViewComponent.h"
 #include "GameComponents/Obstacles/MovingObsComponent.h"
 
-using namespace Behemoth;
-
 HoleOneScene::HoleOneScene()
 {
 	PlayerScore::ResetScore();
@@ -37,12 +35,12 @@ HoleOneScene::HoleOneScene()
 
 	LevelViewFactory levelViewFactory{};
 	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 2, -20), 5, 20, 10, 0);
-	registry.AddComponent<TransformComponent>(levelViewEntity);
-	registry.AddComponent<RotationComponent>(levelViewEntity);
+	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
+	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
 
 	par = 2;
 	parTextEntity = registry.CreateEntity("Par Text Entity");
-	registry.AddComponent<TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
+	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
 
 	delayUntilSceneChange = 3.0f;
 	changeScene = false;
