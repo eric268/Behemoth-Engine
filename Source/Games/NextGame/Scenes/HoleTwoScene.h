@@ -16,22 +16,21 @@ public:
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
-	void ConstructEnvironment(ECS::Registry& registry); 
+	void ConstructEnvironment(ECS::Registry& registry) override; 
 
 	ECS::EntityHandle levelViewEntity;
 	ECS::EntityHandle parTextEntity;
 	ECS::EntityHandle levelCompleteText;
 
 	ECS::EntityHandle mainBarriers[3];
+	ECS::EntityHandle barrier1;
 
 	ECS::EntityHandle grassPatch1;
 	ECS::EntityHandle grassPatch2;
 
-	ECS::EntityHandle pointLight1;
-	ECS::EntityHandle pointLight2;
-	ECS::EntityHandle pointLight3;
-	ECS::EntityHandle pointLight4;
-	ECS::EntityHandle pointLight5;
+	ECS::EntityHandle sandPatch2;
+
+
 
 	int par;
 	float delayUntilSceneChange;

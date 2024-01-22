@@ -31,35 +31,13 @@
 
 MainMenuScene::MainMenuScene()
 {
-	environmentLighting = registry.CreateEntity("Environment Lighting");
-	Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
-	if (directionalLight)
-	{
-		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
-	}
-
-	Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
-	if (ambientLight)
-	{
-		ambientLight->intensity = 2;
-	}
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
+	ConstructEnvironment(registry);
+	
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 5, 0));
 
-	teeOffPlatform = PlatformObject::CreateGrassPlatform(
-		registry,
-		BMath::Vector3(0, 4, 0),
-		BMath::Vector3(4, 1.0f, 4));
-
 	CreateOOBEntity(registry);
 
-	goalObject = GameObjectFactory::CreateGameObject(registry, "p5.obj", "play.png", "Play Game Entity", { 1,-1 });
-	registry.AddComponent<MoveComponent>(goalObject, BMath::Vector3(0, 10, -20));
-	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(3.0f));
-	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
-	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)), true);
 
 
 	titleTextEntity = registry.CreateEntity("Par Text Entity");
@@ -99,4 +77,33 @@ void MainMenuScene::InitalizeSystems()
 void MainMenuScene::Shutdown()
 {
 
+}
+
+void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
+{
+	environmentLighting = registry.CreateEntity("Environment Lighting");
+	Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
+	if (directionalLight)
+	{
+		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
+	}
+
+	Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
+	if (ambientLight)
+	{
+		ambientLight->intensity = 2;
+	}
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
+
+	goalObject = GameObjectFactory::CreateGameObject(registry, "p5.obj", "play.png", "Play Game Entity", { 1,-1 });
+	registry.AddComponent<MoveComponent>(goalObject, BMath::Vector3(0, 10, -20));
+	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(3.0f));
+	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
+	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f));
+	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)), true);
+
+	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+		registry,
+		BMath::Vector3(0, 4, 0),
+		BMath::Vector3(4, 1.0f, 4));
 }

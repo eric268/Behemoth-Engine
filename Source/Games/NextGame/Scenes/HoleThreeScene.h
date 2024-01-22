@@ -20,6 +20,8 @@ private:
 	ECS::EntityHandle levelViewEntity;
 	ECS::EntityHandle parTextEntity;
 	ECS::EntityHandle levelCompleteText;
+	ECS::EntityHandle rockPlatform1;
+	ECS::EntityHandle barrier1;
 
 	int par;
 	float delayUntilSceneChange;

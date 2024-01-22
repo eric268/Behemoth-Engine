@@ -29,47 +29,9 @@ HoleOneScene::HoleOneScene()
 {
 	PlayerScore::ResetScore();
 
-	environmentLighting = registry.CreateEntity("Environment Lighting");
-	DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
-	if (directionalLight)
-	{
-		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
-	}
-	AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
-	if (ambientLight)
-	{
-		ambientLight->intensity = 2;
-	}
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
-
-	goalObject = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
+	ConstructEnvironment(registry);
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
-
-	teeOffPlatform = PlatformObject::CreateGrassPlatform(
-		registry,
-		BMath::Vector3(0, 9, 18),
-		BMath::Vector3(4, 1.0f, 4));
-
-	obstacleHandle = BarrierObject::CreateObstacle(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
-	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 30.0f, 250.0f, 0.0f);
-	registry.AddComponent<Behemoth::VelocityComponent>(obstacleHandle);
-	registry.AddComponent<Behemoth::RigidBodyComponent>(obstacleHandle);
-
-	grassEntity = PlatformObject::CreateGrassPlatform(
-		registry,
-		BMath::Vector3(0,0,0),
-		BMath::Vector3(10, 1.0f, 6));
-
-	sandTrap1 = PlatformObject::CreateSandPlatform(
-		registry,
-		BMath::Vector3(-20, -2, -20),
-		BMath::Vector3(7, 1.0f, 10));
-
-	sandTrap2 = PlatformObject::CreateSandPlatform(
-		registry,
-		BMath::Vector3(20, -2, -20),
-		BMath::Vector3(7, 1.0f, 10));
 
 	CreateOOBEntity(registry);
 
@@ -125,4 +87,48 @@ void HoleOneScene::Update(const float deltaTime)
 void HoleOneScene::Shutdown()
 {
 
+}
+
+void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
+{
+	environmentLighting = registry.CreateEntity("Environment Lighting");
+	DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
+	if (directionalLight)
+	{
+		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
+	}
+	AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
+	if (ambientLight)
+	{
+		ambientLight->intensity = 2;
+	}
+
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
+
+	goalObject = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
+
+	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+		registry,
+		BMath::Vector3(0, 9, 18),
+		BMath::Vector3(4, 1.0f, 4));
+
+	obstacleHandle = BarrierObject::CreateObstacle(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
+	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 30.0f, 250.0f, 0.0f);
+	registry.AddComponent<Behemoth::VelocityComponent>(obstacleHandle);
+	registry.AddComponent<Behemoth::RigidBodyComponent>(obstacleHandle);
+
+	grassEntity = PlatformObject::CreateGrassPlatform(
+		registry,
+		BMath::Vector3(0, 0, 0),
+		BMath::Vector3(10, 1.0f, 6));
+
+	sandTrap1 = PlatformObject::CreateSandPlatform(
+		registry,
+		BMath::Vector3(-20, -2, -20),
+		BMath::Vector3(7, 1.0f, 10));
+
+	sandTrap2 = PlatformObject::CreateSandPlatform(
+		registry,
+		BMath::Vector3(20, -2, -20),
+		BMath::Vector3(7, 1.0f, 10));
 }

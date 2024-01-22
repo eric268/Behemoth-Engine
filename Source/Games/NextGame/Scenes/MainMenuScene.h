@@ -17,6 +17,9 @@ public:
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
+protected:
+	void ConstructEnvironment(ECS::Registry& registry) override;
+
 private:
 	ECS::EntityHandle teeOffPlatform;
 	ECS::EntityHandle levelViewEntity;

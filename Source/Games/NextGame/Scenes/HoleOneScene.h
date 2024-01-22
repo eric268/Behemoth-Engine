@@ -15,7 +15,9 @@ public:
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
+
 private:
+	void ConstructEnvironment(ECS::Registry& registry) override;
 	ECS::EntityHandle levelViewEntity;
 
 	ECS::EntityHandle grassEntity;

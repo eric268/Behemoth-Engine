@@ -15,11 +15,11 @@ GameOverScene::GameOverScene()
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 0));
 
 	finalScoreUIHandle = registry.CreateEntity("Final score text");
-	registry.AddComponent<Behemoth::TextComponent>(finalScoreUIHandle, GetFinalScoreText(), BMath::Vector2(-0.3, 0.4));
+	registry.AddComponent<Behemoth::TextComponent>(finalScoreUIHandle, GetFinalScoreText(), BMath::Vector2(-0.2, 0.4));
 
 	controlsUIHandle = registry.CreateEntity("Final score text");
 	std::string gameOverInstructionsText = "Press [X] on controller or [Spacebar] to return to Main Menu";
-	registry.AddComponent<Behemoth::TextComponent>(controlsUIHandle, gameOverInstructionsText, BMath::Vector2(-0.4, 0.3));
+	registry.AddComponent<Behemoth::TextComponent>(controlsUIHandle, gameOverInstructionsText, BMath::Vector2(-0.3, 0.3));
 }
 
 void GameOverScene::Initalize()

@@ -27,7 +27,7 @@ std::string GameScene::GetHoleResultText(int numStrokes, int par)
 	{
 		return std::string("Hole in One! Well Done!");
 	}
-	else if (numStrokes < 4)
+	else if (result < 4)
 	{
 		return holeResultsText[result];
 	}

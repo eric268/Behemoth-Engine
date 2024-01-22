@@ -17,6 +17,7 @@ public:
 	ECS::EntityHandle CreateOOBEntity(ECS::Registry& registry);
 
 protected:
+	virtual void ConstructEnvironment(ECS::Registry& registry) = 0;
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle skySphere;
 	ECS::EntityHandle bottomOOBTrigger;
