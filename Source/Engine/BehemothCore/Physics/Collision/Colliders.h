@@ -17,8 +17,8 @@ namespace Behemoth
 	struct AABBCollider
 	{
 		AABBCollider() = default;
-		BMath::Vector3 worldPosition;
-		BMath::Vector3 worldExtents;
+		BMath::Vector3 position;
+		BMath::Vector3 extents;
 	};
 
 	struct SphereCollider

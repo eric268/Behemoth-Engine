@@ -8,10 +8,10 @@ public:
 	using Super = Behemoth::Scene;
 
 	HoleThreeScene();
-	void Initalize() override;
+	void Initialize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
-	void InitalizeSystems();
+	void InitializeSystems();
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 

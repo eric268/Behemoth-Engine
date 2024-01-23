@@ -27,12 +27,12 @@ HoleThreeScene::HoleThreeScene()
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 15, 18));
 
-	CreateOOBEntity(registry);
+	CreateOOBEntity(registry); 
 
 	LevelViewFactory levelViewFactory{};
 	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 10, -30), 5, 20, 10, 0);
 	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
-	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
+ 	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
 
 	par = 3;
 	parTextEntity = registry.CreateEntity("Par Text Entity");
@@ -41,9 +41,9 @@ HoleThreeScene::HoleThreeScene()
 	delayUntilSceneChange = 3.0f;
 	changeScene = false;
 }
-void HoleThreeScene::Initalize()
+void HoleThreeScene::Initialize()
 {
-	InitalizeSystems();
+	InitializeSystems();
 }
 void HoleThreeScene::Update(const float deltaTime)
 {
@@ -75,7 +75,7 @@ void HoleThreeScene::OnEvent(Behemoth::Event& e)
 {
 
 }
-void HoleThreeScene::InitalizeSystems()
+void HoleThreeScene::InitializeSystems()
 {
 }
 void HoleThreeScene::Shutdown()
@@ -85,29 +85,30 @@ void HoleThreeScene::Shutdown()
 
 void HoleThreeScene::ConstructEnvironment(ECS::Registry& registry)
 {
+	environmentLighting = registry.CreateEntity("Environment Lighting");
+
+	if (Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting))
+	{
+		directionalLight->direction = BMath::Vector3(0.707, 0.707, 0.707).Normalize();
+	}
+
+	if (Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting))
+	{
+		ambientLight->intensity = 2;
+	}
+
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky2.png", { 1.0, 1.0 });
+
 	rockPlatform1 = PlatformObject::CreateRockPlatform(registry, BMath::Vector3(0, 0, -10), BMath::Vector3(5, 1, 15));
 
 	barrier1 = BarrierObject::CreateObstacle(registry, BMath::Vector3(0, 15, -0), BMath::Vector3(5, 6, 1), BMath::Quaternion(), false);
 	registry.AddComponent<MovingObsComponent>(barrier1, BMath::Vector3(0, 1, 0), 40.0f, 250.0f, 0.0f);
-
-	environmentLighting = registry.CreateEntity("Environment Lighting");
-	Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
-	if (directionalLight)
-	{
-		directionalLight->direction = BMath::Vector3(0.707, 0.707, 0.707).Normalize();
-	}
-	Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
-	if (ambientLight)
-	{
-		ambientLight->intensity = 2;
-	}
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky2.png", { 1.0, 1.0 });
 
 
 	goalObject = CreateGoalObject(registry, BMath::Vector3(0, 10, -30), BMath::Vector3(3.0f), 45.0f);
 // 
 // 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 // 		registry,
-// 		BMath::Vector3(0, 29, 18),
+// 		BMath::Vector3(0, 14, 18),
 // 		BMath::Vector3(4, 1.0f, 4));
 }

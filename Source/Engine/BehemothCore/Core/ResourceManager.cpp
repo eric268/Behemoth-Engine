@@ -56,7 +56,7 @@ namespace Behemoth
 		SphereCollider sphereCollider{};
 
 		bool result = meshLoader.LoadModel("Models/" + filePath, meshVerticies, meshData);
-		broadCollider.worldExtents = BMath::Vector3(meshData.maxVertexDistance);
+		broadCollider.extents = BMath::Vector3(meshData.maxVertexDistance);
 		float maxDistSq = meshData.maxVertexDistance * meshData.maxVertexDistance;
 
 		if (result)

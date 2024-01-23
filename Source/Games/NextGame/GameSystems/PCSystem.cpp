@@ -109,6 +109,8 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 {
 	AnalogInput input = Input::GetLeftControllerAnaloge(0);
 
+	std::cout << input.x << ' ' << input.y << std::endl;
+
 	float keyInputX = Input::IsKeyHeld(pcComponent->lookLeftKC) - Input::IsKeyHeld(pcComponent->lookRightKC);
  	float keyInputY = Input::IsKeyHeld(pcComponent->lookUpKC) - Input::IsKeyHeld(pcComponent->lookDownKC);
 
@@ -123,12 +125,12 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 			LOGMESSAGE(Error, "Error finding main camera component");
 			return;
 		}
-
+// 
 		if (input.x != 0.0f)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(-input.x), BMath::Vector3(cameraComponent->upVector));
 		}
-		else if (keyInputX)
+		else if (keyInputX != 0.0f)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComponent->upVector));
  		}
@@ -137,7 +139,7 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 		{
 			quatY = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(cameraComponent->rightVector));
 		}
- 		else if (keyInputY)
+ 		else if (keyInputY != 0.0f)
  		{
  			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComponent->rightVector));
  		}
@@ -152,7 +154,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 	AnalogInput input = Input::GetRightControllerAnaloge(0);
 
  	float keyInputX = Input::IsKeyHeld(pcComponent->aimRightKC) - Input::IsKeyHeld(pcComponent->aimLeftKC);
- 	float keyInputY = Input::IsKeyHeld(pcComponent->aimDownKC) - Input::IsKeyHeld(pcComponent->aimUpKC);
+ 	float keyInputY = Input::IsKeyHeld(pcComponent->aimDownKC)  - Input::IsKeyHeld(pcComponent->aimUpKC);
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
 	{
@@ -165,7 +167,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), projectileTransform->upVector);
 		}
-		else if (keyInputX)
+		else if (keyInputX != 0.0f)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), projectileTransform->upVector);
  		}

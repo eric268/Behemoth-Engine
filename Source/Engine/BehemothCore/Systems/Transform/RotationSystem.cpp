@@ -85,8 +85,8 @@ namespace Behemoth
 
 	void RotationSystem::UpdateMeshNormalsFromParentRotation(TransformComponent* transformComp, MeshComponent* meshComponent)
 	{
-		BMath::BMatrix3x3 extractedLocal = TransformHelper::ExtractRotationMatrix(transformComp->localTransform);
-		BMath::BMatrix3x3 extractedWorld = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
+		BMath::BMatrix3x3 extractedLocal = TransformHelper::ExtractRotationMatrix(transformComp->localTransform, transformComp->localScale);
+		BMath::BMatrix3x3 extractedWorld = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, transformComp->worldScale);
 
 		BMath::BMatrix3x3 inverseLocal = BMath::BMatrix3x3::Inverse(extractedLocal);
 		BMath::BMatrix3x3 diffInRotation = extractedWorld * inverseLocal;

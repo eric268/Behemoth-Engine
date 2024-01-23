@@ -45,7 +45,7 @@ MainMenuScene::MainMenuScene()
 
 }
 
-void MainMenuScene::Initalize()
+void MainMenuScene::Initialize()
 {
 	InitalizeSystems();
 }
@@ -116,19 +116,19 @@ void MainMenuScene::CreateInstructionsText(ECS::Registry& registry)
 	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[0], "Controller Controls", BMath::Vector2(-0.9, 0.8));
 
 	controllerInstructions[1] = registry.CreateEntity("Instructions text 2");
-	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[1], "Look - Left analog", BMath::Vector2(-0.9, 0.75));
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[1], "Look - Left Analog", BMath::Vector2(-0.9, 0.75));
 
 	controllerInstructions[2] = registry.CreateEntity("Instructions text 3");
-	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[2], "Aim - Right analog", BMath::Vector2(-0.9, 0.7));
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[2], "Aim - Right Analog", BMath::Vector2(-0.9, 0.7));
 
 	controllerInstructions[3] = registry.CreateEntity("Instructions text 4");
-	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[3], "Power  up/down - left & right triggers", BMath::Vector2(-0.9, 0.65));
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[3], "Power Up/Down - Left & Right Triggers", BMath::Vector2(-0.9, 0.65));
 
 	controllerInstructions[4] = registry.CreateEntity("Instructions text 5");
-	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[4], "Fire - Right shoulder", BMath::Vector2(-0.9, 0.6));
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[4], "Fire - Right Shoulder", BMath::Vector2(-0.9, 0.6));
 
 	controllerInstructions[5] = registry.CreateEntity("Instructions text 6");
-	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[5], "Swap camera view - Y Button (In-game only)", BMath::Vector2(-0.9, 0.55));
+	registry.AddComponent<Behemoth::TextComponent>(controllerInstructions[5], "Swap Camera View - Y Button (In-Game Only)", BMath::Vector2(-0.9, 0.55));
 
 
 	// Controller instructions
@@ -136,20 +136,20 @@ void MainMenuScene::CreateInstructionsText(ECS::Registry& registry)
 	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[0], "Keyboard Controls", BMath::Vector2(-0.9, 0.4));
 
 	keyboardInstructions[1] = registry.CreateEntity("Instructions text 2");
-	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[1], "Look - Arrow Keys", BMath::Vector2(-0.9, 0.35));
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[1], "Look - WASD", BMath::Vector2(-0.9, 0.35));
 
 	keyboardInstructions[2] = registry.CreateEntity("Instructions text 3");
-	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[2], "Aim - WASD", BMath::Vector2(-0.9, 0.3));
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[2], "Aim - Arrow Keys", BMath::Vector2(-0.9, 0.3));
 
 	keyboardInstructions[3] = registry.CreateEntity("Instructions text 4");
-	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[3], "Power  up/down - Q & E", BMath::Vector2(-0.9, 0.25));
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[3], "Power  Up/Down - Q & E", BMath::Vector2(-0.9, 0.25));
 
 	keyboardInstructions[4] = registry.CreateEntity("Instructions text 5");
 	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[4], "Fire - Space", BMath::Vector2(-0.9, 0.2));
 
 	keyboardInstructions[5] = registry.CreateEntity("Instructions text 6");
-	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[5], "Swap camera view - C Key (In-game only)", BMath::Vector2(-0.9, 0.15));
+	registry.AddComponent<Behemoth::TextComponent>(keyboardInstructions[5], "Swap Camera View - C Key (In-Game Only)", BMath::Vector2(-0.9, 0.15));
 
 	ECS::EntityHandle goalText = registry.CreateEntity("Goal Text");
-	registry.AddComponent<Behemoth::TextComponent>(goalText, "Goal - Monkey head", BMath::Vector2(-0.9, 0.05));
+	registry.AddComponent<Behemoth::TextComponent>(goalText, "Goal - Monkey Head", BMath::Vector2(-0.9, 0.05));
 }

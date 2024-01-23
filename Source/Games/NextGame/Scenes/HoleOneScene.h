@@ -9,7 +9,7 @@ public:
 	using Super = Behemoth::Scene;
 
 	HoleOneScene();
-	void Initalize() override;
+	void Initialize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
 	void Shutdown() override;

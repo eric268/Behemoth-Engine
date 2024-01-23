@@ -7,8 +7,8 @@ namespace Behemoth
 {
 	bool BoundingGenerator::GenerateAABBBoundingVolume(const std::vector<VertexData>& verticies, AABBCollider& collider)
 	{
-		collider.worldPosition = BMath::Vector3(0.0f);
-		collider.worldExtents = BMath::Vector3(0.0f);
+		collider.position = BMath::Vector3(0.0f);
+		collider.extents = BMath::Vector3(0.0f);
 
 		float maxDistance = 0.0f;
 		for (const auto& v : verticies)
@@ -22,7 +22,7 @@ namespace Behemoth
 			return false;
 		}
 
-		collider.worldExtents = BMath::Vector3(maxDistance, maxDistance, maxDistance);
+		collider.extents = BMath::Vector3(maxDistance, maxDistance, maxDistance);
 		return true;
 	}
 

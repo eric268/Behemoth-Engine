@@ -41,7 +41,7 @@ namespace Behemoth
 			// Sort components based on their centroid along the current axis
 			std::sort(data.begin(), data.end(), [axis](const BVHData& a, const BVHData& b) 
 				{
-					return a.collider.worldPosition[axis] < b.collider.worldPosition[axis];
+					return a.collider.position[axis] < b.collider.position[axis];
 				});
 
 			// Apply SAH to find the best split for this axis
@@ -78,7 +78,7 @@ namespace Behemoth
 		}
 		else if (leftComponents.size())
 		{
-			node->leftChild = GenerateLeaf(leftComponents[0]);
+			node->leftChild = GenerateLeaf(leftComponents[0], registry, entityHandles);
 		}
 
 		if (rightComponents.size() > 1)
@@ -88,16 +88,16 @@ namespace Behemoth
 		}
 		else if (rightComponents.size())
 		{
-			node->rightChild = GenerateLeaf(rightComponents[0]);
+			node->rightChild = GenerateLeaf(rightComponents[0], registry, entityHandles);
 		}
 	}
 
 
 	float BVHFactory::GetSurfaceArea(const AABBCollider& aabb)
 	{
-		float l = 2.0f * aabb.worldExtents.x;
-		float w = 2.0f * aabb.worldExtents.y;
-		float h = 2.0f * aabb.worldExtents.z;
+		float l = 2.0f * aabb.extents.x;
+		float w = 2.0f * aabb.extents.y;
+		float h = 2.0f * aabb.extents.z;
 		return 2.0f * (l * w + l * h + w * h);
 	}
 
@@ -125,8 +125,8 @@ namespace Behemoth
 
 		for (const BVHData& data : colliders)
 		{
-			BMath::Vector3 colliderMin = data.collider.worldPosition - data.collider.worldExtents * data.entityScale;
-			BMath::Vector3 colliderMax = data.collider.worldPosition + data.collider.worldExtents * data.entityScale;
+			BMath::Vector3 colliderMin = data.collider.position - data.collider.extents * data.entityScale;
+			BMath::Vector3 colliderMax = data.collider.position + data.collider.extents * data.entityScale;
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -143,8 +143,8 @@ namespace Behemoth
 		}
 
 		AABBCollider collider{};
-		collider.worldPosition = (maxPos + minPos) / 2.0f;
-		collider.worldExtents = (maxPos - minPos) / 2.0f;
+		collider.position = (maxPos + minPos) / 2.0f;
+		collider.extents = (maxPos - minPos) / 2.0f;
 		return collider;
 	}
 
@@ -161,25 +161,53 @@ namespace Behemoth
 			entityHandles.push_back(handle);
 
 			registry.AddComponent<TransformComponent>(handle);
-			registry.AddComponent<MoveComponent>(handle, collider.worldPosition);
-			registry.AddComponent<AABBColliderComponent>(handle, collider.worldExtents);
+			registry.AddComponent<MoveComponent>(handle, collider.position);
+			registry.AddComponent<AABBColliderComponent>(handle, collider.extents);
 	
 			registry.AddComponent<MeshInitalizeComponent>(handle);
-			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.worldExtents,false, true, color);
+			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.extents,false, true, color);
 		}
 #endif
 
 		return node;
 	}
 
-	std::shared_ptr<BVHNode> BVHFactory::GenerateLeaf(const BVHData& colliderData)
+	std::shared_ptr<BVHNode> BVHFactory::GenerateLeaf(const BVHData& colliderData, ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, BMath::Vector3 color)
 	{
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
 		node->collider = colliderData.collider;
-		node->collider.worldExtents *= colliderData.entityScale;
+		node->collider.extents *= colliderData.entityScale;
 		node->entityHandle = colliderData.handle;
 		node->leftChild = nullptr;
 		node->rightChild = nullptr;
+
+// 		auto rot4 = TransformHelper::ExtractRotationMatrix(registry.GetComponent<TransformComponent>(colliderData.handle)->worldTransform, colliderData.entityScale);
+// 		// 
+// 		node->collider.worldExtents = rot4 * node->collider.worldExtents;
+		
+// 		float max = std::max(std::abs(node->collider.worldExtents[0]),
+// 			  std::max(std::abs(node->collider.worldExtents[1]),
+// 					         std::abs(node->collider.worldExtents[2])));
+
+// 		for (int i = 0; i < 3; i++)
+// 		{
+// 			node->collider.worldExtents[i] = max;
+// 		}
+
+#ifdef DEBUG
+		if (drawDebugColliders)
+		{
+			ECS::EntityHandle handle = registry.CreateEntity("BVH Debug Collider");
+			entityHandles.push_back(handle);
+
+			registry.AddComponent<TransformComponent>(handle);
+			registry.AddComponent<MoveComponent>(handle, node->collider.position);
+			registry.AddComponent<AABBColliderComponent>(handle, node->collider.extents);
+
+			registry.AddComponent<MeshInitalizeComponent>(handle);
+			registry.AddComponent<WireframeComponent>(handle, "cube.obj", node->collider.extents, false, true, color);
+		}
+#endif
 		return node;
 	}
 }

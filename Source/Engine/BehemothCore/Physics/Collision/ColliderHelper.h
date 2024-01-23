@@ -27,8 +27,8 @@ namespace Behemoth
 			return;
 		}
 
-		component->collider.worldExtents = transform->worldScale * component->extents;
-		component->collider.worldPosition = transform->worldPosition;
+		component->collider.extents = transform->worldScale * component->extents;
+		component->collider.position = transform->worldPosition;
 	}
 
 	template<>
@@ -39,8 +39,8 @@ namespace Behemoth
 			return;
 		}
 
-		component->collider.worldExtents = transform->worldScale * component->extents;
-		component->collider.worldPosition = transform->worldPosition;
+		component->collider.extents = transform->worldScale * component->extents;
+		component->collider.position = transform->worldPosition;
 	}
 
 	template<>
@@ -65,7 +65,7 @@ namespace Behemoth
 		component->collider.position = transform->worldPosition;
 		component->collider.extents = transform->worldScale * component->extents;
 
-		BMath::BMatrix3x3 orientationMatrix = TransformHelper::ExtractRotationMatrix(transform->worldTransform);
+		BMath::BMatrix3x3 orientationMatrix = TransformHelper::ExtractRotationMatrix(transform->worldTransform, transform->worldScale);
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)

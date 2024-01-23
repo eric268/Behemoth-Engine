@@ -10,7 +10,7 @@ public:
 	using Super = Behemoth::Scene;
 
 	MainMenuScene();
-	void Initalize() override;
+	void Initialize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
 	void InitalizeSystems();

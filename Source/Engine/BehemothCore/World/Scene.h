@@ -12,7 +12,7 @@ namespace Behemoth
 		Scene() = default;
 
 		virtual void OnEvent(Event& e) = 0;
-		virtual void Initalize() = 0;
+		virtual void Initialize() = 0;
 		virtual void Update(const float deltaTime) = 0;
 		virtual void Shutdown() = 0;
 		virtual ECS::Registry& GetRegistry() = 0;

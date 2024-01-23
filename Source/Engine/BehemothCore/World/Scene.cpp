@@ -11,7 +11,7 @@ namespace Behemoth
 {
 	void Scene::CreateScene()
 	{
-		Initalize();
+		Initialize();
 		ConstructBVH();
 	}
 

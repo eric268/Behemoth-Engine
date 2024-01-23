@@ -75,7 +75,7 @@ namespace Behemoth
 			// If only one entity exists then we only need a single lead node for the entire tree
 			if (data.size() == 1)
 			{
-				root = GenerateLeaf(data[0]);
+				root = GenerateLeaf(data[0], registry, entityHandles);
 			}
 			else
 			{
@@ -98,7 +98,7 @@ namespace Behemoth
 				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, BVHColliderComponent* colliderComp, auto* ...args)
 					{
 
-						colliderComp->collider.worldPosition = transformComp->worldPosition;
+						colliderComp->collider.position = transformComp->worldPosition;
 						data.push_back(BVHData(entity, colliderComp->collider, transformComp->worldScale));
 
 					}, componentTuple);
@@ -109,7 +109,7 @@ namespace Behemoth
 
 		AABBCollider GenerateCollider(const std::vector<BVHData>& colliders);
 		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
-		std::shared_ptr<BVHNode> GenerateLeaf(const BVHData& colliderData);
+		std::shared_ptr<BVHNode> GenerateLeaf(const BVHData& colliderData, ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
 
 		void GenerateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth);
 		float CalculateSAH(int position, std::vector<BVHData>& colliders, float traversalCost, float intersectCost);

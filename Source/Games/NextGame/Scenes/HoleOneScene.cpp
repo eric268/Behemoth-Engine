@@ -46,7 +46,7 @@ HoleOneScene::HoleOneScene()
 	changeScene = false;
 }
 
-void HoleOneScene::Initalize()
+void HoleOneScene::Initialize()
 {
 	// Function called after scene constructor 
 	// Can be used for additional initialization steps that are required post construction

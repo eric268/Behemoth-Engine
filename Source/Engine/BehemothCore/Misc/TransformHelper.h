@@ -26,7 +26,6 @@ namespace Behemoth
 		static BMath::BMatrix4x4 RemoveScale(const BMath::BMatrix4x4& transform, const BMath::Vector3& scale);
 
 		static BMath::BMatrix4x4 GetTransformNoRotation(const BMath::BMatrix4x4& position, const BMath::Vector3& scale);
-		static BMath::BMatrix3x3 ExtractRotationMatrix(const  BMath::BMatrix4x4& transformMatrix);
 		static BMath::BMatrix3x3 ExtractRotationMatrix(const  BMath::BMatrix4x4& transformMatrix, BMath::Vector3 scale);
 
 	};

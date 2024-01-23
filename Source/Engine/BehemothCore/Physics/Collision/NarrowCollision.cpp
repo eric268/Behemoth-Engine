@@ -11,8 +11,8 @@ namespace Behemoth
 {
 	bool NarrowSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box, ContactData& contactData)
 	{
-		BMath::Vector3 min = box.worldPosition - box.worldExtents;
-		BMath::Vector3 max = box.worldPosition + box.worldExtents;
+		BMath::Vector3 min = box.position - box.extents;
+		BMath::Vector3 max = box.position + box.extents;
 
 		BMath::Vector3 closestPoint;
 		closestPoint.x = std::max(min.x, std::min(sphere.center.x, max.x));
@@ -257,7 +257,7 @@ namespace Behemoth
 	{
 		bool result = NarrowOBBSphereCollision(box, sphere, collisionData);
 		// If we are checking sphere against OBB instead of the OBB against sphere, we have to invert the normal
-		// collisionData.collisionNormal *= -1.0f;
+		collisionData.collisionNormal *= -1.0f;
 		return result;
 	}
 

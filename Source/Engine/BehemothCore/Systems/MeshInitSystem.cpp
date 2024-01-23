@@ -70,10 +70,10 @@ namespace Behemoth
 			{
 				LOGMESSAGE(Error, "Error getting transform from entity: " + registry.GetName(handle));
 			}
-			BMath::Vector3 temp = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName).worldExtents;
+			BMath::Vector3 temp = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName).extents;
 			
 			broadCollider->extents = temp;
-			broadCollider->collider.worldExtents = temp;
+			broadCollider->collider.extents = temp;
 		}
 	}
 	void MeshInitSystem::InitSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
@@ -101,7 +101,7 @@ namespace Behemoth
 			if (TransformComponent* transformComp = registry.GetComponent<TransformComponent>(handle))
 			{
 				scale = transformComp->worldScale;
-				BMath::BMatrix3x3 rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform);
+				BMath::BMatrix3x3 rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, transformComp->worldScale);
 				GetRotatedAABB(baseCollider, rot,  rotatedCollider);
 			}
 			else
@@ -109,8 +109,8 @@ namespace Behemoth
 				LOGMESSAGE(Error, "Error getting transform from entity: " + registry.GetName(handle));
 			}
 
-			broadCollider->extents = rotatedCollider.worldExtents;
-			broadCollider->collider.worldExtents = broadCollider->extents;
+			broadCollider->extents = baseCollider.extents;
+			broadCollider->collider.extents = baseCollider.extents;
 
 			// registry.AddComponent<Behemoth::WireframeComponent>(handle, "cube.obj", broadCollider->extents, false);
 		}
@@ -120,10 +120,10 @@ namespace Behemoth
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			result.worldExtents[i] = 0.0f;
+			result.extents[i] = 0.0f;
 			for (int j = 0; j < 3; j++)
 			{
-				result.worldExtents[i] += std::abs(rotation.data[i][j]) * a.worldExtents[i];
+				result.extents[i] += std::abs(rotation.data[i][j]) * a.extents[i];
 			}
 		}
 	}

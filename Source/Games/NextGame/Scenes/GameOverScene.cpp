@@ -22,7 +22,7 @@ GameOverScene::GameOverScene()
 	registry.AddComponent<Behemoth::TextComponent>(controlsUIHandle, gameOverInstructionsText, BMath::Vector2(-0.3, 0.3));
 }
 
-void GameOverScene::Initalize()
+void GameOverScene::Initialize()
 {
 
 }
