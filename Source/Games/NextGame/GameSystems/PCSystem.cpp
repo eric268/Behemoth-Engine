@@ -136,7 +136,7 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 		else if (keyInputX != 0.0f)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComponent->upVector));
- 	}
+ 		}
 
 		if (input.y != 0.0f)
 		{

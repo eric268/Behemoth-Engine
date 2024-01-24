@@ -125,7 +125,6 @@ ECS::EntityHandle GameScene::CreateOOBEntity(ECS::Registry& registry)
 	registry.AddComponent<Behemoth::StaticComponent>(oobTrigger);
 	registry.AddComponent<Behemoth::ScalingComponent>(oobTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
 	registry.AddComponent<Behemoth::MoveComponent>(oobTrigger, BMath::Vector3(0, -20, 10.0f));
-	registry.AddComponent<Behemoth::BVHColliderComponent>(oobTrigger);
 
 	return oobTrigger;
 }

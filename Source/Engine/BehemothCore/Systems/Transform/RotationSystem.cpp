@@ -15,13 +15,13 @@ namespace Behemoth
 
 		for (const auto& [entity, rotationComp, transformComp] : components)
 		{
-//  			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity(), 1e-4) && rotationComp->isAdditive)
-//  			{
-// 				if (!transformComp->parentIsDirty && !transformComp->isDirty)
-// 				{
-//  					continue;
-// 				}
-//  			}
+ 			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity(), EPSILON) && rotationComp->isAdditive)
+ 			{
+				if (!transformComp->parentIsDirty && !transformComp->isDirty)
+				{
+ 					continue;
+				}
+ 			}
 
 			BMath::BMatrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 
@@ -31,6 +31,7 @@ namespace Behemoth
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 
 			rotationComp->quat = BMath::Quaternion::Identity();
+			rotationComp->isAdditive = true;
 
 			transformComp->forwardVector = GetForwardVector(transformComp->localTransform);
 			transformComp->rightVector = GetRightVector(transformComp->localTransform);

@@ -5,6 +5,7 @@
 #include "Scenes/HoleOneScene.h"
 #include "Scenes/HoleThreeScene.h"
 #include "Scenes/GameOverScene.h"
+#include "Scenes/Debug/DebugScene.h"
             
 void CreateApplication()
 {

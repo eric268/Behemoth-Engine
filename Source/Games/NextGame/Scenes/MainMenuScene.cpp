@@ -100,7 +100,7 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 	registry.AddComponent<MoveComponent>(goalObject, BMath::Vector3(0, 10, -20));
 	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(1.0f));
 	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
-	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f));
+	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f, 4.0f, 4.0f));
 	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)));
 }
 

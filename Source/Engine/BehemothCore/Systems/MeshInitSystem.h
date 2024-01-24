@@ -24,12 +24,12 @@ namespace Behemoth
 	private:
 		void InitMesh(Mesh& mesh);
 
-		void GenerateAABBBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle);
+/*		void GenerateAABBBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle);*/
 		void InitSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle);
 
-		void InitAABBBoundingVolume(ECS::Registry&, MeshComponent* meshComp, const ECS::EntityHandle& hanlde);
-
-		void GetRotatedAABB(const AABBCollider& a, const BMath::BMatrix3x3& rotation, AABBCollider& result);
+// 		void InitAABBBoundingVolume(ECS::Registry&, MeshComponent* meshComp, const ECS::EntityHandle& hanlde);
+// 
+// 		void GetRotatedAABB(const AABBCollider& a, const BMath::BMatrix3x3& rotation, AABBCollider& result);
 	};
 
 }

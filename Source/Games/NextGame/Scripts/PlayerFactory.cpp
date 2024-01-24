@@ -13,7 +13,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	const ECS::EntityHandle playerHandle = GameObjectFactory::CreateGameObject(registry, "", "", "Player");
 	registry.AddComponent<RigidBodyComponent>(playerHandle, false, true);
 	registry.AddComponent<MoveComponent>(playerHandle, spawnLocation);
-	registry.AddComponent<OBBColliderComponent>(playerHandle);
+	registry.AddComponent<SphereColliderComponent>(playerHandle);
 
 	// Create a child component that will handle projectile aiming 
 	const ECS::EntityHandle projectileHandle = registry.CreateEntity("Projectile");
@@ -29,7 +29,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	registry.AddComponent<MoveComponent>(arrowMeshHandle, BMath::Vector3(0, 0, -3));
 	BMath::Quaternion q1 = BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(0, 0, 1));
 	BMath::Quaternion q2 = BMath::Quaternion(DEGREE_TO_RAD(90), BMath::Vector3(1, 0, 0));
-	registry.AddComponent<RotationComponent>(arrowMeshHandle, q1 * q2, true);
+	registry.AddComponent<RotationComponent>(arrowMeshHandle, q1 * q2);
 
 	// Create player camera, used as main camera
 	Behemoth::CameraFactory cameraFactory{};

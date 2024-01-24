@@ -65,7 +65,7 @@ namespace Behemoth
 		template <typename ...T>
 		std::shared_ptr<BVHNode> CreateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
 		{
-			std::vector<BVHData> data = GetSceneColliderData<T...>(registry);
+			std::vector<BVHData> data = GenerateBVHColliders<T...>(registry);
 
 			if (!data.size())
 			{
@@ -87,7 +87,7 @@ namespace Behemoth
 		}
 
 		template <typename ...T>
-		std::vector<BVHData> GetSceneColliderData(ECS::Registry& registry)
+		std::vector<BVHData> GenerateBVHColliders(ECS::Registry& registry)
 		{
 			auto components = registry.Get<TransformComponent, T...>();
 			std::vector<BVHData> data;
@@ -100,7 +100,11 @@ namespace Behemoth
 					 AABBCollider collider = this->GenerateColliderData(registry, handle, transformComp, NarrowColliderTypes{});
 					 collider.position = transformComp->worldPosition;
 					 data.push_back(BVHData(handle, collider));
-
+					 BVHColliderComponent* colliderComp = registry.AddComponent<BVHColliderComponent>(handle);
+					 if (colliderComp)
+					 {
+						 colliderComp->collider = collider;
+					 }
 // 					colliderComp->collider.position = transformComp->worldPosition;
 // 					BMath::Vector3 scale = transformComp->worldScale * colliderComp->extents;
 // 					colliderComp->collider.extents = scale;

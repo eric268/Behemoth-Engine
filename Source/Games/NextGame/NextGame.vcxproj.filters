@@ -100,6 +100,7 @@
     <ClInclude Include="GameComponents\Level\GoalComponent.h">
       <Filter>GameComponents\Level</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\Debug\DebugScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -160,5 +161,6 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Scenes\Debug\DebugScene.cpp" />
   </ItemGroup>
 </Project>
