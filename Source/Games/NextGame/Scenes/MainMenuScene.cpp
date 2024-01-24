@@ -34,7 +34,6 @@ MainMenuScene::MainMenuScene()
 
 	titleTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(titleTextEntity, "Next Golf!", BMath::Vector2(-0.05f, 0.6f));
-
 }
 
 void MainMenuScene::Initialize()
@@ -94,14 +93,17 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 		BMath::Vector3(0, 3.75f, 0),
 		BMath::Vector3(4, 0.1f, 4));
 
-	// goalObject = CreateGoalObject(registry, BMath::Vector3(0, 1, -20), BMath::Vector3(3.0f), 0.0f);
+	goalHandle = GameObjectFactory::CreateGameObject(registry, "plane5.obj", "play.png", "Play Game Entity", { 1,-1 });
+	registry.AddComponent<Behemoth::MoveComponent>(goalHandle, BMath::Vector3(0, 10, -20));
+	registry.AddComponent<Behemoth::AABBColliderComponent>(goalHandle, BMath::Vector3(1.0f, 1.0f, 0.1f));
+	registry.AddComponent<Behemoth::StaticComponent>(goalHandle);
+	registry.AddComponent<Behemoth::ScalingComponent>(goalHandle, BMath::Vector3(4.0f));
+ 	registry.AddComponent<Behemoth::RotationComponent>(goalHandle, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)));
 
-	goalObject = GameObjectFactory::CreateGameObject(registry, "plane5.obj", "play.png", "Play Game Entity", { 1,-1 });
-	registry.AddComponent<MoveComponent>(goalObject, BMath::Vector3(0, 10, -20));
-	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(1.0f));
-	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
-	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f, 4.0f, 4.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)));
+	if (goalComponent = registry.AddComponent<GoalComponent>(goalHandle))
+	{
+		goalComponent->goalColliderHandles.push_back(goalHandle);
+	}
 }
 
 void MainMenuScene::CreateInstructionsText(ECS::Registry& registry)

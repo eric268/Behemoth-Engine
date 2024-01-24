@@ -38,7 +38,6 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	CameraComponent* mainCameraComp = registry.GetComponent<CameraComponent>(mainCameraHandle);
 	mainCameraComp->focusedEntity = playerHandle;
 
-
 	// Create camera spring arm for look functionality independent of aiming
 	const ECS::EntityHandle cameraSpringArm = registry.CreateEntity("Spring arm");
 	registry.AddComponent<TransformComponent>(cameraSpringArm);

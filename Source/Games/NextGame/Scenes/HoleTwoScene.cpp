@@ -14,8 +14,10 @@
 #include "Scripts/BarrierFactory.h"
 #include "Scripts/PlayerScore.h"
 
-HoleTwoScene::HoleTwoScene()
+HoleTwoScene::HoleTwoScene() : par(4), changeScene(false)
 {
+	delayUntilSceneChange = 3.0f;
+
 	ConstructEnvironment(registry);
 
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
@@ -27,12 +29,8 @@ HoleTwoScene::HoleTwoScene()
 	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
 	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
 
-	par = 4;
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
-
-	delayUntilSceneChange = 3.0f;
-	changeScene = false;
 }
 
 void HoleTwoScene::Initialize()
@@ -61,7 +59,6 @@ void HoleTwoScene::Update(const float deltaTime)
 				changeScene = true;
 			});
 	}
-
 
 	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
 	{
@@ -97,7 +94,8 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 		BMath::Vector3(0, 9, 18),
 		BMath::Vector3(4, 0.1f, 4));
 
-	goalObject = CreateGoalObject(registry, BMath::Vector3(20, 15, -60), BMath::Vector3(3.0f), 45.0f);
+	goalHandle = CreateGoalObject(registry, BMath::Vector3(20, 15, -60), BMath::Vector3(3.0f), 0.0f);
+	goalComponent = registry.GetComponent<GoalComponent>(goalHandle);
 
 	for (int i = 0; i < 3; i++)
 	{

@@ -1,14 +1,14 @@
 #pragma once
 #include "World/Scene.h"
 #include "BehemothEngine.h"
-
+#include "GameComponents/Level/GoalComponent.h"
 #include <unordered_map>
 
 class GameScene : public Behemoth::Scene
 {
 public:
-	void CheckOutOfBound(ECS::Registry& registry, const ECS::EntityHandle& playerHandle, const ECS::EntityHandle& oobHandle);
 	std::string GetHoleResultText(int numStrokes, int par);
+	void CheckOutOfBound(ECS::Registry& registry, const ECS::EntityHandle& playerHandle, const ECS::EntityHandle& oobHandle);
 	bool CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle);
 	void OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle, int par);
 
@@ -26,9 +26,10 @@ protected:
 	ECS::EntityHandle playerCharacter;
 	ECS::EntityHandle teeOffPlatform;
 	ECS::EntityHandle levelCompleteText;
-	ECS::EntityHandle goalObject;
+	ECS::EntityHandle goalHandle;
 
 	float delayUntilSceneChange;
+	GoalComponent* goalComponent;
 
 	static std::unordered_map<int, std::string> holeResultsText;
 };

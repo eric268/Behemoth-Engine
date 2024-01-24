@@ -54,7 +54,6 @@ ECS::EntityHandle PlatformFactory::CreateGrassPlatform(ECS::Registry& registry, 
 	registry.AddComponent<MoveComponent>(platform, position);
 	registry.AddComponent<ScalingComponent>(platform, scale);
 	registry.AddComponent<RotationComponent>(platform, q);
-	registry.AddComponent<Behemoth::WireframeComponent>(platform, "plane5.obj");
 
 	if (isStatic)
 	{
@@ -103,7 +102,7 @@ ECS::EntityHandle PlatformFactory::CreateSandPlatform(ECS::Registry& registry, c
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Sand],
-		"cube20.obj",
+		"plane5.obj",
 		"sand.jpg",
 		"Sand Platform",
 		BMath::Vector2(5.0, 5.0),

@@ -23,8 +23,10 @@
 #include "GameComponents/Level/LevelViewComponent.h"
 #include "GameComponents/Obstacles/MovingObsComponent.h"
 
-HoleOneScene::HoleOneScene()
+HoleOneScene::HoleOneScene() : par(2), changeScene(false)
 {
+	delayUntilSceneChange = 3.0f;
+
 	PlayerScore::ResetScore();
 
 	ConstructEnvironment(registry);
@@ -38,12 +40,8 @@ HoleOneScene::HoleOneScene()
 	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
 	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
 
-	par = 2;
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
-
-	delayUntilSceneChange = 3.0f;
-	changeScene = false;
 }
 
 void HoleOneScene::Initialize()
@@ -103,7 +101,8 @@ void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
-	goalObject = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
+	goalHandle = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 0.0f);
+	goalComponent = registry.GetComponent<GoalComponent>(goalHandle);
 
 	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
 		registry,
