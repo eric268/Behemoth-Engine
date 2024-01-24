@@ -60,4 +60,17 @@ namespace Behemoth
 		return true;
 	}
 
+	bool BoundingGenerator::GenerateRotatedAABB(const AABBCollider& collider, const BMath::BMatrix3x3& rotationMatrix, AABBCollider& rotatedCollider)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			rotatedCollider.extents[i] = 0.0f;
+			for (int j = 0; j < 3; j++)
+			{
+				rotatedCollider.extents[i] += std::abs(rotationMatrix.data[i][j]) * collider.extents[j];
+			}
+		}
+		rotatedCollider.position = collider.position;
+		return true;
+	}
 }

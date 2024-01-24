@@ -22,7 +22,7 @@ namespace Behemoth
 
 			for (auto& collision : collisionData->data)
 			{
-			//	offsetPosition += collision.data.collisionNormal * collision.data.depth;
+				// offsetPosition += collision.data.collisionNormal * collision.data.depth;
 
 				float velocityAlongNormal = BMath::Vector3::Dot(newVelocity, collision.data.collisionNormal);
 				if (velocityAlongNormal < 0) 

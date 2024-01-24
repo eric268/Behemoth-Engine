@@ -107,8 +107,8 @@ void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 
 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 		registry,
-		BMath::Vector3(0, 9, 18),
-		BMath::Vector3(4, 1.0f, 4));
+		BMath::Vector3(0, 8.8f, 18),
+		BMath::Vector3(4, 0.1f, 4));
 
 	obstacleHandle = BarrierObject::CreateObstacle(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
 	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 30.0f, 250.0f, 0.0f);
@@ -118,15 +118,15 @@ void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 	grassEntity = PlatformObject::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 0, 0),
-		BMath::Vector3(10, 1.0f, 6));
+		BMath::Vector3(10, 0.1f, 6));
 
 	sandTrap1 = PlatformObject::CreateSandPlatform(
 		registry,
 		BMath::Vector3(-20, -2, -20),
-		BMath::Vector3(7, 1.0f, 10));
+		BMath::Vector3(7, 0.1f, 10));
 
 	sandTrap2 = PlatformObject::CreateSandPlatform(
 		registry,
 		BMath::Vector3(20, -2, -20),
-		BMath::Vector3(7, 1.0f, 10));
+		BMath::Vector3(7, 0.1f, 10));
 }

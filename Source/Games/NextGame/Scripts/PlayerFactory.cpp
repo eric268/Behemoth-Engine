@@ -86,7 +86,7 @@ void PlayerFactory::AddInputBindings(ECS::Registry& registry, const ECS::EntityH
 		KeyCode::KC_A,
 		KeyCode::KC_D,
 		KeyCode::KC_W,
-		KeyCode::KC_D,
+		KeyCode::KC_S,
 		ControllerCode::CC_R_SHOULDER);
 }
 

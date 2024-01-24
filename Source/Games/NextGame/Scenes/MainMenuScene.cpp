@@ -33,7 +33,6 @@ MainMenuScene::MainMenuScene()
 {
 	ConstructEnvironment(registry);
 	
-
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 5, 0));
 
 	CreateOOBEntity(registry);
@@ -105,8 +104,8 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 
 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 		registry,
-		BMath::Vector3(0, 4, 0),
-		BMath::Vector3(4, 1.0f, 4));
+		BMath::Vector3(0, 3.75f, 0),
+		BMath::Vector3(4, 0.1f, 4));
 }
 
 void MainMenuScene::CreateInstructionsText(ECS::Registry& registry)

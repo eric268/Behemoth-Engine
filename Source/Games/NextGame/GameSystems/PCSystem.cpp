@@ -14,7 +14,7 @@ void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [entity, playerComponent, pcComponent]: registry.Get<PlayerComponent, PCComponent>())
 	{
-		// Means we are in a different view mode, do dont allow input
+		// Means we are in a different view mode, do don't allow input
 		if (!playerComponent->isActive)
 		{
 			continue;
@@ -109,10 +109,10 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 {
 	AnalogInput input = Input::GetLeftControllerAnaloge(0);
 
-	std::cout << input.x << ' ' << input.y << std::endl;
+	std::cout << input.x << ' ' << input.y << '\n';
 
-	float keyInputX = Input::IsKeyHeld(pcComponent->lookLeftKC) - Input::IsKeyHeld(pcComponent->lookRightKC);
- 	float keyInputY = Input::IsKeyHeld(pcComponent->lookUpKC) - Input::IsKeyHeld(pcComponent->lookDownKC);
+ 	float keyInputX = Input::IsKeyHeld(pcComponent->lookLeftKC) - Input::IsKeyHeld(pcComponent->lookRightKC);
+	float keyInputY = Input::IsKeyHeld(pcComponent->lookUpKC) - Input::IsKeyHeld(pcComponent->lookDownKC);
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->cameraSpringArm))
 	{
@@ -125,7 +125,7 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 			LOGMESSAGE(Error, "Error finding main camera component");
 			return;
 		}
-// 
+
 		if (input.x != 0.0f)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(-input.x), BMath::Vector3(cameraComponent->upVector));
@@ -133,16 +133,16 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 		else if (keyInputX != 0.0f)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComponent->upVector));
- 		}
+ 	}
 
 		if (input.y != 0.0f)
 		{
 			quatY = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(cameraComponent->rightVector));
 		}
- 		else if (keyInputY != 0.0f)
- 		{
- 			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComponent->rightVector));
- 		}
+		else if (keyInputY != 0.0f)
+		{
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComponent->rightVector));
+		}
 
 		parentRotationComponent->quat = quatY * quatX;
 		parentRotationComponent->isAdditive = true;
@@ -167,7 +167,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(input.x), projectileTransform->upVector);
 		}
-		else if (keyInputX != 0.0f)
+		else if (keyInputX)
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), projectileTransform->upVector);
  		}
@@ -176,7 +176,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		{
 			quatY = BMath::Quaternion(DEGREE_TO_RAD(-input.y), projectileTransform->rightVector);
 		}
- 		else if (keyInputY != 0.0f)
+ 		else if (keyInputY)
  		{
  			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), projectileTransform->rightVector);
  		}

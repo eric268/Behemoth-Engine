@@ -8,7 +8,7 @@ using namespace Behemoth;
 ECS::EntityHandle PlatformObject::CreatePlatform(ECS::Registry& registry, const PhysicsMaterial& physicsMaterial, const std::string& modelPath, const std::string& texturePath, const std::string& name, const BMath::Vector2& uvScale)
 {
 	ECS::EntityHandle platform = GameObjectFactory::CreateGameObject(registry, modelPath, texturePath, name, uvScale);
-	OBBColliderComponent* colliderComp = registry.AddComponent<OBBColliderComponent>(platform, BMath::Vector3(1.1f));
+	OBBColliderComponent* colliderComp = registry.AddComponent<OBBColliderComponent>(platform, BMath::Vector3(1.0f));
 
 	if (!colliderComp)
 	{

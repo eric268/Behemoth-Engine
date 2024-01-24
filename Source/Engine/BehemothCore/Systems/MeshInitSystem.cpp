@@ -95,23 +95,7 @@ namespace Behemoth
 		if (broadCollider)
 		{
 			BMath::Vector3 scale = BMath::Vector3::One();
-			AABBCollider baseCollider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName);
-			AABBCollider rotatedCollider{};
-
-			if (TransformComponent* transformComp = registry.GetComponent<TransformComponent>(handle))
-			{
-				scale = transformComp->worldScale;
-				BMath::BMatrix3x3 rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, transformComp->worldScale);
-				GetRotatedAABB(baseCollider, rot,  rotatedCollider);
-			}
-			else
-			{
-				LOGMESSAGE(Error, "Error getting transform from entity: " + registry.GetName(handle));
-			}
-
-			broadCollider->extents = baseCollider.extents;
-			broadCollider->collider.extents = baseCollider.extents;
-
+			broadCollider->collider = ResourceManager::GetInstance().GetMeshAABBBounds(meshComp->modelFileName);
 			// registry.AddComponent<Behemoth::WireframeComponent>(handle, "cube.obj", broadCollider->extents, false);
 		}
 	}

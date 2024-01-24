@@ -5,6 +5,7 @@
 #include "Misc/BColors.h"
 #include "Components/Components.h"
 #include "Components/PhysicsComponents.h"
+#include "Physics/BoundingGenerator.h"
 
 #include <vector>
 #include <tuple>
@@ -33,10 +34,9 @@ namespace Behemoth
 	struct BVHData
 	{
 		BVHData() : handle(), collider() {}
-		BVHData(ECS::EntityHandle handle, AABBCollider collider, BMath::Vector3 scale) : handle(handle), collider(collider), entityScale(scale) {}
+		BVHData(ECS::EntityHandle handle, AABBCollider collider) : handle(handle), collider(collider){}
 		ECS::EntityHandle handle;
 		AABBCollider collider;
-		BMath::Vector3 entityScale;
 	};
 
 	class BVHFactory
@@ -97,9 +97,11 @@ namespace Behemoth
 			{
 				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, BVHColliderComponent* colliderComp, auto* ...args)
 					{
+						auto rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, transformComp->worldScale * colliderComp->extents);
+						AABBCollider rotatedCollider{};
+						BoundingGenerator::GenerateRotatedAABB(colliderComp->collider, rot, rotatedCollider);
 
-						colliderComp->collider.position = transformComp->worldPosition;
-						data.push_back(BVHData(entity, colliderComp->collider, transformComp->worldScale));
+						data.push_back(BVHData(entity, rotatedCollider));
 
 					}, componentTuple);
  			}

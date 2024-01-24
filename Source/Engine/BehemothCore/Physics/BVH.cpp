@@ -11,7 +11,7 @@
 
 namespace Behemoth
 {
-	BVHFactory::BVHFactory() : root(), drawDebugColliders(false) {}
+	BVHFactory::BVHFactory() : root(), drawDebugColliders(true) {}
 	BVHFactory::~BVHFactory() {}
 
 	void BVHFactory::DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
@@ -125,8 +125,8 @@ namespace Behemoth
 
 		for (const BVHData& data : colliders)
 		{
-			BMath::Vector3 colliderMin = data.collider.position - data.collider.extents * data.entityScale;
-			BMath::Vector3 colliderMax = data.collider.position + data.collider.extents * data.entityScale;
+			BMath::Vector3 colliderMin = data.collider.position - data.collider.extents;
+			BMath::Vector3 colliderMax = data.collider.position + data.collider.extents;
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -176,23 +176,10 @@ namespace Behemoth
 	{
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
 		node->collider = colliderData.collider;
-		node->collider.extents *= colliderData.entityScale;
+		// node->collider.extents *= colliderData.entityScale;
 		node->entityHandle = colliderData.handle;
 		node->leftChild = nullptr;
 		node->rightChild = nullptr;
-
-// 		auto rot4 = TransformHelper::ExtractRotationMatrix(registry.GetComponent<TransformComponent>(colliderData.handle)->worldTransform, colliderData.entityScale);
-// 		// 
-// 		node->collider.worldExtents = rot4 * node->collider.worldExtents;
-		
-// 		float max = std::max(std::abs(node->collider.worldExtents[0]),
-// 			  std::max(std::abs(node->collider.worldExtents[1]),
-// 					         std::abs(node->collider.worldExtents[2])));
-
-// 		for (int i = 0; i < 3; i++)
-// 		{
-// 			node->collider.worldExtents[i] = max;
-// 		}
 
 #ifdef DEBUG
 		if (drawDebugColliders)
