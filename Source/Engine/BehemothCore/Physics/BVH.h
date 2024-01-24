@@ -98,13 +98,11 @@ namespace Behemoth
 				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, BVHColliderComponent* colliderComp, auto* ...args)
 					{
 						colliderComp->collider.position = transformComp->worldPosition;
-						colliderComp->collider.extents = transformComp->worldScale * colliderComp->extents;
 						BMath::Vector3 scale = transformComp->worldScale * colliderComp->extents;
+						colliderComp->collider.extents = scale;
 						auto rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, scale);
 						AABBCollider rotatedCollider{};
 						BoundingGenerator::GenerateRotatedAABB(colliderComp->collider, rot, rotatedCollider);
-/*						rotatedCollider.extents *= scale;*/
-
 						data.push_back(BVHData(entity, rotatedCollider));
 
 					}, componentTuple);

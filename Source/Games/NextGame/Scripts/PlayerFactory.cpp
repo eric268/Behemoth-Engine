@@ -19,7 +19,6 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	const ECS::EntityHandle projectileHandle = registry.CreateEntity("Projectile");
 	registry.AddComponent<TransformComponent>(projectileHandle);
 	registry.AddComponent<RotationComponent>(projectileHandle);
-	registry.AddComponent<OBBColliderComponent>(playerHandle, BMath::Vector3(0.75f));
 
 	// Create child component that will be the projectile mesh
 	const ECS::EntityHandle playerMeshHandle = GameObjectFactory::CreateGameObject(registry, "sphere10.obj", "golfball.png", "Projectile Mesh");

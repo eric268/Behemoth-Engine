@@ -38,6 +38,7 @@ private:
 		const std::string& modelPath,
 		const std::string& texturePath,
 		const std::string& name,
-		const BMath::Vector2& scale);
+		const BMath::Vector2& scale,
+		bool isRotated);
 };
 

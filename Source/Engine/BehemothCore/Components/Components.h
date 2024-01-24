@@ -118,8 +118,8 @@ namespace Behemoth
 
 	struct RotationComponent : public ECS::Component
 	{
-		RotationComponent()	:quat (BMath::Quaternion::Identity()), isAdditive(false) {}
-		RotationComponent(BMath::Quaternion q, bool additive = false) : quat (q), isAdditive(additive) {}
+		RotationComponent()	:quat (BMath::Quaternion::Identity()), isAdditive(true) {}
+		RotationComponent(BMath::Quaternion q, bool isAdditive = true) : quat (q), isAdditive(isAdditive) {}
 
 		BMath::Quaternion quat;
 		bool isAdditive;

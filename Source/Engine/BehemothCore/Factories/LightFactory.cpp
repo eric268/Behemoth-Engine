@@ -21,9 +21,9 @@ namespace Behemoth
 		registry.AddComponent<TransformComponent>(entity);
 		registry.AddComponent<MoveComponent>(entity, location);
 
-		registry.AddComponent<MeshComponent>(entity, "cube.obj", texture, BMath::Vector2(0.2f, 0.2f), true, false);
-		registry.AddComponent<ScalingComponent>(entity, BMath::Vector3(.2f, .2f, .2f));
-		registry.AddComponent<MeshInitalizeComponent>(entity, false, false);
+// 		registry.AddComponent<MeshComponent>(entity, "cube.obj", texture, BMath::Vector2(0.2f, 0.2f), true, false);
+// 		registry.AddComponent<ScalingComponent>(entity, BMath::Vector3(.2f, .2f, .2f));
+// 		registry.AddComponent<MeshInitalizeComponent>(entity, false, false);
 
 		return entity;
 	}

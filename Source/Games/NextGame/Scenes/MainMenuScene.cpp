@@ -51,7 +51,7 @@ void MainMenuScene::Initialize()
 
 void MainMenuScene::Update(const float deltaTime)
 {
-	CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
+	CheckOutOfBound(registry, playerCharacter, oobTrigger);
 
 	if (CheckLevelComplete(registry, playerCharacter))
 	{
@@ -100,8 +100,8 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(3.0f));
 	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
 	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)), true);
-
+	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)));
+// 
 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 3.75f, 0),

@@ -109,10 +109,13 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 {
 	AnalogInput input = Input::GetLeftControllerAnaloge(0);
 
-	std::cout << input.x << ' ' << input.y << '\n';
-
  	float keyInputX = Input::IsKeyHeld(pcComponent->lookLeftKC) - Input::IsKeyHeld(pcComponent->lookRightKC);
 	float keyInputY = Input::IsKeyHeld(pcComponent->lookUpKC) - Input::IsKeyHeld(pcComponent->lookDownKC);
+
+	if (input.x == 0.0f && input.y == 0.0f && keyInputX == 0.0f && keyInputY == 0.0f)
+	{
+		return;
+	}
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->cameraSpringArm))
 	{
@@ -156,7 +159,12 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
  	float keyInputX = Input::IsKeyHeld(pcComponent->aimRightKC) - Input::IsKeyHeld(pcComponent->aimLeftKC);
  	float keyInputY = Input::IsKeyHeld(pcComponent->aimDownKC)  - Input::IsKeyHeld(pcComponent->aimUpKC);
 
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.GetComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
+	if (input.x == 0.0f && input.y == 0.0f && keyInputX == 0.0f && keyInputY == 0.0f)
+	{
+		return;
+	}
+
+	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
 	{
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();

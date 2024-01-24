@@ -35,23 +35,23 @@ namespace Behemoth
 					{
 						return ((std::apply([&](auto&&... hitColliders)
 						{
-							ContactData contactData{};
+ 							ContactData contactData{};
 							auto CheckHitColliders = [&](auto&& collider1, auto&& collider2)
-							{
-								if (IsCollision(dynamicTransform, hitTransform, collider1, collider2, contactData))
-								{
-									contactData.physicsMaterial = collider2->physicsMaterial;
-									if (collider2->isTrigger)
-									{
-										GenerateData<TriggerDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
-									}
-									else
-									{
-										GenerateData<CollisionDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
-									}
-
-								}
-							}; (..., CheckHitColliders(dynamicCollider, hitColliders));
+ 							{
+ 								if (IsCollision(dynamicTransform, hitTransform, collider1, collider2, contactData))
+ 								{
+ 									contactData.physicsMaterial = collider2->physicsMaterial;
+ 									if (collider2->isTrigger)
+ 									{
+ 										GenerateData<TriggerDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
+ 									}
+ 									else
+ 									{
+ 										GenerateData<CollisionDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
+ 									}
+ 
+ 								}
+ 							}; (..., CheckHitColliders(dynamicCollider, hitColliders));
 
 						}, hitColliders))); };
 

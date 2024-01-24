@@ -20,7 +20,7 @@ protected:
 	virtual void ConstructEnvironment(ECS::Registry& registry) = 0;
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle skySphere;
-	ECS::EntityHandle bottomOOBTrigger;
+	ECS::EntityHandle oobTrigger;
 	ECS::EntityHandle playerCharacter;
 	ECS::EntityHandle teeOffPlatform;
 	ECS::EntityHandle levelCompleteText;

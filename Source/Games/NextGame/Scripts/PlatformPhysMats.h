@@ -18,8 +18,8 @@ namespace PhysMat
 	static std::unordered_map<PlatformPhysMats, Behemoth::PhysicsMaterial> platformPhysicsMats =
 	{
 		{ PlatformPhysMats::None, Behemoth::PhysicsMaterial(0.0f,0.0f) },
-		{ PlatformPhysMats::Sand, Behemoth::PhysicsMaterial(0.05f,2.99f) },
-		{ PlatformPhysMats::Grass, Behemoth::PhysicsMaterial(0.25f, 0.93f) },
+		{ PlatformPhysMats::Sand, Behemoth::PhysicsMaterial(0.01f, 10.0f) },
+		{ PlatformPhysMats::Grass, Behemoth::PhysicsMaterial(0.25f, 3.0f) },
 		{ PlatformPhysMats::Rock, Behemoth::PhysicsMaterial(0.7f, 0.95f) }
 	};
 }

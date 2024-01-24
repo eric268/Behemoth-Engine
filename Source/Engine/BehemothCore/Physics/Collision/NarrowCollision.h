@@ -46,7 +46,12 @@ namespace Behemoth
 	template<>
 	inline bool CheckCollision(const SphereCollider& c1, const OBBCollider& c2, ContactData& contactData)
 	{
-		return NarrowSphereOBBCollision(c1, c2, contactData);
+		bool result =  NarrowSphereOBBCollision(c1, c2, contactData);
+		if (result)
+		{
+			contactData.collisionNormal *= -1.0f;
+		}
+		return true;
 	}
 
 	template<>
@@ -58,10 +63,7 @@ namespace Behemoth
 	template<>
 	inline bool CheckCollision(const SphereCollider& sphere, const AABBCollider& box, ContactData& contactData)
 	{
-		bool result = NarrowSphereAABBCollision(sphere, box, contactData);
-		if (result)
-			NarrowSphereAABBCollision(sphere, box, contactData);
-		return result;
+		return NarrowSphereAABBCollision(sphere, box, contactData);
 	}
 
 	template<>
@@ -90,10 +92,10 @@ namespace Behemoth
 	{
 		bool result = NarrowSphereAABBCollision(sphere, box1, contactData);
 		// Invert the normal since we are colliding from the other way
-		if (result)
-		{
-			contactData.collisionNormal *= -1.0f;
-		}
+// 		if (result)
+// 		{
+// 			contactData.collisionNormal *= -1.0f;
+// 		}
 		return result;
 	}
 

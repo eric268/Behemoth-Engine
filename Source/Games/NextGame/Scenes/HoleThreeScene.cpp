@@ -47,7 +47,7 @@ void HoleThreeScene::Initialize()
 }
 void HoleThreeScene::Update(const float deltaTime)
 {
-	CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
+	CheckOutOfBound(registry, playerCharacter, oobTrigger);
 
 	if (CheckLevelComplete(registry, playerCharacter))
 	{

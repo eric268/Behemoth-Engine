@@ -85,7 +85,6 @@ bool GameScene::CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& p
 				}
 
 				playerComponent->levelComplete = true;
-
 				return true;
 			}
 		}
@@ -121,19 +120,15 @@ void GameScene::OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playe
 
 ECS::EntityHandle GameScene::CreateOOBEntity(ECS::Registry& registry)
 {
-	bottomOOBTrigger = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "rock.png", "Ground entity", { 8,8 });
+	oobTrigger = registry.CreateEntity("Out of bounds trigger");
+	registry.AddComponent<Behemoth::TransformComponent>(oobTrigger);
+	registry.AddComponent<Behemoth::AABBColliderComponent>(oobTrigger, BMath::Vector3(1.0f), true, true);
+	registry.AddComponent<Behemoth::StaticComponent>(oobTrigger);
+	registry.AddComponent<Behemoth::ScalingComponent>(oobTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
+	registry.AddComponent<Behemoth::MoveComponent>(oobTrigger, BMath::Vector3(0, -20, 10.0f));
+	registry.AddComponent<Behemoth::BVHColliderComponent>(oobTrigger);
 
-	registry.AddComponent<Behemoth::OBBColliderComponent>(bottomOOBTrigger, BMath::Vector3(1.0f), true);
-	registry.AddComponent<Behemoth::StaticComponent>(bottomOOBTrigger);
-	registry.AddComponent<Behemoth::ScalingComponent>(bottomOOBTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
-	registry.AddComponent<Behemoth::MoveComponent>(bottomOOBTrigger, BMath::Vector3(0, -20, 10.0f));
-
-	if (Behemoth::MeshComponent* mesh = registry.GetComponent<Behemoth::MeshComponent>(bottomOOBTrigger))
-	{
-		mesh->isVisible = false;
-	}
-
-	return bottomOOBTrigger;
+	return oobTrigger;
 }
 
 ECS::EntityHandle  GameScene::CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle)

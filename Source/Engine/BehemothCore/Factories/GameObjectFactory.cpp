@@ -50,6 +50,11 @@ namespace Behemoth
 			}
 		}
 
+		if (TransformComponent* transformComponent = registry.GetComponent<TransformComponent>(childHandle))
+		{
+			transformComponent->parentIsDirty = true;
+		}
+
 		registry.AddComponent<ChildComponent>(childHandle, parentHandle);
 		parentComp->childHandles.push_back(childHandle);
 		return true;

@@ -22,7 +22,10 @@ namespace Behemoth
 
 			for (auto& collision : collisionData->data)
 			{
-				// offsetPosition += collision.data.collisionNormal * collision.data.depth;
+
+				std::string message = "Normal: " + collision.data.collisionNormal.Print() + " Depth: " + std::to_string(collision.data.depth);
+				LOGMESSAGE(General, message);
+				 offsetPosition += collision.data.collisionNormal * collision.data.depth;
 
 				float velocityAlongNormal = BMath::Vector3::Dot(newVelocity, collision.data.collisionNormal);
 				if (velocityAlongNormal < 0) 

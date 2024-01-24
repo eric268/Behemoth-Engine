@@ -49,7 +49,7 @@ void HoleTwoScene::OnEvent(Behemoth::Event& e)
 
 void HoleTwoScene::Update(const float deltaTime)
 {
-	CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
+	CheckOutOfBound(registry, playerCharacter, oobTrigger);
 
 	if (CheckLevelComplete(registry, playerCharacter))
 	{
@@ -95,7 +95,7 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 9, 18),
-		BMath::Vector3(4, 1.0f, 4));
+		BMath::Vector3(4, 0.1f, 4));
 
 	goalObject = CreateGoalObject(registry, BMath::Vector3(20, 15, -60), BMath::Vector3(3.0f), 45.0f);
 
@@ -104,9 +104,9 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 		mainBarriers[i] = BarrierObject::CreateObstacle(registry, BMath::Vector3(-12 + (i * 20), 20, -30), BMath::Vector3(9, 15, 2), BMath::Quaternion());
 	}
 
-	grassPatch1 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -20), BMath::Vector3(15, 1.0, 40), BMath::Quaternion());
-	grassPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(0, 8, -100), BMath::Vector3(25, 1.0, 30), BMath::Quaternion());
-	sandPatch2 = PlatformObject::CreateSandPlatform(registry, BMath::Vector3(50, 8, -75), BMath::Vector3(20, 1.0, 30), BMath::Quaternion());
+	grassPatch1 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -20), BMath::Vector3(15, 0.1f, 40), BMath::Quaternion());
+	grassPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(0, 8, -100), BMath::Vector3(25, 0.1f, 30), BMath::Quaternion());
+	sandPatch2 = PlatformObject::CreateSandPlatform(registry, BMath::Vector3(50, 8, -75), BMath::Vector3(20, 0.1f, 30), BMath::Quaternion());
 	barrier1 = BarrierObject::CreateObstacle(
 		registry,
 		BMath::Vector3(35, 20, -50),

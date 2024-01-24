@@ -58,7 +58,7 @@ void HoleOneScene::OnEvent(Behemoth::Event& e)
 
 void HoleOneScene::Update(const float deltaTime)
 {
-	 CheckOutOfBound(registry, playerCharacter, bottomOOBTrigger);
+	 CheckOutOfBound(registry, playerCharacter, oobTrigger);
 
 	 if (CheckLevelComplete(registry, playerCharacter))
 	 {

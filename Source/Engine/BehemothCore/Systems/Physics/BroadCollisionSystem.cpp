@@ -41,6 +41,7 @@ namespace Behemoth
 			{
 				if (currentNode->IsLeaf())
 				{
+					LOGMESSAGE(General, "Broad Collision");
 					nodeHandles.push_back(currentNode->entityHandle);
 					continue;
 				}

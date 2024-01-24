@@ -208,7 +208,8 @@ namespace Behemoth
 
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::BMatrix3x3 rot;
+		BMath::BMatrix3x3 rot = BMath::BMatrix3x3::Identity();
+
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
@@ -216,7 +217,8 @@ namespace Behemoth
 				rot.data[i][j] = box.orientation[i][j];
 			}
 		}
-		BMath::Vector3 localToSphere = BMath::BMatrix3x3::Inverse(rot) * BMath::Vector3(sphere.center - box.position);
+
+		BMath::Vector3 localToSphere = BMath::Vector3(BMath::BMatrix3x3::Inverse(rot) * BMath::Vector3(sphere.center - box.position));
 
 		BMath::Vector3 closestPoint(0.0f);
 
@@ -234,19 +236,21 @@ namespace Behemoth
 			closestPoint[i] = value;
 		}
 
-		closestPoint = rot * closestPoint + box.position;
+		BMath::Vector3 worldClosestPoint = rot * closestPoint + box.position;
 
-		BMath::Vector3 toSphere = sphere.center - closestPoint;
-		float distSquared = BMath::Vector3::SquaredMagnitude(toSphere);
+		BMath::Vector3 toSphere = sphere.center - worldClosestPoint;
 
-		if (distSquared > sphere.radius * sphere.radius)
+		float distanceSquared = BMath::Vector3::Dot(toSphere, toSphere);
+
+		if (distanceSquared > sphere.radius * sphere.radius)
 		{
 			return false;
 		}
 
-		contactData.collisionPoint = closestPoint;
-		contactData.collisionNormal = toSphere.Normalize();
-		contactData.depth = sphere.radius - std::sqrt(distSquared);
+		float distance = std::sqrt(distanceSquared);
+		contactData.collisionNormal = BMath::Vector3::Normalize(toSphere.Normalize());
+		contactData.collisionPoint = worldClosestPoint;
+		contactData.depth = sphere.radius - distance;
 		return true;
 	}
 

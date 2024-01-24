@@ -28,14 +28,17 @@ MainScene::MainScene()
 	registry.AddComponent<Behemoth::WireframeComponent>(exampleParentEntity, "sphere.obj");
 
 
-	exampleChildEntity1 = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "brick.png", "Child 1");
-	registry.AddComponent<Behemoth::MoveComponent>(exampleChildEntity1, BMath::Vector3(0.0f, 0.0f, -15.0f));
-	registry.AddComponent<Behemoth::OBBColliderComponent>(exampleChildEntity1);
-	registry.AddComponent<Behemoth::StaticComponent>(exampleChildEntity1);
-	//	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity1, false, true);
-	registry.AddComponent<Behemoth::ScalingComponent>(exampleChildEntity1, BMath::Vector3(1.0f, 5.25, 5.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(exampleChildEntity1, BMath::Quaternion(DEGREE_TO_RAD(45.0f), BMath::Vector3(0.0f, 1.0, 0.0f)), true);
+	for (int i = 0; i < 3; i++)
+	{
+		 ECS::EntityHandle debugEntity = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube.obj", "brick.png", "Child 1");
+		registry.AddComponent<Behemoth::MoveComponent>(debugEntity, BMath::Vector3(10.0f * (i - 1), 0.0f, -15.0f));
+		registry.AddComponent<Behemoth::OBBColliderComponent>(debugEntity);
+		registry.AddComponent<Behemoth::StaticComponent>(debugEntity);
+		//	registry.AddComponent<Behemoth::RigidBodyComponent>(exampleChildEntity1, false, true);
+		registry.AddComponent<Behemoth::ScalingComponent>(debugEntity, BMath::Vector3(4.0f, 1.0, 4.0f));
+		registry.AddComponent<Behemoth::RotationComponent>(debugEntity, BMath::Quaternion(DEGREE_TO_RAD(45.0f), BMath::Vector3(0.0f, 1.0, 0.0f)), false);
 
+	}
 	LOGMESSAGE(General, "Main Scene constructed\n");
 }
 
