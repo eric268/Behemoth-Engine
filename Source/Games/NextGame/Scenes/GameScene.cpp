@@ -50,7 +50,7 @@ void GameScene::CheckOutOfBound(ECS::Registry& registry, const ECS::EntityHandle
 
 		if (playerComponent->isRespawning)
 		{
-			// Player fell is already being processed
+			// Player respawn is already being processed
 			return;
 		}
 
@@ -89,7 +89,6 @@ bool GameScene::CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& p
 			}
 		}
 	}
-
 	return false;
 }
 
@@ -131,15 +130,39 @@ ECS::EntityHandle GameScene::CreateOOBEntity(ECS::Registry& registry)
 	return oobTrigger;
 }
 
-ECS::EntityHandle  GameScene::CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle)
+ECS::EntityHandle GameScene::CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale)
 {
-	Behemoth::GameObjectFactory gameObjectFactory{};
-	ECS::EntityHandle goalHandle = gameObjectFactory.CreateGameObject(registry, "monkey.obj", "rock.png", "Goal Game Object");
+	ECS::EntityHandle collider1 = registry.CreateEntity("Goal Collider");
+	registry.AddComponent<Behemoth::TransformComponent>(collider1);
+	registry.AddComponent<Behemoth::SphereColliderComponent>(collider1);
+	registry.AddComponent<Behemoth::ScalingComponent>(collider1, scale);
+	registry.AddComponent<Behemoth::MoveComponent>(collider1, offset);
+	registry.AddComponent<Behemoth::MeshInitalizeComponent>(collider1);
+	registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::RotationComponent>(collider1);
+	registry.AddComponent<Behemoth::StaticComponent>(collider1);
+	return collider1;
+}
+
+ECS::EntityHandle GameScene::CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle)
+{
+	ECS::EntityHandle goalHandle = Behemoth::GameObjectFactory::CreateGameObject(registry, "monkey.obj", "rock.png", "Goal Game Object");
 	registry.AddComponent<Behemoth::MoveComponent>(goalHandle, location);
 	registry.AddComponent<Behemoth::RotationComponent>(goalHandle, BMath::Quaternion(DEGREE_TO_RAD(rotationAngle), BMath::Vector3(0, 1, 0)));
 	registry.AddComponent<Behemoth::StaticComponent>(goalHandle);
-	registry.AddComponent<Behemoth::SphereColliderComponent>(goalHandle, 0.9f);
 	registry.AddComponent<Behemoth::ScalingComponent>(goalHandle, scale);
+	registry.AddComponent<Behemoth::SphereColliderComponent>(goalHandle);
+	registry.AddComponent<Behemoth::WireframeComponent>(goalHandle, "sphere.obj");
+
+// 	ECS::EntityHandle collider1 = CreateGoalCollider(registry, BMath::Vector3(0, 0.75f, -0.25f), BMath::Vector3(0.85f));
+// 	ECS::EntityHandle collider2 = CreateGoalCollider(registry, BMath::Vector3(0, -2, 2), BMath::Vector3(0.4f));
+// 	ECS::EntityHandle collider3 = CreateGoalCollider(registry, BMath::Vector3(-3.25, 0.5f, -1.0f), BMath::Vector3(0.35f));
+// 	ECS::EntityHandle collider4 = CreateGoalCollider(registry, BMath::Vector3(3.25, 0.5f, -1.0f), BMath::Vector3(0.35f));
+// 
+// 	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider1);
+// 	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider2);
+// 	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider3);
+// 	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider4);
 
 	return goalHandle;
 }

@@ -17,11 +17,10 @@ namespace Behemoth
 
 	void Scene::ConstructBVH()
 	{
-// 		
 		staticBVHHandle = registry.CreateEntity("Static BVH");
 		std::shared_ptr<BVHNode> staticBVHNode = factory.OnConstruction<StaticComponent>(registry, staticBVHEntities);
 		registry.AddComponent<BVHRootComponent<StaticComponent>>(staticBVHHandle, staticBVHNode);
-//  
+  
 		dynamicBVHHandle = registry.CreateEntity("Dynamic BVH");
 		std::shared_ptr<BVHNode> dynamicVHNode = factory.OnConstruction<RigidBodyComponent>(registry, dynamicBVHEntities);
 		registry.AddComponent<BVHRootComponent<RigidBodyComponent>>(dynamicBVHHandle, dynamicVHNode);

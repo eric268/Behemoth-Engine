@@ -11,7 +11,7 @@
 
 namespace Behemoth
 {
-	BVHFactory::BVHFactory() : root(), drawDebugColliders(false) {}
+	BVHFactory::BVHFactory() : root(), drawDebugColliders(true) {}
 	BVHFactory::~BVHFactory() {}
 
 	void BVHFactory::DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)

@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "PlayerFellSystem.h"
+#include "PlayerFallSystem.h"
 #include "GameComponents/Player/PlayerComponent.h"
 #include "Components/Components.h"
 
 
 using namespace Behemoth;
-void PlayerFellSystem::Run(const float deltaTime, ECS::Registry& registry)
+void PlayerFallSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [
 		entity, 
@@ -32,7 +32,7 @@ void PlayerFellSystem::Run(const float deltaTime, ECS::Registry& registry)
 	}
 }
 
-void PlayerFellSystem::RespawnPlayer(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
+void PlayerFallSystem::RespawnPlayer(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
 {
 	registry.AddComponent<PlayerRespawnComponent>(entityHandle);
 }

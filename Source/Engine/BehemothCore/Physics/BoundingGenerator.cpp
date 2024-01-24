@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "BoundingGenerator.h"
-#include "Physics/Collision/Colliders.h"
 #include "Core/Log.h"
 
 namespace Behemoth

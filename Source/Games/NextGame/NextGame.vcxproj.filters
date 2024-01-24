@@ -48,7 +48,7 @@
     <ClInclude Include="GameSystems\PCSystem.h">
       <Filter>GameSystems</Filter>
     </ClInclude>
-    <ClInclude Include="GameSystems\PlayerFellSystem.h">
+    <ClInclude Include="GameSystems\PlayerFallSystem.h">
       <Filter>GameSystems</Filter>
     </ClInclude>
     <ClInclude Include="GameSystems\PlayerHUDSystem.h">
@@ -75,13 +75,13 @@
     <ClInclude Include="Scenes\MainMenuScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\BarrierObject.h">
+    <ClInclude Include="Scripts\BarrierFactory.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\LevelViewFactory.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\PlatformObject.h">
+    <ClInclude Include="Scripts\PlatformFactory.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="Scripts\PlatformPhysMats.h">
@@ -97,6 +97,9 @@
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="GameComponents\Level\GoalComponent.h">
+      <Filter>GameComponents\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
@@ -111,7 +114,7 @@
     <ClCompile Include="GameSystems\PCSystem.cpp">
       <Filter>GameSystems</Filter>
     </ClCompile>
-    <ClCompile Include="GameSystems\PlayerFellSystem.cpp">
+    <ClCompile Include="GameSystems\PlayerFallSystem.cpp">
       <Filter>GameSystems</Filter>
     </ClCompile>
     <ClCompile Include="GameSystems\PlayerHUDSystem.cpp">
@@ -138,13 +141,13 @@
     <ClCompile Include="Scenes\MainMenuScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\BarrierObject.cpp">
+    <ClCompile Include="Scripts\BarrierFactory.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\LevelViewFactory.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\PlatformObject.cpp">
+    <ClCompile Include="Scripts\PlatformFactory.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\PlayerFactory.cpp">

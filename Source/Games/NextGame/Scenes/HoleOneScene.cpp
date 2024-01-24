@@ -15,8 +15,8 @@
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
-#include "Scripts/PlatformObject.h"
-#include "Scripts/BarrierObject.h"
+#include "Scripts/PlatformFactory.h"
+#include "Scripts/BarrierFactory.h"
 #include "Scripts/PlayerScore.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
@@ -105,27 +105,27 @@ void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 
 	goalObject = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 45.0f);
 
-	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 8.8f, 18),
 		BMath::Vector3(4, 0.1f, 4));
 
-	obstacleHandle = BarrierObject::CreateObstacle(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
+	obstacleHandle = BarrierFactory::CreateObstacle(registry, BMath::Vector3(0, 5, -12), BMath::Vector3(3.0f, 3.0f, 1.0f), BMath::Quaternion(), false);
 	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 30.0f, 250.0f, 0.0f);
 	registry.AddComponent<Behemoth::VelocityComponent>(obstacleHandle);
 	registry.AddComponent<Behemoth::RigidBodyComponent>(obstacleHandle);
 
-	grassEntity = PlatformObject::CreateGrassPlatform(
+	grassEntity = PlatformFactory::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 0, 0),
 		BMath::Vector3(10, 0.1f, 6));
 
-	sandTrap1 = PlatformObject::CreateSandPlatform(
+	sandTrap1 = PlatformFactory::CreateSandPlatform(
 		registry,
 		BMath::Vector3(-20, -2, -20),
 		BMath::Vector3(7, 0.1f, 10));
 
-	sandTrap2 = PlatformObject::CreateSandPlatform(
+	sandTrap2 = PlatformFactory::CreateSandPlatform(
 		registry,
 		BMath::Vector3(20, -2, -20),
 		BMath::Vector3(7, 0.1f, 10));

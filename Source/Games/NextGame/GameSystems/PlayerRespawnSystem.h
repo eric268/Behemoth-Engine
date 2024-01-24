@@ -7,12 +7,8 @@ namespace ECS
 	class Entity;
 }
 
-class PlayerRespawnSystem
+struct PlayerRespawnSystem
 {
-public:
-		void Run(const float deltaTime, ECS::Registry& registry);
-
-private:
-
+	void Run(const float deltaTime, ECS::Registry& registry);
 };
 

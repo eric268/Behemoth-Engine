@@ -18,7 +18,7 @@ void LevelViewSystem::Run(const float deltaTime, ECS::Registry& registry)
 	}
 }
 
-void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::EntityHandle handle, LevelViewComponent* levelView, ViewControllerComponent* viewController)
+void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, const ECS::EntityHandle& handle, LevelViewComponent* levelView, ViewControllerComponent* viewController)
 {
 	AnalogInput input = Input::GetLeftControllerAnaloge(0);
 
@@ -45,7 +45,6 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 		{
 			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComponent->upVector));
 		}
-		
 
 		if (input.y != 0.0f)
 		{
@@ -61,7 +60,7 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, ECS::
 	}
 }
 
-void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, ECS::EntityHandle, LevelViewComponent* levelView, ViewControllerComponent* viewController)
+void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, const ECS::EntityHandle&, LevelViewComponent* levelView, ViewControllerComponent* viewController)
 {
 	AnalogInput input = Input::GetRightControllerAnaloge(0);
 	float keyInput = Input::IsKeyHeld(viewController->zoomOutKC) - Input::IsKeyHeld(viewController->zoomInKC);
@@ -97,7 +96,6 @@ void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, ECS::
 		return;
 	}
 
-	
 	BMath::Vector3 deltaPosition = cameraComponent->forwardVector * delta;
 	registry.AddComponent<MoveComponent>(levelView->attachedCamera, deltaPosition);
 }

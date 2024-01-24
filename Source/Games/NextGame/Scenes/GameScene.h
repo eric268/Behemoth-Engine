@@ -18,6 +18,8 @@ public:
 
 protected:
 	virtual void ConstructEnvironment(ECS::Registry& registry) = 0;
+	ECS::EntityHandle CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale);
+
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle skySphere;
 	ECS::EntityHandle oobTrigger;

@@ -13,7 +13,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	const ECS::EntityHandle playerHandle = GameObjectFactory::CreateGameObject(registry, "", "", "Player");
 	registry.AddComponent<RigidBodyComponent>(playerHandle, false, true);
 	registry.AddComponent<MoveComponent>(playerHandle, spawnLocation);
-	registry.AddComponent<SphereColliderComponent>(playerHandle);
+	registry.AddComponent<OBBColliderComponent>(playerHandle);
 
 	// Create a child component that will handle projectile aiming 
 	const ECS::EntityHandle projectileHandle = registry.CreateEntity("Projectile");

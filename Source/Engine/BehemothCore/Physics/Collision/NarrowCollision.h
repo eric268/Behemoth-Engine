@@ -78,7 +78,6 @@ namespace Behemoth
 		return NarrowRayOBBCollision(ray, box, contactData);
 	}
 
-
 	// TODO:
 	// Finish these narrow collision checks
 	template<>

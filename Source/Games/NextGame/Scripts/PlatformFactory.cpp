@@ -1,11 +1,13 @@
 #include "pch.h"
-#include "PlatformObject.h"
+#include "PlatformFactory.h"
 #include "Factories/GameObjectFactory.h"
+#include "Components/RenderComponents.h"
 #include "PlatformPhysMats.h"
+#include "Math/Quaternion.h"
 
 using namespace Behemoth;
 
-ECS::EntityHandle PlatformObject::CreatePlatform(
+ECS::EntityHandle PlatformFactory::CreatePlatform(
 	ECS::Registry& registry,
 	const PhysicsMaterial& physicsMaterial,
 	const std::string& modelPath,
@@ -33,11 +35,10 @@ ECS::EntityHandle PlatformObject::CreatePlatform(
 		}
 	}
 
-
 	return platform;
 }
 
-ECS::EntityHandle PlatformObject::CreateGrassPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
+ECS::EntityHandle PlatformFactory::CreateGrassPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
 {
 	bool isRotated = BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
 
@@ -53,6 +54,7 @@ ECS::EntityHandle PlatformObject::CreateGrassPlatform(ECS::Registry& registry, c
 	registry.AddComponent<MoveComponent>(platform, position);
 	registry.AddComponent<ScalingComponent>(platform, scale);
 	registry.AddComponent<RotationComponent>(platform, q);
+	registry.AddComponent<Behemoth::WireframeComponent>(platform, "plane5.obj");
 
 	if (isStatic)
 	{
@@ -65,7 +67,7 @@ ECS::EntityHandle PlatformObject::CreateGrassPlatform(ECS::Registry& registry, c
 	return platform;
 }
 
-ECS::EntityHandle PlatformObject::CreateRockPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
+ECS::EntityHandle PlatformFactory::CreateRockPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
 {
 	bool isRotated = BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
 
@@ -94,14 +96,14 @@ ECS::EntityHandle PlatformObject::CreateRockPlatform(ECS::Registry& registry, co
 	return platform;
 }
 
-ECS::EntityHandle PlatformObject::CreateSandPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
+ECS::EntityHandle PlatformFactory::CreateSandPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
 {
 	bool isRotated = BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
 
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Sand],
-		"plane5.obj",
+		"cube20.obj",
 		"sand.jpg",
 		"Sand Platform",
 		BMath::Vector2(5.0, 5.0),

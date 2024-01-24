@@ -1,10 +1,5 @@
 #pragma once
-
-namespace ECS
-{
-	class Registry;
-
-}
+#include "BehemothEngine.h"
 
 struct MovingObsSystem
 {

@@ -10,8 +10,8 @@
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
-#include "Scripts/PlatformObject.h"
-#include "Scripts/BarrierObject.h"
+#include "Scripts/PlatformFactory.h"
+#include "Scripts/BarrierFactory.h"
 #include "Scripts/PlayerScore.h"
 
 HoleTwoScene::HoleTwoScene()
@@ -92,7 +92,7 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
 
-	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 9, 18),
 		BMath::Vector3(4, 0.1f, 4));
@@ -101,13 +101,13 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 
 	for (int i = 0; i < 3; i++)
 	{
-		mainBarriers[i] = BarrierObject::CreateObstacle(registry, BMath::Vector3(-12 + (i * 20), 20, -30), BMath::Vector3(9, 15, 2), BMath::Quaternion());
+		mainBarriers[i] = BarrierFactory::CreateObstacle(registry, BMath::Vector3(-12 + (i * 20), 20, -30), BMath::Vector3(9, 15, 2), BMath::Quaternion());
 	}
 
-	grassPatch1 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -20), BMath::Vector3(15, 0.1f, 40), BMath::Quaternion());
-	grassPatch2 = PlatformObject::CreateGrassPlatform(registry, BMath::Vector3(0, 8, -100), BMath::Vector3(25, 0.1f, 30), BMath::Quaternion());
-	sandPatch2 = PlatformObject::CreateSandPlatform(registry, BMath::Vector3(50, 8, -75), BMath::Vector3(20, 0.1f, 30), BMath::Quaternion());
-	barrier1 = BarrierObject::CreateObstacle(
+	grassPatch1 = PlatformFactory::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -20), BMath::Vector3(15, 0.1f, 40), BMath::Quaternion());
+	grassPatch2 = PlatformFactory::CreateGrassPlatform(registry, BMath::Vector3(0, 8, -100), BMath::Vector3(25, 0.1f, 30), BMath::Quaternion());
+	sandPatch2 = PlatformFactory::CreateSandPlatform(registry, BMath::Vector3(50, 8, -75), BMath::Vector3(20, 0.1f, 30), BMath::Quaternion());
+	barrier1 = BarrierFactory::CreateObstacle(
 		registry,
 		BMath::Vector3(35, 20, -50),
 		BMath::Vector3(5, 6, 10),

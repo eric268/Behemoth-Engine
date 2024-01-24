@@ -24,10 +24,10 @@ namespace Behemoth
 				InitMesh(meshComponent->mesh);
 
 				// Automatically generates an AABB collider for bounding volume hierarchy collision detection (broad collision detection)
-				if (meshInitComp->initBroadCollider)
-				{
-					InitAABBBoundingVolume(registry, meshComponent, entity);
-				}
+// 				if (meshInitComp->initBroadCollider)
+// 				{
+// 					InitAABBBoundingVolume(registry, meshComponent, entity);
+// 				}
 				// Automatically generates a bounding sphere to encompass the mesh for frustum culling
 				if (meshInitComp->initBoundingVolume)
 				{

@@ -1,8 +1,5 @@
 #pragma once
-
 #include "GameScene.h"
-
-class PlayerComponent;
 
 class MainMenuScene : public GameScene
 {
@@ -13,7 +10,7 @@ public:
 	void Initialize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
-	void InitalizeSystems();
+	void InitializeSystems();
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
@@ -29,7 +26,6 @@ private:
 	ECS::EntityHandle keyboardInstructions[6];
 
 	void CreateInstructionsText(ECS::Registry& registry);
-
 
 	float delayUntilSceneChange;
 	bool changeScene;

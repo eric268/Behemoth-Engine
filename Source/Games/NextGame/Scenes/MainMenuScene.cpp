@@ -2,7 +2,6 @@
 #include "MainMenuScene.h"
 #include "HoleOneScene.h"
 
-#include "Scripts/PlayerScore.h"
 #include "Components/LightComponents.h"
 #include "Components/RenderComponents.h"
 #include "Components/UIComponents.h"
@@ -14,20 +13,14 @@
 #include "Factories/GameObjectFactory.h"
 
 #include "Scripts/PlayerFactory.h"
-#include "Scripts/LevelViewFactory.h"
-#include "Scripts/ViewModeChange.h"
-#include "Scripts/PlatformObject.h"
-#include "Scripts/BarrierObject.h"
-#include "Scripts/PlayerScore.h"
+#include "Scripts/PlatformFactory.h"
 
-
-#include "GameSystems/PlayerFellSystem.h"
+#include "GameSystems/PlayerFallSystem.h"
 #include "GameSystems/PlayerRespawnSystem.h"
 #include "GameSystems/LevelViewSystem.h"
 #include "GameSystems/PlayerHUDSystem.h"
 #include "GameSystems/MovingObsSystem.h"
 #include "GameSystems/PCSystem.h"
-
 
 MainMenuScene::MainMenuScene()
 {
@@ -46,7 +39,7 @@ MainMenuScene::MainMenuScene()
 
 void MainMenuScene::Initialize()
 {
-	InitalizeSystems();
+	InitializeSystems();
 }
 
 void MainMenuScene::Update(const float deltaTime)
@@ -64,10 +57,10 @@ void MainMenuScene::OnEvent(Behemoth::Event& e)
 
 }
 
-void MainMenuScene::InitalizeSystems()
+void MainMenuScene::InitializeSystems()
 {
 	Behemoth::SystemManager::GetInstance().AddSystem<PCSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<PlayerFellSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<PlayerFallSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<PlayerRespawnSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<LevelViewSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<PlayerHUDSystem>();
@@ -93,19 +86,22 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 	{
 		ambientLight->intensity = 2;
 	}
+
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
 
-	goalObject = GameObjectFactory::CreateGameObject(registry, "p5.obj", "play.png", "Play Game Entity", { 1,-1 });
-	registry.AddComponent<MoveComponent>(goalObject, BMath::Vector3(0, 10, -20));
-	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(3.0f));
-	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
-	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f));
-	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)));
-// 
-	teeOffPlatform = PlatformObject::CreateGrassPlatform(
+	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 3.75f, 0),
 		BMath::Vector3(4, 0.1f, 4));
+
+	// goalObject = CreateGoalObject(registry, BMath::Vector3(0, 1, -20), BMath::Vector3(3.0f), 0.0f);
+
+	goalObject = GameObjectFactory::CreateGameObject(registry, "plane5.obj", "play.png", "Play Game Entity", { 1,-1 });
+	registry.AddComponent<MoveComponent>(goalObject, BMath::Vector3(0, 10, -20));
+	registry.AddComponent<OBBColliderComponent>(goalObject, BMath::Vector3(1.0f));
+	registry.AddComponent<Behemoth::StaticComponent>(goalObject);
+	registry.AddComponent<Behemoth::ScalingComponent>(goalObject, BMath::Vector3(4.0f));
+	registry.AddComponent<Behemoth::RotationComponent>(goalObject, BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(1, 0, 0)));
 }
 
 void MainMenuScene::CreateInstructionsText(ECS::Registry& registry)

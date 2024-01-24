@@ -17,8 +17,8 @@
 #include "Scripts/PlayerFactory.h"
 #include "Scripts/LevelViewFactory.h"
 #include "Scripts/ViewModeChange.h"
-#include "Scripts/PlatformObject.h"
-#include "Scripts/BarrierObject.h"
+#include "Scripts/PlatformFactory.h"
+#include "Scripts/BarrierFactory.h"
 #include "Scripts/PlayerScore.h"
 
 HoleThreeScene::HoleThreeScene()
@@ -99,9 +99,9 @@ void HoleThreeScene::ConstructEnvironment(ECS::Registry& registry)
 
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky2.png", { 1.0, 1.0 });
 
-	rockPlatform1 = PlatformObject::CreateRockPlatform(registry, BMath::Vector3(0, 0, -10), BMath::Vector3(5, 1, 15));
+	rockPlatform1 = PlatformFactory::CreateRockPlatform(registry, BMath::Vector3(0, 0, -10), BMath::Vector3(5, 1, 15));
 
-	barrier1 = BarrierObject::CreateObstacle(registry, BMath::Vector3(0, 15, -0), BMath::Vector3(5, 6, 1), BMath::Quaternion(), false);
+	barrier1 = BarrierFactory::CreateObstacle(registry, BMath::Vector3(0, 15, -0), BMath::Vector3(5, 6, 1), BMath::Quaternion(), false);
 	registry.AddComponent<MovingObsComponent>(barrier1, BMath::Vector3(0, 1, 0), 40.0f, 250.0f, 0.0f);
 
 

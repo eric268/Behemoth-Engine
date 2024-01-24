@@ -19,10 +19,8 @@ void PlayerRespawnSystem::Run(const float deltaTime, ECS::Registry& registry)
 		:
 		registry.Get<PlayerComponent, PlayerRespawnComponent, TransformComponent, VelocityComponent, RigidBodyComponent>())
 	{
-
-		 GameObjectFactory gameObjectFactory{};
 		// Add necessary child component to respective parents in hierarchy
-		 gameObjectFactory.AddChildObject(registry, entity, playerComponent->cameraSpringArm);
+		 GameObjectFactory::AddChildObject(registry, entity, playerComponent->cameraSpringArm);
 
 		registry.AddComponent<MoveComponent>(entity, playerComponent->lastLocation, false);
 	 	registry.AddComponent<MoveComponent>(playerComponent->cameraSpringArm, playerComponent->lastLocation, false);

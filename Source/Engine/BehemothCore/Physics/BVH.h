@@ -89,27 +89,56 @@ namespace Behemoth
 		template <typename ...T>
 		std::vector<BVHData> GetSceneColliderData(ECS::Registry& registry)
 		{
-			auto components = registry.Get<TransformComponent, BVHColliderComponent, T...>();
+			auto components = registry.Get<TransformComponent, T...>();
 			std::vector<BVHData> data;
 			data.reserve(components.size());
 
 			for (auto& componentTuple : components)
 			{
-				std::apply([&data](ECS::Entity entity, TransformComponent* transformComp, BVHColliderComponent* colliderComp, auto* ...args)
-					{
-						colliderComp->collider.position = transformComp->worldPosition;
-						BMath::Vector3 scale = transformComp->worldScale * colliderComp->extents;
-						colliderComp->collider.extents = scale;
-						auto rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, scale);
-						AABBCollider rotatedCollider{};
-						BoundingGenerator::GenerateRotatedAABB(colliderComp->collider, rot, rotatedCollider);
-						data.push_back(BVHData(entity, rotatedCollider));
+				std::apply([this, &data, &registry](ECS::Entity handle, TransformComponent* transformComp, auto* ...args)
+				{
+					 AABBCollider collider = this->GenerateColliderData(registry, handle, transformComp, NarrowColliderTypes{});
+					 collider.position = transformComp->worldPosition;
+					 data.push_back(BVHData(handle, collider));
 
-					}, componentTuple);
+// 					colliderComp->collider.position = transformComp->worldPosition;
+// 					BMath::Vector3 scale = transformComp->worldScale * colliderComp->extents;
+// 					colliderComp->collider.extents = scale;
+// 					auto rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, scale);
+// 					AABBCollider rotatedCollider{};
+// 					BoundingGenerator::GenerateRotatedAABB(colliderComp->collider, rot, rotatedCollider);
+// 					data.push_back(BVHData(entity, rotatedCollider));
+
+				}, componentTuple);
  			}
 			return data;
 		}
 
+		template<typename ...Colliders>
+		AABBCollider GenerateColliderData(ECS::Registry& registry, ECS::EntityHandle handle, TransformComponent* transformComp, NarrowColliders<Colliders ...>)
+		{
+			auto narrowColliders = registry.GetMultipleComponents<Colliders...>(handle);
+			AABBCollider bvhCollider{};
+
+			std::apply([&bvhCollider, transformComp](auto&& ... colliderComponents)
+				{
+					auto GenerateSmallestAABB = [&](auto&& collider)
+					{
+						if (collider)
+						{
+							AABBCollider tempCollider = GenerateBVHCollider(transformComp, collider);
+
+							for (int i = 0; i < 3; i++)
+							{
+								bvhCollider.extents[i] = std::max(bvhCollider.extents[i], tempCollider.extents[i]);
+							}
+						}
+					};
+					(..., GenerateSmallestAABB(colliderComponents));
+				}, narrowColliders);
+
+			return bvhCollider;
+		}
 
 		AABBCollider GenerateCollider(const std::vector<BVHData>& colliders);
 		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));

@@ -1,13 +1,17 @@
 #pragma once
 #include "BehemothEngine.h"
-#include "Math/Quaternion.h"
 
 namespace Behemoth
 {
 	class PhysicsMaterial;
 }
 
-class PlatformObject
+namespace BMath
+{
+	class Quaternion;
+}
+
+class PlatformFactory
 {
 public:
 	static ECS::EntityHandle CreateGrassPlatform(
