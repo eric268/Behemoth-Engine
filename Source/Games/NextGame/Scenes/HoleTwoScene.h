@@ -6,7 +6,7 @@ class HoleTwoScene : public GameScene
 
 {
 public:
-	using Super = Behemoth::Scene;
+	using Super = GameScene;
 
 	HoleTwoScene();
 	void Initialize() override;
@@ -29,12 +29,4 @@ private:
 	ECS::EntityHandle grassPatch2;
 
 	ECS::EntityHandle sandPatch2;
-
-
-
-	int par;
-	float delayUntilSceneChange;
-	bool changeScene;
-
-
 };

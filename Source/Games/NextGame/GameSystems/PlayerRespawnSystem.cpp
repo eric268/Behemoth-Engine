@@ -5,8 +5,6 @@
 #include "Factories/GameObjectFactory.h"
 #include "Scripts/PlayerFactory.h"
 
-using namespace Behemoth;
-
 void PlayerRespawnSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [
@@ -17,13 +15,13 @@ void PlayerRespawnSystem::Run(const float deltaTime, ECS::Registry& registry)
 			velocityComponent,
 			rigidBodyComponent] 
 		:
-		registry.Get<PlayerComponent, PlayerRespawnComponent, TransformComponent, VelocityComponent, RigidBodyComponent>())
+		registry.Get<PlayerComponent, PlayerRespawnComponent, Behemoth::TransformComponent, Behemoth::VelocityComponent, Behemoth::RigidBodyComponent>())
 	{
 		// Add necessary child component to respective parents in hierarchy
-		 GameObjectFactory::AddChildObject(registry, entity, playerComponent->cameraSpringArm);
+		Behemoth::GameObjectFactory::AddChildObject(registry, entity, playerComponent->cameraSpringArm);
 
-		registry.AddComponent<MoveComponent>(entity, playerComponent->lastLocation, false);
-	 	registry.AddComponent<MoveComponent>(playerComponent->cameraSpringArm, playerComponent->lastLocation, false);
+		registry.AddComponent<Behemoth::MoveComponent>(entity, playerComponent->lastLocation, false);
+	 	registry.AddComponent<Behemoth::MoveComponent>(playerComponent->cameraSpringArm, playerComponent->lastLocation, false);
 		velocityComponent->velocity = BMath::Vector3::Zero();
 		playerComponent->canFire = true;
 		rigidBodyComponent->affectedByGravity = false;

@@ -14,20 +14,17 @@
 #include "Scripts/BarrierFactory.h"
 #include "Scripts/PlayerScore.h"
 
-HoleTwoScene::HoleTwoScene() : par(4), changeScene(false)
+HoleTwoScene::HoleTwoScene() : GameScene(registry, 4)
 {
-	delayUntilSceneChange = 3.0f;
-
 	ConstructEnvironment(registry);
-
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
-
-	CreateOOBEntity(registry);
-
-	LevelViewFactory levelViewFactory{};
-	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(20, 15, -60), 5, 20, 10, 0);
-	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
-	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
+	levelViewEntity = LevelViewFactory::CreateLevelViewEntity(
+		registry, 
+		BMath::Vector3(20, 15, -60),
+		5, 
+		20,
+		10,
+		0);
 
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
@@ -47,22 +44,11 @@ void HoleTwoScene::OnEvent(Behemoth::Event& e)
 
 void HoleTwoScene::Update(const float deltaTime)
 {
-	CheckOutOfBound(registry, playerCharacter, oobTrigger);
-
-	if (CheckLevelComplete(registry, playerCharacter))
-	{
-		OnHoleComplete(registry, playerCharacter, par);
-
-		ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
-		registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
-			{
-				changeScene = true;
-			});
-	}
+	Super::Update(deltaTime);
 
 	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
 	{
-		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
+		ViewMode::ToggleViewMode(registry, playerCharacter, levelViewEntity);
 	}
 
 	if (changeScene)
@@ -99,12 +85,31 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 
 	for (int i = 0; i < 3; i++)
 	{
-		mainBarriers[i] = BarrierFactory::CreateObstacle(registry, BMath::Vector3(-12 + (i * 20), 20, -30), BMath::Vector3(9, 15, 2), BMath::Quaternion());
+		mainBarriers[i] = BarrierFactory::CreateObstacle(
+			registry,
+			BMath::Vector3(-12 + (i * 20), 20, -30),
+			BMath::Vector3(9, 15, 2), 
+			BMath::Quaternion());
 	}
 
-	grassPatch1 = PlatformFactory::CreateGrassPlatform(registry, BMath::Vector3(-40, 8, -20), BMath::Vector3(15, 0.1f, 40), BMath::Quaternion());
-	grassPatch2 = PlatformFactory::CreateGrassPlatform(registry, BMath::Vector3(0, 8, -100), BMath::Vector3(25, 0.1f, 30), BMath::Quaternion());
-	sandPatch2 = PlatformFactory::CreateSandPlatform(registry, BMath::Vector3(50, 8, -75), BMath::Vector3(20, 0.1f, 30), BMath::Quaternion());
+	grassPatch1 = PlatformFactory::CreateGrassPlatform(
+		registry, 
+		BMath::Vector3(-40, 8, -20),
+		BMath::Vector3(15, 0.1f, 40), 
+		BMath::Quaternion());
+
+	grassPatch2 = PlatformFactory::CreateGrassPlatform(
+		registry,
+		BMath::Vector3(0, 8, -100),
+		BMath::Vector3(25, 0.1f, 30),
+		BMath::Quaternion());
+
+	sandPatch2 = PlatformFactory::CreateSandPlatform(
+		registry,
+		BMath::Vector3(50, 8, -75),
+		BMath::Vector3(20, 0.1f, 30), 
+		BMath::Quaternion());
+
 	barrier1 = BarrierFactory::CreateObstacle(
 		registry,
 		BMath::Vector3(35, 20, -50),

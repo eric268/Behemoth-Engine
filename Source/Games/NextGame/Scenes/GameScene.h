@@ -13,10 +13,13 @@ public:
 	void OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle, int par);
 
 	ECS::EntityHandle CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle);
-
 	ECS::EntityHandle CreateOOBEntity(ECS::Registry& registry);
 
 protected:
+	GameScene();
+	GameScene(ECS::Registry& registry, int p, float delay = 3.0f);
+
+	virtual void Update(const float deltaTime) override;
 	virtual void ConstructEnvironment(ECS::Registry& registry) = 0;
 	ECS::EntityHandle CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale);
 
@@ -28,9 +31,12 @@ protected:
 	ECS::EntityHandle levelCompleteText;
 	ECS::EntityHandle goalHandle;
 
-	float delayUntilSceneChange;
 	GoalComponent* goalComponent;
 
 	static std::unordered_map<int, std::string> holeResultsText;
+
+	int par;
+	float delayUntilSceneChange;
+	bool changeScene;
 };
 

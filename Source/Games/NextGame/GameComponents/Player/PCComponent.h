@@ -2,25 +2,24 @@
 
 #include "BehemothEngine.h"
 
-using namespace Behemoth;
 struct PCComponent : public ECS::Component
 {
 public:
 	PCComponent() = default;
 
 	PCComponent(
-		KeyCode incPowerKC,
-		KeyCode decPowerKC,
-		KeyCode fireKC,
-		KeyCode aimLeftKC,
-		KeyCode aimRightKC,
-		KeyCode aimUpKC,
-		KeyCode aimDownKC,
-		KeyCode lookLeftKC,
-		KeyCode lookRightKC,
-		KeyCode lookUpKC,
-		KeyCode lookDownKC,
-		ControllerCode fireCC)
+		Behemoth::KeyCode incPowerKC,
+		Behemoth::KeyCode decPowerKC,
+		Behemoth::KeyCode fireKC,
+		Behemoth::KeyCode aimLeftKC,
+		Behemoth::KeyCode aimRightKC,
+		Behemoth::KeyCode aimUpKC,
+		Behemoth::KeyCode aimDownKC,
+		Behemoth::KeyCode lookLeftKC,
+		Behemoth::KeyCode lookRightKC,
+		Behemoth::KeyCode lookUpKC,
+		Behemoth::KeyCode lookDownKC,
+		Behemoth::ControllerCode fireCC)
 		:
 		increasePowerKC(incPowerKC),
 		decreasePowerKC(decPowerKC),
@@ -57,14 +56,14 @@ struct ViewControllerComponent : public ECS::Component
 
 	ViewControllerComponent(
 		bool isActive,
-		KeyCode zoomInKC,
-		KeyCode zoomOutKC,
-		KeyCode rotateLeftKC,
-		KeyCode rotateRightKC,
-		KeyCode moveUpKC,
-		KeyCode moveDownKC,
-		ControllerCode moveUpCC,
-		ControllerCode moveDownCC)
+		Behemoth::KeyCode zoomInKC,
+		Behemoth::KeyCode zoomOutKC,
+		Behemoth::KeyCode rotateLeftKC,
+		Behemoth::KeyCode rotateRightKC,
+		Behemoth::KeyCode moveUpKC,
+		Behemoth::KeyCode moveDownKC,
+		Behemoth::ControllerCode moveUpCC,
+		Behemoth::ControllerCode moveDownCC)
 		:
 		zoomInKC(zoomInKC),
 		zoomOutKC(zoomOutKC),
@@ -76,14 +75,14 @@ struct ViewControllerComponent : public ECS::Component
 		moveDownCC(moveDownCC)
 	{}
 
-	KeyCode zoomInKC;
-	KeyCode zoomOutKC;
-	KeyCode rotateLeftKC;
-	KeyCode rotateRightKC;
-	KeyCode moveUpKC;
-	KeyCode moveDownKC;
+	Behemoth::KeyCode zoomInKC;
+	Behemoth::KeyCode zoomOutKC;
+	Behemoth::KeyCode rotateLeftKC;
+	Behemoth::KeyCode rotateRightKC;
+	Behemoth::KeyCode moveUpKC;
+	Behemoth::KeyCode moveDownKC;
 
-	ControllerCode moveUpCC;
-	ControllerCode moveDownCC;
+	Behemoth::ControllerCode moveUpCC;
+	Behemoth::ControllerCode moveDownCC;
 };
 

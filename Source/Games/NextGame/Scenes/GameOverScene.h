@@ -11,7 +11,6 @@ public:
 	void Initialize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
-	void InitalizeSystems();
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 

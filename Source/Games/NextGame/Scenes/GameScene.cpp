@@ -17,6 +17,33 @@ std::unordered_map<int, std::string> GameScene::holeResultsText =
 	{3, "Triple Bogey"}
 };
 
+GameScene::GameScene() : par(0), delayUntilSceneChange(0.0f), changeScene(false), goalComponent(nullptr) {}
+
+GameScene::GameScene(ECS::Registry& registry, int p, float delay) : par(p), delayUntilSceneChange(delay), changeScene(false), goalComponent(nullptr)
+{
+	CreateOOBEntity(registry);
+}
+
+void GameScene::Update(const float deltaTime)
+{
+	CheckOutOfBound(registry, playerCharacter, oobTrigger);
+
+	if (CheckLevelComplete(registry, playerCharacter))
+	{
+		OnHoleComplete(registry, playerCharacter, par);
+
+		ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
+		registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
+			{
+				changeScene = true;
+			});
+	}
+}
+
+void GameScene::ConstructEnvironment(ECS::Registry& registry)
+{
+
+}
 
 std::string GameScene::GetHoleResultText(int numStrokes, int par)
 {
@@ -148,11 +175,10 @@ ECS::EntityHandle GameScene::CreateGoalCollider(ECS::Registry& registry, BMath::
 	registry.AddComponent<Behemoth::StaticComponent>(collider1);
 
 #ifdef DEBUG
-	registry.AddComponent<Behemoth::MeshInitalizeComponent>(collider1);
-	registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
+// 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(collider1);
+// 	registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
 
 #endif 
-
 	return collider1;
 }
 

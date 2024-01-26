@@ -5,7 +5,7 @@
 class HoleThreeScene : public GameScene
 {
 public:
-	using Super = Behemoth::Scene;
+	using Super = GameScene;
 
 	HoleThreeScene();
 	void Initialize() override;
@@ -22,10 +22,6 @@ private:
 	ECS::EntityHandle levelCompleteText;
 	ECS::EntityHandle rockPlatform1;
 	ECS::EntityHandle barrier1;
-
-	int par;
-	float delayUntilSceneChange;
-	bool changeScene;
 };
 
 

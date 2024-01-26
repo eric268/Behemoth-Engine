@@ -40,11 +40,6 @@ void GameOverScene::OnEvent(Behemoth::Event& e)
 
 }
 
-void GameOverScene::InitalizeSystems()
-{
-
-}
-
 void GameOverScene::Shutdown()
 {
 

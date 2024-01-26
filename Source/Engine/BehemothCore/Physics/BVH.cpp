@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "BVH.h"
-
 #include "Physics/Collision/Colliders.h"
 #include "Components/RenderComponents.h"
 #include "Components/Components.h"
@@ -11,7 +10,7 @@
 
 namespace Behemoth
 {
-	BVHFactory::BVHFactory() : root(), drawDebugColliders(true) {}
+	BVHFactory::BVHFactory() : root(), drawDebugColliders(false) {}
 	BVHFactory::~BVHFactory() {}
 
 	void BVHFactory::DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
@@ -176,24 +175,23 @@ namespace Behemoth
 	{
 		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
 		node->collider = colliderData.collider;
-		// node->collider.extents *= colliderData.entityScale;
 		node->entityHandle = colliderData.handle;
 		node->leftChild = nullptr;
 		node->rightChild = nullptr;
 
 #ifdef DEBUG
-		if (drawDebugColliders)
-		{
-			ECS::EntityHandle handle = registry.CreateEntity("BVH Debug Collider");
-			entityHandles.push_back(handle);
-
-			registry.AddComponent<TransformComponent>(handle);
-			registry.AddComponent<MoveComponent>(handle, node->collider.position);
-			registry.AddComponent<AABBColliderComponent>(handle, node->collider.extents);
-
-			registry.AddComponent<MeshInitalizeComponent>(handle);
-			registry.AddComponent<WireframeComponent>(handle, "cube.obj", node->collider.extents, false, true, color);
-		}
+ 		if (drawDebugColliders)
+ 		{
+ 			ECS::EntityHandle handle = registry.CreateEntity("BVH Debug Collider");
+ 			entityHandles.push_back(handle);
+ 
+ 			registry.AddComponent<TransformComponent>(handle);
+ 			registry.AddComponent<MoveComponent>(handle, node->collider.position);
+ 			registry.AddComponent<AABBColliderComponent>(handle, node->collider.extents);
+ 
+ 			registry.AddComponent<MeshInitalizeComponent>(handle);
+ 			registry.AddComponent<WireframeComponent>(handle, "cube.obj", node->collider.extents, false, true, color);
+ 		}
 #endif
 		return node;
 	}

@@ -4,7 +4,7 @@
 class MainMenuScene : public GameScene
 {
 public:
-	using Super = Behemoth::Scene;
+	using Super = GameScene;
 
 	MainMenuScene();
 	void Initialize() override;
@@ -26,8 +26,5 @@ private:
 	ECS::EntityHandle keyboardInstructions[6];
 
 	void CreateInstructionsText(ECS::Registry& registry);
-
-	float delayUntilSceneChange;
-	bool changeScene;
 };
 

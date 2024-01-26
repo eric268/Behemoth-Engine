@@ -22,15 +22,12 @@
 #include "GameSystems/MovingObsSystem.h"
 #include "GameSystems/PCSystem.h"
 
-MainMenuScene::MainMenuScene()
+MainMenuScene::MainMenuScene() : GameScene(registry, 0, 0.0f)
 {
 	ConstructEnvironment(registry);
+	CreateInstructionsText(registry);
 	
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 5, 0));
-
-	CreateOOBEntity(registry);
-
-	CreateInstructionsText(registry);
 
 	titleTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(titleTextEntity, "Next Golf!", BMath::Vector2(-0.05f, 0.6f));
@@ -43,11 +40,11 @@ void MainMenuScene::Initialize()
 
 void MainMenuScene::Update(const float deltaTime)
 {
-	CheckOutOfBound(registry, playerCharacter, oobTrigger);
+	Super::Update(deltaTime);
 
-	if (CheckLevelComplete(registry, playerCharacter))
+	if (changeScene)
 	{
-		World::GetInstance().ChangeScene(new HoleOneScene());
+		Behemoth::World::GetInstance().ChangeScene(new HoleOneScene());
 	}
 }
 
@@ -83,7 +80,7 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 	Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 	if (ambientLight)
 	{
-		ambientLight->intensity = 2;
+		ambientLight->intensity = 2.0f;
 	}
 
 	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", BMath::Vector2(1.0, 1.0));
@@ -93,7 +90,7 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 		BMath::Vector3(0, 3.75f, 0),
 		BMath::Vector3(4, 0.1f, 4));
 
-	goalHandle = GameObjectFactory::CreateGameObject(registry, "plane5.obj", "play.png", "Play Game Entity", { 1,-1 });
+	goalHandle = Behemoth::GameObjectFactory::CreateGameObject(registry, "plane5.obj", "play.png", "Play Game Entity", { 1,-1 });
 	registry.AddComponent<Behemoth::MoveComponent>(goalHandle, BMath::Vector3(0, 10, -20));
 	registry.AddComponent<Behemoth::AABBColliderComponent>(goalHandle, BMath::Vector3(1.0f, 1.0f, 0.1f));
 	registry.AddComponent<Behemoth::StaticComponent>(goalHandle);

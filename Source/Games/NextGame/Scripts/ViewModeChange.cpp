@@ -2,9 +2,7 @@
 #include "ViewModeChange.h"
 #include "Components/Components.h"
 
-using namespace Behemoth;
-
-bool ViewModeChange::ChangeViewMode(ECS::Registry& registry, ECS::EntityHandle playerHandle, ECS::EntityHandle levelViewHandle)
+bool ViewMode::ToggleViewMode(ECS::Registry& registry, ECS::EntityHandle playerHandle, ECS::EntityHandle levelViewHandle)
 {
 	LevelViewComponent* levelViewComponent = registry.GetComponent<LevelViewComponent>(levelViewHandle);
 	PlayerComponent* playerComponent = registry.GetComponent<PlayerComponent>(playerHandle);
@@ -15,7 +13,7 @@ bool ViewModeChange::ChangeViewMode(ECS::Registry& registry, ECS::EntityHandle p
 		return false;
 	}
 
-	CameraComponent* camera = registry.GetComponent<CameraComponent>(levelViewComponent->attachedCamera);
+	Behemoth::CameraComponent* camera = registry.GetComponent<Behemoth::CameraComponent>(levelViewComponent->attachedCamera);
 	if (camera)
 	{
 		camera->isMain = !camera->isMain;
@@ -27,7 +25,7 @@ bool ViewModeChange::ChangeViewMode(ECS::Registry& registry, ECS::EntityHandle p
 	}
 	levelViewComponent->isActive = !levelViewComponent->isActive;
 
-	CameraComponent* playerCamera = registry.GetComponent<CameraComponent>(playerComponent->attachedCamera);
+	Behemoth::CameraComponent* playerCamera = registry.GetComponent<Behemoth::CameraComponent>(playerComponent->attachedCamera);
 	if (playerCamera)
 	{
 		playerCamera->isMain = !playerCamera->isMain;

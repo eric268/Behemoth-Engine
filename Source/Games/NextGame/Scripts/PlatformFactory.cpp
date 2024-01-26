@@ -5,22 +5,20 @@
 #include "PlatformPhysMats.h"
 #include "Math/Quaternion.h"
 
-using namespace Behemoth;
-
 ECS::EntityHandle PlatformFactory::CreatePlatform(
 	ECS::Registry& registry,
-	const PhysicsMaterial& physicsMaterial,
+	const Behemoth::PhysicsMaterial& physicsMaterial,
 	const std::string& modelPath,
 	const std::string& texturePath,
 	const std::string& name,
 	const BMath::Vector2& uvScale,
 	bool isRotated)
 {
-	ECS::EntityHandle platform = GameObjectFactory::CreateGameObject(registry, modelPath, texturePath, name, uvScale);
+	ECS::EntityHandle platform = Behemoth::GameObjectFactory::CreateGameObject(registry, modelPath, texturePath, name, uvScale);
 
 	if (isRotated)
 	{
-		OBBColliderComponent* colliderComp = registry.AddComponent<OBBColliderComponent>(platform, BMath::Vector3(1.0f));
+		Behemoth::OBBColliderComponent* colliderComp = registry.AddComponent<Behemoth::OBBColliderComponent>(platform, BMath::Vector3(1.0f));
 		if (colliderComp)
 		{
 			colliderComp->physicsMaterial = physicsMaterial;
@@ -28,7 +26,7 @@ ECS::EntityHandle PlatformFactory::CreatePlatform(
 	}
 	else
 	{
-		AABBColliderComponent* colliderComp = registry.AddComponent<AABBColliderComponent>(platform, BMath::Vector3(1.0f));
+		Behemoth::AABBColliderComponent* colliderComp = registry.AddComponent<Behemoth::AABBColliderComponent>(platform, BMath::Vector3(1.0f));
 		if (colliderComp)
 		{
 			colliderComp->physicsMaterial = physicsMaterial;
@@ -38,7 +36,12 @@ ECS::EntityHandle PlatformFactory::CreatePlatform(
 	return platform;
 }
 
-ECS::EntityHandle PlatformFactory::CreateGrassPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
+ECS::EntityHandle PlatformFactory::CreateGrassPlatform(
+	ECS::Registry& registry,
+	const BMath::Vector3& position,
+	const BMath::Vector3& scale,
+	const BMath::Quaternion& q,
+	bool isStatic)
 {
 	bool isRotated = BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
 
@@ -51,17 +54,17 @@ ECS::EntityHandle PlatformFactory::CreateGrassPlatform(ECS::Registry& registry, 
 		BMath::Vector2(8,8),
 		isRotated);
 
-	registry.AddComponent<MoveComponent>(platform, position);
-	registry.AddComponent<ScalingComponent>(platform, scale);
-	registry.AddComponent<RotationComponent>(platform, q);
+	registry.AddComponent<Behemoth::MoveComponent>(platform, position);
+	registry.AddComponent<Behemoth::ScalingComponent>(platform, scale);
+	registry.AddComponent<Behemoth::RotationComponent>(platform, q);
 
 	if (isStatic)
 	{
-		registry.AddComponent<StaticComponent>(platform);
+		registry.AddComponent<Behemoth::StaticComponent>(platform);
 	}
 	else
 	{
-		registry.AddComponent<RigidBodyComponent>(platform);
+		registry.AddComponent<Behemoth::RigidBodyComponent>(platform);
 	}
 	return platform;
 }
@@ -79,17 +82,17 @@ ECS::EntityHandle PlatformFactory::CreateRockPlatform(ECS::Registry& registry, c
 		BMath::Vector2(10.0,10.0),
 		isRotated);
 
-	registry.AddComponent<MoveComponent>(platform, position);
-	registry.AddComponent<ScalingComponent>(platform, scale);
-	registry.AddComponent<RotationComponent>(platform, q, true);
+	registry.AddComponent<Behemoth::MoveComponent>(platform, position);
+	registry.AddComponent<Behemoth::ScalingComponent>(platform, scale);
+	registry.AddComponent<Behemoth::RotationComponent>(platform, q, true);
 
 	if (isStatic)
 	{
-		registry.AddComponent<StaticComponent>(platform);
+		registry.AddComponent<Behemoth::StaticComponent>(platform);
 	}
 	else
 	{
-		registry.AddComponent<RigidBodyComponent>(platform);
+		registry.AddComponent<Behemoth::RigidBodyComponent>(platform);
 	}
 
 	return platform;
@@ -108,17 +111,17 @@ ECS::EntityHandle PlatformFactory::CreateSandPlatform(ECS::Registry& registry, c
 		BMath::Vector2(5.0, 5.0),
 		isRotated);
 
-	registry.AddComponent<MoveComponent>(platform, position);
-	registry.AddComponent<ScalingComponent>(platform, scale);
-	registry.AddComponent<RotationComponent>(platform, q);
+	registry.AddComponent<Behemoth::MoveComponent>(platform, position);
+	registry.AddComponent<Behemoth::ScalingComponent>(platform, scale);
+	registry.AddComponent<Behemoth::RotationComponent>(platform, q);
 
 	if (isStatic)
 	{
-		registry.AddComponent<StaticComponent>(platform);
+		registry.AddComponent<Behemoth::StaticComponent>(platform);
 	}
 	else
 	{
-		registry.AddComponent<RigidBodyComponent>(platform);
+		registry.AddComponent<Behemoth::RigidBodyComponent>(platform);
 	}
 
 	return platform;

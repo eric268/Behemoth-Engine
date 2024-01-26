@@ -8,8 +8,6 @@
 #include "Physics/ProjectileMotion.h"
 #include "Math/Quaternion.h"
 
-using namespace Behemoth;
-
 void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [entity, playerComponent, pcComponent]: registry.Get<PlayerComponent, PCComponent>())
@@ -39,12 +37,12 @@ void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
 
 void PCSystem::IncreasePower(const float deltaTime, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
-	const float triggerInput = Input::GetRightControllerTrigger(0);
+	const float triggerInput = Behemoth::Input::GetRightControllerTrigger(0);
 	if (triggerInput > 0.0f)
 	{
 		playerComponent->currentPower += playerComponent->chargeSpeed * deltaTime * triggerInput;
 	}
-	else if (Input::IsKeyHeld(pcComponent->increasePowerKC))
+	else if (Behemoth::Input::IsKeyHeld(pcComponent->increasePowerKC))
 	{
 		playerComponent->currentPower += playerComponent->chargeSpeed * deltaTime;
 	}
@@ -54,12 +52,12 @@ void PCSystem::IncreasePower(const float deltaTime, PlayerComponent* playerCompo
 
 void PCSystem::DecreasePower(const float deltaTime, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
-	const float triggerInput = Input::GetLeftControllerTrigger(0);
+	const float triggerInput = Behemoth::Input::GetLeftControllerTrigger(0);
 	if (triggerInput > 0.0f)
 	{
 		playerComponent->currentPower -= playerComponent->chargeSpeed * deltaTime * triggerInput;
 	}
-	else if (Input::IsKeyHeld(pcComponent->decreasePowerKC))
+	else if (Behemoth::Input::IsKeyHeld(pcComponent->decreasePowerKC))
 	{
 		playerComponent->currentPower -= playerComponent->chargeSpeed * deltaTime;
 	}
@@ -74,22 +72,24 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 		return;
 	}
 
-	if (Input::IsKeyDown(pcComponent->fireProjectileKC) || Input::IsControllerKeyDown(pcComponent->fireProjectileCC))
+	if (Behemoth::Input::IsKeyDown(pcComponent->fireProjectileKC) || Behemoth::Input::IsControllerKeyDown(pcComponent->fireProjectileCC))
 	{
-		MeshComponent* arrowMesh = registry.GetComponent<MeshComponent>(playerComponent->arrowMeshHandle);
+		Behemoth::MeshComponent* arrowMesh = registry.GetComponent<Behemoth::MeshComponent>(playerComponent->arrowMeshHandle);
 		if (arrowMesh)
 		{
 			arrowMesh->isVisible = false;
 		}
 
-		TransformComponent* playerTransform = registry.GetComponent<TransformComponent>(playerComponent->projectileHandle);
+		Behemoth::TransformComponent* playerTransform = registry.GetComponent<Behemoth::TransformComponent>(playerComponent->projectileHandle);
 
-		if (VelocityComponent* velocityComponent = registry.GetComponent<VelocityComponent>(handle))
+		if (Behemoth::VelocityComponent* velocityComponent = registry.GetComponent<Behemoth::VelocityComponent>(handle))
 		{
-			velocityComponent->velocity = ProjectileMotion::CalculateInitalVelocity(playerComponent->currentPower * 0.33f, playerTransform->forwardVector);
+			velocityComponent->velocity = Behemoth::ProjectileMotion::CalculateInitalVelocity(
+				playerComponent->currentPower * 0.33f, 
+				playerTransform->forwardVector);
 		}
 
-		if (RigidBodyComponent* playerRigidBody = registry.GetComponent<RigidBodyComponent>(handle))
+		if (Behemoth::RigidBodyComponent* playerRigidBody = registry.GetComponent<Behemoth::RigidBodyComponent>(handle))
 		{
 			playerRigidBody->affectedByGravity = true;
 		}
@@ -107,10 +107,10 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 
 void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
-	AnalogInput input = Input::GetLeftControllerAnaloge(0);
+	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnaloge(0);
 
- 	float keyInputX = Input::IsKeyHeld(pcComponent->lookLeftKC) - Input::IsKeyHeld(pcComponent->lookRightKC);
-	float keyInputY = Input::IsKeyHeld(pcComponent->lookUpKC) - Input::IsKeyHeld(pcComponent->lookDownKC);
+ 	float keyInputX = Behemoth::Input::IsKeyHeld(pcComponent->lookLeftKC) - Behemoth::Input::IsKeyHeld(pcComponent->lookRightKC);
+	float keyInputY = Behemoth::Input::IsKeyHeld(pcComponent->lookUpKC)   - Behemoth::Input::IsKeyHeld(pcComponent->lookDownKC);
 
 	if (input.x == 0.0f && input.y == 0.0f && keyInputX == 0.0f && keyInputY == 0.0f)
 	{
@@ -122,7 +122,7 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
-		CameraComponent* cameraComponent = CameraHelper::GetMainCamera(registry);
+		Behemoth::CameraComponent* cameraComponent = Behemoth::CameraHelper::GetMainCamera(registry);
 		if (!cameraComponent)
 		{
 			LOGMESSAGE(Error, "Error finding main camera component");
@@ -154,10 +154,10 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 
 void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
-	AnalogInput input = Input::GetRightControllerAnaloge(0);
+	Behemoth::AnalogInput input = Behemoth::Input::GetRightControllerAnaloge(0);
 
- 	float keyInputX = Input::IsKeyHeld(pcComponent->aimRightKC) - Input::IsKeyHeld(pcComponent->aimLeftKC);
- 	float keyInputY = Input::IsKeyHeld(pcComponent->aimDownKC)  - Input::IsKeyHeld(pcComponent->aimUpKC);
+ 	float keyInputX = Behemoth::Input::IsKeyHeld(pcComponent->aimRightKC) - Behemoth::Input::IsKeyHeld(pcComponent->aimLeftKC);
+ 	float keyInputY = Behemoth::Input::IsKeyHeld(pcComponent->aimDownKC)  - Behemoth::Input::IsKeyHeld(pcComponent->aimUpKC);
 
 	if (input.x == 0.0f && input.y == 0.0f && keyInputX == 0.0f && keyInputY == 0.0f)
 	{
@@ -169,7 +169,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
-		TransformComponent* projectileTransform = registry.GetComponent<TransformComponent>(playerComponent->projectileHandle);
+		Behemoth::TransformComponent* projectileTransform = registry.GetComponent<Behemoth::TransformComponent>(playerComponent->projectileHandle);
 
 		if (input.x != 0.0f)
 		{
@@ -197,7 +197,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 
 void PCSystem::SetArrowMeshVisibility(ECS::Registry& registry, PlayerComponent* playerComponent, bool isVisible)
 {
-	MeshComponent* arrowMeshComponent = registry.GetComponent<MeshComponent>(playerComponent->arrowMeshHandle);
+	Behemoth::MeshComponent* arrowMeshComponent = registry.GetComponent<Behemoth::MeshComponent>(playerComponent->arrowMeshHandle);
 	if (!arrowMeshComponent)
 	{
 		LOGMESSAGE(Error, "Unable to get arrow mesh component");
@@ -211,7 +211,7 @@ void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityH
 {
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->playerMeshHandle))
 	{
-		if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(entity))
+		if (Behemoth::VelocityComponent* velocity = registry.GetComponent<Behemoth::VelocityComponent>(entity))
 		{
 			float speed = velocity->velocity.Magnitude();
 			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocity->velocity.z, 0.0f, -velocity->velocity.x));
@@ -223,14 +223,14 @@ void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityH
 
 void PCSystem::CheckPlayerLanded(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent)
 {
-	CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(entity);
+	Behemoth::CollisionDataComponent* collisionData = registry.GetComponent<Behemoth::CollisionDataComponent>(entity);
 	if (!collisionData)
 	{
 		// Not colliding with ground so exit 
 		return;
 	}
 	// bool isCollidingWithGround = false;
-	if (VelocityComponent* velocity = registry.GetComponent<VelocityComponent>(entity))
+	if (Behemoth::VelocityComponent* velocity = registry.GetComponent<Behemoth::VelocityComponent>(entity))
 	{
 
 // 		for (const auto& data : collisionData->data)

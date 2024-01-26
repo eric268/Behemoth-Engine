@@ -1,14 +1,11 @@
 #include "pch.h"
 #include "DebugScene.h"
-
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
 #include "Components/PhysicsComponents.h"
 #include "Components/RenderComponents.h"
-
 #include "Factories/SkySphereFactory.h"
 
-using namespace Behemoth;
 DebugScene::DebugScene()
 {
 	mainCameraHandle = Behemoth::CameraFactory::CreateCamera(registry, true, "Main Camera");
@@ -53,8 +50,27 @@ void DebugScene::OnEvent(Behemoth::Event& e)
 
 void DebugScene::Update(const float deltaTime)
 {
-	MoveObject(mainCameraHandle, KC_W, KC_S, KC_A, KC_D, KC_E, KC_Q, KC_C, KC_Z);
-	MoveObject(exampleParentEntity, KC_I, KC_K, KC_J, KC_L, KC_O, KC_U, KC_Plus, KC_Minus);
+	MoveObject(
+		mainCameraHandle,
+		Behemoth::KC_W,
+		Behemoth::KC_S,
+		Behemoth::KC_A,
+		Behemoth::KC_D, 
+		Behemoth::KC_E,
+		Behemoth::KC_Q,
+		Behemoth::KC_C,
+		Behemoth::KC_Z);
+
+	MoveObject(
+		exampleParentEntity, 
+		Behemoth::KC_I, 
+		Behemoth::KC_K,
+		Behemoth::KC_J,
+		Behemoth::KC_L,
+		Behemoth::KC_O,
+		Behemoth::KC_U,
+		Behemoth::KC_Plus,
+		Behemoth::KC_Minus);
 }
 
 void DebugScene::Shutdown()

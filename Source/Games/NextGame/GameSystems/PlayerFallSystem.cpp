@@ -3,8 +3,6 @@
 #include "GameComponents/Player/PlayerComponent.h"
 #include "Components/Components.h"
 
-
-using namespace Behemoth;
 void PlayerFallSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [
@@ -12,7 +10,7 @@ void PlayerFallSystem::Run(const float deltaTime, ECS::Registry& registry)
 			playerComponent, 
 			playerFellComponent] : registry.Get<PlayerComponent, PlayerFellComponent>())
 	{
- 		if (TransformComponent* springArmTransform = registry.GetComponent<TransformComponent>(playerComponent->cameraSpringArm))
+ 		if (Behemoth::TransformComponent* springArmTransform = registry.GetComponent<Behemoth::TransformComponent>(playerComponent->cameraSpringArm))
  		{
  			springArmTransform->localPosition = springArmTransform->worldPosition;
  			springArmTransform->localTransform._41 = springArmTransform->localPosition.x;

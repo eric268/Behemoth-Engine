@@ -6,7 +6,7 @@
 class HoleOneScene : public GameScene
 {
 public:
-	using Super = Behemoth::Scene;
+	using Super = GameScene;
 
 	HoleOneScene();
 	void Initialize() override;
@@ -24,8 +24,5 @@ private:
 	ECS::EntityHandle sandTrap2;
 	ECS::EntityHandle obstacleHandle;
 	ECS::EntityHandle parTextEntity;
-
-	int par;
-	bool changeScene;
 };
             

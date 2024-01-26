@@ -20,17 +20,17 @@ void LevelViewSystem::Run(const float deltaTime, ECS::Registry& registry)
 
 void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, const ECS::EntityHandle& handle, LevelViewComponent* levelView, ViewControllerComponent* viewController)
 {
-	AnalogInput input = Input::GetLeftControllerAnaloge(0);
+	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnaloge(0);
 
-	float keyInputX = Input::IsKeyHeld(viewController->rotateLeftKC) - Input::IsKeyHeld(viewController->rotateRightKC);
-	float keyInputY = Input::IsKeyHeld(viewController->moveUpKC) - Input::IsKeyHeld(viewController->moveDownKC);
+	float keyInputX = Behemoth::Input::IsKeyHeld(viewController->rotateLeftKC) - Behemoth::Input::IsKeyHeld(viewController->rotateRightKC);
+	float keyInputY = Behemoth::Input::IsKeyHeld(viewController->moveUpKC)     - Behemoth::Input::IsKeyHeld(viewController->moveDownKC);
 
 	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(handle))
 	{
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
-		CameraComponent* cameraComponent = CameraHelper::GetMainCamera(registry);
+		Behemoth::CameraComponent* cameraComponent = Behemoth::CameraHelper::GetMainCamera(registry);
 		if (!cameraComponent)
 		{
 			LOGMESSAGE(Error, "Error finding main camera component");
@@ -62,8 +62,8 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, const
 
 void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, const ECS::EntityHandle&, LevelViewComponent* levelView, ViewControllerComponent* viewController)
 {
-	AnalogInput input = Input::GetRightControllerAnaloge(0);
-	float keyInput = Input::IsKeyHeld(viewController->zoomOutKC) - Input::IsKeyHeld(viewController->zoomInKC);
+	Behemoth::AnalogInput input = Behemoth::Input::GetRightControllerAnaloge(0);
+	float keyInput = Behemoth::Input::IsKeyHeld(viewController->zoomOutKC) - Behemoth::Input::IsKeyHeld(viewController->zoomInKC);
 	// 	// No look input
 
 	float delta = 0.0f;
@@ -89,7 +89,7 @@ void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, const
 
 	levelView->currentZoomCounter += delta;
 
-	CameraComponent* cameraComponent = CameraHelper::GetMainCamera(registry);
+	Behemoth::CameraComponent* cameraComponent = Behemoth::CameraHelper::GetMainCamera(registry);
 	if (!cameraComponent)
 	{
 		LOGMESSAGE(Error, "Error finding main camera component");
@@ -97,5 +97,5 @@ void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, const
 	}
 
 	BMath::Vector3 deltaPosition = cameraComponent->forwardVector * delta;
-	registry.AddComponent<MoveComponent>(levelView->attachedCamera, deltaPosition);
+	registry.AddComponent<Behemoth::MoveComponent>(levelView->attachedCamera, deltaPosition);
 }

@@ -21,20 +21,17 @@
 #include "Scripts/BarrierFactory.h"
 #include "Scripts/PlayerScore.h"
 
-HoleThreeScene::HoleThreeScene() : par(3), changeScene(false)
+HoleThreeScene::HoleThreeScene() : GameScene(registry, 3)
 {
-	delayUntilSceneChange = 3.0f;
-
 	ConstructEnvironment(registry);
-
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 15, 18));
-
-	CreateOOBEntity(registry); 
-
-	LevelViewFactory levelViewFactory{};
-	levelViewEntity = levelViewFactory.CreateLevelViewEntity(registry, BMath::Vector3(0, 10, -30), 5, 20, 10, 0);
-	registry.AddComponent<Behemoth::TransformComponent>(levelViewEntity);
- 	registry.AddComponent<Behemoth::RotationComponent>(levelViewEntity);
+	levelViewEntity = LevelViewFactory::CreateLevelViewEntity(
+		registry, 
+		BMath::Vector3(0, 10, -30),
+		5,
+		20,
+		10,
+		0);
 
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
@@ -45,22 +42,11 @@ void HoleThreeScene::Initialize()
 }
 void HoleThreeScene::Update(const float deltaTime)
 {
-	CheckOutOfBound(registry, playerCharacter, oobTrigger);
-
-	if (CheckLevelComplete(registry, playerCharacter))
-	{
-		OnHoleComplete(registry, playerCharacter, par);
-
-		ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
-		registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
-		{
-				changeScene = true;
-		});
-	}
+	Super::Update(deltaTime);
 
 	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
 	{
-		ViewModeChange::ChangeViewMode(registry, playerCharacter, levelViewEntity);
+		ViewMode::ToggleViewMode(registry, playerCharacter, levelViewEntity);
 	}
 
 	if (changeScene)
@@ -98,7 +84,13 @@ void HoleThreeScene::ConstructEnvironment(ECS::Registry& registry)
 
 	rockPlatform1 = PlatformFactory::CreateRockPlatform(registry, BMath::Vector3(0, 0, -10), BMath::Vector3(5, 1, 15));
 
-	barrier1 = BarrierFactory::CreateObstacle(registry, BMath::Vector3(0, 15, -0), BMath::Vector3(5, 6, 1), BMath::Quaternion(), false);
+	barrier1 = BarrierFactory::CreateObstacle(
+		registry, 
+		BMath::Vector3(0, 15, -0),
+		BMath::Vector3(5, 6, 1), 
+		BMath::Quaternion(),
+		false);
+
 	registry.AddComponent<MovingObsComponent>(barrier1, BMath::Vector3(0, 1, 0), 40.0f, 250.0f, 0.0f);
 
 
