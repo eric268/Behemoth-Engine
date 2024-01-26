@@ -6,7 +6,6 @@ namespace Behemoth
 {
 	struct CameraComponent;
 	struct TransformComponent;
-	class Matrix4x4;
 
 	class CameraSystem
 	{

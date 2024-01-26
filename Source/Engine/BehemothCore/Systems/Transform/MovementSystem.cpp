@@ -37,7 +37,7 @@ namespace Behemoth
 				if (parentTransform)
 				{
 					// If object is a child, move in parents local space
-					BMath::BMatrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
+					BMath::Matrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
 
 					deltaLocation = parentTransformNoScale * deltaLocation;
 				}

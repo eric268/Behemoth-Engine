@@ -5,7 +5,7 @@
 
 namespace BMath
 {
-	class Matrix
+	class BMatrix
 	{
 	public:
 		inline std::size_t Size() const
@@ -13,32 +13,14 @@ namespace BMath
 			return size;
 		}
 	protected:
-		Matrix(std::size_t s) : size(s) {}
+		BMatrix(std::size_t s) : size(s) {}
 
 		std::size_t size;
 	};
 
-	template <FloatOrDouble T = float>
-	class Matrix2x2 : public Matrix
+	template <FloatOrDouble T>
+	struct BMatrix2x2 : public BMatrix
 	{
-	public:
-		Matrix2x2() : Matrix(2), _11((T)0), _12((T)0), _21((T)0), _22((T)0) {}
-
-		static Matrix2x2 Identity()
-		{
-			Matrix2x2 m;
-			for (int i = 0; i < 2; i++)
-			{
-				m.data[i][i] = 0;
-			}
-			return m;
-		}
-
-		static T Determinant(const Matrix2x2& m)
-		{
-			return m.data[0][0] * m.data[1][1] - m.data[0][1] * m.data[1][0];
-		}
-
 		union
 		{
 			T data[2][2];
@@ -47,13 +29,30 @@ namespace BMath
 				T _11, _21;
 				T _12, _22;
 			};
-		};
-	};
-	using BMatrix2x2 = Matrix2x2<float>;
-	using BMatrix2x2d = Matrix2x2<double>;
 
-	template <FloatOrDouble T = float>
-	class Matrix3x3 : public Matrix
+		};
+		BMatrix2x2() : BMatrix(2), _11((T)0), _12((T)0), _21((T)0), _22((T)0) {}
+
+		static BMatrix2x2 Identity()
+		{
+			BMatrix2x2 m;
+			for (int i = 0; i < 2; i++)
+			{
+				m.data[i][i] = 0;
+			}
+			return m;
+		}
+
+		static T Determinant(const BMatrix2x2& m)
+		{
+			return m.data[0][0] * m.data[1][1] - m.data[0][1] * m.data[1][0];
+		}
+	};
+	using Matrix2x2  = BMatrix2x2<float>;
+	using Matrix2x2d = BMatrix2x2<double>;
+
+	template <FloatOrDouble T>
+	struct BMatrix3x3 : public BMatrix
 	{
 	public:
 		union
@@ -67,13 +66,12 @@ namespace BMath
 			};
 		};
 
-		// Matrix3x3
-		Matrix3x3() : Matrix(3)
+		BMatrix3x3() : BMatrix(3)
 		{
 			std::fill(&data[0][0], &data[0][0] + size * size, (T)0.0);
 		}
 
-		Matrix3x3(std::initializer_list<std::initializer_list<Matrix3x3>> list) : Matrix(3)
+		BMatrix3x3(std::initializer_list<std::initializer_list<BMatrix3x3>> list) : BMatrix(3)
 		{
 			int row = 0;
 			for (const auto& l : list)
@@ -88,9 +86,9 @@ namespace BMath
 			}
 		}
 
-		static Matrix3x3 Identity()
+		static BMatrix3x3 Identity()
 		{
-			Matrix3x3 m{};
+			BMatrix3x3 m{};
 			for (int i = 0; i < 3; i++)
 			{
 				m.data[i][i] = (T)1;
@@ -98,19 +96,19 @@ namespace BMath
 			return m;
 		}
 
-		Vector3 GetColumn(int col)
+		BVector3<T> GetColumn(int col)
 		{
-			return Vector3(data[0][col], data[1][col], data[2][col]);
+			return BVector3<T>(data[0][col], data[1][col], data[2][col]);
 		}
 
-		Vector3 GetRow(int row)
+		BVector3<T> GetRow(int row)
 		{
-			return Vector3(data[row][0], data[row][1], data[row][2]);
+			return BVector3<T>(data[row][0], data[row][1], data[row][2]);
 		}
 
-		Vector3 operator*(Vector3 v)
+		BVector3<T> operator*(BVector3<T> v)
 		{
-			Vector3 vec{};
+			BVector3<T> vec{};
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -121,9 +119,9 @@ namespace BMath
 
 		}
 
-		Matrix3x3 operator*(const Matrix3x3& m) const
+		BMatrix3x3 operator*(const BMatrix3x3& m) const
 		{
-			Matrix3x3 result{};
+			BMatrix3x3 result{};
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -137,7 +135,7 @@ namespace BMath
 			return result;
 		}
 
-		static T Determinant(const Matrix3x3& m)
+		static T Determinant(const BMatrix3x3<T>& m)
 		{
 			const T x = m.data[0][0] * (m.data[1][1] * m.data[2][2] - m.data[1][2] * m.data[2][1]);
 			const T y = m.data[0][1] * (m.data[1][0] * m.data[2][2] - m.data[1][2] * m.data[2][0]);
@@ -146,9 +144,9 @@ namespace BMath
 
 		}
 
-		static Matrix2x2<T> GetSubMatrix(const Matrix3x3& m, int skipCol, int skipRow)
+		static BMatrix2x2<T> GetSubMatrix(const BMatrix3x3<T>& m, int skipCol, int skipRow)
 		{
-			Matrix2x2<T> m2{};
+			BMatrix2x2<T> m2{};
 			int subRow = 0, subCol = 0;
 
 			for (int i = 0; i < 3; i++)
@@ -174,11 +172,11 @@ namespace BMath
 			return m2;
 		}
 
-		static Matrix3x3 Inverse(const Matrix3x3& m)
+		static BMatrix3x3 Inverse(const BMatrix3x3& m)
 		{
-			Matrix3x3 m2{};
+			BMatrix3x3 m2{};
 
-			T det = Matrix3x3::Determinant(m);
+			T det = BMatrix3x3<T>::Determinant(m);
 			if (det == 0.0f)
 				return {};
 
@@ -186,13 +184,13 @@ namespace BMath
 			{
 				for (int j = 0; j < 3; j++)
 				{
-					m2.data[i][j] = Matrix2x2<T>::Determinant(GetSubMatrix(m, i, j));
+					m2.data[i][j] = BMatrix2x2<T>::Determinant(GetSubMatrix(m, i, j));
 					m2.data[i][j] *= ((i + j) % 2 == 0) ? 1.0f : -1.0f;
 
 				}
 			}
 
-			m2 = Matrix3x3::Transpose(m2);
+			m2 = BMatrix3x3<T>::Transpose(m2);
 
 			for (int i = 0; i < 3; i++)
 			{
@@ -205,9 +203,9 @@ namespace BMath
 			return m2;
 		}
 
-		static Matrix3x3 Transpose(const Matrix3x3& m)
+		static BMatrix3x3 Transpose(const BMatrix3x3& m)
 		{
-			Matrix3x3 m2{};
+			BMatrix3x3 m2{};
 			for (int i = 0; i < 3; i++)
 			{
 				for (int j = 0; j < 3; j++)
@@ -221,12 +219,12 @@ namespace BMath
 		}
 	};
 
-	using BMatrix3x3 = Matrix3x3<float>;
-	using BMatrix3x3d = Matrix3x3<double>;
+	using Matrix3x3 = BMatrix3x3<float>;
+	using Matrix3x3d = BMatrix3x3<double>;
 
-	template <FloatOrDouble T = double>
-	class Matrix4x4 : public Matrix
-	{ 
+	template <FloatOrDouble T>
+	class BMatrix4x4 : public BMatrix
+	{
 	public:
 		union
 		{
@@ -240,7 +238,7 @@ namespace BMath
 			};
 		};
 
-		Matrix4x4() : Matrix(4)
+		BMatrix4x4() : BMatrix(4)
 		{
 			for (int i = 0; i < size; i++)
 			{
@@ -248,7 +246,7 @@ namespace BMath
 			}
 		}
 
-		Matrix4x4(std::initializer_list<std::initializer_list<T>> list) : Matrix(4)
+		BMatrix4x4(std::initializer_list<std::initializer_list<T>> list) : BMatrix(4)
 		{
 			int i = 0;
 			for (const auto& l : list)
@@ -263,15 +261,15 @@ namespace BMath
 			}
 		}
 
-		static Matrix4x4 Zero()
+		static BMatrix4x4 Zero()
 		{
-			Matrix4x4 m{};
+			BMatrix4x4 m{};
 			return m;
 		}
 
-		static Matrix4x4 Identity()
+		static BMatrix4x4 Identity()
 		{
-			Matrix4x4 m;
+			BMatrix4x4 m;
 			for (int i = 0; i < 4; i++)
 			{
 				m.data[i][i] = (T)1;
@@ -279,17 +277,17 @@ namespace BMath
 			return m;
 		}
 
-		Vector4 GetColumn(int i) const
+		BVector4<T> GetColumn(int i) const
 		{
-			return Vector4(data[0][i], data[1][i], data[2][i], data[3][i]);
+			return BVector4<T>(data[0][i], data[1][i], data[2][i], data[3][i]);
 		}
 
-		Vector4 GetRow(int i) const
+		BVector4<T> GetRow(int i) const
 		{
-			return Vector4(data[i][0], data[i][1], data[i][2], data[i][3]);
+			return BVector4<T>(data[i][0], data[i][1], data[i][2], data[i][3]);
 		}
 
-		static bool Equals(Matrix4x4<T> m1, Matrix4x4<T> m2, T epsilon = 1e-2)
+		static bool Equals(BMatrix4x4<T> m1, BMatrix4x4<T> m2, T epsilon = 1e-2)
 		{
 			for (int i = 0; i < 4; i++)
 			{
@@ -305,9 +303,9 @@ namespace BMath
 			return true;
 		}
 
-		static Matrix4x4 Transpose(const Matrix4x4<T>& m)
+		static BMatrix4x4 Transpose(const BMatrix4x4<T>& m)
 		{
-			Matrix4x4<T> m2{};
+			BMatrix4x4<T> m2{};
 			for (int i = 0; i < 4; i++)
 			{
 				for (int j = 0; j < 4; j++)
@@ -319,11 +317,11 @@ namespace BMath
 			return m2;
 		}
 
-		static Matrix4x4 Inverse(const Matrix4x4<T>& m)
+		static BMatrix4x4 Inverse(const BMatrix4x4<T>& m)
 		{
-			Matrix4x4<T> m2{};
+			BMatrix4x4<T> m2{};
 
-			T det = Matrix4x4<T>::Determinant(m);
+			T det = BMatrix4x4<T>::Determinant(m);
 			if (det == 0.0f)
 				return {};
 
@@ -331,28 +329,28 @@ namespace BMath
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					m2.data[i][j] = Matrix3x3<T>::Determinant(GetSubMatrix(m, i, j));
+					m2.data[i][j] = BMatrix3x3<T>::Determinant(GetSubMatrix(m, i, j));
 					m2.data[i][j] *= ((i + j) % 2 == 0) ? 1.0f : -1.0f;
 
 				}
 			}
 
-			m2 = Matrix4x4<T>::Transpose(m2);
+			m2 = BMatrix4x4<T>::Transpose(m2);
 
 			for (int col = 0; col < 4; col++)
 			{
 				for (int row = 0; row < 4; row++)
 				{
 					m2.data[col][row] /= det;
- 				}
- 			}
+				}
+			}
 
 			return m2;
 		}
 
-		static Matrix3x3<T> GetSubMatrix(const Matrix4x4& m, int skipCol, int skipRow)
+		static BMatrix3x3<T> GetSubMatrix(const BMatrix4x4& m, int skipCol, int skipRow)
 		{
-			Matrix3x3<T> m2{};
+			BMatrix3x3<T> m2{};
 			int subRow = 0, subCol = 0;
 
 			for (int i = 0; i < 4; i++)
@@ -378,21 +376,21 @@ namespace BMath
 			return m2;
 		}
 
-		static T Determinant(const Matrix4x4& m)
+		static T Determinant(const BMatrix4x4& m)
 		{
 			float det = 0;
 			float val = 1.0f;
 			for (int i = 0; i < 4; i++)
 			{
-				det += m.data[i][0] * Matrix3x3<T>::Determinant(GetSubMatrix(m, i, 0)) * val;
+				det += m.data[i][0] * BMatrix3x3<T>::Determinant(GetSubMatrix(m, i, 0)) * val;
 				val *= -1.0f;
 			}
 			return det;
 		}
 
-		Vector4 operator*(const Vector4 v) const
+		BVector4<T> operator*(const BVector4<T> v) const
 		{
-			Vector4 vec{};
+			BVector4<T> vec{};
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -402,9 +400,9 @@ namespace BMath
 			return vec;
 		}
 
-		Matrix4x4<T> operator*(const Matrix4x4& m) const
+		BMatrix4x4<T> operator*(const BMatrix4x4& m) const
 		{
-			Matrix4x4<T> result;
+			BMatrix4x4<T> result;
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -419,9 +417,9 @@ namespace BMath
 			return result;
 		}
 
-		Matrix4x4 operator*=(const Matrix4x4& m) const
+		BMatrix4x4 operator*=(const BMatrix4x4& m) const
 		{
-			Matrix4x4 result;
+			BMatrix4x4 result;
 
 			const int n = m.Size();
 			for (int i = 0; i < n; i++)
@@ -440,9 +438,9 @@ namespace BMath
 		}
 
 
-		static Matrix4x4 GetRotationMatrix(const int axis, const T theta)
+		static BMatrix4x4 GetRotationMatrix(const int axis, const T theta)
 		{
-			Matrix4x4 m = Identity();
+			BMatrix4x4 m = Identity();
 			T rad = theta * 3.14159 / 180;
 
 			T cosTheta = std::cos(rad);
@@ -475,8 +473,8 @@ namespace BMath
 		}
 	};
 
-	using BMatrix4x4 = Matrix4x4<float>;
-	using BMatrix4x4d = Matrix4x4<double>;
+	using Matrix4x4  = BMatrix4x4<float>;
+	using Matrix4x4d = BMatrix4x4<double>;
 }
 
 

@@ -18,7 +18,7 @@ namespace Behemoth
 		return GetMesh(filepath).first;
 	}
 
-	const std::vector<VertexData>& ResourceManager::GetMeshVerticies(const std::string& filePath)
+	const std::vector<VertexData>& ResourceManager::GetMeshVertices(const std::string& filePath)
 	{
 		return GetMesh(filePath).second;
 	}
@@ -64,7 +64,7 @@ namespace Behemoth
 			meshMap[id] = { std::move(meshData), std::move(meshVerticies) };
 			meshAABBBounds[id] = broadCollider;
 
-			BoundingGenerator::GenerateSphereBoundingVolume(GetMeshVerticies(filePath), sphereCollider);
+			BoundingGenerator::GenerateSphereBoundingVolume(GetMeshVertices(filePath), sphereCollider);
 			meshSphereBounds[id] = sphereCollider;
 		}
 
@@ -117,7 +117,7 @@ namespace Behemoth
 		else
 		{
 			AABBCollider collider{};
-			if (BoundingGenerator::GenerateAABBBoundingVolume(GetMeshVerticies(filepath), collider))
+			if (BoundingGenerator::GenerateAABBBoundingVolume(GetMeshVertices(filepath), collider))
 			{
 				meshAABBBounds[id] = collider;
 				return meshAABBBounds[id];
@@ -144,7 +144,7 @@ namespace Behemoth
 		{
 			SphereCollider collider{};
 
-			if (BoundingGenerator::GenerateSphereBoundingVolume(GetMeshVerticies(filepath), collider))
+			if (BoundingGenerator::GenerateSphereBoundingVolume(GetMeshVertices(filepath), collider))
 			{
 				meshSphereBounds[id] = collider;
 				return collider;

@@ -78,7 +78,7 @@ namespace Behemoth
 		primitive->AddLighting(diffuse + specular);
 	}
 
-	void LightingSystem::CalculatePointLights(Primitive* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::BMatrix4x4& viewMatrix)
+	void LightingSystem::CalculatePointLights(Primitive* primitive, const PointLightComponent* light, const BMath::Vector3& cameraPos, const BMath::Vector3& lightPos, const BMath::Matrix4x4& viewMatrix)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
 
@@ -103,7 +103,7 @@ namespace Behemoth
 
 		for (int i = 0; i < numVertices; i++) 
 		{
-			averagePos += BMath::Vector3(primitive->verticies[i]) / static_cast<float>(numVertices);
+			averagePos += BMath::Vector3(primitive->vertices[i]) / static_cast<float>(numVertices);
 		}
 		return averagePos;
 	}

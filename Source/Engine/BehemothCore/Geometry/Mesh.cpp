@@ -5,16 +5,14 @@
 #include <iostream>
 namespace Behemoth
 {
-	Mesh::Mesh() :
-		meshData{},
-		materialData{}
+	Mesh::Mesh() : meshData(), materialData()
 	{
-		meshData.modelFileName =						"";
-		materialData.textureFileName =					"";
-		materialData.uvScale =							{ 0,0 };
-		materialData.diffuse =							BMath::Vector3(0.0f);
-		materialData.specular =							BMath::Vector3(0.0f);
-		materialData.shininess							= 0.0f;
+		meshData.modelFileName = "";
+		materialData.textureFileName = "";
+		materialData.uvScale = { 0,0 };
+		materialData.diffuse = BMath::Vector3(0.0f);
+		materialData.specular = BMath::Vector3(0.0f);
+		materialData.shininess = 0.0f;
 	}
 
 
@@ -28,12 +26,12 @@ namespace Behemoth
 		materialData(),
 		affectedByLighting(affectedByLighting)
 	{
-		meshData.modelFileName =						modelPath;
-		materialData.textureFileName =					texturePath;
-		materialData.uvScale =							uv;
-		materialData.diffuse =							BMath::Vector3(0.8f, 0.8f, 0.8f);
-		materialData.specular =							BMath::Vector3(1.0f, 1.0f, 1.0f);
-		materialData.shininess =						32.0f;
+		meshData.modelFileName = modelPath;
+		materialData.textureFileName = texturePath;
+		materialData.uvScale = uv;
+		materialData.diffuse = BMath::Vector3(0.8f, 0.8f, 0.8f);
+		materialData.specular = BMath::Vector3(1.0f, 1.0f, 1.0f);
+		materialData.shininess = 32.0f;
 	}
 
 	void Mesh::GenerateMesh(const MeshData& meshData, const std::vector<VertexData>& vertexData)
@@ -48,21 +46,21 @@ namespace Behemoth
 
 	void Mesh::GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVerticies, int vertexOffset)
 	{
-		int numVerticies = (type == TRIANGLE) ? 3 : 4;
+		int numVertices = (type == TRIANGLE) ? 3 : 4;
 
 		const std::string& path = Behemoth::ResourceManager::GetInstance().GetTexturePath(materialData.textureFileName);
 
-		for (int i = vertexOffset; i < totalVerticies + vertexOffset; i += numVerticies)
+		for (int i = vertexOffset; i < totalVerticies + vertexOffset; i += numVertices)
 		{
 			BMath::Vector4 v[4];
 			BMath::Vector3 n[4];
 			BMath::Vector2 uv[4];
 
-			for (int j = 0; j < numVerticies; j++)
+			for (int j = 0; j < numVertices; j++)
 			{
-				v[j].x = vertexData[i + j].vertex.x;
-				v[j].y = vertexData[i + j].vertex.y;
-				v[j].z = vertexData[i + j].vertex.z;
+				v[j].x = vertexData[i + j].position.x;
+				v[j].y = vertexData[i + j].position.y;
+				v[j].z = vertexData[i + j].position.z;
 				v[j].w = 1.0f;
 
 				n[j] = vertexData[i + j].normal;

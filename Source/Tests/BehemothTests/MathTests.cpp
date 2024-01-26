@@ -76,7 +76,7 @@ TEST(Vec3_SqDistance, V3SqDist)
  {
  	BMath::Vector4 vec(10.0f, -8.0f, 7.72f, -0.1f);
 
- 	BMath::BMatrix4x4 m =
+ 	BMath::Matrix4x4 m =
  	{
  		{   9.0f ,   0.3f ,    7.0f, -12.2f},
  		{ -19.0f ,   0.87f, -107.1f,   0.0f},
@@ -94,7 +94,7 @@ TEST(Vec3_SqDistance, V3SqDist)
  {
  	BMath::Vector4 vec(1.0f, 1.0f, -1.0f, 1.0f);
  
- 	BMath::BMatrix4x4 m =
+ 	BMath::Matrix4x4 m =
  	{
 		{  1.0f ,   0.0f ,  0.0f,  0.0f},
 		{  0.0f ,   1.0f,   0.0f,  0.0f},
@@ -110,7 +110,7 @@ TEST(Vec3_SqDistance, V3SqDist)
   
   TEST(M4x4_Mul_M4x4, BMath)
   {
-  	BMath::BMatrix4x4 m1 =
+  	BMath::Matrix4x4 m1 =
   	{
  		{   12.3f ,      10.13f,     5.15f,   2.2f} ,
  		{   -9.0f,     1020.0f,   -107.1f ,   0.0f} ,
@@ -118,7 +118,7 @@ TEST(Vec3_SqDistance, V3SqDist)
  		{ -61.12f,       0.0f ,    -16.1f ,   0.72f}
   	};
   
-  	BMath::BMatrix4x4 m2 =
+  	BMath::Matrix4x4 m2 =
   	{
  		{   6.1f , 10.31f,     0.0f , -1003.145f},
  		{  11.0f ,  1.87f,   -17.11f,     0.0f}  ,
@@ -126,9 +126,9 @@ TEST(Vec3_SqDistance, V3SqDist)
   		{ 191.0f ,  1.0f ,    -0.7f ,     2.72f}
   	};
   
-  	BMath::BMatrix4x4 result = m1 * m2;
+  	BMath::Matrix4x4 result = m1 * m2;
   
-  	BMath::BMatrix4x4 ans =
+  	BMath::Matrix4x4 ans =
   	{
   		{544.2935f, 194.9241f, -548.2393f, -12395.64795f},
   		{12462.081f, 837.858f, -9687.45f, 10337.3883f },
@@ -136,7 +136,7 @@ TEST(Vec3_SqDistance, V3SqDist)
   		{-40.341f, -776.2592f, 1166.746f, 61510.9711f}
   	};
   
-  	EXPECT_TRUE(BMath::BMatrix4x4::Equals(result, ans));
+  	EXPECT_TRUE(BMath::Matrix4x4::Equals(result, ans));
   }
   
   TEST(CrossProd, BMath)
@@ -152,7 +152,7 @@ TEST(Vec3_SqDistance, V3SqDist)
   
   TEST(Transpose_M4x4, BMath)
   {
-  	BMath::BMatrix4x4 m1 =
+  	BMath::Matrix4x4 m1 =
   	{
   		{1.0f, 10.0f, 11.0f, 5.0f},
   		{-2.0f, 3.0f, 5.0f, 17.0f},
@@ -160,9 +160,9 @@ TEST(Vec3_SqDistance, V3SqDist)
   		{-4.0f, -7.0f, 11.0f, 61.0f}
   	};
   
-  	BMath::BMatrix4x4 result = BMath::BMatrix4x4::Transpose(m1);
+  	BMath::Matrix4x4 result = BMath::Matrix4x4::Transpose(m1);
   
-  	BMath::BMatrix4x4 ans =
+  	BMath::Matrix4x4 ans =
   	{
  		{1.0f, -2.0f,  0.0f, -4.0f},
  		{10.0f, 3.0f,  9.0f, -7.0f},
@@ -170,12 +170,12 @@ TEST(Vec3_SqDistance, V3SqDist)
  		{5.0f, 17.0f, -2.0f, 61.0f}
   	};
   
-  	EXPECT_TRUE(BMath::BMatrix4x4::Equals(result, ans));
+  	EXPECT_TRUE(BMath::Matrix4x4::Equals(result, ans));
   }
   
   TEST(Inverse_M4x4, BMath)
   {
-  	BMath::BMatrix4x4 m1 =
+  	BMath::Matrix4x4 m1 =
   	{
  		{ 1.0f, 10.0f, 11.0f,  5.0f},
  		{-2.0f,  3.0f,  5.0f, 17.0f},
@@ -183,9 +183,9 @@ TEST(Vec3_SqDistance, V3SqDist)
  		{-4.0f, -7.0f, 11.0f, 61.0f}
   	};
   
-  	BMath::BMatrix4x4 result = BMath::BMatrix4x4::Inverse(m1);
+  	BMath::Matrix4x4 result = BMath::Matrix4x4::Inverse(m1);
   
-  	BMath::BMatrix4x4 ans =
+  	BMath::Matrix4x4 ans =
   	{
   		{ 0.0888f  , -1.07f  , 0.4967f ,  0.3073f },
   		{ -0.03089f, -0.075f , 0.1936f ,  0.0298f },
@@ -193,12 +193,12 @@ TEST(Vec3_SqDistance, V3SqDist)
   		{ -0.0193f , -0.1183f,  0.1031f,  0.0543f }
   	};
   
-  	EXPECT_TRUE(BMath::BMatrix4x4::Equals(result, ans));
+  	EXPECT_TRUE(BMath::Matrix4x4::Equals(result, ans));
   }
   
   TEST(Inverse_M4x4_2, BMath)
   {
-      BMath::BMatrix4x4 m1 =
+      BMath::Matrix4x4 m1 =
       {
  		 {1.0f, 0.0f, 0.0f, 0.0f},
  		 {0.0f, 1.0f, 0.0f, 0.0f},
@@ -206,9 +206,9 @@ TEST(Vec3_SqDistance, V3SqDist)
  		 {0.0f, 0.0f, 0.0f, 1.0f}
       };
  
-      BMath::BMatrix4x4 result = BMath::BMatrix4x4::Inverse(m1);
+      BMath::Matrix4x4 result = BMath::Matrix4x4::Inverse(m1);
  
-      BMath::BMatrix4x4 ans =
+      BMath::Matrix4x4 ans =
       {
  		 {1.0f, 0.0f, 0.0f, 0.0f},
  		 {0.0f, 1.0f, 0.0f, 0.0f},
@@ -216,7 +216,7 @@ TEST(Vec3_SqDistance, V3SqDist)
  		 {0.0f, 0.0f, 0.0f, 1.0f}
       };
  
-      EXPECT_TRUE(BMath::BMatrix4x4::Equals(result, ans));
+      EXPECT_TRUE(BMath::Matrix4x4::Equals(result, ans));
   }
 
 

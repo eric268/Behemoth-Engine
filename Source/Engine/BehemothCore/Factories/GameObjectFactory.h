@@ -18,7 +18,7 @@ namespace Behemoth
 			std::string modelFilePath,
 			std::string texturePath =	"",
 			std::string entityName = "Game Object",
-			BMath::Vector2 uvScale = { 1,1 });
+			BMath::Vector2 uvScale = BMath::Vector2(1.0f, 1.0f));
 
 		static bool AddChildObject(
 			ECS::Registry& registry,

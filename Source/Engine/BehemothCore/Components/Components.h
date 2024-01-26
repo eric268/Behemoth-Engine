@@ -12,29 +12,27 @@ namespace Behemoth
 {
 	struct CameraComponent : public ECS::Component
 	{
-		CameraComponent(
-			bool main =					false) 
-			:
-			focusedEntity				(NULL_ENTITY),
-			viewMatrix					(BMath::BMatrix4x4::Identity()),
-			projMatrix					(BMath::BMatrix4x4::Identity()),
-			forwardVector				(BMath::Vector3::Forward()),
-			rightVector					(BMath::Vector3::Right()),
-			upVector					(BMath::Vector3::Up()),
-			FOV							(75.0f),
-			nearClippingPlane			(0.1f),
-			farClippingPlane			(1000.0f),
-			windowWidth					(0.0f),
-			windowHeight				(0.0f),
-			isMain						(main),
-			isDirty						(true),
-			isInitalized				(false)
+		CameraComponent(bool main =	false) :
+			focusedEntity(NULL_ENTITY),
+			viewMatrix(BMath::Matrix4x4::Identity()),
+			projMatrix(BMath::Matrix4x4::Identity()),
+			forwardVector(BMath::Vector3::Forward()),
+			rightVector(BMath::Vector3::Right()),
+			upVector(BMath::Vector3::Up()),
+			FOV(75.0f),
+			nearClippingPlane(0.1f),
+			farClippingPlane(1000.0f),
+			windowWidth(0.0f),
+			windowHeight(0.0f),
+			isMain(main),
+			isDirty(true),
+			isInitalized(false)
 			{}
 									
 		ECS::EntityHandle focusedEntity;
 		Plane  worldSpaceFrustum[6];
-		BMath::BMatrix4x4 viewMatrix;
-		BMath::BMatrix4x4 projMatrix;
+		BMath::Matrix4x4 viewMatrix;
+		BMath::Matrix4x4 projMatrix;
 
 		BMath::Vector3 rightVector;
 		BMath::Vector3 forwardVector;
@@ -52,12 +50,9 @@ namespace Behemoth
 
 	struct MeshInitalizeComponent : public ECS::Component
 	{
-		MeshInitalizeComponent(
-			bool initBoundingVolume	=			true, 
-			bool initBroadCollider  =			true) 
-			: 
-			initBoundingVolume					(initBoundingVolume), 
-			initBroadCollider					(initBroadCollider) 
+		MeshInitalizeComponent(bool initBoundingVolume = true,bool initBroadCollider = true) :
+			initBoundingVolume(initBoundingVolume),
+			initBroadCollider(initBroadCollider)
 		{}
 
 		bool initBoundingVolume;
@@ -67,22 +62,22 @@ namespace Behemoth
 	struct TransformComponent : public ECS::Component
 	{
 		TransformComponent() :	
-			worldTransform						(BMath::BMatrix4x4::Identity()),
-			localTransform						(BMath::BMatrix4x4::Identity()),
-			quaternion							(BMath::Quaternion::Identity()),
-			forwardVector						(BMath::Vector3::Forward()),
-			rightVector							(BMath::Vector3::Right()),
-			upVector							(BMath::Vector3::Up()),
-			worldPosition						(BMath::Vector3(0.0f)),
-			localPosition						(BMath::Vector3(0.0f)),
-			worldScale							(BMath::Vector3(1.0f)),
-			localScale							(BMath::Vector3(1.0f)),
-			isDirty								(true),
-			parentIsDirty						(false)
+			worldTransform(BMath::Matrix4x4::Identity()),
+			localTransform(BMath::Matrix4x4::Identity()),
+			quaternion(BMath::Quaternion::Identity()),
+			forwardVector(BMath::Vector3::Forward()),
+			rightVector(BMath::Vector3::Right()),
+			upVector(BMath::Vector3::Up()),
+			worldPosition(BMath::Vector3(0.0f)),
+			localPosition(BMath::Vector3(0.0f)),
+			worldScale(BMath::Vector3(1.0f)),
+			localScale(BMath::Vector3(1.0f)),
+			isDirty(true),
+			parentIsDirty(false)
 		{}
 
-		BMath::BMatrix4x4 worldTransform;
-		BMath::BMatrix4x4 localTransform;
+		BMath::Matrix4x4 worldTransform;
+		BMath::Matrix4x4 localTransform;
 		BMath::Quaternion quaternion;
 		BMath::Vector3 forwardVector;
 		BMath::Vector3 rightVector;

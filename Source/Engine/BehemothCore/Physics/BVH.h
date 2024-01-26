@@ -105,13 +105,6 @@ namespace Behemoth
 					 {
 						 colliderComp->collider = collider;
 					 }
-// 					colliderComp->collider.position = transformComp->worldPosition;
-// 					BMath::Vector3 scale = transformComp->worldScale * colliderComp->extents;
-// 					colliderComp->collider.extents = scale;
-// 					auto rot = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, scale);
-// 					AABBCollider rotatedCollider{};
-// 					BoundingGenerator::GenerateRotatedAABB(colliderComp->collider, rot, rotatedCollider);
-// 					data.push_back(BVHData(entity, rotatedCollider));
 
 				}, componentTuple);
  			}

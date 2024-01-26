@@ -8,7 +8,8 @@ namespace Behemoth
 
 namespace BMath
 {
-	class Quaternion;
+	template <typename T>
+	struct BQuaternion;
 }
 
 class PlatformFactory
@@ -18,21 +19,21 @@ public:
 		ECS::Registry& registry,
 		const BMath::Vector3& position,
 		const BMath::Vector3& scale,
-		const BMath::Quaternion& q = BMath::Quaternion(),
+		const BMath::Quaternion& q = BMath::Quaternion::Identity(),
 		bool isStatic = true);
 
 	static ECS::EntityHandle CreateRockPlatform(
 		ECS::Registry& registry,
 		const BMath::Vector3& position,
 		const BMath::Vector3& scale,
-		const BMath::Quaternion& q = BMath::Quaternion(),
+		const BMath::Quaternion& q = BMath::Quaternion::Identity(),
 		bool isStatic = true);
 
 	static ECS::EntityHandle CreateSandPlatform(
 		ECS::Registry& registry,
 		const BMath::Vector3& position,
 		const BMath::Vector3& scale,
-		const BMath::Quaternion& q = BMath::Quaternion(),
+		const BMath::Quaternion& q = BMath::Quaternion::Identity(),
 		bool isStatic = true);
 
 private:

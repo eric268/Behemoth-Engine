@@ -31,16 +31,16 @@ namespace Behemoth
 	{
 	protected:
 		ColliderComponent(
-			bool isTrigger =							false,
-			bool enabled =								true,
-			BMask::CollisionType collisionType =	    BMask::CollisionType::StaticType,
-			BMask::CollisionLayer collisionLayer =		BMask::CollisionLayer::EnvObject)
+			bool isTrigger = false,
+			bool enabled = true,
+			BMask::CollisionType collisionType = BMask::CollisionType::StaticType,
+			BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject)
 			:
-			isTrigger									(isTrigger),
-			isEnabled									(enabled),
-			collisionType								(collisionType),
-			collisionLayer								(collisionLayer),
-			physicsMaterial								(PhysicsMaterial::None())
+			isTrigger(isTrigger),
+			isEnabled(enabled),
+			collisionType(collisionType),
+			collisionLayer(collisionLayer),
+			physicsMaterial(PhysicsMaterial::None())
 		{}
 	public:
 		bool isEnabled;
@@ -54,25 +54,25 @@ namespace Behemoth
 	struct AABBColliderComponent : public ColliderComponent
 	{
 		AABBColliderComponent(
-			BMath::Vector3 extents =					BMath::Vector3(1.0f),
-			bool enabled =								true,
-			bool isTrigger =							false,
-			BMask::CollisionType collisionType   =		BMask::CollisionType::StaticType,
-			BMask::CollisionLayer collisionLayer =		BMask::CollisionLayer::EnvObject) 
+			BMath::Vector3 extents = BMath::Vector3(1.0f),
+			bool enabled = true,
+			bool isTrigger = false,
+			BMask::CollisionType collisionType = BMask::CollisionType::StaticType,
+			BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject)
 			:
-			ColliderComponent							(isTrigger, enabled, collisionType, collisionLayer),
+			ColliderComponent(isTrigger, enabled, collisionType, collisionLayer),
 			extents(extents)
 		{}
 
 		AABBColliderComponent(
 			const AABBCollider& collider,
-			BMath::Vector3 extents =					BMath::Vector3(1.0f),
-			bool isTrigger =							false,
-			bool enabled = true) 
+			BMath::Vector3 extents = BMath::Vector3(1.0f),
+			bool isTrigger = false,
+			bool enabled = true)
 			:
-			ColliderComponent							(isTrigger, enabled, collisionType, collisionLayer),
-			collider									(collider),
-			extents										(extents) 
+			ColliderComponent(isTrigger, enabled, collisionType, collisionLayer),
+			collider(collider),
+			extents(extents)
 		{}
 														
 		BMath::Vector3 extents;
@@ -91,14 +91,14 @@ namespace Behemoth
 	struct OBBColliderComponent : public ColliderComponent
 	{
 		OBBColliderComponent(
-			BMath::Vector3 extent =						BMath::Vector3(1.0f),
-			bool isTrigger =							false,
-			bool enabled =								true,
-			BMask::CollisionType collisionType   =		BMask::CollisionType::DynamicType,
-			BMask::CollisionLayer collisionLayer =		BMask::CollisionLayer::Everything) 
+			BMath::Vector3 extent = BMath::Vector3(1.0f),
+			bool isTrigger = false,
+			bool enabled = true,
+			BMask::CollisionType collisionType = BMask::CollisionType::DynamicType,
+			BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::Everything)
 			:
-			ColliderComponent							(isTrigger, enabled, collisionType, collisionLayer),
-			extents										(extent)
+			ColliderComponent(isTrigger, enabled, collisionType, collisionLayer),
+			extents(extent)
 		{}
 
 		BMath::Vector3 extents;
@@ -108,14 +108,14 @@ namespace Behemoth
 	struct SphereColliderComponent : public ColliderComponent
 	{
 		SphereColliderComponent(
-			float radius =								1.0f,
-			bool isTrigger =							false,
-			bool enabled =								true,
-			BMask::CollisionType collisionType   =		BMask::CollisionType::StaticType,
-			BMask::CollisionLayer collisionLayer =		BMask::CollisionLayer::EnvObject) 
+			float radius = 1.0f,
+			bool isTrigger = false,
+			bool enabled = true,
+			BMask::CollisionType collisionType = BMask::CollisionType::StaticType,
+			BMask::CollisionLayer collisionLayer = BMask::CollisionLayer::EnvObject)
 			:
-			ColliderComponent							(isTrigger, enabled, collisionType, collisionLayer),
-			radius										(radius)
+			ColliderComponent(isTrigger, enabled, collisionType, collisionLayer),
+			radius(radius)
 		{}
 		float radius;
 		SphereCollider collider;
@@ -152,11 +152,9 @@ namespace Behemoth
 
 	struct BVHColliderComponent : public ColliderComponent
 	{
-		BVHColliderComponent(
-			bool enabled =								true) 
-			:
-			ColliderComponent							(false, enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider),
-			extents										(1.0f)
+		BVHColliderComponent(bool enabled = true) :
+			ColliderComponent(false, enabled, BMask::CollisionType::BVHComponent, BMask::CollisionLayer::BVHCollider),
+			extents(1.0f)
 		{}
 
 		AABBCollider collider;

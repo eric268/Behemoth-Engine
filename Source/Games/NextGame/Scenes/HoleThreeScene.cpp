@@ -94,7 +94,7 @@ void HoleThreeScene::ConstructEnvironment(ECS::Registry& registry)
 		ambientLight->intensity = 2;
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky2.png", { 1.0, 1.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky2.png", BMath::Vector2(1.0, 1.0));
 
 	rockPlatform1 = PlatformFactory::CreateRockPlatform(registry, BMath::Vector3(0, 0, -10), BMath::Vector3(5, 1, 15));
 

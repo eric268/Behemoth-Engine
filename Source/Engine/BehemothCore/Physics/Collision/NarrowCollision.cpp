@@ -44,8 +44,8 @@ namespace Behemoth
 		for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
 		{
 			BMath::Vector3 currentAxis = box.orientation[axisIndex];
-			real extentProjection = BMath::Vector3::Dot<real>(currentAxis, distanceCenterRayOrigin);
-			real directionProjection = BMath::Vector3::Dot<real>(currentAxis, ray.direction);
+			real extentProjection = BMath::Vector3::Dot(currentAxis, distanceCenterRayOrigin);
+			real directionProjection = BMath::Vector3::Dot(currentAxis, ray.direction);
 
 			if (abs(directionProjection) < EPSILON)
 			{
@@ -86,9 +86,9 @@ namespace Behemoth
 	bool NarrowRaySphereCollision(const Ray& ray, const SphereCollider& sphere, ContactData& contactData)
 	{
 		BMath::Vector3 rayToSphereVector = ray.origin - sphere.center;
-		real directionMagnitudeSquared = BMath::Vector3::Dot<real>(ray.direction, ray.direction);
-		real projectionOntoRay = 2.0f * BMath::Vector3::Dot<real>(ray.direction, rayToSphereVector);
-		real sphereEquationConstant = BMath::Vector3::Dot<real>(rayToSphereVector, rayToSphereVector) - sphere.radius * sphere.radius;
+		real directionMagnitudeSquared = BMath::Vector3::Dot(ray.direction, ray.direction);
+		real projectionOntoRay = 2.0f * BMath::Vector3::Dot(ray.direction, rayToSphereVector);
+		real sphereEquationConstant = BMath::Vector3::Dot(rayToSphereVector, rayToSphereVector) - sphere.radius * sphere.radius;
 
 		real discriminant = projectionOntoRay * projectionOntoRay - 4 * directionMagnitudeSquared * sphereEquationConstant;
 
@@ -144,7 +144,7 @@ namespace Behemoth
 	bool NarrowSpherePlaneCollision(const SphereCollider& sphere, const Plane& plane, ContactData& contactData)
 	{
 		BMath::Vector3 spherePosition = sphere.center;
-		real distanceFromPlane = BMath::Vector3::Dot<real>(plane.normal, spherePosition) - sphere.radius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
+		real distanceFromPlane = BMath::Vector3::Dot(plane.normal, spherePosition) - sphere.radius - Plane::CalculatePlaneOffset(plane.normal, Plane::GetPointOnPlane(plane));
 
 		if (distanceFromPlane >= 0.0f)
 		{
@@ -208,7 +208,7 @@ namespace Behemoth
 
 	bool NarrowOBBSphereCollision(const OBBCollider& box, const SphereCollider& sphere, ContactData& contactData)
 	{
-		BMath::BMatrix3x3 rot = BMath::BMatrix3x3::Identity();
+		BMath::Matrix3x3 rot = BMath::Matrix3x3::Identity();
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -218,7 +218,7 @@ namespace Behemoth
 			}
 		}
 
-		BMath::Vector3 localToSphere = BMath::Vector3(BMath::BMatrix3x3::Inverse(rot) * BMath::Vector3(sphere.center - box.position));
+		BMath::Vector3 localToSphere = BMath::Vector3(BMath::Matrix3x3::Inverse(rot) * BMath::Vector3(sphere.center - box.position));
 
 		BMath::Vector3 closestPoint(0.0f);
 
@@ -292,15 +292,15 @@ namespace Behemoth
 		BMath::Vector3 normal = box1.orientation[bestIndex];
 
 		BMath::Vector3 collidingVertex = box2.extents / 2.0f;
-		if (BMath::Vector3::Dot<real>(box2.orientation[0], normal) < (real)0.0)
+		if (BMath::Vector3::Dot(box2.orientation[0], normal) < (real)0.0)
 		{
 			collidingVertex.x *= (real)-1.0;
 		}
-		if (BMath::Vector3::Dot<real>(box2.orientation[1], normal) < (real)0.0)
+		if (BMath::Vector3::Dot(box2.orientation[1], normal) < (real)0.0)
 		{
 			collidingVertex.y *= (real) - 1.0f;
 		}
-		if (BMath::Vector3::Dot<real>(box2.orientation[2], normal) < (real)0.0f)
+		if (BMath::Vector3::Dot(box2.orientation[2], normal) < (real)0.0f)
 		{
 			collidingVertex.z *= (real) - 1.0f;
 		}
@@ -337,13 +337,13 @@ namespace Behemoth
 		real dpStaOne, dpStaTwo, dpOneTwo, smOne, smTwo;
 		real denom, mua, mub;
 
-		smOne = BMath::Vector3::SquaredMagnitude<real>(dOne);
-		smTwo = BMath::Vector3::SquaredMagnitude<real>(dTwo);
-		dpOneTwo = BMath::Vector3::Dot<real>(dTwo, dOne);
+		smOne = BMath::Vector3::SquaredMagnitude(dOne);
+		smTwo = BMath::Vector3::SquaredMagnitude(dTwo);
+		dpOneTwo = BMath::Vector3::Dot(dTwo, dOne);
 
 		toSt = pOne - pTwo;
-		dpStaOne = BMath::Vector3::Dot<real>(dOne, toSt);
-		dpStaTwo = BMath::Vector3::Dot<real>(dTwo, toSt);
+		dpStaOne = BMath::Vector3::Dot(dOne, toSt);
+		dpStaTwo = BMath::Vector3::Dot(dTwo, toSt);
 
 		denom = smOne * smTwo - dpOneTwo * dpOneTwo;
 
@@ -375,8 +375,8 @@ namespace Behemoth
 	{
 		real rBox1, rBox2;
 
-		BMath::BMatrix3x3d rotationMatrix{};
-		BMath::BMatrix3x3d absRotationMatrix{};
+		BMath::Matrix3x3d rotationMatrix{};
+		BMath::Matrix3x3d absRotationMatrix{};
 
 		int bestIndex = -1;
 		int DEBUG_bestIndex = -1;
@@ -387,12 +387,12 @@ namespace Behemoth
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				rotationMatrix.data[i][j] = BMath::Vector3::Dot<real>(box1.orientation[i], box2.orientation[j]);
+				rotationMatrix.data[i][j] = BMath::Vector3::Dot(box1.orientation[i], box2.orientation[j]);
 			}
 		}
 
 		BMath::Vector3 dirVec = box2.position - box1.position;
-		dirVec = BMath::Vector3(BMath::Vector3::Dot<real>(dirVec, box1.orientation[0]), BMath::Vector3::Dot<real>(dirVec, box1.orientation[1]), BMath::Vector3::Dot<real>(dirVec, box1.orientation[2]));
+		dirVec = BMath::Vector3(BMath::Vector3::Dot(dirVec, box1.orientation[0]), BMath::Vector3::Dot(dirVec, box1.orientation[1]), BMath::Vector3::Dot(dirVec, box1.orientation[2]));
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -571,7 +571,7 @@ namespace Behemoth
 				{
 					ptOnOneEdge[i] = 0;
 				}
-				else if (BMath::Vector3::Dot<real>(box1.orientation[i], axis) > 0)
+				else if (BMath::Vector3::Dot(box1.orientation[i], axis) > 0)
 				{
 					ptOnOneEdge[i] = -ptOnOneEdge[i];
 				}
@@ -580,7 +580,7 @@ namespace Behemoth
 				{
 					ptOnTwoEdge[i] = 0;
 				}
-				else if (BMath::Vector3::Dot<real>(box2.orientation[i], axis) < 0)
+				else if (BMath::Vector3::Dot(box2.orientation[i], axis) < 0)
 				{
 					ptOnTwoEdge[i] = -ptOnTwoEdge[i];
 				}

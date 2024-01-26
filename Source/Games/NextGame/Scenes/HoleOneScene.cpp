@@ -99,7 +99,7 @@ void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 		ambientLight->intensity = 2;
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", { 1.0, 1.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", BMath::Vector2(1.0, 1.0));
 
 	goalHandle = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 0.0f);
 	goalComponent = registry.GetComponent<GoalComponent>(goalHandle);

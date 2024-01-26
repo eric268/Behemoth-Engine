@@ -21,7 +21,7 @@ namespace Behemoth
 		bool IsPrimitiveWithinFrustrum(const int numVerticies, BMath::Vector4 primitiveVerts[]);
 		bool IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* transformComp, const BoundingVolumeComponent* boundingComp);
 
-		void TransformVertex(const Primitive& primitive, const BMath::BMatrix4x4& transformMatix, BMath::Vector4 vertex[], const int numVerticies);
-		float ProcessVertex(const BMath::BMatrix4x4& viewProjMatrix, BMath::Vector4 verticies[], int numVerticies);
+		void TransformVertex(const Primitive& primitive, const BMath::Matrix4x4& transformMatix, BMath::Vector4 vertex[], const int numVerticies);
+		float ProcessVertex(const BMath::Matrix4x4& viewProjMatrix, BMath::Vector4 verticies[], int numVerticies);
 	};
 }

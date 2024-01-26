@@ -25,8 +25,8 @@ namespace Behemoth
 		void ProcessMesh(
 			Mesh& mesh,
 			TransformComponent* cameraTransform,
-			const BMath::BMatrix4x4& transform, 
-			const BMath::BMatrix4x4& viewProjMatrix,
+			const BMath::Matrix4x4& transform, 
+			const BMath::Matrix4x4& viewProjMatrix,
 			const BMath::Vector3& worldForwardVector,
 			bool dirty,
 			int renderSlotIndex);

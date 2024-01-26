@@ -23,7 +23,7 @@ namespace Behemoth
 // 				}
 //  			}
 
-			BMath::BMatrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
+			BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 
 			// Ensure local transform is updated first
 			ApplyRotation(transformComp, rotationMatrix, rotationComp->isAdditive);
@@ -56,13 +56,13 @@ namespace Behemoth
 		}
 	}
 
-	void RotationSystem::ApplyRotation(TransformComponent* transformComp, const BMath::BMatrix4x4& rotationMatrix, bool isAdditive)
+	void RotationSystem::ApplyRotation(TransformComponent* transformComp, const BMath::Matrix4x4& rotationMatrix, bool isAdditive)
 	{
-		BMath::BMatrix4x4 transform = (isAdditive) ?
+		BMath::Matrix4x4 transform = (isAdditive) ?
 			transformComp->localTransform :
 			TransformHelper::GetTransformNoRotation(transformComp->localTransform, transformComp->localScale);
 
-		BMath::BMatrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
+		BMath::Matrix4x4 rotatedTransformMatrix = rotationMatrix * transform;
 
 		for (int i = 0; i < 3; i++)
 		{
@@ -73,7 +73,7 @@ namespace Behemoth
 		}
 	}
 
-	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::BMatrix4x4& rotationMatrix)
+	void RotationSystem::RotateMeshNormals(MeshComponent* meshComponent, const BMath::Matrix4x4& rotationMatrix)
 	{
 		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
 		{
@@ -82,18 +82,18 @@ namespace Behemoth
 			// BMath::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[0], rotationMatrix, 0.0f);
 
 			Primitive& primitive = meshComponent->mesh.meshPrimitives[i];
-			primitive.normals[0] = BMath::Vector3(BMath::Vector4::Cross(primitive.verticies[1] - primitive.verticies[0], primitive.verticies[2] - primitive.verticies[0]));
+			primitive.normals[0] = BMath::Vector3(BMath::Vector4::Cross(primitive.vertices[1] - primitive.vertices[0], primitive.vertices[2] - primitive.vertices[0]));
 			primitive.normals[0].Normalize();
 		}
 	}
 
 	void RotationSystem::UpdateMeshNormalsFromParentRotation(TransformComponent* transformComp, MeshComponent* meshComponent)
 	{
-		BMath::BMatrix3x3 extractedLocal = TransformHelper::ExtractRotationMatrix(transformComp->localTransform, transformComp->localScale);
-		BMath::BMatrix3x3 extractedWorld = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, transformComp->worldScale);
+		BMath::Matrix3x3 extractedLocal = TransformHelper::ExtractRotationMatrix(transformComp->localTransform, transformComp->localScale);
+		BMath::Matrix3x3 extractedWorld = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, transformComp->worldScale);
 
-		BMath::BMatrix3x3 inverseLocal = BMath::BMatrix3x3::Inverse(extractedLocal);
-		BMath::BMatrix3x3 diffInRotation = extractedWorld * inverseLocal;
+		BMath::Matrix3x3 inverseLocal = BMath::Matrix3x3::Inverse(extractedLocal);
+		BMath::Matrix3x3 diffInRotation = extractedWorld * inverseLocal;
 
 		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
 		{
@@ -102,17 +102,17 @@ namespace Behemoth
 	}
 
 
-	BMath::Vector3 RotationSystem::GetForwardVector(const BMath::BMatrix4x4& transformMatrix)
+	BMath::Vector3 RotationSystem::GetForwardVector(const BMath::Matrix4x4& transformMatrix)
 	{
 		return  BMath::Vector3(-transformMatrix._31, -transformMatrix._32, -transformMatrix._33).Normalize();
 	}
 
-	BMath::Vector3 RotationSystem::GetUpVector(const BMath::BMatrix4x4& transformMatrix)
+	BMath::Vector3 RotationSystem::GetUpVector(const BMath::Matrix4x4& transformMatrix)
 	{
 		return  BMath::Vector3(transformMatrix._21, transformMatrix._22, transformMatrix._23).Normalize();
 	}
 
-	BMath::Vector3 RotationSystem::GetRightVector(const BMath::BMatrix4x4& transformMatrix)
+	BMath::Vector3 RotationSystem::GetRightVector(const BMath::Matrix4x4& transformMatrix)
 	{
 		return BMath::Vector3(transformMatrix._11, transformMatrix._12, transformMatrix._13).Normalize();
 	}

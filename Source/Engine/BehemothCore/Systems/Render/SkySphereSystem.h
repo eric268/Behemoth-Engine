@@ -27,14 +27,14 @@ namespace Behemoth
 			TransformComponent* transformComp,
 			SkySphereComponent* skySphereComponent,
 			TransformComponent* cameraTransform,
-			const BMath::BMatrix4x4& viewProjMatrix,
+			const BMath::Matrix4x4& viewProjMatrix,
 			int renderSlotIndex);
 
 		void ProcessPrimitive(
 			TransformComponent* transform,
 			SkySphereComponent* skySphere,
 			TransformComponent* cameraTransform,
-			const BMath::BMatrix4x4& viewProjMatrix,
+			const BMath::Matrix4x4& viewProjMatrix,
 			int primitiveIndex,
 			int vertexIndex,
 			int numVerticies);

@@ -24,10 +24,10 @@ namespace Behemoth
 			std::string filepath,
 			BMath::Vector2 position,
 			BMath::Vector2 dimensions,
-			bool isVisible =					true) 
+			bool isVisible = true) 
 			: 
-			image								(filepath, dimensions),
-			screenPosition						(position),
+			image(filepath, dimensions),
+			screenPosition(position),
 			isVisible(isVisible)  
 		{}
 

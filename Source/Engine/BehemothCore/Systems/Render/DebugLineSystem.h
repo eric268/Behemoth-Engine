@@ -27,7 +27,7 @@ namespace Behemoth
 	private:
 		void ReserveResources(int numLines);
 		bool CullLineSegement(Point& p1, Point& p2, const Plane* worldFrustmPlanes);
-		void ProcessLine(const Point&, const Point& p2, const BMath::BMatrix4x4& viewProjMatrix, BMath::Vector3 color);
+		void ProcessLine(const Point&, const Point& p2, const BMath::Matrix4x4& viewProjMatrix, BMath::Vector3 color);
 		void AddLineToRenderer(Line& line);
 		void DestroyExpiredLines(ECS::Registry& registry, std::vector<ECS::EntityHandle>& linesToDestroy);
 

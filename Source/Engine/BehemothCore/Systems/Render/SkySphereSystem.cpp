@@ -30,7 +30,7 @@ namespace Behemoth
 			}
 			 FollowCamera(transformComp, cameraTransform->worldPosition);
 
-			BMath::BMatrix4x4 viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
+			BMath::Matrix4x4 viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
 
 			ProcessSphere(transformComp, skySphereComp, cameraTransform, viewProjMatrix, renderSlotIndex);
 			renderSlotIndex += skySphereComp->mesh.meshPrimitives.size();
@@ -43,14 +43,14 @@ namespace Behemoth
 	// Otherwise the models verticies are stored in the resource manager and loaded for rendering
 	void SkySphereSystem::InitalizeSphere(SkySphereComponent* skySphereComponent)
 	{
-		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVerticies(skySphereComponent->mesh.meshData.modelFileName);
+		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVertices(skySphereComponent->mesh.meshData.modelFileName);
 		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(skySphereComponent->mesh.meshData.modelFileName);
 		skySphereComponent->mesh.GenerateMesh(meshData, vertexData);
-		skySphereComponent->verticies.resize(vertexData.size());
+		skySphereComponent->vertices.resize(vertexData.size());
 
 		for (int i = 0; i < vertexData.size(); i++)
 		{
-			skySphereComponent->verticies[i] = vertexData[i].vertex;
+			skySphereComponent->vertices[i] = vertexData[i].position;
 		}
 
 		// Want all of the "sky sphere" primitives to be drawn first since they should always be considered the furthest possible
@@ -67,7 +67,7 @@ namespace Behemoth
 		TransformComponent* transformComp, 
 		SkySphereComponent* skySphereComponent,
 		TransformComponent* cameraTransform,
-		const BMath::BMatrix4x4& viewProjMatrix, 
+		const BMath::Matrix4x4& viewProjMatrix, 
 		int renderSlotIndex)
 	{
 		const MeshData& meshData = skySphereComponent->mesh.meshData;
@@ -99,7 +99,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformComp->worldTransform * BMath::Vector4(skySphereComponent->verticies[vertexIndex++], 1.0f);
+					primitive.vertices[j] = transformComp->worldTransform * BMath::Vector4(skySphereComponent->vertices[vertexIndex++], 1.0f);
 				}
 			}
 			else
@@ -109,13 +109,13 @@ namespace Behemoth
 
 			// We can invert this function result since we are inside the sphere, so primitives pointing in the same direction as the 
 			// camera (back face) should be renderer, and primitives pointing back at the camera should be culled (front faces)
-			if (!CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.verticies))
+			if (!CullBackFace(cameraTransform->worldPosition, cameraTransform->forwardVector, primitive.vertices))
 			{
 				continue;
 			}
 
 			BMath::Vector4 renderVerts[4];
-			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
+			memcpy(renderVerts, primitive.vertices, sizeof(BMath::Vector4) * 4);
 
 			ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
 

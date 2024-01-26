@@ -95,7 +95,7 @@ namespace Behemoth
 				{
 					int index = isNonPlanarQuad ? quadIndex[i] : i;
 					VertexData vData{};
-					vData.vertex = vertexPositions[vertexIndices[index] - 1];
+					vData.position = vertexPositions[vertexIndices[index] - 1];
 					vData.normal = vertexNormals[normalIndices[index] - 1];
 					vData.uv = vertexUVs[uvIndices[index] - 1];
 
@@ -139,6 +139,6 @@ namespace Behemoth
 
 		BMath::Vector3 normal = BMath::Vector3::Cross(vec1, vec2);
 		float dotProduct = BMath::Vector3::Dot(normal, vec3);
-		return std::fabs(dotProduct) > 1e-5;
+		return std::abs(dotProduct) > EPSILON;
 	}
 }

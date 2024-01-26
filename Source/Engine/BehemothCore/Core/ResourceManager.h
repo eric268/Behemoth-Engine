@@ -23,7 +23,7 @@ namespace Behemoth
 
 		static ResourceManager& GetInstance();
 
-		const std::vector<VertexData>& GetMeshVerticies(const std::string& filePath);
+		const std::vector<VertexData>& GetMeshVertices(const std::string& filePath);
 		const MeshData& GetMeshData(const std::string& filePath);
 		const std::string& GetTexturePath(const std::string& textureName);
 		const std::string& GetSoundClipPath(const std::string& soundclipName);

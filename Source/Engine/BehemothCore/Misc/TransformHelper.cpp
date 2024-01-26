@@ -14,7 +14,7 @@ namespace Behemoth
 // 			if (transformComp->parentIsDirty || transformComp->isDirty)
 // 			{
 				// Combine parent's world transform with child's local transform
-				BMath::BMatrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform, parentTransform->worldScale) *
+				BMath::Matrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform, parentTransform->worldScale) *
 					TransformHelper::RemoveScale(transformComp->localTransform, transformComp->localScale);
 
 				for (int i = 0; i < 3; i++)
@@ -63,18 +63,18 @@ namespace Behemoth
 		return nullptr;
 	}
 
-	BMath::BMatrix4x4 TransformHelper::GetParentTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
+	BMath::Matrix4x4 TransformHelper::GetParentTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
 	{
 		if (TransformComponent* transform = GetParentTransformComp(registry, entityHandle))
 		{
 			return transform->worldTransform;
 		}
-		return BMath::BMatrix4x4::Identity();
+		return BMath::Matrix4x4::Identity();
 	}
 
-	BMath::BMatrix4x4 TransformHelper::GetTransformNoRotation(const BMath::BMatrix4x4& m, const BMath::Vector3& scale)
+	BMath::Matrix4x4 TransformHelper::GetTransformNoRotation(const BMath::Matrix4x4& m, const BMath::Vector3& scale)
 	{
-		BMath::BMatrix4x4 result = BMath::BMatrix4x4::Identity();
+		BMath::Matrix4x4 result = BMath::Matrix4x4::Identity();
 
 		result._11 = scale[0];
 		result._22 = scale[1];
@@ -87,9 +87,9 @@ namespace Behemoth
 		return result;
 	}
 
-	BMath::BMatrix4x4 TransformHelper::RemoveScale(const BMath::BMatrix4x4& transform, const BMath::Vector3& scale)
+	BMath::Matrix4x4 TransformHelper::RemoveScale(const BMath::Matrix4x4& transform, const BMath::Vector3& scale)
 	{
-		BMath::BMatrix4x4 m = BMath::BMatrix4x4::Identity();
+		BMath::Matrix4x4 m = BMath::Matrix4x4::Identity();
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
@@ -105,9 +105,9 @@ namespace Behemoth
 		return m;
 	}
 
-	BMath::BMatrix3x3 TransformHelper::ExtractRotationMatrix(const  BMath::BMatrix4x4& transformMatrix, BMath::Vector3 scale)
+	BMath::Matrix3x3 TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4& transformMatrix, BMath::Vector3 scale)
 	{
-		BMath::BMatrix3x3 m{};
+		BMath::Matrix3x3 m{};
 
 		for (int i = 0; i < 3; i++)
 		{

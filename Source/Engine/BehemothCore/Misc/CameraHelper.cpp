@@ -10,7 +10,7 @@
 
 namespace Behemoth
 {
-	BMath::BMatrix4x4 CameraHelper::LookAt(const BMath::Vector3& eye, const BMath::Vector3& target, const BMath::Vector3& up)
+	BMath::Matrix4x4 CameraHelper::LookAt(const BMath::Vector3& eye, const BMath::Vector3& target, const BMath::Vector3& up)
 	{
 		const BMath::Vector3 zAxis = BMath::Vector3::Normalize(eye - target);
 		const BMath::Vector3 xAxis = BMath::Vector3::Normalize(BMath::Vector3::Cross(up, zAxis));
@@ -20,7 +20,7 @@ namespace Behemoth
 		const float ty = -BMath::Vector3::Dot(yAxis, eye);
 		const float tz = -BMath::Vector3::Dot(zAxis, eye);
 
-		BMath::BMatrix4x4 viewMatrix =
+		BMath::Matrix4x4 viewMatrix =
 		{
 			{ xAxis.x, xAxis.y, xAxis.z, tx},
 			{ yAxis.x, yAxis.y, yAxis.z, ty},

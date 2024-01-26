@@ -49,7 +49,7 @@ namespace Behemoth
 
 	void MeshInitSystem::InitMesh(Mesh& mesh)
 	{
-		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVerticies(mesh.meshData.modelFileName);
+		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVertices(mesh.meshData.modelFileName);
 		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(mesh.meshData.modelFileName);
 		mesh.GenerateMesh(meshData, vertexData);
 	}
@@ -101,7 +101,7 @@ namespace Behemoth
 // 		}
 // 	}
 // 
-// 	void MeshInitSystem::GetRotatedAABB(const AABBCollider& a, const BMath::BMatrix3x3& rotation,  AABBCollider& result)
+// 	void MeshInitSystem::GetRotatedAABB(const AABBCollider& a, const BMath::Matrix3x3& rotation,  AABBCollider& result)
 // 	{
 // 		for (int i = 0; i < 3; i++)
 // 		{

@@ -16,7 +16,7 @@ namespace Behemoth
 			BoundingVolumeComponent* boundingVolumeComponent,
 			TransformComponent* transform,
 			const BMath::Vector3 cameraPosition,
-			const BMath::BMatrix4x4& viewProjMatrix);
+			const BMath::Matrix4x4& viewProjMatrix);
 	};
 }
 

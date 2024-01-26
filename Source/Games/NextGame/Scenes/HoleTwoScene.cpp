@@ -87,7 +87,7 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 		ambientLight->intensity = 0.8;
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", BMath::Vector2(1.0, 1.0));
 
 	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
 		registry,

@@ -10,39 +10,39 @@
 namespace Behemoth
 {
 	template <typename T>
-	struct UnitOfMeasurment;
+	struct UnitOfMeasurement;
 
 	template <>
-	struct UnitOfMeasurment<std::chrono::nanoseconds> {
+	struct UnitOfMeasurement<std::chrono::nanoseconds> {
 		static std::string name() { return " nanoseconds"; }
 	};
 
 	template <>
-	struct UnitOfMeasurment<std::chrono::microseconds> {
+	struct UnitOfMeasurement<std::chrono::microseconds> {
 		static std::string name() { return " microseconds"; }
 	};
 
 	template <>
-	struct UnitOfMeasurment<std::chrono::milliseconds> {
+	struct UnitOfMeasurement<std::chrono::milliseconds> {
 		static std::string name() { return " milliseconds"; }
 	};
 
 	template <>
-	struct UnitOfMeasurment<std::chrono::seconds> {
+	struct UnitOfMeasurement<std::chrono::seconds> {
 		static std::string name() { return " seconds"; }
 	};
 
 	template <>
-	struct UnitOfMeasurment<std::chrono::minutes> {
+	struct UnitOfMeasurement<std::chrono::minutes> {
 		static std::string name() { return " minutes"; }
 	};
 
 	template <>
-	struct UnitOfMeasurment<std::chrono::hours> {
+	struct UnitOfMeasurement<std::chrono::hours> {
 		static std::string name() { return " hours"; }
 	};
 
-	// Concept to ensure type passed into Stopwatch is chorno time type
+	// Concept to ensure type passed into Stopwatch is chrono time type
 	template <typename T>
 	concept IsChronoType = requires(T a) {
 		typename T::rep;

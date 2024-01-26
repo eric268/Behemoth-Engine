@@ -12,9 +12,9 @@ namespace Behemoth
 		float maxDistance = 0.0f;
 		for (const auto& v : verticies)
 		{
-			maxDistance = std::max(maxDistance, v.vertex.x);
-			maxDistance = std::max(maxDistance, v.vertex.y);
-			maxDistance = std::max(maxDistance, v.vertex.z);
+			maxDistance = std::max(maxDistance, v.position.x);
+			maxDistance = std::max(maxDistance, v.position.y);
+			maxDistance = std::max(maxDistance, v.position.z);
 		}
 		if (maxDistance)
 		{
@@ -33,16 +33,16 @@ namespace Behemoth
 
 		for (const auto& v : verticies)
 		{
-			float distance = BMath::Vector3::Distance(position, v.vertex);
+			float distance = BMath::Vector3::Distance(position, v.position);
 
 			// Then we want to expand/move the sphere since this vertex is outside the current bounds
 			if (distance > radius)
 			{
 				float newRadius = (radius + distance) * 0.5f;
 				BMath::Vector3 newCenter = position;
-				newCenter.x += (v.vertex.x - position.x) * (newRadius - radius) / distance;
-				newCenter.y += (v.vertex.y - position.y) * (newRadius - radius) / distance;
-				newCenter.z += (v.vertex.z - position.z) * (newRadius - radius) / distance;
+				newCenter.x += (v.position.x - position.x) * (newRadius - radius) / distance;
+				newCenter.y += (v.position.y - position.y) * (newRadius - radius) / distance;
+				newCenter.z += (v.position.z - position.z) * (newRadius - radius) / distance;
 				
 				position = newCenter;
 				radius = newRadius;
@@ -59,7 +59,7 @@ namespace Behemoth
 		return true;
 	}
 
-	bool BoundingGenerator::GenerateRotatedAABB(const AABBCollider& collider, const BMath::BMatrix3x3& rotationMatrix, AABBCollider& rotatedCollider)
+	bool BoundingGenerator::GenerateRotatedAABB(const AABBCollider& collider, const BMath::Matrix3x3& rotationMatrix, AABBCollider& rotatedCollider)
 	{
 		for (int i = 0; i < 3; i++)
 		{

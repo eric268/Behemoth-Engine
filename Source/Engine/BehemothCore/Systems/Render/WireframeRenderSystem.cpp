@@ -45,11 +45,11 @@ namespace Behemoth
 		}
 	}
 
-	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::BMatrix4x4& transformMatrix, const BMath::BMatrix4x4& viewProjMatrix, bool isDirty, BMath::Vector3 color)
+	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix, bool isDirty, BMath::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
 
-		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
+		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVertices(meshData.modelFileName);
 
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
@@ -66,7 +66,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].vertex, 1.0f);
+					primitive.vertices[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].position, 1.0f);
 				}
 			}
 			else
@@ -77,7 +77,7 @@ namespace Behemoth
 			
 
 			BMath::Vector4 renderVerts[4];
-			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
+			memcpy(renderVerts, primitive.vertices, sizeof(BMath::Vector4) * 4);
 
 			ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
 
@@ -105,9 +105,9 @@ namespace Behemoth
 		Renderer::GetInstance().ReserveLines(numPrimitives * 4);
 	}
 
-	BMath::BMatrix4x4 WireframeRenderSystem::GetWireframeTransform(const BMath::BMatrix4x4& ownerTransform, const BMath::Vector3& ownerWorldScale, const BMath::Vector3& wireframeScale, const bool allowRotation)
+	BMath::Matrix4x4 WireframeRenderSystem::GetWireframeTransform(const BMath::Matrix4x4& ownerTransform, const BMath::Vector3& ownerWorldScale, const BMath::Vector3& wireframeScale, const bool allowRotation)
 	{
-		BMath::Matrix4x4 scaledMatrix = BMath::BMatrix4x4::Identity();
+		BMath::Matrix4x4 scaledMatrix = BMath::Matrix4x4::Identity();
 		for (int i = 0; i < 3; i++)
 		{
 			scaledMatrix.data[i][i] = wireframeScale[i];

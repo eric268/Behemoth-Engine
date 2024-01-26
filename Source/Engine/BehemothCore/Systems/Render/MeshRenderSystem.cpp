@@ -87,8 +87,8 @@ namespace Behemoth
 	void MeshRenderSystem::ProcessMesh(
 		Mesh& mesh,
 		TransformComponent* cameraTransform,
-		const BMath::BMatrix4x4& transformMatrix,
-		const BMath::BMatrix4x4& viewProjMatrix,
+		const BMath::Matrix4x4& transformMatrix,
+		const BMath::Matrix4x4& viewProjMatrix,
 		const BMath::Vector3& cameraWorldFwdVec,
 		bool isDirty,
 		int renderSlotIndex)
@@ -97,7 +97,7 @@ namespace Behemoth
 
 		// Only need to load this if the transform is dirty otherwise the world space locations of the model are still correct from laster render pass
 		// need to find a good way to only include if is dirty
-		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVerticies(meshData.modelFileName);
+		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVertices(meshData.modelFileName);
 
 		int numVerticies = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
@@ -115,7 +115,7 @@ namespace Behemoth
 			{
 				for (int j = 0; j < numVerticies; j++)
 				{
-					primitive.verticies[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].vertex, 1.0f);
+					primitive.vertices[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].position, 1.0f);
 				}
 			}
 			else
@@ -124,7 +124,7 @@ namespace Behemoth
 			}
 
 			// Check if primitive face is in direction of camera or if it can be culled
-			if (CullBackFace(cameraTransform->worldPosition, cameraWorldFwdVec, primitive.verticies))
+			if (CullBackFace(cameraTransform->worldPosition, cameraWorldFwdVec, primitive.vertices))
 			{
 				continue;
 			}
@@ -132,7 +132,7 @@ namespace Behemoth
 			// Store what will become the NDC coordinates in a separate container
 			// This is so we can use the primtives world space vertex info later in places such as lighting
 			BMath::Vector4 renderVerts[4];
-			memcpy(renderVerts, primitive.verticies, sizeof(BMath::Vector4) * 4);
+			memcpy(renderVerts, primitive.vertices, sizeof(BMath::Vector4) * 4);
 
 			// Multiplies the primitive by the view projection matrix, gets the depth to be used for draw order
 			primitive.depth = ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
@@ -172,7 +172,7 @@ namespace Behemoth
 
 	void MeshRenderSystem::AddPrimitiveToRenderer(Primitive& primitive, const int numVerticies, const BMath::Vector4 vertex[], int renderSlotIndex)
 	{
-		primitive.SetSpriteVerticies(numVerticies, vertex);
+		primitive.SetSpriteVertices(numVerticies, vertex);
 		Renderer::GetInstance().AddPrimitive(&primitive, renderSlotIndex);
 	}
 

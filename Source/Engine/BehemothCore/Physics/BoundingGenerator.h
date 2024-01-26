@@ -16,7 +16,7 @@ namespace Behemoth
 	{
 		static bool GenerateAABBBoundingVolume(const std::vector<VertexData>& verticies, AABBCollider& collider);
 		static bool GenerateSphereBoundingVolume(const std::vector<VertexData>& verticies, SphereCollider& collider);
-		static bool GenerateRotatedAABB(const AABBCollider& collider, const BMath::BMatrix3x3& rotationMatrix, AABBCollider& rotatedCollider);
+		static bool GenerateRotatedAABB(const AABBCollider& collider, const BMath::Matrix3x3& rotationMatrix, AABBCollider& rotatedCollider);
 	};
 
 	template<typename T>

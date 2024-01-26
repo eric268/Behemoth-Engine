@@ -39,7 +39,7 @@ namespace Behemoth
 
 		void Draw();
 
-		BMath::Vector4 verticies[4];
+		BMath::Vector4 vertices[4];
 		BMath::Vector3 normals[4];
 		BMath::Vector2 uv[4];
 
@@ -52,9 +52,9 @@ namespace Behemoth
 		bool affectedByLighting;
 
 		void SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[]);
-		void SetSpriteVerticies(const int numVerticies, const BMath::Vector4 vert[]);
-		void SetSpriteVerticies(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[]);
-		void SetPrimitiveVerticies(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector3 normal[], BMath::Vector2 uv[]);
+		void SetSpriteVertices(const int numVerticies, const BMath::Vector4 vert[]);
+		void SetSpriteVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[]);
+		void SetPrimitiveVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector3 normal[], BMath::Vector2 uv[]);
 
 		inline void SetLighting(BMath::Vector3 c)
 		{
@@ -68,9 +68,9 @@ namespace Behemoth
 		}
 
 	private:
-		inline void CopyVertexData(const BMath::Vector4* verticies, const BMath::Vector3* normals, const BMath::Vector2* uv) 
+		inline void CopyVertexData(const BMath::Vector4* vertices, const BMath::Vector3* normals, const BMath::Vector2* uv) 
 		{
-			std::memcpy(this->verticies, verticies, sizeof(BMath::Vector4) * 4);
+			std::memcpy(this->vertices, vertices, sizeof(BMath::Vector4) * 4);
 			std::memcpy(this->normals, normals, sizeof(BMath::Vector3) * 4);
 			std::memcpy(this->uv, uv, sizeof(BMath::Vector2) * 4);
 		}
