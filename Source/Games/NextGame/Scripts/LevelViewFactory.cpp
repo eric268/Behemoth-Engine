@@ -5,6 +5,7 @@
 #include "Factories/CameraFactory.h"
 #include "Factories/GameObjectFactory.h"
 #include "GameComponents/Player/PCComponent.h"
+#include "Misc/GameObjectHelper.h"
 
 ECS::EntityHandle LevelViewFactory::CreateLevelViewEntity(
 	ECS::Registry& registry,
@@ -27,7 +28,7 @@ ECS::EntityHandle LevelViewFactory::CreateLevelViewEntity(
 		cameraComponent->focusedEntity = levelViewHandle;
 	}
 
-	Behemoth::GameObjectFactory::AddChildObject(registry, levelViewHandle, cameraEntitiy);
+	Behemoth::GameObjectHelper::AddChildObject(registry, levelViewHandle, cameraEntitiy);
 
 	LevelViewComponent* levelViewComponent = registry.AddComponent<LevelViewComponent>(
 		levelViewHandle,

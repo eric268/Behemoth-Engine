@@ -48,15 +48,11 @@ namespace Behemoth
 		bool isDirty;
 	};
 
-	struct MeshInitalizeComponent : public ECS::Component
+	struct MeshInitializeComponent : public ECS::Component
 	{
-		MeshInitalizeComponent(bool initBoundingVolume = true,bool initBroadCollider = true) :
-			initBoundingVolume(initBoundingVolume),
-			initBroadCollider(initBroadCollider)
-		{}
+		MeshInitializeComponent(bool initBoundingVolume = true) : initBoundingVolume(initBoundingVolume) {}
 
 		bool initBoundingVolume;
-		bool initBroadCollider;
 	};
 
 	struct TransformComponent : public ECS::Component

@@ -25,13 +25,13 @@ namespace ECS
 
 		entity_identifier GetIdentifier() const
 		{
-			return ID & 0x0000FFFF;
+			return ID & NULL_IDENTIFIER;
 		}
 
 		inline void IncrementVersion()
 		{
 			entity_version version = (ID >> 16) + 1;
-			ID = (version << 16) | (ID & 0x0000FFFF);
+			ID = (version << 16) | (ID & NULL_IDENTIFIER);
 		}
 
 		entity_version GetVersion() const
@@ -51,17 +51,12 @@ namespace ECS
 
 		void SetIDToNull()
 		{
-			ID = 0xFFFFFFFF;
-		}
-
-		void SetVersionToNull()
-		{
-			ID = (0xFFFF << 16) | (ID & 0x0000FFFF);
+			ID = NULL_ENTITY;
 		}
 
 		static void SetVersion(entity_id& ID, entity_id version)
 		{
-			ID = (version << 16) | (ID & 0x0000FFFF);
+			ID = (version << 16) | (ID & NULL_IDENTIFIER);
 		}
 
 		const bool operator == (const Entity& e) const
@@ -75,7 +70,7 @@ namespace ECS
 
 		static inline entity_identifier GetIdentifier(entity_id ID)
 		{
-			return ID & 0x0000FFFF;
+			return ID & NULL_IDENTIFIER;
 		}
 
 		static inline entity_version GetVersion(entity_id ID)
@@ -90,7 +85,7 @@ namespace ECS
 
 		bool IsValid()
 		{
-			return ID != 0xFFFFFFFF;
+			return ID != NULL_IDENTIFIER;
 		}
 		
 	private:

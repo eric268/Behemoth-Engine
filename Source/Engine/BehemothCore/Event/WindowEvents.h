@@ -9,8 +9,6 @@ namespace Behemoth
 	{
 	public:
 		WindowResizeEvent(int w, int h) : width(w), height(h) {}
-
-		static EventType GetStaticEventType() { return EventType::WindowResize; }
 		virtual EventType GetEventType() override { return EventType::WindowResize; }
 		virtual uint16_t GetEventFlags() override { return EventFlags::Window; }
 
@@ -23,8 +21,6 @@ namespace Behemoth
 	{
 	public:
 		WindowMoveEvent(int x, int y) : xPos(x), yPos(y) {}
-
-		static EventType GetStaticEventType() { return EventType::WindowMove; }
 		virtual EventType GetEventType() override { return EventType::WindowMove; }
 		virtual uint16_t GetEventFlags() override { return EventFlags::Window; }
 
@@ -37,8 +33,6 @@ namespace Behemoth
 	{
 	public:
 		WindowCloseEvent() {}
-
-		static EventType GetStaticEventType() { return EventType::WindowClose; }
 		virtual EventType GetEventType() override { return EventType::WindowClose; }
 		virtual uint16_t GetEventFlags() override { return EventFlags::Window; }
 	};

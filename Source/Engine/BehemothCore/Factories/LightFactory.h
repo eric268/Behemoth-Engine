@@ -1,10 +1,12 @@
 #pragma once
 
-#include "ECS/Entity.h"
-#include "ECS/Registry.h"
 #include "Math/Vector.h"
 
-#include <string>
+namespace ECS
+{
+	class Registry;
+	struct EntityHandle;
+}
 
 namespace Behemoth
 {
@@ -15,9 +17,9 @@ namespace Behemoth
 			const BMath::Vector3& location,
 			const BMath::Vector3& color,
 			float intensity,
-			const std::string& texture,
-			bool showMesh = true,
-			const std::string& name = "Point Light");
+			const std::string& name = "Point Light",
+			const std::string& modelName = "",
+			const std::string& texture = "");
 	};
 }
 

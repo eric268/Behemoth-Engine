@@ -8,12 +8,12 @@ namespace ECS
 		template <typename T>
 		static int Value()
 		{
-			static int value = Initalize();
+			static int value = Initialize();
 			return value;
 		}
 
 	private:
-		static int Initalize()
+		static int Initialize()
 		{
 			static int value = 0;
 			return value++;

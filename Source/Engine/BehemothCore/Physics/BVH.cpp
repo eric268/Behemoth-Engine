@@ -163,7 +163,7 @@ namespace Behemoth
 			registry.AddComponent<MoveComponent>(handle, collider.position);
 			registry.AddComponent<AABBColliderComponent>(handle, collider.extents);
 	
-			registry.AddComponent<MeshInitalizeComponent>(handle);
+			registry.AddComponent<MeshInitializeComponent>(handle);
 			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.extents,false, true, color);
 		}
 #endif
@@ -189,7 +189,7 @@ namespace Behemoth
  			registry.AddComponent<MoveComponent>(handle, node->collider.position);
  			registry.AddComponent<AABBColliderComponent>(handle, node->collider.extents);
  
- 			registry.AddComponent<MeshInitalizeComponent>(handle);
+ 			registry.AddComponent<MeshInitializeComponent>(handle);
  			registry.AddComponent<WireframeComponent>(handle, "cube.obj", node->collider.extents, false, true, color);
  		}
 #endif

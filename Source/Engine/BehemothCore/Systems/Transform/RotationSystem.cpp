@@ -11,33 +11,23 @@ namespace Behemoth
 {
 	void RotationSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto components = registry.Get<RotationComponent, TransformComponent>();
-
-		for (const auto& [entity, rotationComp, transformComp] : components)
+		for (const auto& [entity, rotationComp, transformComp] : registry.Get<RotationComponent, TransformComponent>())
 		{
-//  			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity(), EPSILON) && rotationComp->isAdditive)
-//  			{
-// 				if (!transformComp->parentIsDirty && !transformComp->isDirty)
-// 				{
-//  					continue;
-// 				}
-//  			}
-
 			BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 
 			// Ensure local transform is updated first
 			ApplyRotation(transformComp, rotationMatrix, rotationComp->isAdditive);
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
-
-			rotationComp->quat = BMath::Quaternion::Identity();
-			rotationComp->isAdditive = true;
+			transformComp->isDirty = true;
 
 			transformComp->forwardVector = GetForwardVector(transformComp->localTransform);
 			transformComp->rightVector = GetRightVector(transformComp->localTransform);
 			transformComp->upVector = GetUpVector(transformComp->localTransform);
 
-			transformComp->isDirty = true;
+			rotationComp->isAdditive = true;
+			rotationComp->quat = BMath::Quaternion::Identity();
+
 
 			// If this entity has a camera component we need to update the view matrix as well after a rotation
 
@@ -77,8 +67,8 @@ namespace Behemoth
 	{
 		for (int i = 0; i < meshComponent->mesh.meshPrimitives.size(); i++)
 		{
-			// This method is faster than recalulating the normal, but this rotation matrix does not take into account parent rotation
-			// Need to check if gettings the mesh normal from resource manager, then multiplying by world transform, then setting primitive normal is still faster
+			// This method is faster than recalculating the normal, but this rotation matrix does not take into account parent rotation
+			// Need to check if getting the mesh normal from resource manager, then multiplying by world transform, then setting primitive normal is still faster
 			// BMath::Vector3::RotateVector(meshComponent->mesh.meshPrimitives[i].normals[0], rotationMatrix, 0.0f);
 
 			Primitive& primitive = meshComponent->mesh.meshPrimitives[i];

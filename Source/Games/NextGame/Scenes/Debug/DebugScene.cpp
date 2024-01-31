@@ -63,14 +63,19 @@ void DebugScene::Update(const float deltaTime)
 
 	MoveObject(
 		exampleParentEntity, 
-		Behemoth::KC_I, 
-		Behemoth::KC_K,
-		Behemoth::KC_J,
-		Behemoth::KC_L,
-		Behemoth::KC_O,
-		Behemoth::KC_U,
+		Behemoth::KC_Up, 
+		Behemoth::KC_Down,
+		Behemoth::KC_Left,
+		Behemoth::KC_Right,
+		Behemoth::KC_End,
+		Behemoth::KC_Delete,
 		Behemoth::KC_Plus,
 		Behemoth::KC_Minus);
+
+	if (Behemoth::Input::IsKeyDown(Behemoth::KC_Space))
+	{
+		registry.AddComponent<Behemoth::ScalingComponent>(exampleChildEntity1, BMath::Vector3(0.5f, 3.0f, 1.5f));
+	}
 }
 
 void DebugScene::Shutdown()

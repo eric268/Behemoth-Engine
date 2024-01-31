@@ -102,7 +102,7 @@ namespace Behemoth
 			}
 			else
 			{
-				LOGMESSAGE(MessageType::Warning, "Unable to output stopwatch to log");
+				LOGMESSAGE(MessageType::Warning, "Unable to output stopwatch results to log");
 			}
 		}
 

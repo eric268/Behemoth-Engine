@@ -8,7 +8,7 @@ void PlayerFallSystem::Run(const float deltaTime, ECS::Registry& registry)
 	for (const auto& [
 		entity, 
 			playerComponent, 
-			playerFellComponent] : registry.Get<PlayerComponent, PlayerFellComponent>())
+			playerFellComponent] : registry.Get<PlayerComponent, PlayerFallComponent>())
 	{
  		if (Behemoth::TransformComponent* springArmTransform = registry.GetComponent<Behemoth::TransformComponent>(playerComponent->cameraSpringArm))
  		{
@@ -25,8 +25,7 @@ void PlayerFallSystem::Run(const float deltaTime, ECS::Registry& registry)
 		registry.AddComponent<Behemoth::TimerComponent>(timerEntity, playerFellComponent->timeUntilRespawn,
 			[this, &registry, entity]() { this->RespawnPlayer(registry, entity); });
 
-		// RespawnPlayer(registry, entity);
-		registry.RemoveComponent<PlayerFellComponent>(entity);
+		registry.RemoveComponent<PlayerFallComponent>(entity);
 	}
 }
 

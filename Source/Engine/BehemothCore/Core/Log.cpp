@@ -12,10 +12,11 @@ std::string TrimFilenamePath(const std::string& fullPath)
 	size_t secondLastSlash = fullPath.substr(0, lastSlash).find_last_of("\\/");
 	if (secondLastSlash == std::string::npos)
 	{
-		return fullPath.substr(lastSlash + 1); // Return one segment if only one backslash found
+		// Return one segment if only one backslash found
+		return fullPath.substr(lastSlash + 1);
 	}
-
-	return fullPath.substr(secondLastSlash + 1); // Return last two segments
+	// Return last two segments
+	return fullPath.substr(secondLastSlash + 1);
 }
 
 std::string GetMessageType(MessageType type)

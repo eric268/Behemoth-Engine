@@ -8,34 +8,26 @@ namespace Behemoth
 {
 	void TransformHelper::UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp)
 	{
-		TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, handle);
-		if (parentTransform)
+		if (TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, handle))
 		{
-// 			if (transformComp->parentIsDirty || transformComp->isDirty)
-// 			{
-				// Combine parent's world transform with child's local transform
-				BMath::Matrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform, parentTransform->worldScale) *
-					TransformHelper::RemoveScale(transformComp->localTransform, transformComp->localScale);
+			// Combine parent's world transform with child's local transform
+			BMath::Matrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform) *
+				TransformHelper::RemoveScale(transformComp->localTransform);
 
-				for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
 				{
-					for (int j = 0; j < 3; j++)
-					{
-						transformComp->worldTransform.data[i][j] = combinedTransform.data[i][j] * transformComp->worldScale[i];
-					}
+					transformComp->worldTransform.data[i][j] = combinedTransform.data[i][j] * transformComp->worldScale[i];
 				}
+			}
 
-				transformComp->worldPosition = BMath::Vector3(combinedTransform._41, combinedTransform._42, combinedTransform._43);
-				transformComp->worldTransform._41 = transformComp->worldPosition.x;
-				transformComp->worldTransform._42 = transformComp->worldPosition.y;
-				transformComp->worldTransform._43 = transformComp->worldPosition.z;
-				transformComp->worldScale = parentTransform->worldScale * transformComp->localScale;
-				transformComp->parentIsDirty = false;
-	//		}
-// 			else
-// 			{
-// 				// Need to update world transform with change in local transform
-// 			}
+			transformComp->worldPosition = BMath::Vector3(combinedTransform._41, combinedTransform._42, combinedTransform._43);
+			transformComp->worldTransform._41 = transformComp->worldPosition.x;
+			transformComp->worldTransform._42 = transformComp->worldPosition.y;
+			transformComp->worldTransform._43 = transformComp->worldPosition.z;
+			transformComp->worldScale = parentTransform->worldScale * transformComp->localScale;
+			transformComp->parentIsDirty = false;
 		}
 		else
 		{
@@ -87,20 +79,27 @@ namespace Behemoth
 		return result;
 	}
 
-	BMath::Matrix4x4 TransformHelper::RemoveScale(const BMath::Matrix4x4& transform, const BMath::Vector3& scale)
+	BMath::Matrix4x4 TransformHelper::RemoveScale(const BMath::Matrix4x4& transform)
 	{
-		BMath::Matrix4x4 m = BMath::Matrix4x4::Identity();
+		BMath::Matrix4x4 m = transform;
+
 		for (int i = 0; i < 3; i++)
 		{
+			float length = 0.0f;
 			for (int j = 0; j < 3; j++)
 			{
-				m.data[i][j] = transform.data[i][j] / scale[i];
+				length += m.data[j][i] * m.data[j][i];
+			}
+			length = sqrt(length);
+
+			if (length != 0)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					m.data[j][i] /= length;
+				}
 			}
 		}
-
-		m._41 = transform._41;
-		m._42 = transform._42;
-		m._43 = transform._43;
 
 		return m;
 	}
@@ -117,7 +116,6 @@ namespace Behemoth
 			}
 		}
 
-
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
@@ -131,7 +129,7 @@ namespace Behemoth
 	void TransformHelper::NotifyChildrenTransformChange(ECS::Registry& registry, ECS::EntityHandle handle)
 	{
 
-		if (auto parentComp = registry.GetComponent<ParentComponent>(handle))
+		if (const auto& parentComp = registry.GetComponent<ParentComponent>(handle))
 		{
 			for (int i = parentComp->childHandles.size() - 1; i >= 0; i--)
 			{

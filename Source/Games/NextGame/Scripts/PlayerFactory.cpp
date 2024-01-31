@@ -4,7 +4,7 @@
 #include "GameComponents/Player/PCComponent.h"
 #include "GameComponents/Player/PlayerComponent.h"
 #include "Components/UIComponents.h"
-
+#include "Misc/GameObjectHelper.h"
 
 ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMath::Vector3& spawnLocation)
 {
@@ -24,7 +24,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 
 	// Create an arrow child component to indicate aim direction
 	const ECS::EntityHandle arrowMeshHandle = Behemoth::GameObjectFactory::CreateGameObject(registry, "arrow.obj", "arrow.jpg", "Arrow icon");
-	registry.AddComponent<Behemoth::ScalingComponent>(arrowMeshHandle, BMath::Vector3(0.25));
+	registry.AddComponent<Behemoth::ScalingComponent>(arrowMeshHandle, BMath::Vector3(0.25f));
 	registry.AddComponent<Behemoth::MoveComponent>(arrowMeshHandle, BMath::Vector3(0, 0, -3));
 	BMath::Quaternion q1 = BMath::Quaternion(DEGREE_TO_RAD(-90.0f), BMath::Vector3(0, 0, 1));
 	BMath::Quaternion q2 = BMath::Quaternion(DEGREE_TO_RAD(90), BMath::Vector3(1, 0, 0));
@@ -43,11 +43,11 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	registry.AddComponent<Behemoth::RotationComponent>(cameraSpringArm);
 
 	// Add necessary child component to respective parents in hierarchy
-	Behemoth::GameObjectFactory::AddChildObject(registry, playerHandle, projectileHandle);
-	Behemoth::GameObjectFactory::AddChildObject(registry, projectileHandle, arrowMeshHandle);
-	Behemoth::GameObjectFactory::AddChildObject(registry, projectileHandle, playerMeshHandle);
-	Behemoth::GameObjectFactory::AddChildObject(registry, playerHandle, cameraSpringArm);
-	Behemoth::GameObjectFactory::AddChildObject(registry, cameraSpringArm, mainCameraHandle);
+	Behemoth::GameObjectHelper::AddChildObject(registry, playerHandle, projectileHandle);
+	Behemoth::GameObjectHelper::AddChildObject(registry, projectileHandle, arrowMeshHandle);
+	Behemoth::GameObjectHelper::AddChildObject(registry, projectileHandle, playerMeshHandle);
+	Behemoth::GameObjectHelper::AddChildObject(registry, playerHandle, cameraSpringArm);
+	Behemoth::GameObjectHelper::AddChildObject(registry, cameraSpringArm, mainCameraHandle);
 
 	// Create and add a player component to easily reference child handles
 	registry.AddComponent<PlayerComponent>(

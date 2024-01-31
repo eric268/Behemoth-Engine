@@ -12,29 +12,22 @@ namespace ECS
 		{ t.Run(dt, r) } -> std::same_as<void>;
 	};
 
-	class ISystem
+	struct ISystem
 	{
-	public:
 		virtual ~ISystem() = default;
 		virtual void Run(const float deltaTime, Registry& registry) = 0;
 	};
 
 	template<HasRunMethod T>
-	class System : public ISystem
+	struct System : public ISystem
 	{
-	public:
 		System() = default;
 
 		void Run(const float deltaTime, Registry& registry) override
 		{
-			{
-				// Behemoth::Stopwatch sw;
-				// std::cout << typeid(T).name() << std::endl;
-				instance.Run(deltaTime, registry);
-			}
+			instance.Run(deltaTime, registry);
 		}
 
 		T instance;
-	private:
 	};
 }

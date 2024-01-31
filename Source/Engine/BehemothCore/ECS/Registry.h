@@ -5,7 +5,6 @@
 #include "SparseSet.h"
 #include "ComponentPool.h"
 
-// stl
 #include <vector>
 #include <string>
 #include <iostream>
@@ -16,8 +15,6 @@
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
-
-#define MAX_NUM_ENTITIES 10'000
 
 namespace ECS
 {
@@ -84,7 +81,7 @@ namespace ECS
 		Entity CreateNullEntity()
 		{
 			Entity e("Null Entity");
-			e.SetID(0xFFFFFFFF);
+			e.SetID(NULL_ENTITY);
 			return e;
 		}
 

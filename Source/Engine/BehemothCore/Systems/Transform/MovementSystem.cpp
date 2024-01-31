@@ -38,7 +38,6 @@ namespace Behemoth
 				{
 					// If object is a child, move in parents local space
 					BMath::Matrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
-
 					deltaLocation = parentTransformNoScale * deltaLocation;
 				}
 
@@ -58,8 +57,8 @@ namespace Behemoth
 
 			transformComp->isDirty = true;
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
-			transformComp->worldPosition = BMath::Vector3(transformComp->worldTransform._41, transformComp->worldTransform._42, transformComp->worldTransform._43);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
+
 			MarkViewDirtyIfCamera(registry, entity);
 			registry.RemoveComponent<MoveComponent>(entity);
 		}

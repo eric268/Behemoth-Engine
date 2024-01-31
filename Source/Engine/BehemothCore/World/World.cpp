@@ -56,6 +56,8 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<RigidBodySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 
+		Behemoth::SystemManager::GetInstance().AddSystem<TransformSystem>();
+
  		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
   		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
   		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();

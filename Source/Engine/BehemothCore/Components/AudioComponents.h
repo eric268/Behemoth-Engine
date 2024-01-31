@@ -16,7 +16,7 @@ namespace Behemoth
 			destroyEntityOnFinished(true) 
 		{}
 												
-		AudioComponent(std::string filepath, bool looping = false, bool destroyOnComplete = true, bool play =	true) :
+		AudioComponent(std::string filepath, bool looping = false, bool destroyOnComplete = true, bool play = true) :
 			audioFilePath(filepath), 
 			isLooping(looping), 
 			soundClip(filepath, looping), 

@@ -5,6 +5,7 @@
 #include "Scripts/PlayerScore.h"
 #include "Factories/GameObjectFactory.h"
 #include "Components/RenderComponents.h"
+#include "Misc/GameObjectHelper.h"
 
 std::unordered_map<int, std::string> GameScene::holeResultsText =
 {
@@ -34,9 +35,9 @@ void GameScene::Update(const float deltaTime)
 
 		ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
 		registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
-			{
-				changeScene = true;
-			});
+		{
+			changeScene = true;
+		});
 	}
 }
 
@@ -84,7 +85,7 @@ void GameScene::CheckOutOfBound(ECS::Registry& registry, const ECS::EntityHandle
 		{
 			if (d.otherHandle.ID == oobHandle.ID)
 			{
-				registry.AddComponent<PlayerFellComponent>(playerHandle, 3.0f);
+				registry.AddComponent<PlayerFallComponent>(playerHandle, 3.0f);
 			}
 		}
 	}
@@ -177,7 +178,6 @@ ECS::EntityHandle GameScene::CreateGoalCollider(ECS::Registry& registry, BMath::
 #ifdef DEBUG
 // 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(collider1);
 // 	registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
-
 #endif 
 	return collider1;
 }
@@ -195,10 +195,10 @@ ECS::EntityHandle GameScene::CreateGoalObject(ECS::Registry& registry, const BMa
 	ECS::EntityHandle collider3 = CreateGoalCollider(registry, BMath::Vector3(-3.25, 0.5f, -1.0f), BMath::Vector3(0.35f));
 	ECS::EntityHandle collider4 = CreateGoalCollider(registry, BMath::Vector3(3.25, 0.5f, -1.0f), BMath::Vector3(0.35f));
 
-	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider1);
-	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider2);
-	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider3);
-	Behemoth::GameObjectFactory::AddChildObject(registry, goalHandle, collider4);
+	Behemoth::GameObjectHelper::AddChildObject(registry, goalHandle, collider1);
+	Behemoth::GameObjectHelper::AddChildObject(registry, goalHandle, collider2);
+	Behemoth::GameObjectHelper::AddChildObject(registry, goalHandle, collider3);
+	Behemoth::GameObjectHelper::AddChildObject(registry, goalHandle, collider4);
 
 	if (GoalComponent* goalComp = registry.AddComponent<GoalComponent>(goalHandle))
 	{

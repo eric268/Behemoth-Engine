@@ -6,7 +6,6 @@
 #include "Core/Log.h"
 #include "Page.h"
 
-// stl
 #include <vector>
 #include <cassert>
 #include <type_traits>

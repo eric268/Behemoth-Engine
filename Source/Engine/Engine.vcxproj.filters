@@ -317,6 +317,8 @@
     <ClInclude Include="BehemothCore\Physics\BVH.h">
       <Filter>Physics\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Systems\Transform\TransformSystem.h" />
+    <ClInclude Include="BehemothCore\Misc\GameObjectHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Audio\SoundClip.cpp">
@@ -473,5 +475,7 @@
     <ClCompile Include="BehemothCore\Physics\BVH.cpp">
       <Filter>Physics\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Systems\Transform\TransformSystem.cpp" />
+    <ClCompile Include="BehemothCore\Misc\GameObjectHelper.cpp" />
   </ItemGroup>
 </Project>

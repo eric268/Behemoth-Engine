@@ -13,8 +13,11 @@
 #include "Systems/Render/SkySphereSystem.h"
 
 #include "Systems/CameraSystem.h"
+
+#include "Systems/Transform/TransformSystem.h"
 #include "Systems/Transform/RotationSystem.h"
 #include "Systems/Transform/MovementSystem.h"
+
 #include "Systems/MeshInitSystem.h"
 #include "Systems/LightingSystem.h"
 #include "Systems/Physics/VelocitySystem.h"

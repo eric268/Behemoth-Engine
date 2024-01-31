@@ -37,14 +37,13 @@ namespace Behemoth
 			UpdateLocalTransform(registry, entity, transformComp, deltaPosition);
 			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
 			TransformHelper::NotifyChildrenTransformChange(registry, entity);
+			transformComp->isDirty = true;
 
 			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
 			if (cameraComponent && cameraComponent->isMain)
 			{
 				cameraComponent->isDirty = true;
 			}
-
-			TransformHelper::NotifyChildrenTransformChange(registry, entity);
 		}
 	}
 
@@ -58,6 +57,5 @@ namespace Behemoth
 		transformComp->localTransform._42 += deltaPosition.y;
 		transformComp->localTransform._43 += deltaPosition.z;
 		transformComp->localPosition += deltaPosition;
-		transformComp->isDirty = true;
 	}
 }

@@ -11,9 +11,9 @@ namespace Behemoth
 		void StopSoundClip();
 		bool SoundClipIsPlaying();
 
+	private:
 		std::string audioFilepath;
 		bool isLooping;
-	private:
 	};
 }
 

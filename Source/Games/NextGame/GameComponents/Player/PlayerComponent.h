@@ -49,10 +49,10 @@ struct PlayerComponent : public ECS::Component
 	BMath::Vector3 lastLocation;
 };
 
-struct PlayerFellComponent : public ECS::Component
+struct PlayerFallComponent : public ECS::Component
 {
-	PlayerFellComponent() : timeUntilRespawn(0.0f) {}
-	PlayerFellComponent(float timeTillRespawn) : timeUntilRespawn(timeTillRespawn) {}
+	PlayerFallComponent() : timeUntilRespawn(0.0f) {}
+	PlayerFallComponent(float timeTillRespawn) : timeUntilRespawn(timeTillRespawn) {}
 	float timeUntilRespawn;
 };
 

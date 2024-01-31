@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SkySphereFactory.h"
 #include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 
