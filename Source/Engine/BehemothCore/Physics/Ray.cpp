@@ -14,16 +14,36 @@ namespace Behemoth
 	Ray::Ray() {}
 	Ray::Ray(BMath::Vector3 position, BMath::Vector3 direction) : origin(position), direction(direction) {}
 
+	bool BroadRayCheck(
+		ECS::Registry& registry, 
+		const Ray& ray,
+		std::vector<ECS::EntityHandle>& hitEntities, 
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore);
 
-	bool BroadRayCheck(ECS::Registry& registry, const Ray& ray, std::vector<ECS::EntityHandle>& hitEntities, const std::vector<ECS::EntityHandle>& entitiesToIgnore);
-	bool NarrowRayCheck(ECS::Registry& registry, const Ray& ray, const std::vector<ECS::EntityHandle>& hitEntities, std::vector<ContactData>& data, BMask::CollisionType mask);
+	bool NarrowRayCheck(
+		ECS::Registry& registry,
+		const Ray& ray,
+		const std::vector<ECS::EntityHandle>& hitEntities,
+		std::vector<ContactData>& data,
+		BMask::CollisionType mask);
+
 	template<typename T>
-	bool RayBVHCheck(ECS::Registry& registry, const Ray& ray, const std::vector<ECS::EntityHandle>& entitiesToIgnore, std::vector<ECS::EntityHandle>& entitiesHit);
+	bool RayBVHCheck(
+		ECS::Registry& registry,
+		const Ray& ray, 
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore,
+		std::vector<ECS::EntityHandle>& entitiesHit);
+
 	template <typename T>
 	bool GenerateCollisionData(const Ray& ray, TransformComponent* transform, T* collider, ContactData& data, BMask::CollisionType mask);
 
 
-	bool RayCast(ECS::Registry& registry, const Ray& ray, std::vector<ContactData>& data, const std::vector<ECS::EntityHandle>& entitiesToIgnore, BMask::CollisionType mask)
+	bool RayCast(
+		ECS::Registry& registry,
+		const Ray& ray,
+		std::vector<ContactData>& data, 
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore,
+		BMask::CollisionType mask)
 	{
 		std::vector<ECS::EntityHandle> hitEntities;
 		if (!BroadRayCheck(registry, ray, hitEntities, entitiesToIgnore))
@@ -53,7 +73,11 @@ namespace Behemoth
 		return false;
 	}
 
-	static bool BroadRayCheck(ECS::Registry& registry, const Ray& ray, std::vector<ECS::EntityHandle>& hitEntities, const std::vector<ECS::EntityHandle>& entitiesToIgnore)
+	static bool BroadRayCheck(
+		ECS::Registry& registry,
+		const Ray& ray,
+		std::vector<ECS::EntityHandle>& hitEntities,
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore)
 	{
 		// Static Entities
 		RayBVHCheck<StaticComponent>(registry, ray, entitiesToIgnore, hitEntities);
@@ -61,7 +85,11 @@ namespace Behemoth
 		return hitEntities.size();
 	}
 
-	static bool NarrowRayCheck(ECS::Registry& registry, const Ray& ray, const std::vector<ECS::EntityHandle>& hitEntities, std::vector<ContactData>& data, BMask::CollisionType mask)
+	static bool NarrowRayCheck(
+		ECS::Registry& registry,
+		const Ray& ray, 
+		const std::vector<ECS::EntityHandle>& hitEntities,
+		std::vector<ContactData>& data, BMask::CollisionType mask)
 	{
 		for (const auto& entityHandle : hitEntities)
 		{
@@ -98,7 +126,11 @@ namespace Behemoth
 		return data.size();
 	}
 
-	static bool CheckRayCollision(const Ray& ray, const std::shared_ptr<BVHNode> root, const std::vector<ECS::EntityHandle>& entitiesToIgnore, std::vector<ECS::EntityHandle>& hitEntity)
+	static bool CheckRayCollision(
+		const Ray& ray,
+		const std::shared_ptr<BVHNode> root,
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore,
+		std::vector<ECS::EntityHandle>& hitEntity)
 	{
 		using node = std::shared_ptr<Behemoth::BVHNode>;
 		std::stack<node> nodes;
@@ -140,7 +172,11 @@ namespace Behemoth
 	}
 
 	template<typename T>
-	static bool RayBVHCheck(ECS::Registry& registry, const Ray& ray, const std::vector<ECS::EntityHandle>& entitiesToIgnore, std::vector<ECS::EntityHandle>& entitiesHit)
+	static bool RayBVHCheck(
+		ECS::Registry& registry,
+		const Ray& ray,
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore,
+		std::vector<ECS::EntityHandle>& entitiesHit)
 	{
 		auto bvhComponent = registry.Get<BVHRootComponent<T>>();
 		// Should only be one BVH node with static or dynamic type, but leave check in for now

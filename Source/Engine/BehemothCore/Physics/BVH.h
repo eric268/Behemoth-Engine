@@ -42,8 +42,7 @@ namespace Behemoth
 	class BVHFactory
 	{
 	public:
-		BVHFactory();
-		~BVHFactory();
+		BVHFactory(bool drawDebugColliders = false);
 
 		template <typename ...T>
 		std::shared_ptr<BVHNode> OnConstruction(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
@@ -137,15 +136,31 @@ namespace Behemoth
 			return bvhCollider;
 		}
 
+		void DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles);
 		AABBCollider GenerateCollider(const std::vector<BVHData>& colliders);
-		std::shared_ptr<BVHNode> GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
-		std::shared_ptr<BVHNode> GenerateLeaf(const BVHData& colliderData, ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
 
-		void GenerateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth);
+		void GenerateBVHTree(
+			ECS::Registry& registry,
+			std::vector<ECS::EntityHandle>& entityHandles,
+			std::shared_ptr<BVHNode> node,
+			std::vector<BVHData> data,
+			int depth);
+
+		std::shared_ptr<BVHNode> GenerateNode(
+			ECS::Registry& registry,
+			std::vector<ECS::EntityHandle>& entityHandles,
+			const AABBCollider& collider,
+			BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
+
+		std::shared_ptr<BVHNode> GenerateLeaf(
+			const BVHData& colliderData,
+			ECS::Registry& registry,
+			std::vector<ECS::EntityHandle>& entityHandles,
+			BMath::Vector3 color = BMath::Vector3(1.0f, 1.0f, 1.0f));
+
 		float CalculateSAH(int position, std::vector<BVHData>& colliders, float traversalCost, float intersectCost);
 		float GetSurfaceArea(const AABBCollider& componenets);
 
-		void DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles);
 		std::shared_ptr<BVHNode> root;
 	};
 }

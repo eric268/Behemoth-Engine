@@ -17,7 +17,7 @@
 
 #include "GameSystems/PlayerFallSystem.h"
 #include "GameSystems/PlayerRespawnSystem.h"
-#include "GameSystems/LevelViewSystem.h"
+#include "GameSystems/GoalViewSystem.h"
 #include "GameSystems/PlayerHUDSystem.h"
 #include "GameSystems/MovingObsSystem.h"
 #include "GameSystems/PCSystem.h"
@@ -58,7 +58,7 @@ void MainMenuScene::InitializeSystems()
 	Behemoth::SystemManager::GetInstance().AddSystem<PCSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<PlayerFallSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<PlayerRespawnSystem>();
-	Behemoth::SystemManager::GetInstance().AddSystem<LevelViewSystem>();
+	Behemoth::SystemManager::GetInstance().AddSystem<goalViewSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<PlayerHUDSystem>();
 	Behemoth::SystemManager::GetInstance().AddSystem<MovingObsSystem>();
 }
@@ -83,7 +83,7 @@ void MainMenuScene::ConstructEnvironment(ECS::Registry& registry)
 		ambientLight->intensity = 2.0f;
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", BMath::Vector2(1.0, 1.0));
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", 999.0f, BMath::Vector2(1.0, 1.0));
 
 	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
 		registry,

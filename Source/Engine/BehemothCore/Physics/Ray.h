@@ -23,6 +23,17 @@ namespace Behemoth
 		BMath::Vector3 direction;
 	};
 
-	bool RayCast(ECS::Registry& registry, const Ray& ray, std::vector<ContactData>& data, const std::vector<ECS::EntityHandle>& entitiesToIgnore, BMask::CollisionType mask = BMask::CollisionType::AllCollision);
-	bool RayCast(ECS::Registry& registry, const Ray& ray, ContactData& data, const std::vector<ECS::EntityHandle>& entitiesToIgnore, BMask::CollisionType mask = BMask::CollisionType::AllCollision);
+	bool RayCast(
+		ECS::Registry& registry,
+		const Ray& ray,
+		std::vector<ContactData>& data,
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore,
+		BMask::CollisionType mask = BMask::CollisionType::AllCollision);
+
+	bool RayCast(
+		ECS::Registry& registry,
+		const Ray& ray,
+		ContactData& data, 
+		const std::vector<ECS::EntityHandle>& entitiesToIgnore,
+		BMask::CollisionType mask = BMask::CollisionType::AllCollision);
 }

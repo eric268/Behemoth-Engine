@@ -8,7 +8,7 @@ namespace Behemoth
 	struct Plane
 	{
 		Plane();
-		Plane(BMath::Vector3 n, float d) : normal(n), d(d) {}
+		Plane(BMath::Vector3 n, float d);
 
 		static inline BMath::Vector3 GetPointOnPlane(const Plane& plane) { return plane.normal * plane.d; }
 		static inline float CalculatePlaneOffset(const BMath::Vector3& normal, const BMath::Vector3& point) 

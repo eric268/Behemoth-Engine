@@ -80,6 +80,28 @@ namespace Behemoth
 		return result;
 	}
 
+	BMath::Matrix3x3 TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4& transformMatrix, BMath::Vector3 scale)
+	{
+		BMath::Matrix3x3 m{};
+
+		for (int i = 0; i < 3; i++)
+		{
+			if (scale[i] == 0.0f)
+			{
+				scale[i] = EPSILON;
+			}
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				m.data[i][j] = transformMatrix.data[i][j] / scale[j];
+			}
+		}
+		return m;
+	}
+
 	BMath::Matrix4x4 TransformHelper::RemoveScale(const BMath::Matrix4x4& transform)
 	{
 		BMath::Matrix4x4 m = transform;
@@ -102,28 +124,6 @@ namespace Behemoth
 			}
 		}
 
-		return m;
-	}
-
-	BMath::Matrix3x3 TransformHelper::ExtractRotationMatrix(const  BMath::Matrix4x4& transformMatrix, BMath::Vector3 scale)
-	{
-		BMath::Matrix3x3 m{};
-
-		for (int i = 0; i < 3; i++)
-		{
-			if (scale[i] == 0.0f)
-			{
-				scale[i] = EPSILON;
-			}
-		}
-
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				m.data[i][j] = transformMatrix.data[i][j] / scale[j];
-			}
-		}
 		return m;
 	}
 

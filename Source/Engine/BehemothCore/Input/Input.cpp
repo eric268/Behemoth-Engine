@@ -55,11 +55,6 @@ namespace Behemoth
 		return false;
 	}
 
-	bool Input::IsAnyKeyDown()
-	{
-		return !currentKeyState.none();
-	}
-
 	bool Input::IsKeyDown(KeyCode code)
 	{
 		return !prevKeyState.test(code) && currentKeyState.test(code);
@@ -123,10 +118,12 @@ namespace Behemoth
 	{
 		return !prevControllerButtonState[controller][code] && currentControllerButtonState[controller][code];
 	}
+
 	bool Input::IsControllerKeyHeld(ControllerCode code, int controller)
 	{
 		return prevControllerButtonState[controller][code] && currentControllerButtonState[controller][code];
 	}
+
 	bool Input::IsControllerKeyUp(ControllerCode code, int controller)
 	{
 		return prevControllerButtonState[controller][code] && !currentControllerButtonState[controller][code];
@@ -150,6 +147,7 @@ namespace Behemoth
 	{
 		return CSimpleControllers::GetInstance().GetController(controller).GetLeftTrigger();
 	}
+
 	float Input::GetRightControllerTrigger(int controller)
 	{
 		return CSimpleControllers::GetInstance().GetController(controller).GetRightTrigger();

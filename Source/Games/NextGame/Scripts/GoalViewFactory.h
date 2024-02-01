@@ -2,15 +2,13 @@
 
 #include "BehemothEngine.h"
 
-class LevelViewFactory
+class GoalViewFactory
 {
 public:
-	static ECS::EntityHandle CreateLevelViewEntity(
+	static ECS::EntityHandle CreateGoalViewEntity(
 		ECS::Registry& registry,
 		const BMath::Vector3& spawnLocation,
-		float maxZoom,
 		float currentZoom,
-		float maxHeight,
 		float currentHeight);
 
 private:

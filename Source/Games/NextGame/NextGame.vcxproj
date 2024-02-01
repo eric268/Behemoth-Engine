@@ -148,11 +148,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameComponents\Level\GoalComponent.h" />
-    <ClInclude Include="GameComponents\Level\LevelViewComponent.h" />
+    <ClInclude Include="GameComponents\Level\GoalViewComponent.h" />
     <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h" />
     <ClInclude Include="GameComponents\Player\PCComponent.h" />
     <ClInclude Include="GameComponents\Player\PlayerComponent.h" />
-    <ClInclude Include="GameSystems\LevelViewSystem.h" />
+    <ClInclude Include="GameSystems\GoalViewSystem.h" />
     <ClInclude Include="GameSystems\MovingObsSystem.h" />
     <ClInclude Include="GameSystems\PCSystem.h" />
     <ClInclude Include="GameSystems\PlayerFallSystem.h" />
@@ -166,7 +166,7 @@
     <ClInclude Include="Scenes\HoleTwoScene.h" />
     <ClInclude Include="Scenes\MainMenuScene.h" />
     <ClInclude Include="Scripts\BarrierFactory.h" />
-    <ClInclude Include="Scripts\LevelViewFactory.h" />
+    <ClInclude Include="Scripts\GoalViewFactory.h" />
     <ClInclude Include="Scripts\PlatformFactory.h" />
     <ClInclude Include="Scripts\PlatformPhysMats.h" />
     <ClInclude Include="Scripts\PlayerFactory.h" />
@@ -176,7 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp" />
-    <ClCompile Include="GameSystems\LevelViewSystem.cpp" />
+    <ClCompile Include="GameSystems\GoalViewSystem.cpp" />
     <ClCompile Include="GameSystems\MovingObsSystem.cpp" />
     <ClCompile Include="GameSystems\PCSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerFallSystem.cpp" />
@@ -190,7 +190,7 @@
     <ClCompile Include="Scenes\HoleTwoScene.cpp" />
     <ClCompile Include="Scenes\MainMenuScene.cpp" />
     <ClCompile Include="Scripts\BarrierFactory.cpp" />
-    <ClCompile Include="Scripts\LevelViewFactory.cpp" />
+    <ClCompile Include="Scripts\GoalViewFactory.cpp" />
     <ClCompile Include="Scripts\PlatformFactory.cpp" />
     <ClCompile Include="Scripts\PlayerFactory.cpp" />
     <ClCompile Include="Scripts\PlayerScore.cpp" />

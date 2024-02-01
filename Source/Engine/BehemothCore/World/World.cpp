@@ -8,42 +8,13 @@
 
 namespace Behemoth
 {
-	void World::ChangeScene(Scene* newScene)
+	World& World::GetInstance()
 	{
-		if (!newScene)
-		{
-			LOGMESSAGE(MessageType::Error, "Attempted to change to null scene");
-			return;
-		}
-
-		if (currentScene)
-		{
-			currentScene->Shutdown();
-			delete currentScene;
-		}
-
-		Renderer::GetInstance().ClearResources();
-
-		currentScene = newScene;
-
-		// This is temporary need to find a way to run system initializations when changing scene, this is for things like loading any new meshes, moving entities to their world locations etc
-		// For now just running all systems
-		Behemoth::SystemManager::GetInstance().Run(0.0f, currentScene->GetRegistry());
-		currentScene->CreateScene();
+		static World world = World();
+		return world;
 	}
 
-	Scene* World::GetActiveScene()
-	{
-		if (!currentScene)
-		{
-			LOGMESSAGE(MessageType::Error, "Current Scene is null");
-			return nullptr;
-		}
-
-		return currentScene;
-	}
-
-	void World::Init()
+	void World::InitializeWorld()
 	{
 		// Keep these in this order
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
@@ -57,9 +28,9 @@ namespace Behemoth
 		Behemoth::SystemManager::GetInstance().AddSystem<RigidBodySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
 
- 		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
-  		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
-  		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<CollisionResolutionSystem>();
 
 #ifdef DEBUG
 		// These are systems for rendering various debug tools
@@ -94,6 +65,49 @@ namespace Behemoth
 		currentScene->ReconstructBVH<VelocityComponent>();
 	}
 
+	Scene* World::GetActiveScene()
+	{
+		if (!currentScene)
+		{
+			LOGMESSAGE(MessageType::Error, "Current Scene is null");
+			return nullptr;
+		}
+
+		return currentScene;
+	}
+
+	void World::ChangeScene(Scene* newScene)
+	{
+		if (!newScene)
+		{
+			LOGMESSAGE(MessageType::Error, "Attempted to change to null scene");
+			return;
+		}
+
+		if (currentScene)
+		{
+			currentScene->Shutdown();
+			delete currentScene;
+		}
+
+		Renderer::GetInstance().ClearResources();
+
+		currentScene = newScene;
+
+		// This is temporary need to find a way to run system initializations when changing scene, this is for things like 
+		// loading any new meshes, moving entities to their world locations etc. For now just running all systems
+		Behemoth::SystemManager::GetInstance().Run(0.0f, currentScene->GetRegistry());
+		currentScene->CreateScene();
+	}
+
+	void World::OnEvent(Event& e)
+	{
+		if (currentScene)
+		{
+			currentScene->OnEvent(e);
+		}
+	}
+
 	void World::Shutdown()
 	{
 		if (!currentScene)
@@ -103,13 +117,5 @@ namespace Behemoth
 
 		currentScene->Shutdown();
 		delete currentScene;
-	}
-
-	void World::OnEvent(Event& e)
-	{
-		if (currentScene)
-		{
-			currentScene->OnEvent(e);
-		}
 	}
 }

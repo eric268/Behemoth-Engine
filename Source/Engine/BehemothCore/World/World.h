@@ -12,17 +12,13 @@ namespace Behemoth
 		World(World&) = delete;
 		World& operator=(const World&) = delete;
 
-		static World& GetInstance()
-		{
-			static World world = World();
-			return world;
-		}
+		static World& GetInstance();
 
-		Scene* GetActiveScene();
-		void OnEvent(Event& e);
-		void ChangeScene(Scene* newScene);
-		void Init();
+		void InitializeWorld();
 		void Update(const float deltaTime);
+		Scene* GetActiveScene();
+		void ChangeScene(Scene* newScene);
+		void OnEvent(Event& e);
 		void Shutdown();
 
 	private:

@@ -47,6 +47,11 @@ namespace Behemoth
 		}
 	}
 
+	void WireframeRenderSystem::ReserveResources(int numPrimitives)
+	{
+		Renderer::GetInstance().ReserveLines(numPrimitives * 4);
+	}
+
 	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix, bool isDirty, BMath::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
@@ -98,11 +103,6 @@ namespace Behemoth
 			Line line = Line(BMath::Vector4(vertices[i].x, vertices[i].y, vertices[j].x, vertices[j].y), color);
 			Renderer::GetInstance().AddLine(std::move(line));
 		}
-	}
-
-	void WireframeRenderSystem::ReserveResources(int numPrimitives)
-	{
-		Renderer::GetInstance().ReserveLines(numPrimitives * 4);
 	}
 
 	BMath::Matrix4x4 WireframeRenderSystem::GetWireframeTransform(const BMath::Matrix4x4& ownerTransform, const BMath::Vector3& ownerWorldScale, const BMath::Vector3& wireframeScale, const bool allowRotation)

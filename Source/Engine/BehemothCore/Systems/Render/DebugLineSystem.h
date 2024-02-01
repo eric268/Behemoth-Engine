@@ -24,7 +24,6 @@ namespace Behemoth
 	public:
 		using Point = BMath::Vector3;
 
-		DebugLineSystem() = default;
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:

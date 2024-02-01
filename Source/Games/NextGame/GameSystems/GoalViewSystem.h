@@ -1,10 +1,10 @@
 #pragma once
 #include "BehemothEngine.h"
 
-struct LevelViewComponent;
+struct GoalViewComponent;
 struct ViewControllerComponent;
 
-class LevelViewSystem
+class goalViewSystem
 {
 public:
 	void Run(const float deltaTime, ECS::Registry& registry);
@@ -14,7 +14,7 @@ private:
 		const float deltaTime,
 		ECS::Registry& registry,
 		const ECS::EntityHandle& entity,
-		LevelViewComponent* playerComponent,
+		GoalViewComponent* playerComponent,
 		ViewControllerComponent* pcComponent);
 };
 

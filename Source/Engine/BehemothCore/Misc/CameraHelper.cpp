@@ -57,17 +57,6 @@ namespace Behemoth
 		return nullptr;
 	}
 
-	BMath::Vector3 CameraHelper::GetForwardVector(ECS::Registry& registry)
-	{
-		CameraComponent* cameraComponent = GetMainCamera((registry));
-		if (!cameraComponent)
-		{
-			LOGMESSAGE(Error, "Unable to find main camera component");
-			return BMath::Vector3::Zero();
-		}
-		return BMath::Vector3(cameraComponent->viewMatrix._31, cameraComponent->viewMatrix._32, cameraComponent->viewMatrix._33);
-	}
-
 	BMath::Vector3 CameraHelper::GetMainCameraPosition(ECS::Registry& registry)
 	{
 		for (const auto& [entityHandle, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
@@ -90,5 +79,16 @@ namespace Behemoth
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
 		return registry.CreateNullEntity();
+	}
+
+	BMath::Vector3 CameraHelper::GetForwardVector(ECS::Registry& registry)
+	{
+		CameraComponent* cameraComponent = GetMainCamera((registry));
+		if (!cameraComponent)
+		{
+			LOGMESSAGE(Error, "Unable to find main camera component");
+			return BMath::Vector3::Zero();
+		}
+		return BMath::Vector3(cameraComponent->viewMatrix._31, cameraComponent->viewMatrix._32, cameraComponent->viewMatrix._33);
 	}
 }

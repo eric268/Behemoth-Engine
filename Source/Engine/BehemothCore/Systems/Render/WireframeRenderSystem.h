@@ -16,6 +16,8 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry) override;
 	
 	protected:
+		void ReserveResources(int numPrimitives) override;
+
 		void ProcessWireframe(
 			Mesh& mesh,
 			const BMath::Matrix4x4& transform,
@@ -33,7 +35,5 @@ namespace Behemoth
 			const BMath::Vector3& ownerWorldScale,
 			const BMath::Vector3& wireframeScale,
 			const bool allowRotation);
-
-		void ReserveResources(int numPrimitives) override;
 	};
 }

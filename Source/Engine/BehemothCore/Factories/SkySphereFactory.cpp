@@ -7,15 +7,28 @@
 
 namespace Behemoth
 {
-    ECS::EntityHandle SkySphereFactory::CreateSkySphere(ECS::Registry& registry,const std::string& texturePath, const BMath::Vector2& uvScale)
+    ECS::EntityHandle SkySphereFactory::CreateSkySphere(
+		ECS::Registry& registry,
+		const std::string& texturePath,
+		const float sphereScale,
+		const BMath::Vector2& uvScale)
     {
 		ECS::EntityHandle skySphere = registry.CreateEntity("Sky Sphere");
+
 		registry.AddComponent<Behemoth::TransformComponent>(skySphere);
-		auto sphere = registry.AddComponent<Behemoth::SkySphereComponent>(skySphere, texturePath, uvScale, true);
-		registry.AddComponent<Behemoth::ScalingComponent>(skySphere, BMath::Vector3(999.0f));
+		registry.AddComponent<Behemoth::ScalingComponent>(skySphere, BMath::Vector3(sphereScale));
 		registry.AddComponent<Behemoth::RotationComponent>(skySphere, BMath::Quaternion(DEGREE_TO_RAD(180), BMath::Vector3(0, 0, 1)));
-		sphere->mesh.materialData.specular = BMath::Vector3(0.0f);
-		sphere->mesh.materialData.diffuse = BMath::Vector3(0.0f);
+
+		if (SkySphereComponent* skySphereComp = registry.AddComponent<SkySphereComponent>(skySphere, texturePath, uvScale, true))
+		{
+			skySphereComp->mesh.materialData.specular = BMath::Vector3(0.0f);
+			skySphereComp->mesh.materialData.diffuse = BMath::Vector3(0.0f);
+		}
+		else
+		{
+			LOGMESSAGE(Error, "Unable to add sky sphere component");
+		}
+
 		return skySphere;
     }
 }

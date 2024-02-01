@@ -1,32 +1,32 @@
 #include "pch.h"
-#include "LevelViewSystem.h"
-#include "GameComponents/Level/LevelViewComponent.h"
+#include "GoalViewSystem.h"
+#include "GameComponents/Level/goalViewComponent.h"
 #include "Misc/CameraHelper.h"
-#include "GameComponents/Level/LevelViewComponent.h"
+#include "GameComponents/Level/goalViewComponent.h"
 #include "GameComponents/Player/PCComponent.h"
 
-void LevelViewSystem::Run(const float deltaTime, ECS::Registry& registry)
+void goalViewSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [
 		entityHandle,
-			levelViewComponent,
-			viewController] : registry.Get<LevelViewComponent, ViewControllerComponent>())
+			goalViewComp,
+			viewController] : registry.Get<GoalViewComponent, ViewControllerComponent>())
 	{
 		// Do not want to allow input when not in level view
-		if (!levelViewComponent->isActive)
+		if (!goalViewComp->isActive)
 		{
 			continue;
 		}
 
-		Look(deltaTime, registry, entityHandle, levelViewComponent, viewController);
+		Look(deltaTime, registry, entityHandle, goalViewComp, viewController);
 	}
 }
 
-void LevelViewSystem::Look(
+void goalViewSystem::Look(
 	const float deltaTime, 
 	ECS::Registry& registry, 
 	const ECS::EntityHandle& handle,
-	LevelViewComponent* levelView,
+	GoalViewComponent* goalView,
 	ViewControllerComponent* viewController)
 {
 	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnalog(0);

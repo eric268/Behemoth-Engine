@@ -17,7 +17,7 @@ public:
 
 private:
 	void ConstructEnvironment(ECS::Registry& registry);
-	ECS::EntityHandle levelViewEntity;
+	ECS::EntityHandle goalViewEntity;
 	ECS::EntityHandle parTextEntity;
 	ECS::EntityHandle levelCompleteText;
 	ECS::EntityHandle rockPlatform1;

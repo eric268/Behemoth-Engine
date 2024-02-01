@@ -10,7 +10,6 @@ namespace Behemoth
 	class MeshLoader
 	{
 	public:
-		MeshLoader() = default;
 		bool LoadModel(const std::string& filepath, std::vector<VertexData>& data, MeshData& meshData);
 
 	private:

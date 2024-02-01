@@ -19,7 +19,8 @@ namespace Behemoth
 	class Input
 	{
 	public:
-		static bool IsAnyKeyDown();
+		static void Update(const float deltaTime);
+		static bool OnEvent(Event& event);
 
 		static bool IsKeyDown(KeyCode code);
 		static bool IsKeyReleased(KeyCode code);
@@ -39,18 +40,15 @@ namespace Behemoth
 		static float GetLeftControllerTrigger(int controller = 0);
 		static float GetRightControllerTrigger(int controller = 0);
 
-		static void Update(const float deltaTime);
-		static bool OnEvent(Event& event);
-
 	private:
+		static void ProcessControllerInput();
+
 		// Declare within Input to keep type safety
 		static void OnKeyDown(const KeyDownEvent& event);
 		static void OnKeyReleased(const KeyReleasedEvent& event);
 		static void OnMouseDown(const MouseDownEvent& event);
 		static void OnMouseUp(const MouseUpEvent& event);
 		static void OnMouseMove(const MouseMoveEvent& event);
-
-		static void ProcessControllerInput();
 
 		static std::bitset<NUM_KC> currentKeyState;
 		static std::bitset<NUM_KC> prevKeyState;

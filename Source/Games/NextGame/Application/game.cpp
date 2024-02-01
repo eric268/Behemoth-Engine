@@ -4,7 +4,7 @@
             
 void CreateApplication()
 {
-    Behemoth::World::GetInstance().Init();
+    Behemoth::World::GetInstance().InitializeWorld();
     Behemoth::Scene* mainScene = new MainMenuScene();
     Behemoth::World::GetInstance().ChangeScene(mainScene);
 }

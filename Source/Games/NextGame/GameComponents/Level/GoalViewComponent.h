@@ -2,11 +2,11 @@
 #include "ECS/Component.h"
 #include "ECS/Entity.h"
 
-struct LevelViewComponent : public ECS::Component
+struct GoalViewComponent : public ECS::Component
 {
-	LevelViewComponent() = default;
+	GoalViewComponent() = default;
 
-	LevelViewComponent(
+	GoalViewComponent(
 		bool isActive,
 		float movementSpeed,
 		float minZoomDistance,

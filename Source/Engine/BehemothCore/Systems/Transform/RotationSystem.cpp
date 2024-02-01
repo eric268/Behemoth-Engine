@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "RotationSystem.h"
+#include "ECS/System.h"
+#include "ECS/Entity.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "Core/Log.h""
@@ -104,17 +106,17 @@ namespace Behemoth
 	}
 
 
-	BMath::Vector3 RotationSystem::GetForwardVector(const BMath::Matrix4x4& transformMatrix)
+	const BMath::Vector3& RotationSystem::GetForwardVector(const BMath::Matrix4x4& transformMatrix)
 	{
 		return  BMath::Vector3(-transformMatrix._31, -transformMatrix._32, -transformMatrix._33).Normalize();
 	}
 
-	BMath::Vector3 RotationSystem::GetUpVector(const BMath::Matrix4x4& transformMatrix)
+	const BMath::Vector3& RotationSystem::GetUpVector(const BMath::Matrix4x4& transformMatrix)
 	{
 		return  BMath::Vector3(transformMatrix._21, transformMatrix._22, transformMatrix._23).Normalize();
 	}
 
-	BMath::Vector3 RotationSystem::GetRightVector(const BMath::Matrix4x4& transformMatrix)
+	const BMath::Vector3& RotationSystem::GetRightVector(const BMath::Matrix4x4& transformMatrix)
 	{
 		return BMath::Vector3(transformMatrix._11, transformMatrix._12, transformMatrix._13).Normalize();
 	}

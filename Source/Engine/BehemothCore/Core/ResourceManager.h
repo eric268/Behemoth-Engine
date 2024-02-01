@@ -22,8 +22,9 @@ namespace Behemoth
 
 		static ResourceManager& GetInstance();
 
-		const std::vector<VertexData>& GetMeshVertices(const std::string& filePath);
 		const MeshData& GetMeshData(const std::string& filePath);
+		const std::vector<VertexData>& GetMeshVertices(const std::string& filePath);
+
 		const std::string& GetTexturePath(const std::string& textureName);
 		const std::string& GetSoundClipPath(const std::string& soundclipName);
 		const std::string& GetImagePath(const std::string& soundclipName);
@@ -32,8 +33,8 @@ namespace Behemoth
 
 	private:
 		ResourceManager() = default;
-		bool LoadMeshData(const std::string& filePath, const std::size_t id);
 		const std::pair <MeshData, std::vector<VertexData>>& GetMesh(const std::string& filepath);
+		bool LoadMeshData(const std::string& filePath, const std::size_t id);
 
 		std::hash<std::string> hasher;
 		std::unordered_map<std::string, std::string> imageMap;

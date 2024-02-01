@@ -10,8 +10,7 @@
 
 namespace Behemoth
 {
-	BVHFactory::BVHFactory() : root(), drawDebugColliders(false) {}
-	BVHFactory::~BVHFactory() {}
+	BVHFactory::BVHFactory(bool drawDebugColliders) : root(), drawDebugColliders(drawDebugColliders) {}
 
 	void BVHFactory::DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
 	{
@@ -22,7 +21,12 @@ namespace Behemoth
 		entityHandles.clear();
 	}
 
-	void BVHFactory::GenerateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, std::shared_ptr<BVHNode> node, std::vector<BVHData> data, int depth)
+	void BVHFactory::GenerateBVHTree(
+		ECS::Registry& registry,
+		std::vector<ECS::EntityHandle>& entityHandles,
+		std::shared_ptr<BVHNode> node,
+		std::vector<BVHData> data,
+		int depth)
 	{
 		if (!data.size() || !node)
 		{
@@ -90,12 +94,80 @@ namespace Behemoth
 		}
 	}
 
-
-	float BVHFactory::GetSurfaceArea(const AABBCollider& aabb)
+	std::shared_ptr<BVHNode> BVHFactory::GenerateNode(
+		ECS::Registry& registry,
+		std::vector<ECS::EntityHandle>& entityHandles,
+		const AABBCollider& collider,
+		BMath::Vector3 color)
 	{
-		float l = 2.0f * aabb.extents.x;
-		float w = 2.0f * aabb.extents.y;
-		float h = 2.0f * aabb.extents.z;
+		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
+		node->collider = collider;
+
+// Drawing the BVH colliders is just needed for debugging purposes, do not need to actually create entities in the registry for it to function
+#ifdef DEBUG
+		if (drawDebugColliders)
+		{
+			ECS::EntityHandle entityHandle = registry.CreateEntity("BVH Debug Collider");
+			entityHandles.push_back(entityHandle);
+
+			registry.AddComponent<TransformComponent>(entityHandle);
+			registry.AddComponent<MoveComponent>(entityHandle, collider.position);
+			registry.AddComponent<AABBColliderComponent>(entityHandle, collider.extents);
+	
+			registry.AddComponent<MeshInitializeComponent>(entityHandle);
+			registry.AddComponent<WireframeComponent>(
+				entityHandle, 
+				"cube.obj",
+				collider.extents,
+				false,
+				true,
+				color);
+		}
+#endif
+
+		return node;
+	}
+
+	std::shared_ptr<BVHNode> BVHFactory::GenerateLeaf(
+		const BVHData& colliderData,
+		ECS::Registry& registry,
+		std::vector<ECS::EntityHandle>& entityHandles,
+		BMath::Vector3 color)
+	{
+		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
+		node->collider = colliderData.collider;
+		node->entityHandle = colliderData.handle;
+		node->leftChild = nullptr;
+		node->rightChild = nullptr;
+
+#ifdef DEBUG
+ 		if (drawDebugColliders)
+ 		{
+ 			ECS::EntityHandle entityHandle = registry.CreateEntity("BVH Debug Collider");
+ 			entityHandles.push_back(entityHandle);
+ 
+ 			registry.AddComponent<TransformComponent>(entityHandle);
+ 			registry.AddComponent<MoveComponent>(entityHandle, node->collider.position);
+ 			registry.AddComponent<AABBColliderComponent>(entityHandle, node->collider.extents);
+ 
+ 			registry.AddComponent<MeshInitializeComponent>(entityHandle);
+ 			registry.AddComponent<WireframeComponent>(
+				entityHandle,
+				"cube.obj",
+				node->collider.extents,
+				false,
+				true,
+				color);
+ 		}
+#endif
+		return node;
+	}
+
+	float BVHFactory::GetSurfaceArea(const AABBCollider& collider)
+	{
+		float l = 2.0f * collider.extents.x;
+		float w = 2.0f * collider.extents.y;
+		float h = 2.0f * collider.extents.z;
 		return 2.0f * (l * w + l * h + w * h);
 	}
 
@@ -104,7 +176,7 @@ namespace Behemoth
 		std::vector<BVHData> leftColliders(colliders.begin(), colliders.begin() + position);
 		std::vector<BVHData> rightColliders(colliders.begin() + position, colliders.end());
 
-		const int numLeft =  leftColliders.size();
+		const int numLeft = leftColliders.size();
 		const int numRight = rightColliders.size();
 
 		AABBCollider leftBound = GenerateCollider(leftColliders);
@@ -144,54 +216,5 @@ namespace Behemoth
 		collider.position = (maxPos + minPos) / 2.0f;
 		collider.extents = (maxPos - minPos) / 2.0f;
 		return collider;
-	}
-
-	std::shared_ptr<BVHNode> BVHFactory::GenerateNode(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, const AABBCollider& collider, BMath::Vector3 color)
-	{
-		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
-		node->collider = collider;
-
-// Drawing the BVH colliders is just needed for debugging purposes, do not need to actually create entities in the registry for it to function
-#ifdef DEBUG
-		if (drawDebugColliders)
-		{
-			ECS::EntityHandle entityHandle = registry.CreateEntity("BVH Debug Collider");
-			entityHandles.push_back(entityHandle);
-
-			registry.AddComponent<TransformComponent>(entityHandle);
-			registry.AddComponent<MoveComponent>(entityHandle, collider.position);
-			registry.AddComponent<AABBColliderComponent>(entityHandle, collider.extents);
-	
-			registry.AddComponent<MeshInitializeComponent>(entityHandle);
-			registry.AddComponent<WireframeComponent>(entityHandle, "cube.obj", collider.extents,false, true, color);
-		}
-#endif
-
-		return node;
-	}
-
-	std::shared_ptr<BVHNode> BVHFactory::GenerateLeaf(const BVHData& colliderData, ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles, BMath::Vector3 color)
-	{
-		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
-		node->collider = colliderData.collider;
-		node->entityHandle = colliderData.handle;
-		node->leftChild = nullptr;
-		node->rightChild = nullptr;
-
-#ifdef DEBUG
- 		if (drawDebugColliders)
- 		{
- 			ECS::EntityHandle entityHandle = registry.CreateEntity("BVH Debug Collider");
- 			entityHandles.push_back(entityHandle);
- 
- 			registry.AddComponent<TransformComponent>(entityHandle);
- 			registry.AddComponent<MoveComponent>(entityHandle, node->collider.position);
- 			registry.AddComponent<AABBColliderComponent>(entityHandle, node->collider.extents);
- 
- 			registry.AddComponent<MeshInitializeComponent>(entityHandle);
- 			registry.AddComponent<WireframeComponent>(entityHandle, "cube.obj", node->collider.extents, false, true, color);
- 		}
-#endif
-		return node;
 	}
 }

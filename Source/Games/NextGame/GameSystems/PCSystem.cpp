@@ -213,9 +213,12 @@ void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityH
 	{
 		if (Behemoth::VelocityComponent* velocityComp = registry.GetComponent<Behemoth::VelocityComponent>(entityHandle))
 		{
-			std::cout << velocityComp->velocity.Print() << std::endl;
-
 			float speed = velocityComp->velocity.Magnitude();
+			if (speed < 1.0f)
+			{
+				return;
+			}
+
 			BMath::Vector3 normalizedVelocity = BMath::Vector3::Normalize(velocityComp->velocity);
 			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocityComp->velocity.z, velocityComp->velocity.y, velocityComp->velocity.x));
 			parentRotationComp->quat = BMath::Quaternion(DEGREE_TO_RAD(5.0f), dir);

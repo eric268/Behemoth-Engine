@@ -18,7 +18,7 @@ public:
 private:
 	void ConstructEnvironment(ECS::Registry& registry) override; 
 
-	ECS::EntityHandle levelViewEntity;
+	ECS::EntityHandle goalViewEntity;
 	ECS::EntityHandle parTextEntity;
 	ECS::EntityHandle levelCompleteText;
 

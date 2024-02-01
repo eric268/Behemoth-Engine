@@ -11,27 +11,21 @@
 
 #include "Factories/SkySphereFactory.h"
 #include "Scripts/PlayerFactory.h"
-#include "Scripts/LevelViewFactory.h"
+#include "Scripts/GoalViewFactory.h"
 #include "Scripts/ViewModeChange.h"
 #include "Scripts/PlatformFactory.h"
 #include "Scripts/BarrierFactory.h"
 #include "Scripts/PlayerScore.h"
 
 #include "GameComponents/Player/PlayerComponent.h"
-#include "GameComponents/Level/LevelViewComponent.h"
+#include "GameComponents/Level/goalViewComponent.h"
 #include "GameComponents/Obstacles/MovingObsComponent.h"
 
 HoleOneScene::HoleOneScene() : GameScene(registry, 2)
 {
 	ConstructEnvironment(registry);
 
-	levelViewEntity = LevelViewFactory::CreateLevelViewEntity(
-		registry,
-		BMath::Vector3(0, 2, -20),
-		5, 
-		20,
-		10,
-		0);
+	goalViewEntity = GoalViewFactory::CreateGoalViewEntity(registry, BMath::Vector3(0, 2, -20),  20, 0);
 
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
@@ -57,7 +51,7 @@ void HoleOneScene::Update(const float deltaTime)
 
 	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
 	{
-		ViewMode::ToggleViewMode(registry, playerCharacter, levelViewEntity);
+		ViewMode::ToggleViewMode(registry, playerCharacter, goalViewEntity);
 	}
 
 	if (changeScene)
@@ -85,7 +79,7 @@ void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 		ambientLight->intensity = 2;
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", BMath::Vector2(1.0, 1.0));
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", 999.0f, BMath::Vector2(1.0, 1.0));
 
 	goalHandle = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 0.0f);
 	goalComponent = registry.GetComponent<GoalComponent>(goalHandle);

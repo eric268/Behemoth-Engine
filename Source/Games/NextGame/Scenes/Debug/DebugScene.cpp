@@ -15,7 +15,7 @@ DebugScene::DebugScene()
 	registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
 	registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", { 1.0, 1.0 });
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png",999.0f, { 1.0, 1.0 });
 
 	exampleParentEntity = Behemoth::GameObjectFactory::CreateGameObject(registry, "sphere.obj", "rock.png", "Example Parent");
 	registry.AddComponent<Behemoth::MoveComponent>(exampleParentEntity, BMath::Vector3(0.0f, 10.0f, -10.0f));

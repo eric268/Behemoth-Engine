@@ -48,6 +48,10 @@ namespace Behemoth
 		DestroyExpiredLines(registry, expiredLines);
 	}
 
+	void DebugLineSystem::ReserveResources(int numLines)
+	{
+		Renderer::GetInstance().ReserveLines(numLines);
+	}
 
 	bool DebugLineSystem::CullLineSegment(Point& p1, Point& p2, const Plane* worldFrustumPlanes)
 	{
@@ -90,11 +94,6 @@ namespace Behemoth
 		return false;
 	}
 
-	void DebugLineSystem::ReserveResources(int numLines)
-	{
-		Renderer::GetInstance().ReserveLines(numLines);
-	}
-
 	void DebugLineSystem::ProcessLine(const Point& p1, const Point& p2, const BMath::Matrix4x4& viewProjMatrix, BMath::Vector3 color)
 	{
 		BMath::Vector4 renderVerts[2];
@@ -114,20 +113,20 @@ namespace Behemoth
 		Renderer::GetInstance().AddLine(std::move(line));
 	}
 
+	void DebugLineSystem::DestroyExpiredLines(ECS::Registry& registry, std::vector<ECS::EntityHandle>& linesToDestroy)
+	{
+		for (const ECS::EntityHandle entityHandle : linesToDestroy)
+		{
+			registry.DestroyEntity(entityHandle);
+		}
+	}
+
 	void DebugLineSystem::UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle entityHandle, DebugLineComponent* lineComponent)
 	{
 		lineComponent->displayCounter += deltaTime;
 		if (lineComponent->displayCounter >= lineComponent->lifetime)
 		{
 			linesToDestroy.push_back(entityHandle);
-		}
-	}
-
-	void DebugLineSystem::DestroyExpiredLines(ECS::Registry& registry, std::vector<ECS::EntityHandle>& linesToDestroy)
-	{
-		for (const ECS::EntityHandle entityHandle : linesToDestroy)
-		{
-			registry.DestroyEntity(entityHandle);
 		}
 	}
 }

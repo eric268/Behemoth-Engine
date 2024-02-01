@@ -16,9 +16,6 @@ namespace Behemoth
 		Renderer(const Renderer&) = delete;
 		Renderer& operator=(const Renderer&) = delete;
 
-		std::vector<Line> linesToDraw;
-		std::vector<Primitive*> primitivesToDraw;
-
 		void Draw();
 		void ReservePrimitives(std::size_t numPrimitives);
 		void AddPrimitive(Primitive* primitive, int index);
@@ -27,6 +24,9 @@ namespace Behemoth
 		void FreePrimitiveResourceOverflow();
 		void ClearResources();
 		inline std::uint32_t GetCurrentPrimitiveCount() { return primitivesToDraw.size(); }
+
+		std::vector<Line> linesToDraw;
+		std::vector<Primitive*> primitivesToDraw;
 
 	private:
 		Renderer() = default;

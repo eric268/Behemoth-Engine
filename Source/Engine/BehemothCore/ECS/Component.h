@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Generator.h"
-#include "Math/MathCore.h"
 
 namespace ECS
 {

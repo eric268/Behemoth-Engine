@@ -19,7 +19,7 @@ protected:
 
 private:
 	ECS::EntityHandle teeOffPlatform;
-	ECS::EntityHandle levelViewEntity;
+	ECS::EntityHandle goalViewEntity;
 	ECS::EntityHandle titleTextEntity;
 
 	ECS::EntityHandle controllerInstructions[6];

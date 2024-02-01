@@ -164,11 +164,23 @@ namespace Behemoth
 		}
 	}
 
-	void Primitive::SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[])
+	void Primitive::SetSpriteVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[])
 	{
+		if (!sprite)
+		{
+			LOGMESSAGE(MessageType::Error, "Null sprite found");
+			return;
+		}
+
 		for (int i = 0; i < static_cast<int>(type); i++)
 		{
+			sprite->SetVertex(i, vert[i].x, vert[i].y);
 			sprite->SetUV(i, uv[i].x, uv[i].y);
+		}
+
+		if (type == TRIANGLE)
+		{
+			sprite->SetVertex(3, vert[0].x, vert[0].y);
 		}
 	}
 
@@ -182,24 +194,12 @@ namespace Behemoth
 		}
 	}
 
-	void Primitive::SetSpriteVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[])
+	void Primitive::SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[])
 	{
-		if (!sprite)
-		{
-			LOGMESSAGE(MessageType::Error, "Null sprite found");
-			return;
-		}
-
 		for (int i = 0; i < static_cast<int>(type); i++)
 		{
-			sprite->SetVertex(i, vert[i].x , vert[i].y);
 			sprite->SetUV(i, uv[i].x, uv[i].y);
 		}
-
- 		if (type == TRIANGLE)
- 		{
- 			sprite->SetVertex(3, vert[0].x, vert[0].y);
- 		}
 	}
 
 	void Primitive::SetLighting(BMath::Vector3 c)
@@ -207,9 +207,17 @@ namespace Behemoth
 		color = c;
 		sprite->SetColor(c.x, c.y, c.z);
 	}
+
 	void Primitive::AddLighting(BMath::Vector3 light)
 	{
 		color += light;
 		sprite->SetColor(color.x, color.y, color.z);
+	}
+
+	void Primitive::CopyVertexData(const BMath::Vector4* vertices, const BMath::Vector3* normals, const BMath::Vector2* uv)
+	{
+		std::memcpy(this->vertices, vertices, sizeof(BMath::Vector4) * 4);
+		std::memcpy(this->normals, normals, sizeof(BMath::Vector3) * 4);
+		std::memcpy(this->uv, uv, sizeof(BMath::Vector2) * 4);
 	}
 }

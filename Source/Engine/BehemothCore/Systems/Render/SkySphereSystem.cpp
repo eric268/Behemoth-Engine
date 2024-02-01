@@ -41,6 +41,15 @@ namespace Behemoth
 		Renderer::GetInstance().FreePrimitiveResourceOverflow();
 	}
 
+	// Want to keep sky sphere at cameras origin, but not include rotation so it appears we are looking around the world
+	void SkySphereSystem::FollowCamera(TransformComponent* transformComp, const BMath::Vector3& cameraPosition)
+	{
+		transformComp->worldPosition = cameraPosition;
+		transformComp->worldTransform._41 = cameraPosition.x;
+		transformComp->worldTransform._42 = cameraPosition.y;
+		transformComp->worldTransform._43 = cameraPosition.z;
+	}
+
 	// Since this primitive should only exist once in the scene it is fine to store the vertices directly inside the component
 	// Otherwise the models vertices are stored in the resource manager and loaded for rendering
 	void SkySphereSystem::InitializeSphere(SkySphereComponent* skySphereComponent)
@@ -128,14 +137,5 @@ namespace Behemoth
 			AddPrimitiveToRenderer(primitive, numVertices, renderVerts, primitiveIndex);
 			primitiveIndex++;
 		}
-	}
-
-	// Want to keep sky sphere at cameras origin, but not include rotation so it appears we are looking around the world
-	void SkySphereSystem::FollowCamera(TransformComponent* transformComp, const BMath::Vector3& cameraPosition)
-	{
-		transformComp->worldPosition = cameraPosition;
-		transformComp->worldTransform._41 = cameraPosition.x;
-		transformComp->worldTransform._42 = cameraPosition.y;
-		transformComp->worldTransform._43 = cameraPosition.z;
 	}
 }

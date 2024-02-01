@@ -2,29 +2,29 @@
 #include "ViewModeChange.h"
 #include "Components/Components.h"
 #include "GameComponents/Player/PlayerComponent.h"
-#include "GameComponents/Level/LevelViewComponent.h"
+#include "GameComponents/Level/goalViewComponent.h"
 
-bool ViewMode::ToggleViewMode(ECS::Registry& registry, ECS::EntityHandle playerHandle, ECS::EntityHandle levelViewHandle)
+bool ViewMode::ToggleViewMode(ECS::Registry& registry, ECS::EntityHandle playerHandle, ECS::EntityHandle goalViewHandle)
 {
-	LevelViewComponent* levelViewComp = registry.GetComponent<LevelViewComponent>(levelViewHandle);
+	GoalViewComponent* goalViewComp = registry.GetComponent<GoalViewComponent>(goalViewHandle);
 	PlayerComponent* playerComp = registry.GetComponent<PlayerComponent>(playerHandle);
 
-	if (!levelViewComp || !playerComp)
+	if (!goalViewComp || !playerComp)
 	{
 		LOGMESSAGE(Error, "Null component found while changing view mode");
 		return false;
 	}
 
-	if (Behemoth::CameraComponent* levelViewCameraComp = registry.GetComponent<Behemoth::CameraComponent>(levelViewComp->attachedCamera))
+	if (Behemoth::CameraComponent* goalViewCameraComp = registry.GetComponent<Behemoth::CameraComponent>(goalViewComp->attachedCamera))
 	{
-		levelViewCameraComp->isMain = !levelViewCameraComp->isMain;
+		goalViewCameraComp->isMain = !goalViewCameraComp->isMain;
 	}
 	else
 	{
 		LOGMESSAGE(Error, "Unable to find level view camera");
 		return false;
 	}
-	levelViewComp->isActive = !levelViewComp->isActive;
+	goalViewComp->isActive = !goalViewComp->isActive;
 
 	if (Behemoth::CameraComponent* playerCameraComp = registry.GetComponent<Behemoth::CameraComponent>(playerComp->attachedCamera))
 	{

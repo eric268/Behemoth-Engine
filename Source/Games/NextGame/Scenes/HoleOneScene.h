@@ -17,7 +17,7 @@ public:
 
 private:
 	void ConstructEnvironment(ECS::Registry& registry) override;
-	ECS::EntityHandle levelViewEntity;
+	ECS::EntityHandle goalViewEntity;
 
 	ECS::EntityHandle grassEntity;
 	ECS::EntityHandle sandTrap1;

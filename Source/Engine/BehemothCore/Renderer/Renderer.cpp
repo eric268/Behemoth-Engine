@@ -12,44 +12,6 @@ namespace Behemoth
 		return instance;
 	}
 
-	void Renderer::ReservePrimitives(std::size_t numPrimitives)
-	{
-		primitivesToDraw.resize(primitivesToDraw.size() + numPrimitives);
-	}
-
-	void Renderer::ReserveLines(std::size_t numLines)
-	{
-		linesToDraw.resize(linesToDraw.size() + numLines);
-	}
-
-	void Renderer::SortPrimitivesByDepth()
-	{
-		std::sort(primitivesToDraw.begin(), primitivesToDraw.end(),
-			[&](const Primitive* p1, const Primitive* p2)
-			{
-				return p1->depth > p2->depth;
-			});
-	}
-
-	void Renderer::AddPrimitive(Primitive* primitive, int index)
-	{
-		if (index > primitivesToDraw.size())
-		{
-			LOGMESSAGE(Error, "Primitive Container overflow");
-		}
-		primitivesToDraw[index] = primitive;
-	}
-
-	void Renderer::AddLine(const Line& line)
-	{
-		linesToDraw.push_back(line);
-	}
-
-	void Renderer::FreePrimitiveResourceOverflow()
-	{
-		primitivesToDraw.erase(std::remove(primitivesToDraw.begin(), primitivesToDraw.end(), nullptr), primitivesToDraw.end());
-	}
-
 	void Renderer::Draw()
 	{
 		SortPrimitivesByDepth();
@@ -66,9 +28,48 @@ namespace Behemoth
 
 		ClearResources();
 	}
+
+	void Renderer::ReservePrimitives(std::size_t numPrimitives)
+	{
+		primitivesToDraw.resize(primitivesToDraw.size() + numPrimitives);
+	}
+
+	void Renderer::AddPrimitive(Primitive* primitive, int index)
+	{
+		if (index > primitivesToDraw.size())
+		{
+			LOGMESSAGE(Error, "Primitive Container overflow");
+		}
+		primitivesToDraw[index] = primitive;
+	}
+
+	void Renderer::ReserveLines(std::size_t numLines)
+	{
+		linesToDraw.resize(linesToDraw.size() + numLines);
+	}
+
+	void Renderer::AddLine(const Line& line)
+	{
+		linesToDraw.push_back(line);
+	}
+
+	void Renderer::FreePrimitiveResourceOverflow()
+	{
+		primitivesToDraw.erase(std::remove(primitivesToDraw.begin(), primitivesToDraw.end(), nullptr), primitivesToDraw.end());
+	}
+
 	void Renderer::ClearResources()
 	{
 		primitivesToDraw.clear();
 		linesToDraw.clear();
+	}
+
+	void Renderer::SortPrimitivesByDepth()
+	{
+		std::sort(primitivesToDraw.begin(), primitivesToDraw.end(),
+			[&](const Primitive* p1, const Primitive* p2)
+			{
+				return p1->depth > p2->depth;
+			});
 	}
 }

@@ -8,7 +8,7 @@
 #include "Components/UIComponents.h"
 
 #include "Scripts/PlayerFactory.h"
-#include "Scripts/LevelViewFactory.h"
+#include "Scripts/GoalViewFactory.h"
 #include "Scripts/ViewModeChange.h"
 #include "Scripts/PlatformFactory.h"
 #include "Scripts/BarrierFactory.h"
@@ -18,13 +18,7 @@ HoleTwoScene::HoleTwoScene() : GameScene(registry, 4)
 {
 	ConstructEnvironment(registry);
 	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
-	levelViewEntity = LevelViewFactory::CreateLevelViewEntity(
-		registry, 
-		BMath::Vector3(20, 15, -60),
-		5, 
-		20,
-		10,
-		0);
+	goalViewEntity = GoalViewFactory::CreateGoalViewEntity(registry, BMath::Vector3(20, 15, -60), 20, 0);
 
 	parTextEntity = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
@@ -48,7 +42,7 @@ void HoleTwoScene::Update(const float deltaTime)
 
 	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
 	{
-		ViewMode::ToggleViewMode(registry, playerCharacter, levelViewEntity);
+		ViewMode::ToggleViewMode(registry, playerCharacter, goalViewEntity);
 	}
 
 	if (changeScene)
@@ -73,7 +67,7 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 		ambientLight->intensity = 0.8;
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", BMath::Vector2(1.0, 1.0));
+	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky3.png", 999.0f, BMath::Vector2(1.0, 1.0));
 
 	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
 		registry,

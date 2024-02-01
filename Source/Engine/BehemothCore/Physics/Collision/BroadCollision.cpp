@@ -32,6 +32,14 @@ namespace Behemoth
 
 		return true;
 	}
+
+	bool BroadSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
+	{
+		float distance = BMath::Vector3::SquaredDistance(sphere1.center, sphere2.center);
+		float radius = sphere1.radius + sphere2.radius;
+		return distance <= (radius * radius);
+	}
+
 	bool BroadAABBPlaneCollision(const AABBCollider& collider, const Plane& p)
 	{
 		float radius = collider.extents[0] * std::abs(p.normal[0]) + 
@@ -40,13 +48,6 @@ namespace Behemoth
 
 		float distance = BMath::Vector3::Dot(p.normal, collider.position) - p.d;
 		return std::abs(distance) <= radius;
-	}
-
-	bool BroadSphereCollision(const SphereCollider& sphere1, const SphereCollider& sphere2)
-	{
-		float distance = BMath::Vector3::SquaredDistance(sphere1.center, sphere2.center);
-		float radius = sphere1.radius + sphere2.radius;
-		return distance <= (radius * radius);
 	}
 
 	bool BroadSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box)
@@ -72,74 +73,6 @@ namespace Behemoth
 			squaredDist += diff * diff;
 		}
 		return squaredDist <= squaredRad;
-	}
-
-	bool BroadLinePlaneIntersection(const Point& p1, const Point& p2, const Plane& plane, float& dist, Point& intersectionP)
-	{
-		BMath::Vector3 ab = p2 - p1;
-		dist = (plane.d -BMath::Vector3::Dot(plane.normal, p1)) / (BMath::Vector3::Dot(plane.normal, ab));
-		
-		if (dist >= 0.0f && dist <= 1.0f)
-		{
-			intersectionP = p1 + ab * dist;
-			return true;
-		}
-		return false;
-	}
-	bool BroadLineAABBIntersection(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
-	{
-		BMath::Vector3 boxMin = box.position - box.extents;
-		BMath::Vector3 boxMax = box.position + box.extents;
-
-		Point boxCenter = (boxMin + boxMax) * 0.5f; 
-		BMath::Vector3 boxExtentsHalf = boxMax - boxCenter;
-		Point lineMidpoint = (lineStart + lineEnd) * 0.5f;
-		BMath::Vector3 lineHalfVector = lineEnd - lineMidpoint; 
-		lineMidpoint = lineMidpoint - boxCenter; 
-
-		// Absolute values of the line's half vector components
-		float absLineHalfVectorX = std::abs(lineHalfVector.x);
-		float absLineHalfVectorY = std::abs(lineHalfVector.y);
-		float absLineHalfVectorZ = std::abs(lineHalfVector.z);
-
-		// Check for separation along X axis
-		if (std::abs(lineMidpoint.x) > boxExtentsHalf.x + absLineHalfVectorX)
-		{
-			return false;
-		}
-
-		// Check for separation along Y axis
-		if (std::abs(lineMidpoint.y) > boxExtentsHalf.y + absLineHalfVectorY)
-		{
-			return false;
-		}
-
-		// Check for separation along Z axis
-		if (std::abs(lineMidpoint.z) > boxExtentsHalf.z + absLineHalfVectorZ)
-		{
-			return false;
-		}
-
-		// Add epsilon to avoid floating point errors
-		absLineHalfVectorX += EPSILON;
-		absLineHalfVectorY += EPSILON;
-		absLineHalfVectorZ += EPSILON;
-
-		// Check for cross products of line vector and AABB's face normals
-		if (std::abs(lineMidpoint.y * lineHalfVector.z - lineMidpoint.z * lineHalfVector.y) > boxExtentsHalf.y * absLineHalfVectorZ + boxExtentsHalf.z * absLineHalfVectorY)
-		{
-			return false;
-		}
-		if (std::abs(lineMidpoint.z * lineHalfVector.x - lineMidpoint.x * lineHalfVector.z) > boxExtentsHalf.x * absLineHalfVectorZ + boxExtentsHalf.z * absLineHalfVectorX)
-		{
-			return false;
-		}
-		if (std::abs(lineMidpoint.x * lineHalfVector.y - lineMidpoint.y * lineHalfVector.x) > boxExtentsHalf.x * absLineHalfVectorY + boxExtentsHalf.y * absLineHalfVectorX)
-		{
-			return false;
-		}
-
-		return true;
 	}
 
 	// float-Time Collision Detection-Morgan Kaufmann (2005)
@@ -273,7 +206,76 @@ namespace Behemoth
 		return std::abs(distance) <= radius;
 	}
 
-	bool RayIntersectsAABB(const Ray& ray, const AABBCollider& aabb)
+	bool BroadLinePlaneIntersection(const Point& p1, const Point& p2, const Plane& plane, float& dist, Point& intersectionP)
+	{
+		BMath::Vector3 ab = p2 - p1;
+		dist = (plane.d - BMath::Vector3::Dot(plane.normal, p1)) / (BMath::Vector3::Dot(plane.normal, ab));
+
+		if (dist >= 0.0f && dist <= 1.0f)
+		{
+			intersectionP = p1 + ab * dist;
+			return true;
+		}
+		return false;
+	}
+
+	bool BroadLineAABBIntersection(const Point& lineStart, const Point& lineEnd, const AABBCollider& box)
+	{
+		BMath::Vector3 boxMin = box.position - box.extents;
+		BMath::Vector3 boxMax = box.position + box.extents;
+
+		Point boxCenter = (boxMin + boxMax) * 0.5f;
+		BMath::Vector3 boxExtentsHalf = boxMax - boxCenter;
+		Point lineMidpoint = (lineStart + lineEnd) * 0.5f;
+		BMath::Vector3 lineHalfVector = lineEnd - lineMidpoint;
+		lineMidpoint = lineMidpoint - boxCenter;
+
+		// Absolute values of the line's half vector components
+		float absLineHalfVectorX = std::abs(lineHalfVector.x);
+		float absLineHalfVectorY = std::abs(lineHalfVector.y);
+		float absLineHalfVectorZ = std::abs(lineHalfVector.z);
+
+		// Check for separation along X axis
+		if (std::abs(lineMidpoint.x) > boxExtentsHalf.x + absLineHalfVectorX)
+		{
+			return false;
+		}
+
+		// Check for separation along Y axis
+		if (std::abs(lineMidpoint.y) > boxExtentsHalf.y + absLineHalfVectorY)
+		{
+			return false;
+		}
+
+		// Check for separation along Z axis
+		if (std::abs(lineMidpoint.z) > boxExtentsHalf.z + absLineHalfVectorZ)
+		{
+			return false;
+		}
+
+		// Add epsilon to avoid floating point errors
+		absLineHalfVectorX += EPSILON;
+		absLineHalfVectorY += EPSILON;
+		absLineHalfVectorZ += EPSILON;
+
+		// Check for cross products of line vector and AABB's face normals
+		if (std::abs(lineMidpoint.y * lineHalfVector.z - lineMidpoint.z * lineHalfVector.y) > boxExtentsHalf.y * absLineHalfVectorZ + boxExtentsHalf.z * absLineHalfVectorY)
+		{
+			return false;
+		}
+		if (std::abs(lineMidpoint.z * lineHalfVector.x - lineMidpoint.x * lineHalfVector.z) > boxExtentsHalf.x * absLineHalfVectorZ + boxExtentsHalf.z * absLineHalfVectorX)
+		{
+			return false;
+		}
+		if (std::abs(lineMidpoint.x * lineHalfVector.y - lineMidpoint.y * lineHalfVector.x) > boxExtentsHalf.x * absLineHalfVectorY + boxExtentsHalf.y * absLineHalfVectorX)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& aabb)
 	{
 		BMath::Vector3 aabbMin = aabb.position - aabb.extents;
 		BMath::Vector3 aabbMax = aabb.position + aabb.extents;
@@ -318,34 +320,6 @@ namespace Behemoth
 					return false;
 				}
 			}
-		}
-
-		return true;
-	}
-
-
-	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider)
-	{
-		const BMath::Vector3 min = collider.position - collider.extents;
-		const BMath::Vector3 max = collider.position + collider.extents;
-
-		const BMath::Vector3 invDir = BMath::Vector3(1.0f / ray.direction.x, 1.0f / ray.direction.y, 1.0f / ray.direction.z);
-
-		// Calculate intersection with the slabs
-		float t1 = (min.x - ray.origin.x) * invDir.x;
-		float t2 = (max.x - ray.origin.x) * invDir.x;
-		float t3 = (min.y - ray.origin.y) * invDir.y;
-		float t4 = (max.y - ray.origin.y) * invDir.y;
-		float t5 = (min.z - ray.origin.z) * invDir.z;
-		float t6 = (max.z - ray.origin.z) * invDir.z;
-
-		// Find the largest tMin and smallest tMax
-		float tMin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
-		float tMax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
-
-		if (tMax < 0 || tMin > tMax)
-		{
-			return false;
 		}
 
 		return true;
@@ -399,6 +373,7 @@ namespace Behemoth
 
 		return result;
 	}
+
 	float GetSqDistBetweenPointAABB(const Point p, const AABBCollider & collider)
 	{
 		float squaredDist = 0.0f;
