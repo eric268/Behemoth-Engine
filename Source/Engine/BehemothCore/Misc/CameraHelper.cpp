@@ -6,8 +6,6 @@
 #include "Core/Log.h"
 #include "Components/Components.h"
 
-#include <cassert>
-
 namespace Behemoth
 {
 	BMath::Matrix4x4 CameraHelper::LookAt(const BMath::Vector3& eye, const BMath::Vector3& target, const BMath::Vector3& up)
@@ -33,11 +31,11 @@ namespace Behemoth
 
 	CameraComponent* CameraHelper::GetMainCamera(ECS::Registry& registry)
 	{
-		for (const auto& [entity, camera] : registry.Get<CameraComponent>())
+		for (const auto& [entityHandle, cameraComp] : registry.Get<CameraComponent>())
 		{
-			if (camera->isMain)
+			if (cameraComp->isMain)
 			{
-				return camera;
+				return cameraComp;
 			}
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
@@ -46,9 +44,12 @@ namespace Behemoth
 
 	TransformComponent* CameraHelper::GetMainCameraTransform(ECS::Registry& registry)
 	{
-		for (const auto& [entity, camera, transformComp] : registry.Get<CameraComponent, TransformComponent>())
+		for (const auto& [
+			entityHandle, 
+				cameraComp,
+				transformComp] : registry.Get<CameraComponent, TransformComponent>())
 		{
-			if (camera->isMain)
+			if (cameraComp->isMain)
 			{
 				return transformComp;
 			}
@@ -59,10 +60,15 @@ namespace Behemoth
 
 	BMath::Vector3 CameraHelper::GetMainCameraPosition(ECS::Registry& registry)
 	{
-		for (const auto& [entityHandle, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
+		for (const auto& [
+			entityHandle, 
+				cameraComp, 
+				transformComp] : registry.Get<CameraComponent, TransformComponent>())
 		{
-			if (camera->isMain)
-				return transform->worldPosition;
+			if (cameraComp->isMain)
+			{
+				return transformComp->worldPosition;
+			}
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
 		return BMath::Vector3::Zero();
@@ -70,9 +76,12 @@ namespace Behemoth
 
 	const ECS::EntityHandle& CameraHelper::GetMainCameraEntity(ECS::Registry& registry)
 	{
-		for (const auto& [entityHandle, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
+		for (const auto& [
+			entityHandle, 
+				cameraComp,
+				transformComp] : registry.Get<CameraComponent, TransformComponent>())
 		{
-			if (camera->isMain)
+			if (cameraComp->isMain)
 			{
 				return entityHandle;
 			}
@@ -83,12 +92,12 @@ namespace Behemoth
 
 	BMath::Vector3 CameraHelper::GetForwardVector(ECS::Registry& registry)
 	{
-		CameraComponent* cameraComponent = GetMainCamera((registry));
-		if (!cameraComponent)
+		CameraComponent* cameraComp = GetMainCamera((registry));
+		if (!cameraComp)
 		{
 			LOGMESSAGE(Error, "Unable to find main camera component");
 			return BMath::Vector3::Zero();
 		}
-		return BMath::Vector3(cameraComponent->viewMatrix._31, cameraComponent->viewMatrix._32, cameraComponent->viewMatrix._33);
+		return BMath::Vector3(cameraComp->viewMatrix._31, cameraComp->viewMatrix._32, cameraComp->viewMatrix._33);
 	}
 }

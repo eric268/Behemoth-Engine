@@ -2,7 +2,7 @@
 #include "BehemothEngine.h"
 
 struct GoalViewComponent;
-struct ViewControllerComponent;
+struct GoalViewControllerComponent;
 
 class goalViewSystem
 {
@@ -13,8 +13,8 @@ private:
 	void Look(
 		const float deltaTime,
 		ECS::Registry& registry,
-		const ECS::EntityHandle& entity,
-		GoalViewComponent* playerComponent,
-		ViewControllerComponent* pcComponent);
+		const ECS::EntityHandle& entityHandle,
+		GoalViewComponent* goalViewComp,
+		GoalViewControllerComponent* goalViewControllerComp);
 };
 

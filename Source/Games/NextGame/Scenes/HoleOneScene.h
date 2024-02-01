@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "GameScene.h"
 
 class HoleOneScene : public GameScene
@@ -17,12 +16,12 @@ public:
 
 private:
 	void ConstructEnvironment(ECS::Registry& registry) override;
-	ECS::EntityHandle goalViewEntity;
 
-	ECS::EntityHandle grassEntity;
-	ECS::EntityHandle sandTrap1;
-	ECS::EntityHandle sandTrap2;
+	ECS::EntityHandle goalViewHandle;
+	ECS::EntityHandle grassPlatformHandle;
+	ECS::EntityHandle sandTrap1Handle;
+	ECS::EntityHandle sandTrap2Handle;
 	ECS::EntityHandle obstacleHandle;
-	ECS::EntityHandle parTextEntity;
+	ECS::EntityHandle parTextHandle;
 };
             

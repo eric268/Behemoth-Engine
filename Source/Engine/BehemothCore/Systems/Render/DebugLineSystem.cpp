@@ -25,9 +25,9 @@ namespace Behemoth
 		ReserveResources(numDebugLines);
 
 		// This is inefficient to essentially call Get twice, but will only run in debug and is not production code
-		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
+		CameraComponent* mainCameraComp = CameraHelper::GetMainCamera(registry);
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPosition(registry);
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCameraComp->projMatrix * mainCameraComp->viewMatrix;
 
 		std::vector<ECS::EntityHandle> expiredLines;
 
@@ -38,7 +38,7 @@ namespace Behemoth
 			Point p1 = lineComp->startPoint;
 			Point p2 = lineComp->endPoint;
 
-			if (CullLineSegment(p1, p2, mainCamera->worldSpaceFrustum))
+			if (CullLineSegment(p1, p2, mainCameraComp->worldSpaceFrustum))
 			{
 				continue;
 			}
@@ -121,10 +121,14 @@ namespace Behemoth
 		}
 	}
 
-	void DebugLineSystem::UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle entityHandle, DebugLineComponent* lineComponent)
+	void DebugLineSystem::UpdateLineDisplayLifetime(
+		const float deltaTime,
+		std::vector<ECS::EntityHandle>& linesToDestroy,
+		ECS::EntityHandle entityHandle,
+		DebugLineComponent* lineComp)
 	{
-		lineComponent->displayCounter += deltaTime;
-		if (lineComponent->displayCounter >= lineComponent->lifetime)
+		lineComp->displayCounter += deltaTime;
+		if (lineComp->displayCounter >= lineComp->lifetime)
 		{
 			linesToDestroy.push_back(entityHandle);
 		}

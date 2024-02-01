@@ -11,17 +11,16 @@ public:
 	void Initialize() override;
 	void Update(const float deltaTime) override;
 	void OnEvent(Behemoth::Event& e) override;
-	void InitializeSystems();
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
 	void ConstructEnvironment(ECS::Registry& registry);
-	ECS::EntityHandle goalViewEntity;
-	ECS::EntityHandle parTextEntity;
-	ECS::EntityHandle levelCompleteText;
-	ECS::EntityHandle rockPlatform1;
-	ECS::EntityHandle barrier1;
+
+	ECS::EntityHandle goalViewHandle;
+	ECS::EntityHandle parTextHandle;
+	ECS::EntityHandle rockPlatformHandle;
+	ECS::EntityHandle barrierHandle;
 };
 
 

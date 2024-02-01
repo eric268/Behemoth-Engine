@@ -23,7 +23,7 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void UpdateLocalTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, BMath::Vector3 deltaLocation);
+		void UpdateLocalTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, TransformComponent* transformComp, BMath::Vector3 deltaLocation);
 	};
 }
 

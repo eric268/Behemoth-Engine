@@ -9,8 +9,7 @@
 
 GameOverScene::GameOverScene()
 {
-	Behemoth::CameraFactory cameraFactory{};
-	mainCameraHandle = cameraFactory.CreateCamera(registry, true, "Main Camera");
+	mainCameraHandle = Behemoth::CameraFactory::CreateCamera(registry, true, "Main Camera");
 	registry.AddComponent<Behemoth::MoveComponent>(mainCameraHandle, BMath::Vector3(0.0f, 0, 0));
 
 	finalScoreUIHandle = registry.CreateEntity("Final score text");

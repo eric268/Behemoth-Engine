@@ -10,19 +10,19 @@ void PlayerFallSystem::Run(const float deltaTime, ECS::Registry& registry)
 			playerComp, 
 			playerFellComp] : registry.Get<PlayerComponent, PlayerFallComponent>())
 	{
- 		if (Behemoth::TransformComponent* springArmTransform = registry.GetComponent<Behemoth::TransformComponent>(playerComp->cameraSpringArm))
+ 		if (Behemoth::TransformComponent* springArmTransformComp = registry.GetComponent<Behemoth::TransformComponent>(playerComp->cameraSpringArm))
  		{
- 			springArmTransform->localPosition = springArmTransform->worldPosition;
- 			springArmTransform->localTransform._41 = springArmTransform->localPosition.x;
- 			springArmTransform->localTransform._42 = springArmTransform->localPosition.y;
- 			springArmTransform->localTransform._43 = springArmTransform->localPosition.z;
+ 			springArmTransformComp->localPosition = springArmTransformComp->worldPosition;
+ 			springArmTransformComp->localTransform._41 = springArmTransformComp->localPosition.x;
+ 			springArmTransformComp->localTransform._42 = springArmTransformComp->localPosition.y;
+ 			springArmTransformComp->localTransform._43 = springArmTransformComp->localPosition.z;
  		}
 
 		playerComp->isRespawning = true;
 		registry.RemoveComponent<Behemoth::ChildComponent>(playerComp->cameraSpringArm);
 
-		ECS::EntityHandle timerEntity = registry.CreateEntity("Timer Component");
-		registry.AddComponent<Behemoth::TimerComponent>(timerEntity, playerFellComp->timeUntilRespawn,
+		ECS::EntityHandle timerEntityHandle = registry.CreateEntity("Timer Component");
+		registry.AddComponent<Behemoth::TimerComponent>(timerEntityHandle, playerFellComp->timeUntilRespawn,
 			[this, &registry, entityHandle]() { this->RespawnPlayer(registry, entityHandle); });
 
 		registry.RemoveComponent<PlayerFallComponent>(entityHandle);

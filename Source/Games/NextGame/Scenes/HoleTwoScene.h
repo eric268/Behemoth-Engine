@@ -10,23 +10,19 @@ public:
 
 	HoleTwoScene();
 	void Initialize() override;
-	void OnEvent(Behemoth::Event& e);
 	void Update(const float deltaTime) override;
+	void OnEvent(Behemoth::Event& e);
 	void Shutdown() override;
 	ECS::Registry& GetRegistry() override { return registry; }
 
 private:
 	void ConstructEnvironment(ECS::Registry& registry) override; 
 
-	ECS::EntityHandle goalViewEntity;
-	ECS::EntityHandle parTextEntity;
-	ECS::EntityHandle levelCompleteText;
-
-	ECS::EntityHandle mainBarriers[3];
-	ECS::EntityHandle barrier1;
-
-	ECS::EntityHandle grassPatch1;
-	ECS::EntityHandle grassPatch2;
-
-	ECS::EntityHandle sandPatch2;
+	ECS::EntityHandle goalViewHandle;
+	ECS::EntityHandle parTextHandle;
+	ECS::EntityHandle mainBarrierHandles[3];
+	ECS::EntityHandle barrierHandle;
+	ECS::EntityHandle grassPatch1Handle;
+	ECS::EntityHandle grassPatch2Handle;
+	ECS::EntityHandle sandPatch2Handle;
 };

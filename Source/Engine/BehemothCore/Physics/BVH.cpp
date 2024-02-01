@@ -24,11 +24,11 @@ namespace Behemoth
 	void BVHFactory::GenerateBVHTree(
 		ECS::Registry& registry,
 		std::vector<ECS::EntityHandle>& entityHandles,
-		std::shared_ptr<BVHNode> node,
-		std::vector<BVHData> data,
+		std::shared_ptr<BVHNode> nodePtr,
+		std::vector<BVHData> bvhData,
 		int depth)
 	{
-		if (!data.size() || !node)
+		if (!bvhData.size() || !nodePtr)
 		{
 			return;
 		}
@@ -42,16 +42,16 @@ namespace Behemoth
 		for (int axis = 0; axis < 3; axis++)
 		{
 			// Sort components based on their centroid along the current axis
-			std::sort(data.begin(), data.end(), [axis](const BVHData& a, const BVHData& b) 
+			std::sort(bvhData.begin(), bvhData.end(), [axis](const BVHData& a, const BVHData& b) 
 				{
 					return a.collider.position[axis] < b.collider.position[axis];
 				});
 
 			// Apply SAH to find the best split for this axis
-			for (size_t position = 1; position < data.size(); ++position) 
+			for (size_t position = 1; position < bvhData.size(); ++position) 
 			{
 				// Calculate cost for this particular split using SAH
-				float cost = CalculateSAH(position, data, 1.0f, 2.0f); // Implement this based on SAH formula
+				float cost = CalculateSAH(position, bvhData, 1.0f, 2.0f); // Implement this based on SAH formula
 
 				if (cost < bestCost) 
 				{
@@ -70,27 +70,27 @@ namespace Behemoth
 		}
 
 		// Now split components into two sets based on bestAxis and bestPosition
-		std::vector<BVHData> leftComponents(data.begin(), data.begin() + bestPosition);
-		std::vector<BVHData> rightComponents(data.begin() + bestPosition, data.end());
+		std::vector<BVHData> leftComponents(bvhData.begin(), bvhData.begin() + bestPosition);
+		std::vector<BVHData> rightComponents(bvhData.begin() + bestPosition, bvhData.end());
 
 		if (leftComponents.size() > 1)
 		{
-			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), Behemoth::GetColor(Behemoth::Blue));
-			GenerateBVHTree(registry, entityHandles, node->leftChild, leftComponents, depth + 1);
+			nodePtr->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), Behemoth::GetColor(Behemoth::Blue));
+			GenerateBVHTree(registry, entityHandles, nodePtr->leftChild, leftComponents, depth + 1);
 		}
 		else if (leftComponents.size())
 		{
-			node->leftChild = GenerateLeaf(leftComponents[0], registry, entityHandles);
+			nodePtr->leftChild = GenerateLeaf(leftComponents[0], registry, entityHandles);
 		}
 
 		if (rightComponents.size() > 1)
 		{
-			node->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), Behemoth::GetColor(Behemoth::Green));
-			GenerateBVHTree(registry, entityHandles, node->rightChild, rightComponents, depth + 1);
+			nodePtr->rightChild = GenerateNode(registry, entityHandles, GenerateCollider(rightComponents), Behemoth::GetColor(Behemoth::Green));
+			GenerateBVHTree(registry, entityHandles, nodePtr->rightChild, rightComponents, depth + 1);
 		}
 		else if (rightComponents.size())
 		{
-			node->rightChild = GenerateLeaf(rightComponents[0], registry, entityHandles);
+			nodePtr->rightChild = GenerateLeaf(rightComponents[0], registry, entityHandles);
 		}
 	}
 
@@ -100,8 +100,8 @@ namespace Behemoth
 		const AABBCollider& collider,
 		BMath::Vector3 color)
 	{
-		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
-		node->collider = collider;
+		std::shared_ptr<BVHNode> nodePtr = std::make_shared<BVHNode>();
+		nodePtr->collider = collider;
 
 // Drawing the BVH colliders is just needed for debugging purposes, do not need to actually create entities in the registry for it to function
 #ifdef DEBUG
@@ -124,8 +124,7 @@ namespace Behemoth
 				color);
 		}
 #endif
-
-		return node;
+		return nodePtr;
 	}
 
 	std::shared_ptr<BVHNode> BVHFactory::GenerateLeaf(
@@ -134,11 +133,11 @@ namespace Behemoth
 		std::vector<ECS::EntityHandle>& entityHandles,
 		BMath::Vector3 color)
 	{
-		std::shared_ptr<BVHNode> node = std::make_shared<BVHNode>();
-		node->collider = colliderData.collider;
-		node->entityHandle = colliderData.handle;
-		node->leftChild = nullptr;
-		node->rightChild = nullptr;
+		std::shared_ptr<BVHNode> nodePtr = std::make_shared<BVHNode>();
+		nodePtr->collider = colliderData.collider;
+		nodePtr->entityHandle = colliderData.handle;
+		nodePtr->leftChild = nullptr;
+		nodePtr->rightChild = nullptr;
 
 #ifdef DEBUG
  		if (drawDebugColliders)
@@ -147,20 +146,20 @@ namespace Behemoth
  			entityHandles.push_back(entityHandle);
  
  			registry.AddComponent<TransformComponent>(entityHandle);
- 			registry.AddComponent<MoveComponent>(entityHandle, node->collider.position);
- 			registry.AddComponent<AABBColliderComponent>(entityHandle, node->collider.extents);
+ 			registry.AddComponent<MoveComponent>(entityHandle, nodePtr->collider.position);
+ 			registry.AddComponent<AABBColliderComponent>(entityHandle, nodePtr->collider.extents);
  
  			registry.AddComponent<MeshInitializeComponent>(entityHandle);
  			registry.AddComponent<WireframeComponent>(
 				entityHandle,
 				"cube.obj",
-				node->collider.extents,
+				nodePtr->collider.extents,
 				false,
 				true,
 				color);
  		}
 #endif
-		return node;
+		return nodePtr;
 	}
 
 	float BVHFactory::GetSurfaceArea(const AABBCollider& collider)

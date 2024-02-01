@@ -9,8 +9,10 @@ namespace Behemoth
 {
 	void VelocitySystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto components = registry.Get<VelocityComponent, TransformComponent>();
-		for (const auto& [entityHandle, velocityComp, transformComp] : components)
+		for (const auto& [
+			entityHandle,
+				velocityComp,
+				transformComp] : registry.Get<VelocityComponent, TransformComponent>())
 		{
 			if (registry.GetComponent<StaticComponent>(entityHandle) && velocityComp->velocity != BMath::Vector3::Zero())
 			{
@@ -26,12 +28,12 @@ namespace Behemoth
 
 			BMath::Vector3 deltaPosition = velocityComp->velocity * deltaTime;
 
-			if (TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, entityHandle))
+			if (TransformComponent* parentTransformComp = TransformHelper::GetParentTransformComp(registry, entityHandle))
 			{
 				// If object is a child, move in parents local space
 				BMath::Matrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(
-					parentTransform->worldTransform,
-							     parentTransform->worldScale);
+					parentTransformComp->worldTransform,
+							     parentTransformComp->worldScale);
 
 				deltaPosition = parentTransformNoScale * deltaPosition;
 			}
@@ -41,9 +43,9 @@ namespace Behemoth
 			TransformHelper::NotifyChildrenTransformChange(registry, entityHandle);
 			transformComp->isDirty = true;
 
-			if (CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entityHandle))
+			if (CameraComponent* cameraComp = registry.GetComponent<CameraComponent>(entityHandle))
 			{
-				cameraComponent->isDirty = true;
+				cameraComp->isDirty = true;
 			}
 		}
 	}
@@ -52,7 +54,7 @@ namespace Behemoth
 		ECS::Registry& registry, 
 		const ECS::EntityHandle& handle,
 		TransformComponent* transformComp,
-		BMath::Vector3 deltaPosition)
+		const BMath::Vector3& deltaPosition)
 	{
 		transformComp->localTransform._41 += deltaPosition.x;
 		transformComp->localTransform._42 += deltaPosition.y;

@@ -6,7 +6,6 @@
 namespace Behemoth
 {
 	Text::Text() : text(""), textColor(Behemoth::White) {}
-
 	Text::Text(const std::string& t, Behemoth::BColor c) : text(t), textColor(c) {}
 
 	void Text::Print(const BMath::Vector2& pos)

@@ -13,18 +13,18 @@ namespace Behemoth
 	void NarrowCollisionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		// Dynamic entities are the entities that we are first iterating over to check for collisions
-		for (const auto& [dynamicEntityHandle, dynamicTransform, collisionPairs] : registry.Get<TransformComponent, BroadCollisionPairsComponent>())
+		for (const auto& [dynamicEntityHandle, dynamicTransformComp, collisionPairsComp] : registry.Get<TransformComponent, BroadCollisionPairsComponent>())
 		{
 			// Generates a tuple with all narrow colliers ** Some maybe nullptr's so always check if valid first **
 			auto dynamicColliders = GetColliders(registry, dynamicEntityHandle, NarrowColliderTypes{});
 
 			// Hit entities are all entities that collided with the dynamic entity during the broad collision check
-			for (const auto& hitEntityHandle : collisionPairs->collisionIDs)
+			for (const auto& hitEntityHandle : collisionPairsComp->collisionIDs)
 			{
 				auto hitColliders = GetColliders(registry, hitEntityHandle, NarrowColliderTypes{});
 
-				TransformComponent* hitTransform = registry.GetComponent<TransformComponent>(hitEntityHandle);
-				if (!hitTransform)
+				TransformComponent* hitTransformComp = registry.GetComponent<TransformComponent>(hitEntityHandle);
+				if (!hitTransformComp)
 				{
 					LOGMESSAGE(Error, "Failed to get transform of colliding pair: " + registry.GetName(hitEntityHandle));
 					continue;
@@ -38,12 +38,12 @@ namespace Behemoth
 						return ((std::apply([&](auto&&... hitColliders)
 						{
  							ContactData contactData{};
-							auto CheckHitColliders = [&](auto&& collider1, auto&& collider2)
+							auto CheckHitColliders = [&](auto&& collider1Comp, auto&& collider2Comp)
  							{
- 								if (IsCollision(dynamicTransform, hitTransform, collider1, collider2, contactData))
+ 								if (IsCollision(dynamicTransformComp, hitTransformComp, collider1Comp, collider2Comp, contactData))
  								{
- 									contactData.physicsMaterial = collider2->physicsMaterial;
- 									if (collider2->isTrigger)
+ 									contactData.physicsMaterial = collider2Comp->physicsMaterial;
+ 									if (collider2Comp->isTrigger)
  									{
  										GenerateData<TriggerDataComponent>(registry, dynamicEntityHandle, hitEntityHandle, contactData);
  									}

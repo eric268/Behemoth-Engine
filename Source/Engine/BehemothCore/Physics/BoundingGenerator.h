@@ -20,34 +20,34 @@ namespace Behemoth
 	};
 
 	template<typename T>
-	static AABBCollider GenerateBVHCollider(TransformComponent* transformComponent, const T* collider);
+	static AABBCollider GenerateBVHCollider(TransformComponent* transformComp, const T* collider);
 
 	template<>
-	static AABBCollider GenerateBVHCollider(TransformComponent* transformComponent, const AABBColliderComponent* collider)
+	static AABBCollider GenerateBVHCollider(TransformComponent* transformComp, const AABBColliderComponent* collider)
 	{
 		AABBCollider bvhCollider{};
-		bvhCollider.position = transformComponent->worldPosition;
-		bvhCollider.extents = transformComponent->worldScale * collider->extents;
+		bvhCollider.position = transformComp->worldPosition;
+		bvhCollider.extents = transformComp->worldScale * collider->extents;
 		return bvhCollider;
 	}
 
 	template<>
-	static AABBCollider GenerateBVHCollider(TransformComponent* transformComponent, const SphereColliderComponent* collider)
+	static AABBCollider GenerateBVHCollider(TransformComponent* transformComp, const SphereColliderComponent* collider)
 	{
 		AABBCollider bvhCollider{};
-		bvhCollider.position = transformComponent->worldPosition;
-		bvhCollider.extents = transformComponent->worldScale * collider->radius;
+		bvhCollider.position = transformComp->worldPosition;
+		bvhCollider.extents = transformComp->worldScale * collider->radius;
 		return bvhCollider;
 	}
 
 	template<>
-	static AABBCollider GenerateBVHCollider(TransformComponent* transformComponent, const OBBColliderComponent* collider)
+	static AABBCollider GenerateBVHCollider(TransformComponent* transformComp, const OBBColliderComponent* collider)
 	{
 		AABBCollider bvhCollider{};
-		bvhCollider.position = transformComponent->worldPosition;
-		bvhCollider.extents = transformComponent->worldScale * collider->extents;
+		bvhCollider.position = transformComp->worldPosition;
+		bvhCollider.extents = transformComp->worldScale * collider->extents;
 
-		BMath::Matrix3x3 rotationMatrix = TransformHelper::ExtractRotationMatrix(transformComponent->worldTransform, transformComponent->worldScale);
+		BMath::Matrix3x3 rotationMatrix = TransformHelper::ExtractRotationMatrix(transformComp->worldTransform, transformComp->worldScale);
 		AABBCollider rotatedCollider{};
 
 		BoundingGenerator::GenerateRotatedAABB(bvhCollider, rotationMatrix, rotatedCollider);

@@ -50,11 +50,11 @@ public:
 	Behemoth::ControllerCode fireProjectileCC;
 };
 
-struct ViewControllerComponent : public ECS::Component
+struct GoalViewControllerComponent : public ECS::Component
 {
-	ViewControllerComponent() = default;
+	GoalViewControllerComponent() = default;
 
-	ViewControllerComponent(
+	GoalViewControllerComponent(
 		Behemoth::KeyCode rotateLeftKC,
 		Behemoth::KeyCode rotateRightKC,
 		Behemoth::KeyCode moveUpKC,

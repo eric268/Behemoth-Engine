@@ -27,14 +27,19 @@ namespace Behemoth
 		return numVerticesOutsideFrustrum != numVertices;
 	}
 
-	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* entityTransform, const BoundingVolumeComponent* boundingComp)
+	bool RenderSystem::IsBoundingVolumeInFrustrum(
+		const CameraComponent* cameraComp, 
+		const TransformComponent* entityTransformComp, 
+		const BoundingVolumeComponent* boundingComp)
 	{
-		float maxScale = std::max(entityTransform->worldScale[0], std::max(entityTransform->worldScale[1], entityTransform->worldScale[2]));
-		for (const auto& p : cameraComponent->worldSpaceFrustum)
+		float maxScale = std::max(entityTransformComp->worldScale[0],
+			       std::max(entityTransformComp->worldScale[1], entityTransformComp->worldScale[2]));
+
+		for (const auto& p : cameraComp->worldSpaceFrustum)
 		{
-			float distance = BMath::Vector3::Dot(entityTransform->worldPosition + boundingComp->localPosition, p.normal) + p.d;
+			float distance = BMath::Vector3::Dot(entityTransformComp->worldPosition + boundingComp->localPosition, p.normal) + p.d;
 			float radius = boundingComp->radius * maxScale;
-			if (distance < -radius )
+			if (distance < -radius)
 			{
 				 return false;
 			}

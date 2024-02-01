@@ -12,7 +12,7 @@ namespace Behemoth
 {
 	void LightingSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
- 		CameraComponent* mainCamera = nullptr;
+ 		CameraComponent* mainCameraComp = nullptr;
 		BMath::Vector3 mainCameraPosition = BMath::Vector3::Zero();
 
 		for (const auto& [
@@ -22,21 +22,21 @@ namespace Behemoth
 		{
 			if (cameraComp->isMain)
 			{
-				mainCamera = cameraComp;
+				mainCameraComp = cameraComp;
 				mainCameraPosition = transformComp->worldPosition;
 				break;
 			}
 		}
 
-		assert(mainCamera);
+		assert(mainCameraComp);
 
 		// Should only be one ambient light
-		auto ambientLightComponent = registry.Get<AmbientLightComponent>();
+		auto ambientLightComp = registry.Get<AmbientLightComponent>();
 
 		// Should only be one directional light
-		auto directionalComponent = registry.Get<DirectionalLightComponent>();
+		auto directionalComp = registry.Get<DirectionalLightComponent>();
 
-		auto pointLightComponents = registry.Get<PointLightComponent, TransformComponent>();
+		auto pointLightComp = registry.Get<PointLightComponent, TransformComponent>();
 
 		for (int i = 0; i < Renderer::GetInstance().primitivesToDraw.size(); i++)
 		{
@@ -56,57 +56,57 @@ namespace Behemoth
 
 			primitive->SetLighting(BMath::Vector3::Zero());
 
-			for (const auto& [ambientEntity, ambientLight] : ambientLightComponent)
+			for (const auto& [ambientEntity, ambientLightComp] : ambientLightComp)
 			{
-				CalculateAmbientLights(primitive, ambientLight);
+				CalculateAmbientLights(primitive, ambientLightComp);
 			}
 
-			for (const auto& [dirEntity, dirLight] : directionalComponent)
+			for (const auto& [dirEntity, dirLightComp] : directionalComp)
 			{
-				CalculateDirectionalLights(primitive, dirLight, mainCameraPosition);
+				CalculateDirectionalLights(primitive, dirLightComp, mainCameraPosition);
 			}
 			
-			for (const auto& [pointEntity, pointLight, transformComp] : pointLightComponents)
+			for (const auto& [pointEntity, pointLightComp, transformComp] : pointLightComp)
 			{
-				 CalculatePointLights(primitive, pointLight, mainCameraPosition, transformComp->worldPosition, mainCamera->viewMatrix);
+				 CalculatePointLights(primitive, pointLightComp, mainCameraPosition, transformComp->worldPosition, mainCameraComp->viewMatrix);
 			}
 		}
 	}
 
-	void LightingSystem::CalculateAmbientLights(Primitive* primitive, const AmbientLightComponent* light)
+	void LightingSystem::CalculateAmbientLights(Primitive* primitive, const AmbientLightComponent* ambientLightComp)
 	{
-		BMath::Vector3 ambientLight = light->color * light->intensity;
+		BMath::Vector3 ambientLight = ambientLightComp->color * ambientLightComp->intensity;
 		primitive->AddLighting(ambientLight);
 	}
 
-	void LightingSystem::CalculateDirectionalLights(Primitive* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos)
+	void LightingSystem::CalculateDirectionalLights(Primitive* primitive, const DirectionalLightComponent* dirLightComp, const BMath::Vector3& cameraPos)
 	{
 		const BMath::Vector3 normal = primitive->normals[0];
 		
-		const BMath::Vector3 lightDir = BMath::Vector3::Normalize(light->direction);
+		const BMath::Vector3 lightDir = BMath::Vector3::Normalize(dirLightComp->direction);
 		const BMath::Vector3 primitivePos = GetPrimitivePosition(primitive);
 
 		BMath::Vector3 diffuse = CalculateDiffuseLighting(
 			normal, 
-			light->direction,
+			dirLightComp->direction,
 			primitive->diffuse,
-			light->color, 
-			light->intensity);
+			dirLightComp->color, 
+			dirLightComp->intensity);
 
 		BMath::Vector3 specular = CalculateSpecularLighting(
 			primitive,
 			cameraPos,
 			normal,
 			lightDir,
-			light->color,
-			light->intensity);
+			dirLightComp->color,
+			dirLightComp->intensity);
 
 		primitive->AddLighting(diffuse + specular);
 	}
 
 	void LightingSystem::CalculatePointLights(
 		Primitive* primitive, 
-		const PointLightComponent* light,
+		const PointLightComponent* pointLightComp,
 		const BMath::Vector3& cameraPos,
 		const BMath::Vector3& lightPos,
 		const BMath::Matrix4x4& viewMatrix)
@@ -121,18 +121,18 @@ namespace Behemoth
 			normal, 
 			lightDir,
 			primitive->diffuse,
-			light->color,
-			light->intensity);
+			pointLightComp->color,
+			pointLightComp->intensity);
 
 		BMath::Vector3 specular = CalculateSpecularLighting(
 			primitive, 
 			cameraPos,
 			normal, 
 			lightDir, 
-			light->color,
-			light->intensity);
+			pointLightComp->color,
+			pointLightComp->intensity);
 
-		float attenuation = 1.0f / (light->constant + (light->linear * distance) + (light->quadratic * distance * distance));
+		float attenuation = 1.0f / (pointLightComp->constant + (pointLightComp->linear * distance) + (pointLightComp->quadratic * distance * distance));
 		primitive->AddLighting((diffuse + specular) * attenuation);
 	}
 

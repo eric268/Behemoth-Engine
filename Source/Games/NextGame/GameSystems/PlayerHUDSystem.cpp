@@ -5,18 +5,18 @@
 
 void PlayerHUDSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
-	for (const auto& [entity, playerComponent, playerHUD] : registry.Get<PlayerComponent, PlayerHUDComponent>())
+	for (const auto& [entityHandle, playerComp, playerHUDComp] : registry.Get<PlayerComponent, PlayerHUDComponent>())
 	{
-		Behemoth::TextComponent* powerUIText = registry.GetComponent<Behemoth::TextComponent>(playerHUD->powerUIHandle);
-		if (powerUIText)
+		Behemoth::TextComponent* powerUITextComp = registry.GetComponent<Behemoth::TextComponent>(playerHUDComp->powerUIHandle);
+		if (powerUITextComp)
 		{
-			powerUIText->text = "Power: " + std::to_string((int)playerComponent->currentPower);
+			powerUITextComp->text = "Power: " + std::to_string((int)playerComp->currentPower);
 		}
 
-		Behemoth::TextComponent* strokesUIText = registry.GetComponent<Behemoth::TextComponent>(playerHUD->strokesUIHandle);
-		if (strokesUIText)
+		Behemoth::TextComponent* strokesUITextComp = registry.GetComponent<Behemoth::TextComponent>(playerHUDComp->strokesUIHandle);
+		if (strokesUITextComp)
 		{
-			strokesUIText->text = "Strokes: " + std::to_string(playerComponent->strokesUsed);
+			strokesUITextComp->text = "Strokes: " + std::to_string(playerComp->strokesUsed);
 		}
 	}
 }

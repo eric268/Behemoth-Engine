@@ -8,7 +8,10 @@
 
 void MovingObsSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
-	for (const auto& [entityHandle, movingObsComp, velocityComp] : registry.Get<MovingObsComponent, Behemoth::VelocityComponent>())
+	for (const auto& [
+		entityHandle, 
+			movingObsComp, 
+			velocityComp] : registry.Get<MovingObsComponent, Behemoth::VelocityComponent>())
 	{
 		if (movingObsComp->isActive)
 		{
@@ -19,6 +22,7 @@ void MovingObsSystem::Run(const float deltaTime, ECS::Registry& registry)
 				movingObsComp->dir *= -1.0f;
 				movingObsComp->movementCounter = 0.0f;
 			}
+
 			movingObsComp->movementCounter += deltaDistance;
 			velocityComp->velocity = movingObsComp->movementAxis * movingObsComp->dir;
 		}

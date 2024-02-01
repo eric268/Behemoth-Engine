@@ -17,12 +17,12 @@ namespace Behemoth
 	{
 		auto components = registry.Get<WireframeComponent, TransformComponent>();
 
-		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
+		CameraComponent* mainCameraComp = CameraHelper::GetMainCamera(registry);
 		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPosition(registry);
 
 
 		// ** Order of multiplication matters here **
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCameraComp->projMatrix * mainCameraComp->viewMatrix;
 
 		int totalPrimitives = 0;
 		for (const auto& [entity, wireframeComp, transformComp] : components)
@@ -37,12 +37,17 @@ namespace Behemoth
 			if (!wireframeComp->isVisible)
 				continue;
 
-			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entityHandle);
-			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, transformComp, boundingVolume))
+			BoundingVolumeComponent* boundingVolumeComp = registry.GetComponent<BoundingVolumeComponent>(entityHandle);
+			if (boundingVolumeComp && !IsBoundingVolumeInFrustrum(mainCameraComp, transformComp, boundingVolumeComp))
 			{
 				continue;
 			}
-			const BMath::Matrix4x4 wireframeTransform = GetWireframeTransform(transformComp->worldTransform, transformComp->worldScale, wireframeComp->scale, wireframeComp->allowRotation);
+			const BMath::Matrix4x4 wireframeTransform = GetWireframeTransform(
+				transformComp->worldTransform,
+				transformComp->worldScale,
+				wireframeComp->scale, 
+				wireframeComp->allowRotation);
+
 			ProcessWireframe(wireframeComp->mesh, wireframeTransform, viewProjMatrix, true, wireframeComp->wireframeColor);
 		}
 	}
@@ -52,7 +57,12 @@ namespace Behemoth
 		Renderer::GetInstance().ReserveLines(numPrimitives * 4);
 	}
 
-	void WireframeRenderSystem::ProcessWireframe(Mesh& mesh, const BMath::Matrix4x4& transformMatrix, const BMath::Matrix4x4& viewProjMatrix, bool isDirty, BMath::Vector3 color)
+	void WireframeRenderSystem::ProcessWireframe(
+		Mesh& mesh, 
+		const BMath::Matrix4x4& transformMatrix,
+		const BMath::Matrix4x4& viewProjMatrix, 
+		bool isDirty, 
+		BMath::Vector3 color)
 	{
 		const MeshData& meshData = mesh.meshData;
 
@@ -105,7 +115,11 @@ namespace Behemoth
 		}
 	}
 
-	BMath::Matrix4x4 WireframeRenderSystem::GetWireframeTransform(const BMath::Matrix4x4& ownerTransform, const BMath::Vector3& ownerWorldScale, const BMath::Vector3& wireframeScale, const bool allowRotation)
+	BMath::Matrix4x4 WireframeRenderSystem::GetWireframeTransform(
+		const BMath::Matrix4x4& ownerTransform, 
+		const BMath::Vector3& ownerWorldScale,
+		const BMath::Vector3& wireframeScale,
+		const bool allowRotation)
 	{
 		BMath::Matrix4x4 scaledMatrix = BMath::Matrix4x4::Identity();
 		for (int i = 0; i < 3; i++)

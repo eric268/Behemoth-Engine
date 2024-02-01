@@ -13,7 +13,10 @@ namespace Behemoth
 {
 	void RotationSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entityHandle, rotationComp, transformComp] : registry.Get<RotationComponent, TransformComponent>())
+		for (const auto& [
+			entityHandle, 
+				rotationComp,
+				transformComp] : registry.Get<RotationComponent, TransformComponent>())
 		{
 			// TODO:
 			// Find a better way to handle parent rotation changes so that this can be removed after a rotation is processed
@@ -40,9 +43,7 @@ namespace Behemoth
 			rotationComp->isAdditive = true;
 			rotationComp->quat = BMath::Quaternion::Identity();
 
-
 			// If this entity has a camera component we need to update the view matrix as well after a rotation
-
 			if (CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entityHandle))
 			{
 				cameraComponent->isDirty = true;

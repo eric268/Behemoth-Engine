@@ -2,7 +2,6 @@
 
 #include <cassert>
 
-
 namespace BMath
 {
 	template<typename T>

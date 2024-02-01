@@ -30,14 +30,17 @@ namespace Behemoth
 			}
 
 			BMath::Vector3 deltaLocation = movementComp->location;
-			TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, entityHandle);
+			TransformComponent* parentTransformComp = TransformHelper::GetParentTransformComp(registry, entityHandle);
 
 			if (movementComp->isAdditive)
 			{
-				if (parentTransform)
+				if (parentTransformComp)
 				{
 					// If entity is a child, move in parents local space
-					BMath::Matrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform, parentTransform->worldScale);
+					BMath::Matrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(
+						parentTransformComp->worldTransform,
+						parentTransformComp->worldScale);
+
 					deltaLocation = parentTransformNoScale * deltaLocation;
 				}
 
@@ -46,9 +49,9 @@ namespace Behemoth
 			else
 			{
 				// If entity is a child need to move relative to parents position
-				if (parentTransform)
+				if (parentTransformComp)
 				{
-					deltaLocation = movementComp->location - parentTransform->worldPosition;
+					deltaLocation = movementComp->location - parentTransformComp->worldPosition;
 				}
 
 				transformComp->localPosition = deltaLocation;

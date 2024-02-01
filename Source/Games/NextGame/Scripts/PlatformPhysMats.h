@@ -6,7 +6,6 @@
 
 namespace PhysMat
 {
-
 	enum PlatformPhysMats
 	{
 		None,

@@ -94,12 +94,12 @@ namespace Behemoth
 
 			for (auto& componentTuple : components)
 			{
-				std::apply([this, &data, &registry](ECS::Entity handle, TransformComponent* transformComp, auto* ...args)
+				std::apply([this, &data, &registry](ECS::Entity entityHandle, TransformComponent* transformComp, auto* ...args)
 				{
-					 AABBCollider collider = this->GenerateColliderData(registry, handle, transformComp, NarrowColliderTypes{});
+					 AABBCollider collider = this->GenerateColliderData(registry, entityHandle, transformComp, NarrowColliderTypes{});
 					 collider.position = transformComp->worldPosition;
-					 data.push_back(BVHData(handle, collider));
-					 BVHColliderComponent* colliderComp = registry.AddComponent<BVHColliderComponent>(handle);
+					 data.push_back(BVHData(entityHandle, collider));
+					 BVHColliderComponent* colliderComp = registry.AddComponent<BVHColliderComponent>(entityHandle);
 					 if (colliderComp)
 					 {
 						 colliderComp->collider = collider;
@@ -111,12 +111,12 @@ namespace Behemoth
 		}
 
 		template<typename ...Colliders>
-		AABBCollider GenerateColliderData(ECS::Registry& registry, ECS::EntityHandle handle, TransformComponent* transformComp, NarrowColliders<Colliders ...>)
+		AABBCollider GenerateColliderData(ECS::Registry& registry, ECS::EntityHandle entityHandle, TransformComponent* transformComp, NarrowColliders<Colliders ...>)
 		{
-			auto narrowColliders = registry.GetMultipleComponents<Colliders...>(handle);
+			auto narrowColliders = registry.GetMultipleComponents<Colliders...>(entityHandle);
 			AABBCollider bvhCollider{};
 
-			std::apply([&bvhCollider, transformComp](auto&& ... colliderComponents)
+			std::apply([&bvhCollider, transformComp](auto&& ... colliderComp)
 				{
 					auto GenerateSmallestAABB = [&](auto&& collider)
 					{
@@ -130,7 +130,7 @@ namespace Behemoth
 							}
 						}
 					};
-					(..., GenerateSmallestAABB(colliderComponents));
+					(..., GenerateSmallestAABB(colliderComp));
 				}, narrowColliders);
 
 			return bvhCollider;

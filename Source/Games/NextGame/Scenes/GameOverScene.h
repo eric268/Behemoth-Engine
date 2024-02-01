@@ -16,6 +16,7 @@ public:
 
 private:
 	std::string GetFinalScoreText();
+
 	ECS::EntityHandle finalScoreUIHandle;
 	ECS::EntityHandle controlsUIHandle;
 	ECS::EntityHandle mainCameraHandle;

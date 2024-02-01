@@ -34,7 +34,6 @@ namespace Behemoth
 
 			registry.AddComponent<MeshInitializeComponent>(entityHandle);
 		}
-
 		return entityHandle;
 	}
 }

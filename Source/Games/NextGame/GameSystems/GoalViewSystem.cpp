@@ -10,31 +10,30 @@ void goalViewSystem::Run(const float deltaTime, ECS::Registry& registry)
 	for (const auto& [
 		entityHandle,
 			goalViewComp,
-			viewController] : registry.Get<GoalViewComponent, ViewControllerComponent>())
+			goalViewControllerComp] : registry.Get<GoalViewComponent, GoalViewControllerComponent>())
 	{
 		// Do not want to allow input when not in level view
 		if (!goalViewComp->isActive)
 		{
 			continue;
 		}
-
-		Look(deltaTime, registry, entityHandle, goalViewComp, viewController);
+		Look(deltaTime, registry, entityHandle, goalViewComp, goalViewControllerComp);
 	}
 }
 
 void goalViewSystem::Look(
 	const float deltaTime, 
 	ECS::Registry& registry, 
-	const ECS::EntityHandle& handle,
-	GoalViewComponent* goalView,
-	ViewControllerComponent* viewController)
+	const ECS::EntityHandle& entityHandle,
+	GoalViewComponent* goalViewComp,
+	GoalViewControllerComponent* goalViewControllerComp)
 {
 	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnalog(0);
 
-	float keyInputX = Behemoth::Input::IsKeyHeld(viewController->rotateLeftKC) - Behemoth::Input::IsKeyHeld(viewController->rotateRightKC);
-	float keyInputY = Behemoth::Input::IsKeyHeld(viewController->moveUpKC)     - Behemoth::Input::IsKeyHeld(viewController->moveDownKC);
+	float keyInputX = Behemoth::Input::IsKeyHeld(goalViewControllerComp->rotateLeftKC) - Behemoth::Input::IsKeyHeld(goalViewControllerComp->rotateRightKC);
+	float keyInputY = Behemoth::Input::IsKeyHeld(goalViewControllerComp->moveUpKC)     - Behemoth::Input::IsKeyHeld(goalViewControllerComp->moveDownKC);
 
-	if (Behemoth::RotationComponent* parentRotationComp = registry.AddComponent<Behemoth::RotationComponent>(handle))
+	if (Behemoth::RotationComponent* parentRotationComp = registry.AddComponent<Behemoth::RotationComponent>(entityHandle))
 	{
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();

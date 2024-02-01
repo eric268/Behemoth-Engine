@@ -10,7 +10,7 @@ namespace Behemoth
 	void RigidBodySystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		for (const auto& [
-			entity,
+			entityHandle,
 				rigidBodyComp,
 				velocityComp] : registry.Get<RigidBodyComponent, VelocityComponent>())
 		{

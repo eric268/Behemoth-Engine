@@ -36,7 +36,9 @@ namespace Behemoth
 		{
 			for (int button = 0; button < Behemoth::ControllerCode::NUM_CC; button++)
 			{
-				currentControllerButtonState[controller][button] = CSimpleControllers::GetInstance().GetController(controller).CheckButton(Behemoth::controllerButtonMap[button], false);
+				currentControllerButtonState[controller][button] = CSimpleControllers::GetInstance().GetController(controller).CheckButton(
+					Behemoth::controllerButtonMap[button],
+					false);
 			}
 		}
 	}

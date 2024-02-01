@@ -9,7 +9,7 @@
 
 namespace Behemoth
 {
-	class Event;
+	struct Event;
 	class KeyDownEvent;
 	class KeyReleasedEvent;
 	class MouseDownEvent;

@@ -25,24 +25,20 @@ HoleOneScene::HoleOneScene() : GameScene(registry, 2)
 {
 	ConstructEnvironment(registry);
 
-	goalViewEntity = GoalViewFactory::CreateGoalViewEntity(registry, BMath::Vector3(0, 2, -20),  20, 0);
+	goalViewHandle = GoalViewFactory::CreateGoalViewEntity(registry, BMath::Vector3(0, 2, -20),  20, 0);
 
-	parTextEntity = registry.CreateEntity("Par Text Entity");
-	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
+	parTextHandle = registry.CreateEntity("Par Text Entity");
+	registry.AddComponent<Behemoth::TextComponent>(parTextHandle, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
 
-	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
-	PlayerComponent* playerComponent = registry.GetComponent<PlayerComponent>(playerCharacter);
+	playerHandle = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
+	registry.GetComponent<PlayerComponent>(playerHandle);
 	PlayerScore::ResetScore();
 }
 
 void HoleOneScene::Initialize()
 {
 	// Function called after scene constructor 
-	// Can be used for additional initialization steps that are required post construction
-}
-
-void HoleOneScene::OnEvent(Behemoth::Event& e)
-{
+	// Can be used for additional initialization steps that are required after constructor call
 }
 
 void HoleOneScene::Update(const float deltaTime)
@@ -51,13 +47,18 @@ void HoleOneScene::Update(const float deltaTime)
 
 	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
 	{
-		ViewMode::ToggleViewMode(registry, playerCharacter, goalViewEntity);
+		ViewMode::ToggleViewMode(registry, playerHandle, goalViewHandle);
 	}
 
 	if (changeScene)
 	{
 		Behemoth::World::GetInstance().ChangeScene(new HoleTwoScene());
 	}
+}
+
+void HoleOneScene::OnEvent(Behemoth::Event& e)
+{
+
 }
 
 void HoleOneScene::Shutdown()
@@ -67,24 +68,26 @@ void HoleOneScene::Shutdown()
 
 void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 {
-	environmentLighting = registry.CreateEntity("Environment Lighting");
-	Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting);
-	if (directionalLight)
+	environmentLightingHandle = registry.CreateEntity("Environment Lighting");
+
+	Behemoth::DirectionalLightComponent* directionalLightComp = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLightingHandle);
+	if (directionalLightComp)
 	{
-		directionalLight->direction = BMath::Vector3(0.0f, 0.707, 0.707);
-	}
-	Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting);
-	if (ambientLight)
-	{
-		ambientLight->intensity = 2;
+		directionalLightComp->direction = BMath::Vector3(0.0f, 0.707, 0.707);
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", 999.0f, BMath::Vector2(1.0, 1.0));
+	Behemoth::AmbientLightComponent* ambientLightComp = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLightingHandle);
+	if (ambientLightComp)
+	{
+		ambientLightComp->intensity = 2;
+	}
+
+	skySphereHandle = Behemoth::SkySphereFactory::CreateSkySphere(registry, "SeamlessSky.png", 999.0f, BMath::Vector2(1.0, 1.0));
 
 	goalHandle = CreateGoalObject(registry, BMath::Vector3(0, 2, -20), BMath::Vector3(3.0f), 0.0f);
-	goalComponent = registry.GetComponent<GoalComponent>(goalHandle);
+	goalComp = registry.GetComponent<GoalComponent>(goalHandle);
 
-	teeOffPlatform = PlatformFactory::CreateGrassPlatform(
+	teeOffPlatformHandle = PlatformFactory::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 8.8f, 18),
 		BMath::Vector3(4, 0.1f, 4));
@@ -99,17 +102,17 @@ void HoleOneScene::ConstructEnvironment(ECS::Registry& registry)
 	registry.AddComponent<MovingObsComponent>(obstacleHandle, BMath::Vector3::Up(), 30.0f, 250.0f, 0.0f);
 	registry.AddComponent<Behemoth::VelocityComponent>(obstacleHandle);
 
-	grassEntity = PlatformFactory::CreateGrassPlatform(
+	grassPlatformHandle = PlatformFactory::CreateGrassPlatform(
 		registry,
 		BMath::Vector3(0, 0, 0),
 		BMath::Vector3(10, 0.1f, 6));
 
-	sandTrap1 = PlatformFactory::CreateSandPlatform(
+	sandTrap1Handle = PlatformFactory::CreateSandPlatform(
 		registry,
 		BMath::Vector3(-20, -2, -20),
 		BMath::Vector3(7, 0.1f, 10));
 
-	sandTrap2 = PlatformFactory::CreateSandPlatform(
+	sandTrap2Handle = PlatformFactory::CreateSandPlatform(
 		registry,
 		BMath::Vector3(20, -2, -20),
 		BMath::Vector3(7, 0.1f, 10));

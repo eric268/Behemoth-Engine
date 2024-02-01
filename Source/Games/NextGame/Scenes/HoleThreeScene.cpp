@@ -24,15 +24,15 @@
 HoleThreeScene::HoleThreeScene() : GameScene(registry, 3)
 {
 	ConstructEnvironment(registry);
-	playerCharacter = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 15, 18));
-	goalViewEntity = GoalViewFactory::CreateGoalViewEntity(registry, BMath::Vector3(0, 10, -30), 20, 0);
+	playerHandle = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 15, 18));
+	goalViewHandle = GoalViewFactory::CreateGoalViewEntity(registry, BMath::Vector3(0, 10, -30), 20, 0);
 
-	parTextEntity = registry.CreateEntity("Par Text Entity");
-	registry.AddComponent<Behemoth::TextComponent>(parTextEntity, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
+	parTextHandle = registry.CreateEntity("Par Text Entity");
+	registry.AddComponent<Behemoth::TextComponent>(parTextHandle, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
 }
 void HoleThreeScene::Initialize()
 {
-	InitializeSystems();
+
 }
 void HoleThreeScene::Update(const float deltaTime)
 {
@@ -40,7 +40,7 @@ void HoleThreeScene::Update(const float deltaTime)
 
 	if (Behemoth::Input::IsControllerKeyDown(Behemoth::CC_Y) || Behemoth::Input::IsKeyDown(Behemoth::KC_C))
 	{
-		ViewMode::ToggleViewMode(registry, playerCharacter, goalViewEntity);
+		ViewMode::ToggleViewMode(registry, playerHandle, goalViewHandle);
 	}
 
 	if (changeScene)
@@ -52,9 +52,7 @@ void HoleThreeScene::OnEvent(Behemoth::Event& e)
 {
 
 }
-void HoleThreeScene::InitializeSystems()
-{
-}
+
 void HoleThreeScene::Shutdown()
 {
 
@@ -62,37 +60,32 @@ void HoleThreeScene::Shutdown()
 
 void HoleThreeScene::ConstructEnvironment(ECS::Registry& registry)
 {
-	environmentLighting = registry.CreateEntity("Environment Lighting");
+	environmentLightingHandle = registry.CreateEntity("Environment Lighting");
 
-	if (Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLighting))
+	if (Behemoth::DirectionalLightComponent* directionalLight = registry.AddComponent<Behemoth::DirectionalLightComponent>(environmentLightingHandle))
 	{
 		directionalLight->direction = BMath::Vector3(0.707, 0.707, 0.707).Normalize();
 	}
 
-	if (Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLighting))
+	if (Behemoth::AmbientLightComponent* ambientLight = registry.AddComponent<Behemoth::AmbientLightComponent>(environmentLightingHandle))
 	{
 		ambientLight->intensity = 2;
 	}
 
-	skySphere = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky2.png", 999.0f, BMath::Vector2(1.0, 1.0));
+	skySphereHandle = Behemoth::SkySphereFactory::CreateSkySphere(registry, "seamlesssky2.png", 999.0f, BMath::Vector2(1.0, 1.0));
 
-	rockPlatform1 = PlatformFactory::CreateRockPlatform(registry, BMath::Vector3(0, 0, -10), BMath::Vector3(5, 1, 15));
+	rockPlatformHandle = PlatformFactory::CreateRockPlatform(registry, BMath::Vector3(0, 0, -10), BMath::Vector3(5, 1, 15));
 
-	barrier1 = BarrierFactory::CreateObstacle(
+	barrierHandle = BarrierFactory::CreateObstacle(
 		registry, 
 		BMath::Vector3(0, 15, -0),
 		BMath::Vector3(5, 6, 1), 
 		BMath::Quaternion(),
 		false);
 
-	registry.AddComponent<MovingObsComponent>(barrier1, BMath::Vector3(0, 1, 0), 40.0f, 250.0f, 0.0f);
+	registry.AddComponent<MovingObsComponent>(barrierHandle, BMath::Vector3(0, 1, 0), 40.0f, 250.0f, 0.0f);
 
 
 	goalHandle = CreateGoalObject(registry, BMath::Vector3(0, 10, -30), BMath::Vector3(3.0f), 0.0f);
-	goalComponent = registry.GetComponent<GoalComponent>(goalHandle);
-// 
-// 	teeOffPlatform = PlatformObject::CreateGrassPlatform(
-// 		registry,
-// 		BMath::Vector3(0, 14, 18),
-// 		BMath::Vector3(4, 1.0f, 4));
+	goalComp = registry.GetComponent<GoalComponent>(goalHandle);
 }

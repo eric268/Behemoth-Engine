@@ -9,7 +9,7 @@ namespace Behemoth
 {
 	void BoundingVolumeRenderSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		CameraComponent* mainCamera = nullptr;
+		CameraComponent* mainCameraComp = nullptr;
 		BMath::Vector3 mainCameraPosition = BMath::Vector3::Zero();
 
 		for (const auto& [
@@ -19,26 +19,27 @@ namespace Behemoth
 		{
 			if (cameraComp->isMain)
 			{
-				mainCamera = cameraComp;
+				mainCameraComp = cameraComp;
 				mainCameraPosition = transformComp->worldPosition;
 				break;
 			}
 		}
 
-		assert(mainCamera);
+		assert(mainCameraComp);
 
-		auto components = registry.Get<BoundingVolumeComponent, TransformComponent>();
+		BMath::Matrix4x4 viewProjMatrix = mainCameraComp->projMatrix * mainCameraComp->viewMatrix;
 
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
-
-		for (const auto& [entity, boundingVolumeComp, transformComp] : components)
+		for (const auto& [
+			entityHandle,
+				boundingVolumeComp,
+				transformComp] : registry.Get<BoundingVolumeComponent, TransformComponent>())
 		{
 			if (!boundingVolumeComp->isVisible)
 			{
 				continue;
 			}
 
-			if (!IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolumeComp))
+			if (!IsBoundingVolumeInFrustrum( mainCameraComp, transformComp, boundingVolumeComp))
 			{
 				continue;
 			}
@@ -47,7 +48,11 @@ namespace Behemoth
 		}
 	}
 
-	void BoundingVolumeRenderSystem::ProcessBoundingVolume(BoundingVolumeComponent* boundingComp, TransformComponent* transformComp, const BMath::Vector3 cameraPosition, const BMath::Matrix4x4& viewProjMatrix)
+	void BoundingVolumeRenderSystem::ProcessBoundingVolume(
+		BoundingVolumeComponent* boundingComp,
+		TransformComponent* transformComp,
+		const BMath::Vector3 cameraPosition, 
+		const BMath::Matrix4x4& viewProjMatrix)
 	{
 		// Scale the sphere mesh by bounding radius
 		float maxScale = std::max(transformComp->worldScale[0], std::max(transformComp->worldScale[1], transformComp->worldScale[2]));

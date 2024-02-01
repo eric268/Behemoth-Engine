@@ -22,13 +22,13 @@ ECS::EntityHandle BarrierFactory::CreateObstacle(
 
 	if (BMath::Quaternion::Equals(q, BMath::Quaternion::Identity()))
 	{
-		Behemoth::AABBColliderComponent* obstacleCollider = registry.AddComponent<Behemoth::AABBColliderComponent>(obstacleHandle);
-		obstacleCollider->physicsMaterial = Behemoth::PhysicsMaterial(0.75, 1.0f);
+		Behemoth::AABBColliderComponent* obstacleColliderComp = registry.AddComponent<Behemoth::AABBColliderComponent>(obstacleHandle);
+		obstacleColliderComp->physicsMaterial = Behemoth::PhysicsMaterial(0.75, 1.0f);
 	}
 	else
 	{
-		Behemoth::OBBColliderComponent* obstacleCollider = registry.AddComponent<Behemoth::OBBColliderComponent>(obstacleHandle);
-		obstacleCollider->physicsMaterial = Behemoth::PhysicsMaterial(0.75, 1.0f);
+		Behemoth::OBBColliderComponent* obstacleColliderComp = registry.AddComponent<Behemoth::OBBColliderComponent>(obstacleHandle);
+		obstacleColliderComp->physicsMaterial = Behemoth::PhysicsMaterial(0.75, 1.0f);
 	}
 	
 	if (isStatic)

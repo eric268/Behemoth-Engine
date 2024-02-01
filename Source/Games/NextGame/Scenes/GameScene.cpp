@@ -18,44 +18,26 @@ std::unordered_map<int, std::string> GameScene::holeResultsText =
 	{3, "Triple Bogey"}
 };
 
-GameScene::GameScene() : par(0), delayUntilSceneChange(0.0f), changeScene(false), goalComponent(nullptr) {}
+GameScene::GameScene() : par(0), delayUntilSceneChange(0.0f), changeScene(false), goalComp(nullptr) {}
 
-GameScene::GameScene(ECS::Registry& registry, int p, float delay) : par(p), delayUntilSceneChange(delay), changeScene(false), goalComponent(nullptr)
+GameScene::GameScene(ECS::Registry& registry, int p, float delay) : par(p), delayUntilSceneChange(delay), changeScene(false), goalComp(nullptr)
 {
 	CreateOOBEntity(registry);
 }
 
 void GameScene::Update(const float deltaTime)
 {
-	CheckOutOfBound(registry, playerCharacter, oobTrigger);
+	CheckOutOfBound(registry, playerHandle, oobTriggerHandle);
 
-	if (CheckLevelComplete(registry, playerCharacter))
+	if (CheckLevelComplete(registry, playerHandle))
 	{
-		OnHoleComplete(registry, playerCharacter, par);
+		OnHoleComplete(registry, playerHandle, par);
 
 		ECS::EntityHandle changeSceneEntity = registry.CreateEntity("Change scene entity");
 		registry.AddComponent<Behemoth::TimerComponent>(changeSceneEntity, delayUntilSceneChange, [this]()
 		{
 			changeScene = true;
 		});
-	}
-}
-
-std::string GameScene::GetHoleResultText(int numStrokes, int par)
-{
-	int result = numStrokes - par;
-
-	if (numStrokes == 1)
-	{
-		return std::string("Hole in One! Well Done!");
-	}
-	else if (result < 4)
-	{
-		return holeResultsText[result];
-	}
-	else
-	{
-		return std::string("+" + std::to_string(result));
 	}
 }
 
@@ -88,7 +70,7 @@ void GameScene::CheckOutOfBound(ECS::Registry& registry, const ECS::EntityHandle
 
 bool GameScene::CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle)
 {
-	if (!goalComponent)
+	if (!goalComp)
 	{
 		LOGMESSAGE(Error, "Unable to find goal component");
 		return false;
@@ -98,7 +80,7 @@ bool GameScene::CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& p
 	{
 		for (const auto& d : collisionData->data)
 		{
-			for (const auto& goalColliderHandle : goalComponent->goalColliderHandles)
+			for (const auto& goalColliderHandle : goalComp->goalColliderHandles)
 			{
 				if (d.otherHandle.ID == goalColliderHandle.ID)
 				{
@@ -134,51 +116,31 @@ void GameScene::OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playe
 
 	PlayerScore::AddScore(par, playerComponent->strokesUsed);
 
-	levelCompleteText = registry.CreateEntity("Level complete text");
-	registry.AddComponent<Behemoth::TextComponent>(levelCompleteText, GetHoleResultText(playerComponent->strokesUsed, par), BMath::Vector2(0, 0.5f));
+	levelCompleteTextHandle = registry.CreateEntity("Level complete text");
+	registry.AddComponent<Behemoth::TextComponent>(levelCompleteTextHandle, GetHoleResultText(playerComponent->strokesUsed, par), BMath::Vector2(0, 0.5f));
 
-	if (Behemoth::VelocityComponent* velocity = registry.GetComponent<Behemoth::VelocityComponent>(playerCharacter))
+	if (Behemoth::VelocityComponent* velocity = registry.GetComponent<Behemoth::VelocityComponent>(playerHandle))
 	{
 		velocity->velocity = BMath::Vector3::Zero();
 	}
 
-	if (Behemoth::RigidBodyComponent* rigidBodyComponent = registry.GetComponent<Behemoth::RigidBodyComponent>(playerCharacter))
+	if (Behemoth::RigidBodyComponent* rigidBodyComponent = registry.GetComponent<Behemoth::RigidBodyComponent>(playerHandle))
 	{
 		rigidBodyComponent->affectedByGravity = false;
 	}
 }
 
-ECS::EntityHandle GameScene::CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale, bool drawColliders)
-{
-	ECS::EntityHandle collider1 = registry.CreateEntity("Goal Collider");
-	registry.AddComponent<Behemoth::TransformComponent>(collider1);
-	registry.AddComponent<Behemoth::SphereColliderComponent>(collider1);
-	registry.AddComponent<Behemoth::ScalingComponent>(collider1, scale);
-	registry.AddComponent<Behemoth::MoveComponent>(collider1, offset);
-	registry.AddComponent<Behemoth::RotationComponent>(collider1);
-	registry.AddComponent<Behemoth::StaticComponent>(collider1);
-
-#ifdef DEBUG
-	if (drawColliders)
-	{
-		registry.AddComponent<Behemoth::MeshInitializeComponent>(collider1);
-		registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
-	}
-#endif 
-	return collider1;
-}
-
 // Possibly move these two functions into separate factory classes
 ECS::EntityHandle GameScene::CreateOOBEntity(ECS::Registry& registry)
 {
-	oobTrigger = registry.CreateEntity("Out of bounds trigger");
-	registry.AddComponent<Behemoth::TransformComponent>(oobTrigger);
-	registry.AddComponent<Behemoth::AABBColliderComponent>(oobTrigger, BMath::Vector3(1.0f), true, true);
-	registry.AddComponent<Behemoth::StaticComponent>(oobTrigger);
-	registry.AddComponent<Behemoth::ScalingComponent>(oobTrigger, BMath::Vector3(1000, 10.0f, 1000.0));
-	registry.AddComponent<Behemoth::MoveComponent>(oobTrigger, BMath::Vector3(0, -20, 10.0f));
+	oobTriggerHandle = registry.CreateEntity("Out of bounds trigger");
+	registry.AddComponent<Behemoth::TransformComponent>(oobTriggerHandle);
+	registry.AddComponent<Behemoth::AABBColliderComponent>(oobTriggerHandle, BMath::Vector3(1.0f), true, true);
+	registry.AddComponent<Behemoth::StaticComponent>(oobTriggerHandle);
+	registry.AddComponent<Behemoth::ScalingComponent>(oobTriggerHandle, BMath::Vector3(1000, 10.0f, 1000.0));
+	registry.AddComponent<Behemoth::MoveComponent>(oobTriggerHandle, BMath::Vector3(0, -20, 10.0f));
 
-	return oobTrigger;
+	return oobTriggerHandle;
 }
 
 ECS::EntityHandle GameScene::CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle)
@@ -209,4 +171,42 @@ ECS::EntityHandle GameScene::CreateGoalObject(ECS::Registry& registry, const BMa
 	}
 
 	return goalHandle;
+}
+
+ECS::EntityHandle GameScene::CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale, bool drawColliders)
+{
+	ECS::EntityHandle collider1 = registry.CreateEntity("Goal Collider");
+	registry.AddComponent<Behemoth::TransformComponent>(collider1);
+	registry.AddComponent<Behemoth::SphereColliderComponent>(collider1);
+	registry.AddComponent<Behemoth::ScalingComponent>(collider1, scale);
+	registry.AddComponent<Behemoth::MoveComponent>(collider1, offset);
+	registry.AddComponent<Behemoth::RotationComponent>(collider1);
+	registry.AddComponent<Behemoth::StaticComponent>(collider1);
+
+#ifdef DEBUG
+	if (drawColliders)
+	{
+		registry.AddComponent<Behemoth::MeshInitializeComponent>(collider1);
+		registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
+	}
+#endif 
+	return collider1;
+}
+
+std::string GameScene::GetHoleResultText(int numStrokes, int par)
+{
+	int result = numStrokes - par;
+
+	if (numStrokes == 1)
+	{
+		return std::string("Hole in One! Well Done!");
+	}
+	else if (result < 4)
+	{
+		return holeResultsText[result];
+	}
+	else
+	{
+		return std::string("+" + std::to_string(result));
+	}
 }

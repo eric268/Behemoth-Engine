@@ -7,7 +7,7 @@
 namespace Behemoth
 {
 	class Ray;
-	class Plane;
+	struct Plane;
 	struct CollisionData;
 
 	using Point = BMath::Vector3;

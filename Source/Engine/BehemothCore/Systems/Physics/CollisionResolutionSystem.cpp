@@ -14,12 +14,12 @@ namespace Behemoth
 			entityHandle,
 				transformComp,
 				velocityComp,
-				rigidBodyComponent,
+				rigidBodyComp,
 				collisionData] : registry.Get<TransformComponent, VelocityComponent, RigidBodyComponent, CollisionDataComponent>())
 		{
 			BMath::Vector3 offsetPosition = BMath::Vector3::Zero();
 			BMath::Vector3 newVelocity = velocityComp->velocity;
-			bool simPhysics = rigidBodyComponent->simulatePhysics;
+			bool simPhysics = rigidBodyComp->simulatePhysics;
 
 			for (auto& collision : collisionData->data)
 			{
@@ -40,9 +40,9 @@ namespace Behemoth
 
 			velocityComp->velocity = newVelocity;
 
-			if (MoveComponent* moveComponent = registry.GetComponent<MoveComponent>(entityHandle))
+			if (MoveComponent* moveComp = registry.GetComponent<MoveComponent>(entityHandle))
 			{
-				moveComponent->location += offsetPosition;
+				moveComp->location += offsetPosition;
 			}
 			else
 			{

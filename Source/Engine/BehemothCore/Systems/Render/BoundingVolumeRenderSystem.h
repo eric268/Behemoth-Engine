@@ -15,7 +15,7 @@ namespace Behemoth
 
 	private:
 		void ProcessBoundingVolume(
-			BoundingVolumeComponent* boundingVolumeComponent,
+			BoundingVolumeComponent* boundingVolumeComp,
 			TransformComponent* transform,
 			const BMath::Vector3 cameraPosition,
 			const BMath::Matrix4x4& viewProjMatrix);

@@ -22,7 +22,7 @@ namespace Behemoth
 		virtual void Run(const float deltaTime, ECS::Registry& registry) = 0;
 
 		bool IsPrimitiveWithinFrustrum(const int numVertices, BMath::Vector4 primitiveVerts[]);
-		bool IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* transformComp, const BoundingVolumeComponent* boundingComp);
+		bool IsBoundingVolumeInFrustrum(const CameraComponent* cameraComp, const TransformComponent* transformComp, const BoundingVolumeComponent* boundingComp);
 
 		void TransformVertex(const Primitive& primitive, const BMath::Matrix4x4& transformMatix, BMath::Vector4 vertex[], const int numVertices);
 		float ProcessVertex(const BMath::Matrix4x4& viewProjMatrix, BMath::Vector4 vertices[], int numVertices);

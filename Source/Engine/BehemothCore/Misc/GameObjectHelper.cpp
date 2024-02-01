@@ -31,9 +31,9 @@ namespace Behemoth
 			}
 		}
 
-		if (TransformComponent* transformComponent = registry.GetComponent<TransformComponent>(childHandle))
+		if (TransformComponent* transformComp = registry.GetComponent<TransformComponent>(childHandle))
 		{
-			transformComponent->parentIsDirty = true;
+			transformComp->parentIsDirty = true;
 		}
 
 		registry.AddComponent<ChildComponent>(childHandle, parentHandle);

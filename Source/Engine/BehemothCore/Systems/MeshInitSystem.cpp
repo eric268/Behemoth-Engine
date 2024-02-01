@@ -16,30 +16,29 @@ namespace Behemoth
 {
 	void MeshInitSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, meshInitComp] : registry.Get<MeshInitializeComponent>())
+		for (const auto& [entityHandle, meshInitComp] : registry.Get<MeshInitializeComponent>())
 		{
-			MeshComponent* meshComponent = registry.GetComponent<MeshComponent>(entity);
-			if (meshComponent)
+			if (MeshComponent* meshComp = registry.GetComponent<MeshComponent>(entityHandle))
 			{
-				InitMesh(meshComponent->mesh);
+				InitMesh(meshComp->mesh);
 
 				// Generates a bounding sphere to encompass the mesh for frustum culling
 				if (meshInitComp->initBoundingVolume)
 				{
-					InitSphereBoundingVolume(registry, meshComponent, entity);
+					InitSphereBoundingVolume(registry, meshComp, entityHandle);
 				}
 			}
 
 #ifdef DEBUG
 			// Only need to initialize wire frame meshes when debugging
-			WireframeComponent* wireframeMesh = registry.GetComponent<WireframeComponent>(entity);
-			if (wireframeMesh)
+			WireframeComponent* wireframeComp = registry.GetComponent<WireframeComponent>(entityHandle);
+			if (wireframeComp)
 			{
-				InitMesh(wireframeMesh->mesh);
+				InitMesh(wireframeComp->mesh);
 			}
 #endif
 			// Remove this component once initialization has completed
-			registry.RemoveComponent<MeshInitializeComponent>(entity);
+			registry.RemoveComponent<MeshInitializeComponent>(entityHandle);
 		}
 	}
 
@@ -50,19 +49,17 @@ namespace Behemoth
 		mesh.GenerateMesh(meshData, vertexData);
 	}
 
-	void MeshInitSystem::InitSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle)
+	void MeshInitSystem::InitSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& entityHandle)
 	{
-		registry.AddComponent<BoundingVolumeComponent>(handle, false);
-		BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(handle);
-		if (boundingVolume)
+		BoundingVolumeComponent* boundingVolumeComp = registry.AddComponent<BoundingVolumeComponent>(entityHandle, false);
+		if (boundingVolumeComp)
 		{
-
 #ifdef DEBUG
-			InitMesh(boundingVolume->mesh);
+			InitMesh(boundingVolumeComp->mesh);
 #endif
 			SphereCollider collider = ResourceManager::GetInstance().GetMeshSphereBounds(meshComp->modelFileName);
-			boundingVolume->radius = collider.radius;
-			boundingVolume->localPosition = collider.center;
+			boundingVolumeComp->radius = collider.radius;
+			boundingVolumeComp->localPosition = collider.center;
 		}
 	}
 }

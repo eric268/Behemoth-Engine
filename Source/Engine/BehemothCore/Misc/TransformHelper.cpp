@@ -9,10 +9,10 @@ namespace Behemoth
 {
 	void TransformHelper::UpdateWorldTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp)
 	{
-		if (TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, handle))
+		if (TransformComponent* parentTransformComp = TransformHelper::GetParentTransformComp(registry, handle))
 		{
 			// Combine parent's world transform with child's local transform
-			BMath::Matrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransform->worldTransform) *
+			BMath::Matrix4x4 combinedTransform = TransformHelper::RemoveScale(parentTransformComp->worldTransform) *
 				TransformHelper::RemoveScale(transformComp->localTransform);
 
 			for (int i = 0; i < 3; i++)
@@ -27,7 +27,7 @@ namespace Behemoth
 			transformComp->worldTransform._41 = transformComp->worldPosition.x;
 			transformComp->worldTransform._42 = transformComp->worldPosition.y;
 			transformComp->worldTransform._43 = transformComp->worldPosition.z;
-			transformComp->worldScale = parentTransform->worldScale * transformComp->localScale;
+			transformComp->worldScale = parentTransformComp->worldScale * transformComp->localScale;
 			transformComp->parentIsDirty = false;
 		}
 		else
@@ -43,10 +43,10 @@ namespace Behemoth
 	{
 		if (ChildComponent* childComp = registry.GetComponent<ChildComponent>(entityHandle))
 		{
-			TransformComponent* parentTransform = registry.GetComponent<TransformComponent>(childComp->parentHandle);
-			if (parentTransform)
+			TransformComponent* parentTransformComp = registry.GetComponent<TransformComponent>(childComp->parentHandle);
+			if (parentTransformComp)
 			{
-				return parentTransform;
+				return parentTransformComp;
 			}
 			else
 			{
@@ -58,9 +58,9 @@ namespace Behemoth
 
 	BMath::Matrix4x4 TransformHelper::GetParentTransform(ECS::Registry& registry, const ECS::EntityHandle& entityHandle)
 	{
-		if (TransformComponent* transform = GetParentTransformComp(registry, entityHandle))
+		if (TransformComponent* transformComp = GetParentTransformComp(registry, entityHandle))
 		{
-			return transform->worldTransform;
+			return transformComp->worldTransform;
 		}
 		return BMath::Matrix4x4::Identity();
 	}

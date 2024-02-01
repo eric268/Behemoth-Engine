@@ -18,35 +18,27 @@ namespace Behemoth
 {
 	void MeshRenderSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto components = registry.Get<MeshComponent, TransformComponent>();
-
-		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
+		CameraComponent* mainCameraComp = CameraHelper::GetMainCamera(registry);
 		TransformComponent* cameraTransformComp = CameraHelper::GetMainCameraTransform(registry);
 
 		// Used for primitive indexes in renderer, allows for multi-threading without having to lock the renderers primitive container
 		std::uint32_t renderSlotIndex = Renderer::GetInstance().GetCurrentPrimitiveCount();
 		std::uint32_t primitivesToDraw = 0;
 
-		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
+		BMath::Matrix4x4 viewProjMatrix = mainCameraComp->projMatrix * mainCameraComp->viewMatrix;
 
-		// Want to ensure that we use the world forward vector in case the camera is a child of another object, meaning its local
-		// forward vector maybe different then the actual direction it is facing
-		BMath::Vector3 cameraWorldFwdVec = BMath::Vector3(-mainCamera->viewMatrix._13,
- 														   -mainCamera->viewMatrix._23,
- 														   -mainCamera->viewMatrix._33).Normalize();
-
-		BMath::Vector3 cameraWorldFwdVec2 = cameraTransformComp->forwardVector;
+		auto components = registry.Get<MeshComponent, TransformComponent>();
 
 		// Count total number of possible primitives to render so that renderer primitive container is only resized once
 		// Will free unused space at the end
-		for (const auto& [entity, meshComp, transformComp] : components)
+		for (const auto& [entityHandle, meshComp, transformComp] : components)
 		{
 			primitivesToDraw += meshComp->mesh.meshPrimitives.size();
 		}
 
 		ReserveResources(primitivesToDraw);
 
-		for (const auto& [entity, meshComp, transformComp] : components)
+		for (const auto& [entityHandle, meshComp, transformComp] : components)
 		{
 			// Do not want to perform calculations if nothing is to be drawn
 			if (!meshComp->isVisible)
@@ -55,10 +47,10 @@ namespace Behemoth
 			}
 
 			// Check if the bounding volume is inside the frustum, if not skip rendering this primitive entirely 
-			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
-			if (boundingVolume && !IsBoundingVolumeInFrustrum( mainCamera, transformComp, boundingVolume))
+			BoundingVolumeComponent* boundingVolumeComp = registry.GetComponent<BoundingVolumeComponent>(entityHandle);
+			if (boundingVolumeComp && !IsBoundingVolumeInFrustrum( mainCameraComp, transformComp, boundingVolumeComp))
 			{
-				// continue;
+				continue;
 			}
 
 			// Process primitive render calculations on worker thread
@@ -69,7 +61,7 @@ namespace Behemoth
 				cameraTransformComp,
 				transformComp->worldTransform,
 				viewProjMatrix, 
-				cameraWorldFwdVec,
+				mainCameraComp->forwardVector,
 				transformComp->isDirty,
 				renderSlotIndex));
 
@@ -130,7 +122,7 @@ namespace Behemoth
 
 	void MeshRenderSystem::ProcessMesh(
 		Mesh& mesh,
-		TransformComponent* cameraTransform,
+		TransformComponent* cameraTransformComp,
 		const BMath::Matrix4x4& transformMatrix,
 		const BMath::Matrix4x4& viewProjMatrix,
 		const BMath::Vector3& cameraWorldFwdVec,
@@ -168,7 +160,7 @@ namespace Behemoth
 			}
 
 			// Check if primitive face is in direction of camera or if it can be culled
-			if (CullBackFace(cameraTransform->worldPosition, cameraWorldFwdVec, primitive.vertices))
+			if (CullBackFace(cameraTransformComp->worldPosition, cameraWorldFwdVec, primitive.vertices))
 			{
 				continue;
 			}

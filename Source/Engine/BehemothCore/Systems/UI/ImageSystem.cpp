@@ -13,7 +13,6 @@ namespace Behemoth
 			{
 				continue;
 			}
-
 			imageComponent->image.Draw(imageComponent->screenPosition);
 		}
 	}

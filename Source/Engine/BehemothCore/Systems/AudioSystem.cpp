@@ -8,7 +8,7 @@ namespace Behemoth
 {
 	void AudioSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, audioFileComp] : registry.Get<AudioComponent>())
+		for (const auto& [entityHandle, audioFileComp] : registry.Get<AudioComponent>())
 		{
 			// Sound clip has stopped
 			if (!audioFileComp->soundClip.SoundClipIsPlaying())
@@ -21,7 +21,7 @@ namespace Behemoth
 				// audio file has finished playing
 				else if (audioFileComp->isPlaying)
 				{
-					OnFinished(registry, audioFileComp, entity);
+					OnFinished(registry, audioFileComp, entityHandle);
 				}
 				// Audio file has not started playing so play it
 				else if (audioFileComp->playSoundClip)
@@ -37,29 +37,29 @@ namespace Behemoth
 		}
 	}
 
-	void AudioSystem::StartAudio(AudioComponent* audioComponent)
+	void AudioSystem::StartAudio(AudioComponent* audioComp)
 	{
-		audioComponent->soundClip.PlaySoundClip();
-		audioComponent->isPlaying = true;
+		audioComp->soundClip.PlaySoundClip();
+		audioComp->isPlaying = true;
 	}
 
-	void AudioSystem::StopAudio(AudioComponent* audioComponent)
+	void AudioSystem::StopAudio(AudioComponent* audioComp)
 	{
-		audioComponent->soundClip.StopSoundClip();
-		audioComponent->isPlaying = false;
-		audioComponent->playSoundClip = false;
+		audioComp->soundClip.StopSoundClip();
+		audioComp->isPlaying = false;
+		audioComp->playSoundClip = false;
 	}
 
-	void AudioSystem::OnFinished(ECS::Registry& registry, AudioComponent* audioComponent, const ECS::EntityHandle& handle)
+	void AudioSystem::OnFinished(ECS::Registry& registry, AudioComponent* audioComp, const ECS::EntityHandle& entityHandle)
 	{
-		if (audioComponent->onAudioFinished)
+		if (audioComp->onAudioFinished)
 		{
-			audioComponent->onAudioFinished();
+			audioComp->onAudioFinished();
 		}
 
-		if (audioComponent->destroyEntityOnFinished)
+		if (audioComp->destroyEntityOnFinished)
 		{
-			registry.DestroyEntity(ECS::EntityHandle(handle));
+			registry.DestroyEntity(ECS::EntityHandle(entityHandle));
 		}
 	}
 }

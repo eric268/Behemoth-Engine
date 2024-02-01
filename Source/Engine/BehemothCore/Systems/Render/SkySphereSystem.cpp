@@ -15,12 +15,12 @@ namespace Behemoth
 	void SkySphereSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		CameraComponent* cameraComp = CameraHelper::GetMainCamera(registry);
-		TransformComponent* cameraTransform = CameraHelper::GetMainCameraTransform(registry);
+		TransformComponent* cameraTransformComp = CameraHelper::GetMainCameraTransform(registry);
 
 		std::uint32_t renderSlotIndex = Renderer::GetInstance().GetCurrentPrimitiveCount();
 
 		for (const auto& [
-			entity, 
+			entityHandle, 
 				transformComp,
 				skySphereComp] : registry.Get<TransformComponent, SkySphereComponent>())
 		{
@@ -29,12 +29,12 @@ namespace Behemoth
 				InitializeSphere(skySphereComp);
 			}
 
-			FollowCamera(transformComp, cameraTransform->worldPosition);
+			FollowCamera(transformComp, cameraTransformComp->worldPosition);
 			transformComp->isDirty = true;
 
 			BMath::Matrix4x4 viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
 
-			ProcessSphere(transformComp, skySphereComp, cameraTransform, viewProjMatrix, renderSlotIndex);
+			ProcessSphere(transformComp, skySphereComp, cameraTransformComp, viewProjMatrix, renderSlotIndex);
 			renderSlotIndex += skySphereComp->mesh.meshPrimitives.size();
 		}
 
@@ -52,36 +52,36 @@ namespace Behemoth
 
 	// Since this primitive should only exist once in the scene it is fine to store the vertices directly inside the component
 	// Otherwise the models vertices are stored in the resource manager and loaded for rendering
-	void SkySphereSystem::InitializeSphere(SkySphereComponent* skySphereComponent)
+	void SkySphereSystem::InitializeSphere(SkySphereComponent* skySphereComp)
 	{
-		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVertices(skySphereComponent->mesh.meshData.modelFileName);
-		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(skySphereComponent->mesh.meshData.modelFileName);
-		skySphereComponent->mesh.GenerateMesh(meshData, vertexData);
-		skySphereComponent->vertices.resize(vertexData.size());
+		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVertices(skySphereComp->mesh.meshData.modelFileName);
+		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(skySphereComp->mesh.meshData.modelFileName);
+		skySphereComp->mesh.GenerateMesh(meshData, vertexData);
+		skySphereComp->vertices.resize(vertexData.size());
 
 		for (int i = 0; i < vertexData.size(); i++)
 		{
-			skySphereComponent->vertices[i] = vertexData[i].position;
+			skySphereComp->vertices[i] = vertexData[i].position;
 		}
 
 		// Want all of the "sky sphere" primitives to be drawn first since they should always be considered the furthest possible
-		for (auto& primitive : skySphereComponent->mesh.meshPrimitives)
+		for (auto& primitive : skySphereComp->mesh.meshPrimitives)
 		{
 			primitive.depth = std::numeric_limits<float>::max();
 		}
 
-		skySphereComponent->isInitalized = true;
+		skySphereComp->isInitalized = true;
 	}
 
 	// Should be very similar to the mesh render class except their is no back face culling since we will be 
 	void SkySphereSystem::ProcessSphere(
 		TransformComponent* transformComp, 
-		SkySphereComponent* skySphereComponent,
+		SkySphereComponent* skySphereComp,
 		TransformComponent* cameraTransform,
 		const BMath::Matrix4x4& viewProjMatrix, 
 		int renderSlotIndex)
 	{
-		const MeshData& meshData = skySphereComponent->mesh.meshData;
+		const MeshData& meshData = skySphereComp->mesh.meshData;
 
 		ReserveResources(meshData.totalPrimitives);
 		int primitiveIndex = 0;
@@ -102,14 +102,14 @@ namespace Behemoth
 				primitiveIndex = vertexIndex / 3;
 			}
 
-			Primitive& primitive = skySphereComponent->mesh.meshPrimitives[i];
+			Primitive& primitive = skySphereComp->mesh.meshPrimitives[i];
 
 			// Only need to update the vertices if matrix dirty
 			if (transformComp->isDirty)
 			{
 				for (int j = 0; j < numVertices; j++)
 				{
-					primitive.vertices[j] = transformComp->worldTransform * BMath::Vector4(skySphereComponent->vertices[vertexIndex++], 1.0f);
+					primitive.vertices[j] = transformComp->worldTransform * BMath::Vector4(skySphereComp->vertices[vertexIndex++], 1.0f);
 				}
 			}
 			else

@@ -4,7 +4,7 @@
 
 namespace Behemoth
 {
-	class Event;
+	struct Event;
 
 	class Scene
 	{

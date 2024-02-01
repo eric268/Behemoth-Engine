@@ -18,7 +18,7 @@ namespace Behemoth
 
 	private:
 		void InitMesh(Mesh& mesh);
-		void InitSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& handle);
+		void InitSphereBoundingVolume(ECS::Registry& registry, MeshComponent* meshComp, const ECS::EntityHandle& entityHandle);
 	};
 
 }

@@ -21,11 +21,11 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void FollowCamera(TransformComponent* transform, const BMath::Vector3& cameraPosition);
-		void InitializeSphere(SkySphereComponent* skySphereComponent);
+		void FollowCamera(TransformComponent* transformComp, const BMath::Vector3& cameraPosition);
+		void InitializeSphere(SkySphereComponent* skySphereComp);
 		void ProcessSphere(
 			TransformComponent* transformComp,
-			SkySphereComponent* skySphereComponent,
+			SkySphereComponent* skySphereComp,
 			TransformComponent* cameraTransform,
 			const BMath::Matrix4x4& viewProjMatrix,
 			int renderSlotIndex);

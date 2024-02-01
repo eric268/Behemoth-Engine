@@ -39,7 +39,15 @@ namespace Behemoth
 		SetLighting(BMath::Vector3::Zero());
 	}
 
-	Primitive::Primitive(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 vertices[], BMath::Vector3 normals[], BMath::Vector2 uv[], bool affectedByLighting) :
+	Primitive::Primitive(
+		const std::string& path,
+		const std::string& textureName, 
+		PrimitiveType type,
+		BMath::Vector4 vertices[],
+		BMath::Vector3 normals[],
+		BMath::Vector2 uv[],
+		bool affectedByLighting) 
+		:
 		textureName(textureName),
 		sprite{ new CSimpleSprite(path.c_str()) },
 		primitiveType(type),
@@ -120,7 +128,6 @@ namespace Behemoth
 
 			delete sprite;
 			sprite = obj.sprite;
-
 
 			CopyVertexData(obj.vertices, obj.normals, obj.uv);
 			depth = obj.depth;

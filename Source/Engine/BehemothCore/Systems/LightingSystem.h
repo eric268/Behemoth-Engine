@@ -22,12 +22,12 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void CalculateAmbientLights(Primitive* primitive, const AmbientLightComponent* light);
-		void CalculateDirectionalLights(Primitive* primitive, const DirectionalLightComponent* light, const BMath::Vector3& cameraPos);
+		void CalculateAmbientLights(Primitive* primitive, const AmbientLightComponent* ambientLightComp);
+		void CalculateDirectionalLights(Primitive* primitive, const DirectionalLightComponent* directionLightComp, const BMath::Vector3& cameraPos);
 
 		void CalculatePointLights(
 			Primitive* primitive,
-			const PointLightComponent* light,
+			const PointLightComponent* pointLightComp,
 			const BMath::Vector3& cameraPos,
 			const BMath::Vector3& lightPos,
 			const BMath::Matrix4x4& viewMatrix);

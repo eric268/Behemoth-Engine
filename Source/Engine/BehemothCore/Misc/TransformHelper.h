@@ -29,6 +29,5 @@ namespace Behemoth
 
 		// Functions to assist with parent - child transform updates
 		static void NotifyChildrenTransformChange(ECS::Registry& registry, ECS::EntityHandle handle);
-
 	};
 }

@@ -18,15 +18,15 @@ ECS::EntityHandle GoalViewFactory::CreateGoalViewEntity(
 	registry.AddComponent<Behemoth::MoveComponent>(goalViewHandle, spawnLocation);
 	registry.AddComponent<Behemoth::RotationComponent>(goalViewHandle, BMath::Quaternion(DEGREE_TO_RAD(90), BMath::Vector3(0,1,0)), true);
 
-	ECS::EntityHandle cameraEntityHandle = Behemoth::CameraFactory::CreateCamera(registry, false, "Goal view camera");
-	registry.AddComponent<Behemoth::MoveComponent>(cameraEntityHandle, BMath::Vector3(0, currentHeight, currentZoom));
+	ECS::EntityHandle cameraHandle = Behemoth::CameraFactory::CreateCamera(registry, false, "Goal view camera");
+	registry.AddComponent<Behemoth::MoveComponent>(cameraHandle, BMath::Vector3(0, currentHeight, currentZoom));
 
-	if (Behemoth::CameraComponent* cameraComp = registry.GetComponent<Behemoth::CameraComponent>(cameraEntityHandle))
+	if (Behemoth::CameraComponent* cameraComp = registry.GetComponent<Behemoth::CameraComponent>(cameraHandle))
 	{
 		cameraComp->focusedEntity = goalViewHandle;
 	}
 
-	Behemoth::GameObjectHelper::AddChildObject(registry, goalViewHandle, cameraEntityHandle);
+	Behemoth::GameObjectHelper::AddChildObject(registry, goalViewHandle, cameraHandle);
 
 	GoalViewComponent* goalViewComp = registry.AddComponent<GoalViewComponent>(
 		goalViewHandle,
@@ -40,19 +40,18 @@ ECS::EntityHandle GoalViewFactory::CreateGoalViewEntity(
 
 	if (goalViewComp)
 	{
-		goalViewComp->attachedCamera = cameraEntityHandle;
+		goalViewComp->attachedCamera = cameraHandle;
 		goalViewComp->cameraMoveSpeed = 5.0f;
 	}
 
 	AddInputBindings(registry, goalViewHandle);
-
 	return goalViewHandle;
 }
 
 
 void GoalViewFactory::AddInputBindings(ECS::Registry& registry, const ECS::EntityHandle& handle)
 {
-	registry.AddComponent<ViewControllerComponent>(handle,
+	registry.AddComponent<GoalViewControllerComponent>(handle,
 		Behemoth::KeyCode::KC_A,
 		Behemoth::KeyCode::KC_D,
 		Behemoth::KeyCode::KC_W,

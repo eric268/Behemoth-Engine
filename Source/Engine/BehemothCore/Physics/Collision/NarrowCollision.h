@@ -11,7 +11,7 @@ namespace Behemoth
 	struct SphereCollider;
 	struct CollisionData;
 	struct ContactData;
-	class Plane;
+	struct Plane;
 
 	bool NarrowSphereAABBCollision(const SphereCollider& sphere, const AABBCollider& box, ContactData& contactData);
 
