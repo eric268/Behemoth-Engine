@@ -6,6 +6,8 @@ namespace Behemoth
 	struct BoundingVolumeComponent;
 	struct TransformComponent;
 
+	// This is just a system used for debugging the sphere bounding volume for frustum culling
+	// It will not run unless in DEBUG 
 	class BoundingVolumeRenderSystem : public WireframeRenderSystem
 	{
 	public:

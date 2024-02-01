@@ -3,7 +3,6 @@
 #include "Core/Log.h"
 #include "Physics/Collision/Colliders.h"
 
-
 namespace Behemoth
 {
 	bool MeshLoader::LoadModel(const std::string& modelPath, std::vector<VertexData>& data, MeshData& meshData)
@@ -16,7 +15,7 @@ namespace Behemoth
 		}
 		std::vector<VertexData> triangle;
 		std::vector<VertexData> quad;
-		std::vector<std::pair<int, VertexData>> verticies;
+		std::vector<std::pair<int, VertexData>> vertices;
 
 		float furthestPoint = -std::numeric_limits<float>::max();
 
@@ -75,23 +74,23 @@ namespace Behemoth
 					normalIndices.push_back(normalIndex);
 				}
 
-				int numVerticies = vertexIndices.size();
+				int numVertices = vertexIndices.size();
 				bool isNonPlanarQuad = false;
 
 				// Transform non-planar quads into triangles, leave planar quads alone
-				if (numVerticies == 4 && 
+				if (numVertices == 4 && 
 					IsNonPlanarQuad(
 						vertexPositions[vertexIndices[0] - 1],
 						vertexPositions[vertexIndices[1] - 1],
 						vertexPositions[vertexIndices[2] - 1], 
 						vertexPositions[vertexIndices[3] - 1]))
 				{
-					numVerticies = 6;
+					numVertices = 6;
 					isNonPlanarQuad = true;
 				}
 
 				int quadIndex[6] = { 0,1,2,2,3,0 };
-				for (int i = 0; i < numVerticies; i++)
+				for (int i = 0; i < numVertices; i++)
 				{
 					int index = isNonPlanarQuad ? quadIndex[i] : i;
 					VertexData vData{};
@@ -99,7 +98,7 @@ namespace Behemoth
 					vData.normal = vertexNormals[normalIndices[index] - 1];
 					vData.uv = vertexUVs[uvIndices[index] - 1];
 
-					(numVerticies == 4) ? quad.push_back(vData) : triangle.push_back(vData);
+					(numVertices == 4) ? quad.push_back(vData) : triangle.push_back(vData);
 				}
 				
 			}

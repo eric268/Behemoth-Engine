@@ -1,14 +1,15 @@
 #pragma once
 
 #include "BehemothEngine.h"
-#include "GameComponents/Player/PCComponent.h"
-#include "GameComponents/Player/PlayerComponent.h"
 
 namespace ECS
 {
 	class Registry;
 	class Entity;
 }
+
+struct PlayerComponent;
+struct PCComponent;
 
 class PCSystem
 {

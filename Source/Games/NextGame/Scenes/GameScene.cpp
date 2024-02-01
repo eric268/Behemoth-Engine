@@ -41,11 +41,6 @@ void GameScene::Update(const float deltaTime)
 	}
 }
 
-void GameScene::ConstructEnvironment(ECS::Registry& registry)
-{
-
-}
-
 std::string GameScene::GetHoleResultText(int numStrokes, int par)
 {
 	int result = numStrokes - par;
@@ -153,6 +148,27 @@ void GameScene::OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playe
 	}
 }
 
+ECS::EntityHandle GameScene::CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale, bool drawColliders)
+{
+	ECS::EntityHandle collider1 = registry.CreateEntity("Goal Collider");
+	registry.AddComponent<Behemoth::TransformComponent>(collider1);
+	registry.AddComponent<Behemoth::SphereColliderComponent>(collider1);
+	registry.AddComponent<Behemoth::ScalingComponent>(collider1, scale);
+	registry.AddComponent<Behemoth::MoveComponent>(collider1, offset);
+	registry.AddComponent<Behemoth::RotationComponent>(collider1);
+	registry.AddComponent<Behemoth::StaticComponent>(collider1);
+
+#ifdef DEBUG
+	if (drawColliders)
+	{
+		registry.AddComponent<Behemoth::MeshInitializeComponent>(collider1);
+		registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
+	}
+#endif 
+	return collider1;
+}
+
+// Possibly move these two functions into separate factory classes
 ECS::EntityHandle GameScene::CreateOOBEntity(ECS::Registry& registry)
 {
 	oobTrigger = registry.CreateEntity("Out of bounds trigger");
@@ -165,23 +181,6 @@ ECS::EntityHandle GameScene::CreateOOBEntity(ECS::Registry& registry)
 	return oobTrigger;
 }
 
-ECS::EntityHandle GameScene::CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale)
-{
-	ECS::EntityHandle collider1 = registry.CreateEntity("Goal Collider");
-	registry.AddComponent<Behemoth::TransformComponent>(collider1);
-	registry.AddComponent<Behemoth::SphereColliderComponent>(collider1);
-	registry.AddComponent<Behemoth::ScalingComponent>(collider1, scale);
-	registry.AddComponent<Behemoth::MoveComponent>(collider1, offset);
-	registry.AddComponent<Behemoth::RotationComponent>(collider1);
-	registry.AddComponent<Behemoth::StaticComponent>(collider1);
-
-#ifdef DEBUG
-// 	registry.AddComponent<Behemoth::MeshInitalizeComponent>(collider1);
-// 	registry.AddComponent<Behemoth::WireframeComponent>(collider1, "sphere.obj", BMath::Vector3(1.0f));
-#endif 
-	return collider1;
-}
-
 ECS::EntityHandle GameScene::CreateGoalObject(ECS::Registry& registry, const BMath::Vector3& location, const BMath::Vector3& scale, float rotationAngle)
 {
 	ECS::EntityHandle goalHandle = Behemoth::GameObjectFactory::CreateGameObject(registry, "monkey.obj", "rock.png", "Goal Game Object");
@@ -191,9 +190,9 @@ ECS::EntityHandle GameScene::CreateGoalObject(ECS::Registry& registry, const BMa
 	registry.AddComponent<Behemoth::ScalingComponent>(goalHandle, scale);
 
 	ECS::EntityHandle collider1 = CreateGoalCollider(registry, BMath::Vector3(0, 0.75f, -0.25f), BMath::Vector3(0.85f));
-	ECS::EntityHandle collider2 = CreateGoalCollider(registry, BMath::Vector3(0, -2, 2), BMath::Vector3(0.4f));
-	ECS::EntityHandle collider3 = CreateGoalCollider(registry, BMath::Vector3(-3.25, 0.5f, -1.0f), BMath::Vector3(0.35f));
-	ECS::EntityHandle collider4 = CreateGoalCollider(registry, BMath::Vector3(3.25, 0.5f, -1.0f), BMath::Vector3(0.35f));
+	ECS::EntityHandle collider2 = CreateGoalCollider(registry, BMath::Vector3(0, -2, 1.5f), BMath::Vector3(0.3f));
+	ECS::EntityHandle collider3 = CreateGoalCollider(registry, BMath::Vector3(-3.25, 0.5f, -1.0f), BMath::Vector3(0.3f));
+	ECS::EntityHandle collider4 = CreateGoalCollider(registry, BMath::Vector3(3.25, 0.5f, -1.0f), BMath::Vector3(0.3f));
 
 	Behemoth::GameObjectHelper::AddChildObject(registry, goalHandle, collider1);
 	Behemoth::GameObjectHelper::AddChildObject(registry, goalHandle, collider2);

@@ -5,7 +5,6 @@
 #include "Event/MouseEvents.h"
 #include "InputCodes.h"
 #include "InputMapping.h"
-
 #include "NextAPI/App/SimpleController.h"
 
 namespace Behemoth
@@ -133,14 +132,14 @@ namespace Behemoth
 		return prevControllerButtonState[controller][code] && !currentControllerButtonState[controller][code];
 	}
 
-	AnalogInput Input::GetLeftControllerAnaloge(int controller)
+	AnalogInput Input::GetLeftControllerAnalog(int controller)
 	{
 		float x = CSimpleControllers::GetInstance().GetController(controller).GetLeftThumbStickX();
 		float y = CSimpleControllers::GetInstance().GetController(controller).GetLeftThumbStickY();
 		return {x, y};
 	}
 
-	AnalogInput Input::GetRightControllerAnaloge(int controller)
+	AnalogInput Input::GetRightControllerAnalog(int controller)
 	{
 		float x = CSimpleControllers::GetInstance().GetController(controller).GetRightThumbStickX();
 		float y = CSimpleControllers::GetInstance().GetController(controller).GetRightThumbStickY();

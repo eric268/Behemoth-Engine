@@ -24,7 +24,7 @@ namespace Behemoth
 			const std::string& path,
 			const std::string& textureName,
 			PrimitiveType type,
-			BMath::Vector4 verticies[],
+			BMath::Vector4 vertices[],
 			BMath::Vector3 normals[],
 			BMath::Vector2 uv[],
 			bool affectedByLighting);
@@ -52,20 +52,12 @@ namespace Behemoth
 		bool affectedByLighting;
 
 		void SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[]);
-		void SetSpriteVertices(const int numVerticies, const BMath::Vector4 vert[]);
+		void SetSpriteVertices(const int numVertices, const BMath::Vector4 vert[]);
 		void SetSpriteVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[]);
 		void SetPrimitiveVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector3 normal[], BMath::Vector2 uv[]);
 
-		inline void SetLighting(BMath::Vector3 c)
-		{
-			color = c;
-			sprite->SetColor(c.x, c.y, c.z);
-		}
-		inline void AddLighting(BMath::Vector3 light)
-		{
-			color += light;
-			sprite->SetColor(color.x, color.y, color.z);
-		}
+		void SetLighting(BMath::Vector3 c);
+		void AddLighting(BMath::Vector3 light);
 
 	private:
 		inline void CopyVertexData(const BMath::Vector4* vertices, const BMath::Vector3* normals, const BMath::Vector2* uv) 
@@ -77,6 +69,7 @@ namespace Behemoth
 
 		CSimpleSprite* sprite;
 		std::string textureName;
+
 		// Used for lighting
 		BMath::Vector3 color;
 	};

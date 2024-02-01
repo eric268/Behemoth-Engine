@@ -9,7 +9,7 @@ namespace Behemoth
 {
 	void TextSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, textComponent] : registry.Get<TextComponent>())
+		for (const auto& [entityHandle, textComponent] : registry.Get<TextComponent>())
 		{
 			textComponent->text.Print(textComponent->screenPosition);
 		}

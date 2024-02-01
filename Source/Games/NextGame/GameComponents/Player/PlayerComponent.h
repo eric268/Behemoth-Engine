@@ -9,34 +9,32 @@ struct PlayerComponent : public ECS::Component
 		bool isActive,
 		const ECS::EntityHandle& camera,
 		const ECS::EntityHandle& springArm,
-		const ECS::EntityHandle& proj,
+		const ECS::EntityHandle& projectile,
 		const ECS::EntityHandle& mesh,
 		const ECS::EntityHandle& arrowMesh,
 		float chargeSpeed,
 		const BMath::Vector3& lastLoc)
 		:
-		isActive									(isActive),
-		attachedCamera								(camera),
-		cameraSpringArm								(springArm),
-		projectileHandle							(proj),
-		playerMeshHandle							(mesh),
-		arrowMeshHandle								(arrowMesh),
-		chargeSpeed									(chargeSpeed),
-		currentPower								(0.0f),
-		canFire										(true),
-		lastLocation								(lastLoc),
-		strokesUsed									(0),
-		levelComplete								(false),
-		isRespawning								(false)
+		isActive(isActive),
+		attachedCamera(camera),
+		cameraSpringArm(springArm),
+		projectileHandle(projectile),
+		playerMeshHandle(mesh),
+		arrowMeshHandle(arrowMesh),
+		chargeSpeed(chargeSpeed),
+		currentPower(0.0f),
+		canFire(true),
+		lastLocation(lastLoc),
+		strokesUsed(0),
+		levelComplete(false),
+		isRespawning(false)
 	{}
 
 	ECS::EntityHandle attachedCamera;
 	ECS::EntityHandle cameraSpringArm;
-
 	ECS::EntityHandle projectileHandle;
 	ECS::EntityHandle playerMeshHandle;
 	ECS::EntityHandle arrowMeshHandle;
-
 	ECS::EntityHandle hudHandle;
 
 	bool isActive;
@@ -63,7 +61,7 @@ struct PlayerRespawnComponent : public ECS::Component
 
 struct PlayerHUDComponent : public ECS::Component
 {
-	PlayerHUDComponent() {}
+	PlayerHUDComponent() = default;
 	ECS::EntityHandle strokesUIHandle;
 	ECS::EntityHandle powerUIHandle;
 	ECS::EntityHandle owningPlayerHandle;

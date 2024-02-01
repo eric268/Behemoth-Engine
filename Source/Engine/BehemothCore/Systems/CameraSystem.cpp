@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CameraSystem.h"
 #include "Components/Components.h"
+#include "ECS/Registry.h"
 #include "Misc/CameraHelper.h"
 #include "NextAPI/App/main.h"
 #include "NextAPI/App/AppSettings.h"
@@ -12,11 +13,11 @@ namespace Behemoth
 	{
 		auto components = registry.Get<CameraComponent, TransformComponent>();
 
-		for (auto& [entity, cameraComp, transformComp] : components)
+		for (auto& [entityHandle, cameraComp, transformComp] : components)
 		{
 			if (!cameraComp->isInitalized)
 			{
-				InitalizeProjMatrix(cameraComp, transformComp);
+				InitializeProjMatrix(cameraComp, transformComp);
 			}
 			// Only update camera if its transform has changed
 			if (cameraComp->isDirty)
@@ -24,6 +25,7 @@ namespace Behemoth
 				UpdateFrustrum(cameraComp, transformComp);
 				SetLook(registry, transformComp, cameraComp);
 
+				// Need separate vectors for camera since usually we will want the world vectors not the local space vectors 
 				cameraComp->rightVector = BMath::Vector3(cameraComp->viewMatrix._11, cameraComp->viewMatrix._21, cameraComp->viewMatrix._31);
 				cameraComp->upVector = BMath::Vector3(cameraComp->viewMatrix._12, cameraComp->viewMatrix._22, cameraComp->viewMatrix._32);
 				cameraComp->forwardVector = BMath::Vector3(cameraComp->viewMatrix._13, cameraComp->viewMatrix._23, cameraComp->viewMatrix._33);
@@ -34,7 +36,7 @@ namespace Behemoth
 		}
 	}
 
-	void CameraSystem::InitalizeProjMatrix(CameraComponent* cameraComponent, const TransformComponent* transformComponent)
+	void CameraSystem::InitializeProjMatrix(CameraComponent* cameraComponent, const TransformComponent* transformComponent)
 	{
 		cameraComponent->windowWidth = APP_VIRTUAL_WIDTH;
 		cameraComponent->windowHeight = APP_VIRTUAL_HEIGHT;

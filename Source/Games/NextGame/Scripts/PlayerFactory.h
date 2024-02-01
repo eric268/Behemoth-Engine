@@ -1,4 +1,5 @@
 #pragma once
+
 #include "BehemothEngine.h"
 
 struct PlayerFactory
@@ -8,6 +9,6 @@ public:
 
 private:
 	static void AddInputBindings(ECS::Registry& registry, const ECS::EntityHandle& handle);
-	static void InitalizeHUD(ECS::Registry& registry, const ECS::EntityHandle& handle);
+	static void InitializeHUD(ECS::Registry& registry, const ECS::EntityHandle& handle);
 };
 

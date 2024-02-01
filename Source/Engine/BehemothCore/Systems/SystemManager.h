@@ -28,7 +28,9 @@ namespace Behemoth
 		{
 			int typeIndex = ECS::Generator::Value<T>();
 			if (systemTypeID.find(typeIndex) != systemTypeID.end())
+			{
 				return;
+			}
 
 			systemContainer.push_back(std::make_shared<ECS::System<T>>());
 			systemTypeID[typeIndex] = systemContainer.size() - 1;

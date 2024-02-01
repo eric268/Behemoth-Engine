@@ -3,9 +3,6 @@
 #include "Mesh.h"
 #include "Math/MathCore.h"
 
-//stl
-#include <string>
-
 namespace Behemoth
 {
 	struct AABBCollider;

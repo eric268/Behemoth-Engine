@@ -9,7 +9,7 @@
 void PlayerRespawnSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
 	for (const auto& [
-		entity,
+		entityHandle,
 			playerComponent,
 			playerRespawnComponent,
 			transformComponent,
@@ -19,15 +19,15 @@ void PlayerRespawnSystem::Run(const float deltaTime, ECS::Registry& registry)
 		registry.Get<PlayerComponent, PlayerRespawnComponent, Behemoth::TransformComponent, Behemoth::VelocityComponent, Behemoth::RigidBodyComponent>())
 	{
 		// Add necessary child component to respective parents in hierarchy
-		Behemoth::GameObjectHelper::AddChildObject(registry, entity, playerComponent->cameraSpringArm);
+		Behemoth::GameObjectHelper::AddChildObject(registry, entityHandle, playerComponent->cameraSpringArm);
 
-		registry.AddComponent<Behemoth::MoveComponent>(entity, playerComponent->lastLocation, false);
+		registry.AddComponent<Behemoth::MoveComponent>(entityHandle, playerComponent->lastLocation, false);
 	 	registry.AddComponent<Behemoth::MoveComponent>(playerComponent->cameraSpringArm, playerComponent->lastLocation, false);
 		velocityComponent->velocity = BMath::Vector3::Zero();
 		playerComponent->canFire = true;
 		rigidBodyComponent->affectedByGravity = false;
 		playerComponent->isRespawning = false;
 
-		registry.RemoveComponent<PlayerRespawnComponent>(entity);
+		registry.RemoveComponent<PlayerRespawnComponent>(entityHandle);
 	}
 }

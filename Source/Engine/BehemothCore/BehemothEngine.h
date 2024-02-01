@@ -1,5 +1,7 @@
 #pragma once
 
+// Minimum header files for the engine to run at a basic level
+
 // Application
 #include "Core/ResourceManager.h"
 
@@ -23,8 +25,8 @@
 #include "Math/MathCore.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
+
 // Misc
-#include "Misc/CameraHelper.h"
 #include "Core/Log.h"
 #include "Core/Stopwatch.h"
 

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "GameObjectHelper.h"
+#include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Components/Components.h"
 
 namespace Behemoth

@@ -4,6 +4,7 @@
 #include "Core/Log.h"
 #include "Systems/SystemHeaders.h"
 #include "Renderer/Renderer.h"
+#include "Event/Event.h"
 
 namespace Behemoth
 {
@@ -45,18 +46,16 @@ namespace Behemoth
 	void World::Init()
 	{
 		// Keep these in this order
-		Behemoth::SystemManager::GetInstance().AddSystem<ScalingSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<RotationSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
-
 		Behemoth::SystemManager::GetInstance().AddSystem<CameraSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<TimerSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<MeshInitSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
 
+		Behemoth::SystemManager::GetInstance().AddSystem<ScalingSystem>();
+		Behemoth::SystemManager::GetInstance().AddSystem<RotationSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MovementSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<RigidBodySystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<VelocitySystem>();
-
-		Behemoth::SystemManager::GetInstance().AddSystem<TransformSystem>();
 
  		Behemoth::SystemManager::GetInstance().AddSystem<BroadCollisionSystem>();
   		Behemoth::SystemManager::GetInstance().AddSystem<NarrowCollisionSystem>();
@@ -71,9 +70,9 @@ namespace Behemoth
 
 		Behemoth::SystemManager::GetInstance().AddSystem<SkySphereSystem>();
 		Behemoth::SystemManager::GetInstance().AddSystem<MeshRenderSystem>();
-		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
 
-		Behemoth::SystemManager::GetInstance().AddSystem<AudioSystem>();
+		// Lighting needs to be run after all primitive render systems have run otherwise will not calculate lighting for systems that run after
+		Behemoth::SystemManager::GetInstance().AddSystem<LightingSystem>();
 	}
 
 	void World::Update(const float deltaTime)
@@ -89,7 +88,10 @@ namespace Behemoth
 		}
 
 		currentScene->Update(deltaTime);
-		currentScene->RecalculateBVH();
+
+		// Currently only updating BVH for entities that can move 
+		// Will add another method for static entities for when they are created/destroyed
+		currentScene->ReconstructBVH<VelocityComponent>();
 	}
 
 	void World::Shutdown()
@@ -101,8 +103,6 @@ namespace Behemoth
 
 		currentScene->Shutdown();
 		delete currentScene;
-
-		// Clear all resource managers
 	}
 
 	void World::OnEvent(Event& e)

@@ -19,24 +19,7 @@ namespace Behemoth
 				continue;
 			}
 
-			bool collidingOnBottom = false;
-			if (CollisionDataComponent* collisionData = registry.GetComponent<CollisionDataComponent>(entity))
-			{
-				for (const auto& collisionData : collisionData->data)
-				{
-					if (collisionData.data.collisionNormal == BMath::Vector3::Up())
-					{
-						velocityComp->velocity.y -= deltaTime * GRAVITY;
-						break;
-					}
-				}
-			}
-
-			// if (!collidingOnBottom)
-			{
-				velocityComp->velocity.y += deltaTime * GRAVITY;
-			}
-			
+			velocityComp->velocity.y += deltaTime * GRAVITY;
 		}
 	}
 }

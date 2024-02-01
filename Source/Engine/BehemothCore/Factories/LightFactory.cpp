@@ -16,25 +16,25 @@ namespace Behemoth
 		const std::string& modelName,
 		const std::string& texture)
 	{
-		ECS::EntityHandle entity = registry.CreateEntity(name);
+		ECS::EntityHandle entityHandle = registry.CreateEntity(name);
 
-		registry.AddComponent<PointLightComponent>(entity, color, intensity);
-		registry.AddComponent<TransformComponent>(entity);
-		registry.AddComponent<MoveComponent>(entity, location);
+		registry.AddComponent<PointLightComponent>(entityHandle, color, intensity);
+		registry.AddComponent<TransformComponent>(entityHandle);
+		registry.AddComponent<MoveComponent>(entityHandle, location);
 
 		if (modelName != "")
 		{
 			registry.AddComponent<MeshComponent>(
-				entity, 
+				entityHandle, 
 				modelName, 
 				texture, 
 				BMath::Vector2(1.0f, 1.0f),
 				true,
 				false);
 
-			registry.AddComponent<MeshInitializeComponent>(entity);
+			registry.AddComponent<MeshInitializeComponent>(entityHandle);
 		}
 
-		return entity;
+		return entityHandle;
 	}
 }

@@ -64,7 +64,7 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	// Bind input handling for player controller 
 	AddInputBindings(registry, playerHandle);
 
-	InitalizeHUD(registry, playerHandle);
+	InitializeHUD(registry, playerHandle);
 
 	return playerHandle;
 }
@@ -87,7 +87,7 @@ void PlayerFactory::AddInputBindings(ECS::Registry& registry, const ECS::EntityH
 		Behemoth::ControllerCode::CC_R_SHOULDER);
 }
 
-void PlayerFactory::InitalizeHUD(ECS::Registry& registry, const ECS::EntityHandle& handle)
+void PlayerFactory::InitializeHUD(ECS::Registry& registry, const ECS::EntityHandle& handle)
 {
 	PlayerHUDComponent* playerHUD = registry.AddComponent<PlayerHUDComponent>(handle);
 	if (!playerHUD)

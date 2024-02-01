@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Components/PhysicsComponents.h"
 
 // Class that contains broad collision detection functions
@@ -23,7 +24,7 @@ namespace Behemoth
 	bool BroadOBBCollision(const OBBCollider& box1, const OBBCollider& box2);
 	bool BroadOBBPlaneCollision(const OBBCollider& box, const Plane& p);
 
-	// Line segements
+	// Line segments
 	bool BroadLinePlaneIntersection(const Point& p1, const Point& p2, const Plane& plane, float& dist, Point& intersectionP);
 	bool BroadLineAABBIntersection(const Point& p1, const Point& p2, const AABBCollider& box);
 

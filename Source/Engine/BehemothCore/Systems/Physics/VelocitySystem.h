@@ -14,12 +14,9 @@ namespace Behemoth
 	class VelocitySystem
 	{
 	public:
-		VelocitySystem() = default;
-
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
 		void UpdateLocalTransform(ECS::Registry& registry, const ECS::EntityHandle& handle, TransformComponent* transformComp, BMath::Vector3 deltaPosition);
 	};
-
 }

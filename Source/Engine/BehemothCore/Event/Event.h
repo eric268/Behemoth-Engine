@@ -40,9 +40,8 @@ namespace Behemoth
 	}
 
 
-	class Event
+	struct Event
 	{
-	public:
 		virtual ~Event() = default;
 		virtual Events::EventType GetEventType() = 0;
 		virtual uint16_t GetEventFlags() = 0;

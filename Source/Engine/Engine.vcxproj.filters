@@ -317,7 +317,6 @@
     <ClInclude Include="BehemothCore\Physics\BVH.h">
       <Filter>Physics\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="BehemothCore\Systems\Transform\TransformSystem.h" />
     <ClInclude Include="BehemothCore\Misc\GameObjectHelper.h" />
   </ItemGroup>
   <ItemGroup>
@@ -365,12 +364,6 @@
     </ClCompile>
     <ClCompile Include="BehemothCore\Input\Input.cpp">
       <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Math\Quaternion.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Math\Vector.cpp">
-      <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp">
       <Filter>Misc</Filter>
@@ -475,7 +468,6 @@
     <ClCompile Include="BehemothCore\Physics\BVH.cpp">
       <Filter>Physics\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="BehemothCore\Systems\Transform\TransformSystem.cpp" />
     <ClCompile Include="BehemothCore\Misc\GameObjectHelper.cpp" />
   </ItemGroup>
 </Project>

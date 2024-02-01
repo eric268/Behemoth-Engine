@@ -1,12 +1,10 @@
 #pragma once
-#include "Event/Event.h"
-
-#include <queue>
 
 namespace Behemoth
 {
 	class Scene;
 	class Registry;
+	struct Event;
 
 	class World
 	{

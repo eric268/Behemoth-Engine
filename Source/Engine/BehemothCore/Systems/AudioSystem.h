@@ -1,9 +1,9 @@
 #pragma once
-#include "ECS/Entity.h"
 
 namespace ECS
 {
 	class Registry;
+	struct EntityHandle;
 }
 
 namespace Behemoth

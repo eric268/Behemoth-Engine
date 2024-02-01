@@ -5,7 +5,6 @@
 #include "MainMenuScene.h"
 #include "Components/UIComponents.h"
 #include "Scripts/PlayerScore.h"
-
 #include "Factories/CameraFactory.h"
 
 GameOverScene::GameOverScene()

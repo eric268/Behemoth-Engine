@@ -17,27 +17,15 @@ namespace Behemoth
 
 	void Scene::ConstructBVH()
 	{
+		// Storing handles for drawing / deleting debugging colliders
 		staticBVHHandle = registry.CreateEntity("Static BVH");
-		std::shared_ptr<BVHNode> staticBVHNode = factory.OnConstruction<StaticComponent>(registry, staticBVHEntities);
+		std::shared_ptr<BVHNode> staticBVHNode = bvhFactory.OnConstruction<StaticComponent>(registry, staticBVHEntities);
 		registry.AddComponent<BVHRootComponent<StaticComponent>>(staticBVHHandle, staticBVHNode);
   
+		// Using VelocityComponent as a filter between static and dynamic entities, assumed that if it has a velocity component
+		// then the object can move and therefore the BVH tree needs to be updated more frequently
 		dynamicBVHHandle = registry.CreateEntity("Dynamic BVH");
-		std::shared_ptr<BVHNode> dynamicVHNode = factory.OnConstruction<RigidBodyComponent>(registry, dynamicBVHEntities);
-		registry.AddComponent<BVHRootComponent<RigidBodyComponent>>(dynamicBVHHandle, dynamicVHNode);
-	}
-
-	void Scene::RecalculateBVH()
-	{
-// 		auto staticBVHComp = registry.GetComponent<BVHRootComponent<StaticComponent>>(staticBVHHandle);
-// 		if (staticBVHComp)
-// 		{
-// 			staticBVHComp->rootNode = factory.OnReconstruction<StaticComponent>(registry, staticBVHEntities);
-// 		}
-
-		auto dynamicBVHComp = registry.GetComponent<BVHRootComponent<RigidBodyComponent>>(dynamicBVHHandle);
-		if (dynamicBVHComp)
-		{
-			dynamicBVHComp->rootNode = factory.OnReconstruction<RigidBodyComponent>(registry, dynamicBVHEntities);
-		}
+		std::shared_ptr<BVHNode> dynamicVHNode = bvhFactory.OnConstruction<VelocityComponent>(registry, dynamicBVHEntities);
+		registry.AddComponent<BVHRootComponent<VelocityComponent>>(dynamicBVHHandle, dynamicVHNode);
 	}
 }

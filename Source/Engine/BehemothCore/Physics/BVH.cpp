@@ -15,9 +15,9 @@ namespace Behemoth
 
 	void BVHFactory::DestroyBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
 	{
-		for (const auto& handle : entityHandles)
+		for (const auto& entityHandle : entityHandles)
 		{
-			registry.DestroyEntity(handle);
+			registry.DestroyEntity(entityHandle);
 		}
 		entityHandles.clear();
 	}
@@ -34,7 +34,7 @@ namespace Behemoth
 		int bestAxis = -1;
 		int bestPosition = -1;
 
-		// Try splitting along each axis (x, y, z)
+		// Try splitting along each axis
 		for (int axis = 0; axis < 3; axis++)
 		{
 			// Sort components based on their centroid along the current axis
@@ -69,7 +69,6 @@ namespace Behemoth
 		std::vector<BVHData> leftComponents(data.begin(), data.begin() + bestPosition);
 		std::vector<BVHData> rightComponents(data.begin() + bestPosition, data.end());
 
-		// Assign children to current node
 		if (leftComponents.size() > 1)
 		{
 			node->leftChild = GenerateNode(registry, entityHandles, GenerateCollider(leftComponents), Behemoth::GetColor(Behemoth::Blue));
@@ -156,15 +155,15 @@ namespace Behemoth
 #ifdef DEBUG
 		if (drawDebugColliders)
 		{
-			ECS::EntityHandle handle = registry.CreateEntity("BVH Debug Collider");
-			entityHandles.push_back(handle);
+			ECS::EntityHandle entityHandle = registry.CreateEntity("BVH Debug Collider");
+			entityHandles.push_back(entityHandle);
 
-			registry.AddComponent<TransformComponent>(handle);
-			registry.AddComponent<MoveComponent>(handle, collider.position);
-			registry.AddComponent<AABBColliderComponent>(handle, collider.extents);
+			registry.AddComponent<TransformComponent>(entityHandle);
+			registry.AddComponent<MoveComponent>(entityHandle, collider.position);
+			registry.AddComponent<AABBColliderComponent>(entityHandle, collider.extents);
 	
-			registry.AddComponent<MeshInitializeComponent>(handle);
-			registry.AddComponent<WireframeComponent>(handle, "cube.obj", collider.extents,false, true, color);
+			registry.AddComponent<MeshInitializeComponent>(entityHandle);
+			registry.AddComponent<WireframeComponent>(entityHandle, "cube.obj", collider.extents,false, true, color);
 		}
 #endif
 
@@ -182,15 +181,15 @@ namespace Behemoth
 #ifdef DEBUG
  		if (drawDebugColliders)
  		{
- 			ECS::EntityHandle handle = registry.CreateEntity("BVH Debug Collider");
- 			entityHandles.push_back(handle);
+ 			ECS::EntityHandle entityHandle = registry.CreateEntity("BVH Debug Collider");
+ 			entityHandles.push_back(entityHandle);
  
- 			registry.AddComponent<TransformComponent>(handle);
- 			registry.AddComponent<MoveComponent>(handle, node->collider.position);
- 			registry.AddComponent<AABBColliderComponent>(handle, node->collider.extents);
+ 			registry.AddComponent<TransformComponent>(entityHandle);
+ 			registry.AddComponent<MoveComponent>(entityHandle, node->collider.position);
+ 			registry.AddComponent<AABBColliderComponent>(entityHandle, node->collider.extents);
  
- 			registry.AddComponent<MeshInitializeComponent>(handle);
- 			registry.AddComponent<WireframeComponent>(handle, "cube.obj", node->collider.extents, false, true, color);
+ 			registry.AddComponent<MeshInitializeComponent>(entityHandle);
+ 			registry.AddComponent<WireframeComponent>(entityHandle, "cube.obj", node->collider.extents, false, true, color);
  		}
 #endif
 		return node;

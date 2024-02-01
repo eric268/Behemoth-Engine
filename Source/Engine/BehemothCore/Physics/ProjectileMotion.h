@@ -4,13 +4,8 @@
 
 namespace Behemoth
 {
-	class ProjectileMotion
+	struct ProjectileMotion
 	{
-	public:
-
-		static BMath::Vector3 CalculateInitalVelocity(float power, const BMath::Vector3& direction);
-
-	private:
-
+		static BMath::Vector3 CalculateInitalVelocity(const float power, const BMath::Vector3& direction);
 	};
 }

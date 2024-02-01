@@ -3,7 +3,6 @@
 #include "Factories/GameObjectFactory.h"
 #include "Components/RenderComponents.h"
 #include "PlatformPhysMats.h"
-#include "Math/Quaternion.h"
 
 ECS::EntityHandle PlatformFactory::CreatePlatform(
 	ECS::Registry& registry,
@@ -69,7 +68,12 @@ ECS::EntityHandle PlatformFactory::CreateGrassPlatform(
 	return platform;
 }
 
-ECS::EntityHandle PlatformFactory::CreateRockPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
+ECS::EntityHandle PlatformFactory::CreateRockPlatform(
+	ECS::Registry& registry,
+	const BMath::Vector3& position,
+	const BMath::Vector3& scale, 
+	const BMath::Quaternion& q,
+	bool isStatic)
 {
 	bool isRotated = BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
 
@@ -98,7 +102,12 @@ ECS::EntityHandle PlatformFactory::CreateRockPlatform(ECS::Registry& registry, c
 	return platform;
 }
 
-ECS::EntityHandle PlatformFactory::CreateSandPlatform(ECS::Registry& registry, const BMath::Vector3& position, const BMath::Vector3& scale, const BMath::Quaternion& q, bool isStatic)
+ECS::EntityHandle PlatformFactory::CreateSandPlatform(
+	ECS::Registry& registry, 
+	const BMath::Vector3& position,
+	const BMath::Vector3& scale,
+	const BMath::Quaternion& q,
+	bool isStatic)
 {
 	bool isRotated = BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
 

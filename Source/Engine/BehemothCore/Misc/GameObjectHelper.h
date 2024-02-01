@@ -1,6 +1,10 @@
 #pragma once
-#include "ECS/Registry.h"
-#include "ECS/Entity.h"
+
+namespace ECS
+{
+	class Registry;
+	struct EntityHandle;
+}
 
 namespace Behemoth
 {

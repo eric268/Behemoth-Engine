@@ -1,13 +1,7 @@
 #include "pch.h"
 #include "Primitives.h"
-#include "NextAPI/App/SimpleSprite.h"
 #include "Core/Log.h"
 #include "Core/ResourceManager.h"
-#include "NextAPI/App/SimpleSprite.h"
-
-#include <random>
-#include <cstring>
-#include <iostream>
 
 namespace Behemoth
 {
@@ -17,11 +11,17 @@ namespace Behemoth
 		textureName(""),
 		diffuse(BMath::Vector3(0.8f, 0.8f, 0.8f)),
 		specular(BMath::Vector3(1.0f, 1.0f, 1.0f)),
-		shininess(32.0f)
+		shininess(32.0f),
+		affectedByLighting(true),
+		primitiveType(TRIANGLE)
 	{
 		vertices[0] = BMath::Vector4();
 		vertices[1] = BMath::Vector4();
 		vertices[2] = BMath::Vector4();
+		uv[0] = BMath::Vector2();
+		uv[1] = BMath::Vector2();
+		uv[2] = BMath::Vector2();
+		uv[3] = BMath::Vector2();
 	}
 
 	Primitive::Primitive(std::string& path, std::string& textureName) :
@@ -39,7 +39,7 @@ namespace Behemoth
 		SetLighting(BMath::Vector3::Zero());
 	}
 
-	Primitive::Primitive(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 verticies[], BMath::Vector3 normals[], BMath::Vector2 uv[], bool affectedByLighting) :
+	Primitive::Primitive(const std::string& path, const std::string& textureName, PrimitiveType type, BMath::Vector4 vertices[], BMath::Vector3 normals[], BMath::Vector2 uv[], bool affectedByLighting) :
 		textureName(textureName),
 		sprite{ new CSimpleSprite(path.c_str()) },
 		primitiveType(type),
@@ -50,7 +50,7 @@ namespace Behemoth
 		affectedByLighting(affectedByLighting)
 	{
 		SetLighting(BMath::Vector3::Zero());
-		CopyVertexData(verticies, normals, uv);
+		CopyVertexData(vertices, normals, uv);
 		SetSpriteUVs(type, uv);
 	}
 
@@ -145,7 +145,7 @@ namespace Behemoth
 		sprite->Draw();
 	}
 
-	void Primitive::SetSpriteVertices(const int numVerticies, const BMath::Vector4 vert[])
+	void Primitive::SetSpriteVertices(const int numVertices, const BMath::Vector4 vert[])
 	{
 		if (!sprite)
 		{
@@ -153,12 +153,12 @@ namespace Behemoth
 			return;
 		}
 
-		for (int i = 0; i < numVerticies; i++)
+		for (int i = 0; i < numVertices; i++)
 		{
 			sprite->SetVertex(i, vert[i].x, vert[i].y);
 		}
 
-		if (numVerticies == TRIANGLE)
+		if (numVertices == TRIANGLE)
 		{
 			sprite->SetVertex(3, vert[0].x, vert[0].y);
 		}
@@ -170,11 +170,6 @@ namespace Behemoth
 		{
 			sprite->SetUV(i, uv[i].x, uv[i].y);
 		}
-
-		if (type == TRIANGLE)
-		{
-			// sprite->SetUV(3, uv[0].x, uv[0].y);
-		}
 	}
 
 	void Primitive::SetPrimitiveVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector3 normal[], BMath::Vector2 uv[])
@@ -184,9 +179,7 @@ namespace Behemoth
 		{
 			vertices[i] = vert[i];
 			normals[i] = normal[i];
-			// this->uv[i] = uv[i];
 		}
-		// SetSpriteUVs(type, uv);
 	}
 
 	void Primitive::SetSpriteVertices(PrimitiveType type, BMath::Vector4 vert[], BMath::Vector2 uv[])
@@ -206,7 +199,17 @@ namespace Behemoth
  		if (type == TRIANGLE)
  		{
  			sprite->SetVertex(3, vert[0].x, vert[0].y);
- 			// sprite->SetUV(3, uv[0].x, uv[0].y);
  		}
+	}
+
+	void Primitive::SetLighting(BMath::Vector3 c)
+	{
+		color = c;
+		sprite->SetColor(c.x, c.y, c.z);
+	}
+	void Primitive::AddLighting(BMath::Vector3 light)
+	{
+		color += light;
+		sprite->SetColor(color.x, color.y, color.z);
 	}
 }

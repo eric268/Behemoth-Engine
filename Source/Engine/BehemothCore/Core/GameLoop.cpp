@@ -1,14 +1,11 @@
 #include "pch.h"
-
 #include "ECS/Registry.h"
 #include "Renderer/Renderer.h"
 #include "World/World.h"
 #include "World/Scene.h"
 #include "Event/EventManager.h"
-
 #include "Systems/SystemManager.h"
 #include "Systems/UI/ImageSystem.h"
-
 #include "Systems/UI/TextSystem.h"
 #include "Input/Input.h"
 

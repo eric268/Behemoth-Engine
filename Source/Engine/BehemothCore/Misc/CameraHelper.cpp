@@ -68,9 +68,9 @@ namespace Behemoth
 		return BMath::Vector3(cameraComponent->viewMatrix._31, cameraComponent->viewMatrix._32, cameraComponent->viewMatrix._33);
 	}
 
-	BMath::Vector3 CameraHelper::GetMainCameraPostition(ECS::Registry& registry)
+	BMath::Vector3 CameraHelper::GetMainCameraPosition(ECS::Registry& registry)
 	{
-		for (const auto& [entity, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
+		for (const auto& [entityHandle, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
 		{
 			if (camera->isMain)
 				return transform->worldPosition;
@@ -81,15 +81,14 @@ namespace Behemoth
 
 	const ECS::EntityHandle& CameraHelper::GetMainCameraEntity(ECS::Registry& registry)
 	{
-		for (const auto& [entity, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
+		for (const auto& [entityHandle, camera, transform] : registry.Get<CameraComponent, TransformComponent>())
 		{
 			if (camera->isMain)
 			{
-				return entity;
+				return entityHandle;
 			}
 		}
 		LOGMESSAGE(MessageType::Error, "Unable to find main camera");
 		return registry.CreateNullEntity();
 	}
-
 }

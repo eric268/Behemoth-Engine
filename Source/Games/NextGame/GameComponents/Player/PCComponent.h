@@ -55,34 +55,20 @@ struct ViewControllerComponent : public ECS::Component
 	ViewControllerComponent() = default;
 
 	ViewControllerComponent(
-		bool isActive,
-		Behemoth::KeyCode zoomInKC,
-		Behemoth::KeyCode zoomOutKC,
 		Behemoth::KeyCode rotateLeftKC,
 		Behemoth::KeyCode rotateRightKC,
 		Behemoth::KeyCode moveUpKC,
-		Behemoth::KeyCode moveDownKC,
-		Behemoth::ControllerCode moveUpCC,
-		Behemoth::ControllerCode moveDownCC)
+		Behemoth::KeyCode moveDownKC)
 		:
-		zoomInKC(zoomInKC),
-		zoomOutKC(zoomOutKC),
 		rotateLeftKC(rotateLeftKC),
 		rotateRightKC(rotateRightKC),
 		moveUpKC(moveUpKC),
-		moveDownKC(moveDownKC),
-		moveUpCC(moveUpCC),
-		moveDownCC(moveDownCC)
+		moveDownKC(moveDownKC)
 	{}
 
-	Behemoth::KeyCode zoomInKC;
-	Behemoth::KeyCode zoomOutKC;
 	Behemoth::KeyCode rotateLeftKC;
 	Behemoth::KeyCode rotateRightKC;
 	Behemoth::KeyCode moveUpKC;
 	Behemoth::KeyCode moveDownKC;
-
-	Behemoth::ControllerCode moveUpCC;
-	Behemoth::ControllerCode moveDownCC;
 };
 

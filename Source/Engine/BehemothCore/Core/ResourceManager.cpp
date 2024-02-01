@@ -48,20 +48,20 @@ namespace Behemoth
 		}
 
 		MeshLoader meshLoader{};
-		std::vector<VertexData> meshVerticies;
+		std::vector<VertexData> meshVertices;
 		MeshData meshData{};
 		meshData.modelFileName = filePath;
 
 		AABBCollider broadCollider{};
 		SphereCollider sphereCollider{};
 
-		bool result = meshLoader.LoadModel("Models/" + filePath, meshVerticies, meshData);
+		bool result = meshLoader.LoadModel("Models/" + filePath, meshVertices, meshData);
 		broadCollider.extents = BMath::Vector3(meshData.maxVertexDistance);
 		float maxDistSq = meshData.maxVertexDistance * meshData.maxVertexDistance;
 
 		if (result)
 		{
-			meshMap[id] = { std::move(meshData), std::move(meshVerticies) };
+			meshMap[id] = { std::move(meshData), std::move(meshVertices) };
 			meshAABBBounds[id] = broadCollider;
 
 			BoundingGenerator::GenerateSphereBoundingVolume(GetMeshVertices(filePath), sphereCollider);

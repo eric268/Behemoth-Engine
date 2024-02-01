@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ECS/Component.h"
 #include "UI/Image.h"
 #include "UI/Text.h"

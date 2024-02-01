@@ -3,9 +3,11 @@
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "Components/PhysicsComponents.h"
+#include "GameComponents/Player/PCComponent.h"
 #include "GameComponents/Player/PlayerComponent.h"
 #include "Components/AudioComponents.h"
 #include "Physics/ProjectileMotion.h"
+#include "Misc/CameraHelper.h"
 #include "Math/Quaternion.h"
 
 void PCSystem::Run(const float deltaTime, ECS::Registry& registry)
@@ -46,8 +48,8 @@ void PCSystem::IncreasePower(const float deltaTime, PlayerComponent* playerCompo
 	{
 		playerComponent->currentPower += playerComponent->chargeSpeed * deltaTime;
 	}
-	playerComponent->currentPower = std::min(100.0f, playerComponent->currentPower);
 
+	playerComponent->currentPower = std::min(100.0f, playerComponent->currentPower);
 }
 
 void PCSystem::DecreasePower(const float deltaTime, PlayerComponent* playerComponent, PCComponent* pcComponent)
@@ -61,6 +63,7 @@ void PCSystem::DecreasePower(const float deltaTime, PlayerComponent* playerCompo
 	{
 		playerComponent->currentPower -= playerComponent->chargeSpeed * deltaTime;
 	}
+
 	playerComponent->currentPower = std::max(0.0f, playerComponent->currentPower);
 }
 
@@ -99,15 +102,12 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& handle, Pl
 		// Reset charge amount, could keep it previous amount of set it to default like 50
 		playerComponent->lastLocation = playerTransform->worldPosition;
 		playerComponent->strokesUsed++;
-// 
-// 		ECS::EntityHandle tempAudioHandle = registry.CreateEntity("Temp swing audio");
-// 		registry.AddComponent<Behemoth::AudioComponent>(tempAudioHandle, "swing.wav");
 	}
 }
 
 void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
-	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnaloge(0);
+	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnalog();
 
  	float keyInputX = Behemoth::Input::IsKeyHeld(pcComponent->lookLeftKC) - Behemoth::Input::IsKeyHeld(pcComponent->lookRightKC);
 	float keyInputY = Behemoth::Input::IsKeyHeld(pcComponent->lookUpKC)   - Behemoth::Input::IsKeyHeld(pcComponent->lookDownKC);
@@ -154,7 +154,7 @@ void PCSystem::Look(const float deltaTime, ECS::Registry& registry, PlayerCompon
 
 void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerComponent* playerComponent, PCComponent* pcComponent)
 {
-	Behemoth::AnalogInput input = Behemoth::Input::GetRightControllerAnaloge(0);
+	Behemoth::AnalogInput input = Behemoth::Input::GetRightControllerAnalog();
 
  	float keyInputX = Behemoth::Input::IsKeyHeld(pcComponent->aimRightKC) - Behemoth::Input::IsKeyHeld(pcComponent->aimLeftKC);
  	float keyInputY = Behemoth::Input::IsKeyHeld(pcComponent->aimDownKC)  - Behemoth::Input::IsKeyHeld(pcComponent->aimUpKC);
@@ -164,7 +164,7 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
 		return;
 	}
 
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
+	if (Behemoth::RotationComponent* parentRotationComp = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->projectileHandle))
 	{
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
@@ -189,8 +189,8 @@ void PCSystem::Aim(const float deltaTime, ECS::Registry& registry, PlayerCompone
  			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), projectileTransform->rightVector);
  		}
 
-		parentRotationComponent->quat = (quatX * quatY).Normalize();
-		parentRotationComponent->isAdditive = true;
+		parentRotationComp->quat = (quatX * quatY).Normalize();
+		parentRotationComp->isAdditive = true;
 	}
 }
 
@@ -207,41 +207,34 @@ void PCSystem::SetArrowMeshVisibility(ECS::Registry& registry, PlayerComponent* 
 	arrowMeshComponent->isVisible = isVisible;
 }
 
-void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent)
+void PCSystem::RotateMeshWhileMoving(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, PlayerComponent* playerComponent)
 {
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->playerMeshHandle))
+	if (Behemoth::RotationComponent* parentRotationComp = registry.AddComponent<Behemoth::RotationComponent>(playerComponent->playerMeshHandle))
 	{
-		if (Behemoth::VelocityComponent* velocity = registry.GetComponent<Behemoth::VelocityComponent>(entity))
+		if (Behemoth::VelocityComponent* velocityComp = registry.GetComponent<Behemoth::VelocityComponent>(entityHandle))
 		{
-			float speed = velocity->velocity.Magnitude();
-			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocity->velocity.z, 0.0f, -velocity->velocity.x));
-			parentRotationComponent->quat = BMath::Quaternion(DEGREE_TO_RAD(5.0f), dir);
-			parentRotationComponent->isAdditive = true;
+			std::cout << velocityComp->velocity.Print() << std::endl;
+
+			float speed = velocityComp->velocity.Magnitude();
+			BMath::Vector3 normalizedVelocity = BMath::Vector3::Normalize(velocityComp->velocity);
+			BMath::Vector3 dir = BMath::Vector3::Normalize(BMath::Vector3(-velocityComp->velocity.z, velocityComp->velocity.y, velocityComp->velocity.x));
+			parentRotationComp->quat = BMath::Quaternion(DEGREE_TO_RAD(5.0f), dir);
+			parentRotationComp->isAdditive = true;
 		}
 	}
 }
 
-void PCSystem::CheckPlayerLanded(ECS::Registry& registry, const ECS::EntityHandle& entity, PlayerComponent* playerComponent)
+void PCSystem::CheckPlayerLanded(ECS::Registry& registry, const ECS::EntityHandle& entityHandle, PlayerComponent* playerComponent)
 {
-	Behemoth::CollisionDataComponent* collisionData = registry.GetComponent<Behemoth::CollisionDataComponent>(entity);
+	Behemoth::CollisionDataComponent* collisionData = registry.GetComponent<Behemoth::CollisionDataComponent>(entityHandle);
 	if (!collisionData)
 	{
 		// Not colliding with ground so exit 
 		return;
 	}
-	// bool isCollidingWithGround = false;
-	if (Behemoth::VelocityComponent* velocity = registry.GetComponent<Behemoth::VelocityComponent>(entity))
+
+	if (Behemoth::VelocityComponent* velocity = registry.GetComponent<Behemoth::VelocityComponent>(entityHandle))
 	{
-
-// 		for (const auto& data : collisionData->data)
-// 		{
-// 			if (data.data.collisionNormal == BMath::Vector3::Up())
-// 			{
-// 				isCollidingWithGround = true;
-// 				break;
-// 			}
-// 		}
-
 		if (BMath::Vector3::SquaredMagnitude(velocity->velocity) <=  1.0f)
 		{
 			velocity->velocity = BMath::Vector3(0.0f);

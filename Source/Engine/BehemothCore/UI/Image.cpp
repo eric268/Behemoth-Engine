@@ -6,6 +6,7 @@
 namespace Behemoth
 {
 	Image::Image() : imageSprite(nullptr), imageFilepath(""), dimension() {}
+
 	Image::Image(std::string path, BMath::Vector2 d) : dimension(d)
 	{
 		const std::string& imagePath = ResourceManager::GetInstance().GetImagePath(path);

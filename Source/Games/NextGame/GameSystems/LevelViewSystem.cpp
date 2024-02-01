@@ -2,10 +2,15 @@
 #include "LevelViewSystem.h"
 #include "GameComponents/Level/LevelViewComponent.h"
 #include "Misc/CameraHelper.h"
+#include "GameComponents/Level/LevelViewComponent.h"
+#include "GameComponents/Player/PCComponent.h"
 
 void LevelViewSystem::Run(const float deltaTime, ECS::Registry& registry)
 {
-	for (const auto& [entity, levelViewComponent, viewController] : registry.Get<LevelViewComponent, ViewControllerComponent>())
+	for (const auto& [
+		entityHandle,
+			levelViewComponent,
+			viewController] : registry.Get<LevelViewComponent, ViewControllerComponent>())
 	{
 		// Do not want to allow input when not in level view
 		if (!levelViewComponent->isActive)
@@ -13,25 +18,29 @@ void LevelViewSystem::Run(const float deltaTime, ECS::Registry& registry)
 			continue;
 		}
 
-		Look(deltaTime, registry, entity, levelViewComponent, viewController);
-		Zoom(deltaTime, registry, entity, levelViewComponent, viewController);
+		Look(deltaTime, registry, entityHandle, levelViewComponent, viewController);
 	}
 }
 
-void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, const ECS::EntityHandle& handle, LevelViewComponent* levelView, ViewControllerComponent* viewController)
+void LevelViewSystem::Look(
+	const float deltaTime, 
+	ECS::Registry& registry, 
+	const ECS::EntityHandle& handle,
+	LevelViewComponent* levelView,
+	ViewControllerComponent* viewController)
 {
-	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnaloge(0);
+	Behemoth::AnalogInput input = Behemoth::Input::GetLeftControllerAnalog(0);
 
 	float keyInputX = Behemoth::Input::IsKeyHeld(viewController->rotateLeftKC) - Behemoth::Input::IsKeyHeld(viewController->rotateRightKC);
 	float keyInputY = Behemoth::Input::IsKeyHeld(viewController->moveUpKC)     - Behemoth::Input::IsKeyHeld(viewController->moveDownKC);
 
-	if (Behemoth::RotationComponent* parentRotationComponent = registry.AddComponent<Behemoth::RotationComponent>(handle))
+	if (Behemoth::RotationComponent* parentRotationComp = registry.AddComponent<Behemoth::RotationComponent>(handle))
 	{
 		BMath::Quaternion quatX = BMath::Quaternion::Identity();
 		BMath::Quaternion quatY = BMath::Quaternion::Identity();
 
-		Behemoth::CameraComponent* cameraComponent = Behemoth::CameraHelper::GetMainCamera(registry);
-		if (!cameraComponent)
+		Behemoth::CameraComponent* cameraComp = Behemoth::CameraHelper::GetMainCamera(registry);
+		if (!cameraComp)
 		{
 			LOGMESSAGE(Error, "Error finding main camera component");
 			return;
@@ -39,63 +48,23 @@ void LevelViewSystem::Look(const float deltaTime, ECS::Registry& registry, const
 
 		if (input.x != 0.0f)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(-input.x), BMath::Vector3(cameraComponent->upVector));
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(-input.x), BMath::Vector3(cameraComp->upVector));
 		}
 		else if (keyInputX)
 		{
-			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComponent->upVector));
+			quatX = BMath::Quaternion(DEGREE_TO_RAD(keyInputX), BMath::Vector3(cameraComp->upVector));
 		}
 
 		if (input.y != 0.0f)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(cameraComponent->rightVector));
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(input.y), BMath::Vector3(cameraComp->rightVector));
 		}
 		else if (keyInputY)
 		{
-			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComponent->rightVector));
+			quatY = BMath::Quaternion(DEGREE_TO_RAD(keyInputY), BMath::Vector3(cameraComp->rightVector));
 		}
 
-		parentRotationComponent->quat = quatY * quatX;
-		parentRotationComponent->isAdditive = true;
+		parentRotationComp->quat = quatY * quatX;
+		parentRotationComp->isAdditive = true;
 	}
-}
-
-void LevelViewSystem::Zoom(const float deltaTime, ECS::Registry& registry, const ECS::EntityHandle&, LevelViewComponent* levelView, ViewControllerComponent* viewController)
-{
-	Behemoth::AnalogInput input = Behemoth::Input::GetRightControllerAnaloge(0);
-	float keyInput = Behemoth::Input::IsKeyHeld(viewController->zoomOutKC) - Behemoth::Input::IsKeyHeld(viewController->zoomInKC);
-	// 	// No look input
-
-	float delta = 0.0f;
-
-	// Prioritize controller input
-	if (input.y != 0.0f)
-	{
-		delta = -input.y * levelView->cameraMoveSpeed * deltaTime;
-	}
-	else if (keyInput != 0.0f)
-	{
-		delta = keyInput * levelView->cameraMoveSpeed * deltaTime;
-	}
-	else
-	{
-		return;
-	}
-
-	if (levelView->currentZoomCounter + delta < levelView->minZoomDistance || levelView->currentZoomCounter + delta > levelView->maxZoomDistance)
-	{
-		return;
-	}
-
-	levelView->currentZoomCounter += delta;
-
-	Behemoth::CameraComponent* cameraComponent = Behemoth::CameraHelper::GetMainCamera(registry);
-	if (!cameraComponent)
-	{
-		LOGMESSAGE(Error, "Error finding main camera component");
-		return;
-	}
-
-	BMath::Vector3 deltaPosition = cameraComponent->forwardVector * delta;
-	registry.AddComponent<Behemoth::MoveComponent>(levelView->attachedCamera, deltaPosition);
 }

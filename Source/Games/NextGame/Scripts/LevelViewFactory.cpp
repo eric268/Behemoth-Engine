@@ -55,13 +55,8 @@ ECS::EntityHandle LevelViewFactory::CreateLevelViewEntity(
 void LevelViewFactory::AddInputBindings(ECS::Registry& registry, const ECS::EntityHandle& handle)
 {
 	registry.AddComponent<ViewControllerComponent>(handle,
-		false,
-		Behemoth::KeyCode::KC_W,
-		Behemoth::KeyCode::KC_S,
 		Behemoth::KeyCode::KC_A,
 		Behemoth::KeyCode::KC_D,
-		Behemoth::KeyCode::KC_E,
-		Behemoth::KeyCode::KC_Q,
-		Behemoth::ControllerCode::CC_DPAD_DOWN,
-		Behemoth::ControllerCode::CC_DPAD_UP);
+		Behemoth::KeyCode::KC_W,
+		Behemoth::KeyCode::KC_S);
 }

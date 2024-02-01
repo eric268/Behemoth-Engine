@@ -6,15 +6,11 @@ namespace Behemoth
 {
 	struct TransformComponent;
 	struct MeshComponent;
-
-	// Debug
 	class Primitive;
 
 	class RotationSystem
 	{
 	public:
-		RotationSystem() = default;
-
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:

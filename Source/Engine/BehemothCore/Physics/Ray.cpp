@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ray.h"
 #include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Components/PhysicsComponents.h"
 #include "Components/Components.h"
 #include "Physics/BVH.h"
@@ -62,9 +63,9 @@ namespace Behemoth
 
 	static bool NarrowRayCheck(ECS::Registry& registry, const Ray& ray, const std::vector<ECS::EntityHandle>& hitEntities, std::vector<ContactData>& data, BMask::CollisionType mask)
 	{
-		for (const auto& entity : hitEntities)
+		for (const auto& entityHandle : hitEntities)
 		{
-			TransformComponent* transform = registry.GetComponent<TransformComponent>(entity);
+			TransformComponent* transform = registry.GetComponent<TransformComponent>(entityHandle);
 
 			if (!transform)
 			{
@@ -72,7 +73,7 @@ namespace Behemoth
 				continue;
 			}
 
-			auto colliders = GetColliders(registry, entity, NarrowColliderTypes{});
+			auto colliders = GetColliders(registry, entityHandle, NarrowColliderTypes{});
 			std::apply([&](auto&& ... collider)
 				{
 					auto NarrrowRayCheck = [&](const Ray& r, auto&& c)
@@ -82,7 +83,7 @@ namespace Behemoth
 							// Ensure collider isn't null, that mask is correct and that collision is occurring 
  							if (GenerateCollisionData(ray, transform, c, contactData, mask))
  							{
-								contactData.handle = entity;
+								contactData.handle = entityHandle;
  								data.push_back(contactData);
  							}
 						}

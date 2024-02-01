@@ -24,7 +24,6 @@ namespace Behemoth
 	{
 	public:
 		using DynamicEntities = std::vector<std::tuple<ECS::Entity, RigidBodyComponent*, VelocityComponent*, TransformComponent*, BVHColliderComponent*>>;
-
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
@@ -34,33 +33,31 @@ namespace Behemoth
 			auto bvhComponent = registry.Get<BVHRootComponent<T>>();
 
 			for (const auto& [
-							dynamicEntity, 
+							dynamicEntityHandle, 
 					type, 
 					velocity,
 					transform,
-					collider] : dynamicEntities)
+					colliderComp] : dynamicEntities)
 			{
-				// SetCollider(transform, collider);
-				collider->collider.extents = transform->worldScale * collider->extents;
- 				collider->collider.position = transform->worldPosition;
+				SetCollider(transform, colliderComp);
 
 				for (const auto& [entities, bvhRootComp] : bvhComponent)
 				{
-					std::vector<ECS::EntityHandle> nodeHandles;
+					std::vector<ECS::EntityHandle> hitEntityHandles;
 
-					if (CheckAABBCollision(dynamicEntity, collider->collider, bvhRootComp->rootNode, nodeHandles))
+					if (CheckAABBCollision(dynamicEntityHandle, colliderComp->collider, bvhRootComp->rootNode, hitEntityHandles))
 					{
 						// Check if entity already has a collision pairs component
-						BroadCollisionPairsComponent* collisionPairsComp = registry.GetComponent<BroadCollisionPairsComponent>(dynamicEntity);
-						if (!collisionPairsComp)
+						if (BroadCollisionPairsComponent* collisionPairsComp = registry.GetComponent<BroadCollisionPairsComponent>(dynamicEntityHandle))
 						{
-							registry.AddComponent<BroadCollisionPairsComponent>(dynamicEntity, nodeHandles);
+							// If it already has the component add the new collision pairs to the container
+							std::vector<ECS::EntityHandle>& collisionPairs = collisionPairsComp->collisionIDs;
+							collisionPairs.insert(collisionPairs.end(), hitEntityHandles.begin(), hitEntityHandles.end());
 						}
 						else
 						{
-							// If it already has the component add the new collision pairs to the end of that container
-							std::vector<ECS::EntityHandle>& collisionPairs = collisionPairsComp->collisionIDs;
-							collisionPairs.insert(collisionPairs.end(), nodeHandles.begin(), nodeHandles.end());
+							// Otherwise add component
+							registry.AddComponent<BroadCollisionPairsComponent>(dynamicEntityHandle, hitEntityHandles);
 						}
 					}
  				}
@@ -68,7 +65,7 @@ namespace Behemoth
 		}
 
 		bool CheckAABBCollision(
-			ECS::EntityHandle handle,
+			ECS::EntityHandle entityHandle,
 			const AABBCollider& collider,
 			std::shared_ptr<BVHNode> root,
 			std::vector<ECS::EntityHandle>& nodeHandles);

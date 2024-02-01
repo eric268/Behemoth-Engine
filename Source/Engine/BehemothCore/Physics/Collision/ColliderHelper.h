@@ -19,58 +19,61 @@ namespace Behemoth
 	template<typename T>
 	inline void SetCollider(const TransformComponent* transform, T* colliderComponent);
 
-// 	template<>
-// 	inline void SetCollider(const TransformComponent* transform, BVHColliderComponent* component)
-// 	{
-// 		if (!transform || !component)
-// 		{
-// 			return;
-// 		}
-// 
-// 		component->collider.extents = transform->worldScale * component->extents;
-// 		component->collider.position = transform->worldPosition;
-// 	}
-
 	template<>
-	inline void SetCollider(const TransformComponent* transform, AABBColliderComponent* component)
+	inline void SetCollider(const TransformComponent* transform, BVHColliderComponent* colliderComp)
 	{
-		if (!transform || !component)
+		if (!transform || !colliderComp)
 		{
 			return;
 		}
 
-		component->collider.extents = transform->worldScale * component->extents;
-		component->collider.position = transform->worldPosition;
+		colliderComp->collider.extents = transform->worldScale * colliderComp->extents;
+		colliderComp->collider.position = transform->worldPosition;
 	}
 
 	template<>
-	inline void SetCollider(const TransformComponent* transform, SphereColliderComponent* component)
+	inline void SetCollider(const TransformComponent* transform, AABBColliderComponent* colliderComp)
 	{
-		if (!transform || !component)
+		if (!transform || !colliderComp)
 		{
 			return;
 		}
 
-		component->collider.center = transform->worldPosition;
-		component->collider.radius = std::max(transform->worldScale[0], std::max(transform->worldScale[1], transform->worldScale[2])) * component->radius;
+		colliderComp->collider.extents = transform->worldScale * colliderComp->extents;
+		colliderComp->collider.position = transform->worldPosition;
 	}
 
 	template<>
-	inline void SetCollider(const TransformComponent* transform, OBBColliderComponent* component)
+	inline void SetCollider(const TransformComponent* transform, SphereColliderComponent* colliderComp)
 	{
-		if (!transform || !component)
+		if (!transform || !colliderComp)
 		{
 			return;
 		}
-		component->collider.position = transform->worldPosition;
-		component->collider.extents = transform->worldScale * component->extents;
+
+		colliderComp->collider.center = transform->worldPosition;
+
+		// Since there is the potential for non-uniform scaling, and ellipse collider is not supported always scale with max of three axis scaling
+		colliderComp->collider.radius = std::max(transform->worldScale[0], 
+							  std::max(transform->worldScale[1], transform->worldScale[2])) * colliderComp->radius;
+	}
+
+	template<>
+	inline void SetCollider(const TransformComponent* transform, OBBColliderComponent* colliderComp)
+	{
+		if (!transform || !colliderComp)
+		{
+			return;
+		}
+		colliderComp->collider.position = transform->worldPosition;
+		colliderComp->collider.extents = transform->worldScale * colliderComp->extents;
 
 		BMath::Matrix3x3 orientationMatrix = TransformHelper::ExtractRotationMatrix(transform->worldTransform, transform->worldScale);
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				component->collider.orientation[i][j] = orientationMatrix.data[i][j];
+				colliderComp->collider.orientation[i][j] = orientationMatrix.data[i][j];
 			}
 		}
 	}

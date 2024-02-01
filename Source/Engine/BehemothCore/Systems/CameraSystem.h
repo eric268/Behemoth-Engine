@@ -1,6 +1,9 @@
 #pragma once
 
-#include "ECS/System.h"
+namespace ECS
+{
+	class Registry;
+}
 
 namespace Behemoth
 {
@@ -10,11 +13,10 @@ namespace Behemoth
 	class CameraSystem
 	{
 	public:
-		CameraSystem() {};
 		void Run(const float deltaTime, ECS::Registry& registry);
 
 	private:
-		void InitalizeProjMatrix(CameraComponent* component, const TransformComponent* transformComponent);
+		void InitializeProjMatrix(CameraComponent* component, const TransformComponent* transformComponent);
 		void UpdateFrustrum(CameraComponent* cameraComponent, TransformComponent* transform);
 		void SetLook(ECS::Registry& registry, TransformComponent* cameraTransform, CameraComponent* cameraComponent);
 	};

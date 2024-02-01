@@ -1,13 +1,11 @@
 #pragma once
+
 #include "Input/InputCodes.h"
 #include "NextAPI/App/app.h"
 
 #include <utility>
 #include <bitset>
 #include <vector>
-
-#define MAX_CONTROLLERS 4
-#define TRIGGER_DEADZONE 0.3
 
 namespace Behemoth
 {
@@ -35,8 +33,8 @@ namespace Behemoth
 		static bool IsControllerKeyHeld(ControllerCode code, int controller = 0);
 		static bool IsControllerKeyUp(ControllerCode code, int controller = 0);
 
-		static AnalogInput GetLeftControllerAnaloge(int controller = 0);
-		static AnalogInput GetRightControllerAnaloge(int controller = 0);
+		static AnalogInput GetLeftControllerAnalog(int controller = 0);
+		static AnalogInput GetRightControllerAnalog(int controller = 0);
 
 		static float GetLeftControllerTrigger(int controller = 0);
 		static float GetRightControllerTrigger(int controller = 0);
@@ -45,7 +43,7 @@ namespace Behemoth
 		static bool OnEvent(Event& event);
 
 	private:
-		// Declare within Input to keep type saftey
+		// Declare within Input to keep type safety
 		static void OnKeyDown(const KeyDownEvent& event);
 		static void OnKeyReleased(const KeyReleasedEvent& event);
 		static void OnMouseDown(const MouseDownEvent& event);

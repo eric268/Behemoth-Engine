@@ -15,13 +15,13 @@ namespace Behemoth
 		const std::string& entityName,
 		BMath::Vector2 uvScale)
 	{
-		ECS::EntityHandle entity = registry.CreateEntity(entityName);
-		registry.AddComponent<MeshComponent>(entity, modelFilePath, texturePath, uvScale);
-		registry.AddComponent<MeshInitializeComponent>(entity);
-		registry.AddComponent<TransformComponent>(entity);
-		registry.AddComponent<VelocityComponent>(entity);
-		registry.AddComponent<RotationComponent>(entity);
+		ECS::EntityHandle entityHandle = registry.CreateEntity(entityName);
+		registry.AddComponent<MeshComponent>(entityHandle, modelFilePath, texturePath, uvScale);
+		registry.AddComponent<MeshInitializeComponent>(entityHandle);
+		registry.AddComponent<TransformComponent>(entityHandle);
+		registry.AddComponent<VelocityComponent>(entityHandle);
+		registry.AddComponent<RotationComponent>(entityHandle);
 
-		return entity;
+		return entityHandle;
 	}
 }

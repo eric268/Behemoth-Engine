@@ -4,7 +4,6 @@
 #include "Math/MathCore.h"
 #include "Physics/Collision/Colliders.h"
 
-// stl
 #include <unordered_map>
 #include <string>
 #include <functional>

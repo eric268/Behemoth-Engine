@@ -19,17 +19,27 @@ namespace Behemoth
 
 		void CreateScene();
 		void ConstructBVH();
-		void RecalculateBVH();
+		
+		template <typename T>
+		void ReconstructBVH()
+		{
+			if (BVHRootComponent<T>* bvhComp = registry.GetComponent<BVHRootComponent<T>>(staticBVHHandle))
+			{
+				bvhComp->rootNode = bvhFactory.OnReconstruction<T>(registry, staticBVHEntities);
+			}
+		}
 
 	protected:
 		ECS::Registry registry;
 
-		std::vector<ECS::EntityHandle> staticBVHEntities;
-		std::vector<ECS::EntityHandle> dynamicBVHEntities;
 		ECS::EntityHandle staticBVHHandle;
 		ECS::EntityHandle dynamicBVHHandle;
 
-		BVHFactory factory;
+		// These are just for debugging purposes for reconstructing a BVH that has drawn the colliders
+		std::vector<ECS::EntityHandle> dynamicBVHEntities;
+		std::vector<ECS::EntityHandle> staticBVHEntities;
+
+		BVHFactory bvhFactory;
 	};
 }
 

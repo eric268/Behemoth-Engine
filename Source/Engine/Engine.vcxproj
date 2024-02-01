@@ -229,7 +229,6 @@
     <ClInclude Include="BehemothCore\Systems\Transform\MovementSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Transform\RotationSystem.h" />
     <ClInclude Include="BehemothCore\Systems\Transform\ScalingSystem.h" />
-    <ClInclude Include="BehemothCore\Systems\Transform\TransformSystem.h" />
     <ClInclude Include="BehemothCore\Systems\UI\ImageSystem.h" />
     <ClInclude Include="BehemothCore\Systems\UI\TextSystem.h" />
     <ClInclude Include="BehemothCore\UI\Image.h" />
@@ -255,8 +254,6 @@
     <ClCompile Include="BehemothCore\Geometry\Plane.cpp" />
     <ClCompile Include="BehemothCore\Geometry\Primitives.cpp" />
     <ClCompile Include="BehemothCore\Input\Input.cpp" />
-    <ClCompile Include="BehemothCore\Math\Quaternion.cpp" />
-    <ClCompile Include="BehemothCore\Math\Vector.cpp" />
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp" />
     <ClCompile Include="BehemothCore\Misc\TransformHelper.cpp" />
     <ClCompile Include="BehemothCore\Physics\BVH.cpp" />
@@ -285,7 +282,6 @@
     <ClCompile Include="BehemothCore\Systems\Transform\MovementSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Transform\RotationSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\Transform\ScalingSystem.cpp" />
-    <ClCompile Include="BehemothCore\Systems\Transform\TransformSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\UI\ImageSystem.cpp" />
     <ClCompile Include="BehemothCore\Systems\UI\TextSystem.cpp" />
     <ClCompile Include="BehemothCore\UI\Image.cpp" />

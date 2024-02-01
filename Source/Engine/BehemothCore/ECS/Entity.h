@@ -1,7 +1,5 @@
 #pragma once
 
-
-// stl
 #include <string>
 
 #define NULL_ENTITY 0xFFFFFFFF

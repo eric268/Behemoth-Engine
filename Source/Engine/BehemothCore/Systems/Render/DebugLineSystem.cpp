@@ -24,20 +24,21 @@ namespace Behemoth
 		// Maximum number of lines that we may need to reserve
 		ReserveResources(numDebugLines);
 
+		// This is inefficient to essentially call Get twice, but will only run in debug and is not production code
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPosition(registry);
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 
 		std::vector<ECS::EntityHandle> expiredLines;
 
-		for (const auto& [entity, lineComp] : components)
+		for (const auto& [entityHandle, lineComp] : components)
 		{
-			UpdateLineDisplayLifetime(deltaTime, expiredLines, entity, lineComp);
+			UpdateLineDisplayLifetime(deltaTime, expiredLines, entityHandle, lineComp);
 
 			Point p1 = lineComp->startPoint;
 			Point p2 = lineComp->endPoint;
 
-			if (CullLineSegement(p1, p2, mainCamera->worldSpaceFrustum))
+			if (CullLineSegment(p1, p2, mainCamera->worldSpaceFrustum))
 			{
 				continue;
 			}
@@ -48,11 +49,11 @@ namespace Behemoth
 	}
 
 
-	bool DebugLineSystem::CullLineSegement(Point& p1, Point& p2, const Plane* worldFrustmPlanes)
+	bool DebugLineSystem::CullLineSegment(Point& p1, Point& p2, const Plane* worldFrustumPlanes)
 	{
 		for (int i = 0; i < 6; i++)
 		{
-			const Plane& plane = worldFrustmPlanes[i];
+			const Plane& plane = worldFrustumPlanes[i];
 
 			// Check if endpoints of line are inside frustum, if true do not cull frustum
 			float dist1 = BMath::Vector3::Dot(p1, plane.normal) + plane.d;
@@ -68,9 +69,10 @@ namespace Behemoth
 			}
 			else
 			{
+				// One point is outside and one is inside, so adjust its position to be on the perimeter of the view frustum
 				Point intersectionPoint{};
 				float distance = 0.0f;
-				if (Behemoth::BroadLinePlaneIntersection(p1, p2, worldFrustmPlanes[i], distance, intersectionPoint))
+				if (Behemoth::BroadLinePlaneIntersection(p1, p2, worldFrustumPlanes[i], distance, intersectionPoint))
 				{
 					if (dist1 < 0)
 					{
@@ -83,7 +85,8 @@ namespace Behemoth
 				}
 			}
 		}
-		// All end points are outside of the world frustum
+
+		// All end points are outside of the view frustum
 		return false;
 	}
 
@@ -91,6 +94,7 @@ namespace Behemoth
 	{
 		Renderer::GetInstance().ReserveLines(numLines);
 	}
+
 	void DebugLineSystem::ProcessLine(const Point& p1, const Point& p2, const BMath::Matrix4x4& viewProjMatrix, BMath::Vector3 color)
 	{
 		BMath::Vector4 renderVerts[2];
@@ -110,20 +114,20 @@ namespace Behemoth
 		Renderer::GetInstance().AddLine(std::move(line));
 	}
 
-	void DebugLineSystem::UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle handle, DebugLineComponent* lineComponent)
+	void DebugLineSystem::UpdateLineDisplayLifetime(const float deltaTime, std::vector<ECS::EntityHandle>& linesToDestroy, ECS::EntityHandle entityHandle, DebugLineComponent* lineComponent)
 	{
 		lineComponent->displayCounter += deltaTime;
 		if (lineComponent->displayCounter >= lineComponent->lifetime)
 		{
-			linesToDestroy.push_back(handle);
+			linesToDestroy.push_back(entityHandle);
 		}
 	}
 
 	void DebugLineSystem::DestroyExpiredLines(ECS::Registry& registry, std::vector<ECS::EntityHandle>& linesToDestroy)
 	{
-		for (const ECS::EntityHandle handle : linesToDestroy)
+		for (const ECS::EntityHandle entityHandle : linesToDestroy)
 		{
-			registry.DestroyEntity(handle);
+			registry.DestroyEntity(entityHandle);
 		}
 	}
 }

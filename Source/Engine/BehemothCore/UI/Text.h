@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Misc/BColors.h"
+
 #include <string>
 
 namespace Behemoth

@@ -324,6 +324,33 @@ namespace Behemoth
 	}
 
 
+	bool BroadRayAABBIntersection(const Ray& ray, const AABBCollider& collider)
+	{
+		const BMath::Vector3 min = collider.position - collider.extents;
+		const BMath::Vector3 max = collider.position + collider.extents;
+
+		const BMath::Vector3 invDir = BMath::Vector3(1.0f / ray.direction.x, 1.0f / ray.direction.y, 1.0f / ray.direction.z);
+
+		// Calculate intersection with the slabs
+		float t1 = (min.x - ray.origin.x) * invDir.x;
+		float t2 = (max.x - ray.origin.x) * invDir.x;
+		float t3 = (min.y - ray.origin.y) * invDir.y;
+		float t4 = (max.y - ray.origin.y) * invDir.y;
+		float t5 = (min.z - ray.origin.z) * invDir.z;
+		float t6 = (max.z - ray.origin.z) * invDir.z;
+
+		// Find the largest tMin and smallest tMax
+		float tMin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
+		float tMax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+
+		if (tMax < 0 || tMin > tMax)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	bool BroadRaySphereIntersection(const Ray& ray, const SphereCollider& sphere)
 	{
 		BMath::Vector3 rayToSphere = ray.origin - sphere.center;

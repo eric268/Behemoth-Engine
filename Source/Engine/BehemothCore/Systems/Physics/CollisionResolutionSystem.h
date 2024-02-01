@@ -1,8 +1,5 @@
 #pragma once
 
-#include "ECS/Entity.h"
-
-
 namespace ECS
 {
 	class Registry;

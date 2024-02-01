@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Geometry/Line.h"
 
 namespace Behemoth
@@ -10,11 +11,8 @@ namespace Behemoth
 	class Renderer
 	{
 	public:
-		static Renderer& GetInstance()
-		{
-			static Renderer instance;
-			return instance;
-		}
+		static Renderer& GetInstance();
+
 		Renderer(const Renderer&) = delete;
 		Renderer& operator=(const Renderer&) = delete;
 
@@ -31,7 +29,7 @@ namespace Behemoth
 		inline std::uint32_t GetCurrentPrimitiveCount() { return primitivesToDraw.size(); }
 
 	private:
-		Renderer();
+		Renderer() = default;
 		void SortPrimitivesByDepth();
 	};
 }

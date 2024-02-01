@@ -16,6 +16,7 @@ namespace Behemoth
 		{
 			return restitution == obj.restitution && dampening == obj.dampening;
 		}
+
 		bool operator != (PhysicsMaterial& obj)
 		{
 			return !(*this == obj);

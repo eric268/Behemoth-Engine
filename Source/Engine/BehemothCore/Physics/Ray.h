@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Math/MathCore.h"
-#include "ECS/Entity.h"
 #include "Collision/CollisionMask.h"
 #include "Physics/Collision/CollisionData.h"
 
@@ -9,6 +8,7 @@
 namespace ECS
 {
 	class Registry;
+	struct EntityHandle;
 }
 
 namespace Behemoth

@@ -1,19 +1,34 @@
 #include "pch.h"
 #include "LightingSystem.h"
+#include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Renderer/Renderer.h"
 #include "Geometry/Primitives.h"
 #include "Components/Components.h"
 #include "Components/LightComponents.h"
 #include "Misc/CameraHelper.h"
 
-#define ENABLE_LIGHTING
-
 namespace Behemoth
 {
 	void LightingSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
- 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+ 		CameraComponent* mainCamera = nullptr;
+		BMath::Vector3 mainCameraPosition = BMath::Vector3::Zero();
+
+		for (const auto& [
+			entityHandle, 
+				cameraComp, 
+				transformComp] : registry.Get<CameraComponent, TransformComponent>())
+		{
+			if (cameraComp->isMain)
+			{
+				mainCamera = cameraComp;
+				mainCameraPosition = transformComp->worldPosition;
+				break;
+			}
+		}
+
+		assert(mainCamera);
 
 		// Should only be one ambient light
 		auto ambientLightComponent = registry.Get<AmbientLightComponent>();
@@ -21,14 +36,17 @@ namespace Behemoth
 		// Should only be one directional light
 		auto directionalComponent = registry.Get<DirectionalLightComponent>();
 
-
 		auto pointLightComponents = registry.Get<PointLightComponent, TransformComponent>();
 
 		for (int i = 0; i < Renderer::GetInstance().primitivesToDraw.size(); i++)
 		{
 			Primitive* primitive = Renderer::GetInstance().primitivesToDraw[i];
-			assert(primitive);
-
+			
+			if (!primitive)
+			{
+				LOGMESSAGE(Error, "Null primitive found");
+				continue;
+			}
 
 			if (!primitive->affectedByLighting)
 			{
@@ -43,7 +61,6 @@ namespace Behemoth
 				CalculateAmbientLights(primitive, ambientLight);
 			}
 
-			// Should only be one directional light but for now continue with possibility of multiple
 			for (const auto& [dirEntity, dirLight] : directionalComponent)
 			{
 				CalculateDirectionalLights(primitive, dirLight, mainCameraPosition);
@@ -53,9 +70,6 @@ namespace Behemoth
 			{
 				 CalculatePointLights(primitive, pointLight, mainCameraPosition, transformComp->worldPosition, mainCamera->viewMatrix);
 			}
-
-			
-
 		}
 	}
 
@@ -96,8 +110,10 @@ namespace Behemoth
 	BMath::Vector3 LightingSystem::GetPrimitivePosition(Primitive* primitive)
 	{
 		int numVertices = static_cast<PrimitiveType>(primitive->primitiveType);
-		if (numVertices <= 0) 
+		if (numVertices <= 0)
+		{
 			return BMath::Vector3{};
+		}
 
 		BMath::Vector3 averagePos{};
 

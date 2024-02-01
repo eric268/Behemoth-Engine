@@ -10,12 +10,12 @@ namespace Behemoth
 	void VelocitySystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		auto components = registry.Get<VelocityComponent, TransformComponent>();
-		for (const auto& [entity, velocityComp, transformComp] : components)
+		for (const auto& [entityHandle, velocityComp, transformComp] : components)
 		{
-			if (registry.GetComponent<StaticComponent>(entity) && velocityComp->velocity != BMath::Vector3::Zero())
+			if (registry.GetComponent<StaticComponent>(entityHandle) && velocityComp->velocity != BMath::Vector3::Zero())
 			{
 				velocityComp->velocity = BMath::Vector3::Zero();
-				LOGMESSAGE(MessageType::Warning, "Attempting to move static entity named: " + registry.GetName(entity));
+				LOGMESSAGE(MessageType::Warning, "Attempting to move static entity named: " + registry.GetName(entityHandle));
 				continue;
 			}
 
@@ -26,21 +26,22 @@ namespace Behemoth
 
 			BMath::Vector3 deltaPosition = velocityComp->velocity * deltaTime;
 
-			TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, entity);
-			if (parentTransform)
+			if (TransformComponent* parentTransform = TransformHelper::GetParentTransformComp(registry, entityHandle))
 			{
 				// If object is a child, move in parents local space
-				BMath::Matrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(parentTransform->worldTransform,  parentTransform->worldScale);
+				BMath::Matrix3x3 parentTransformNoScale = TransformHelper::ExtractRotationMatrix(
+					parentTransform->worldTransform,
+							     parentTransform->worldScale);
+
 				deltaPosition = parentTransformNoScale * deltaPosition;
 			}
 
-			UpdateLocalTransform(registry, entity, transformComp, deltaPosition);
-			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
-			TransformHelper::NotifyChildrenTransformChange(registry, entity);
+			UpdateLocalTransform(registry, entityHandle, transformComp, deltaPosition);
+			TransformHelper::UpdateWorldTransform(registry, entityHandle, transformComp);
+			TransformHelper::NotifyChildrenTransformChange(registry, entityHandle);
 			transformComp->isDirty = true;
 
-			CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity);
-			if (cameraComponent && cameraComponent->isMain)
+			if (CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entityHandle))
 			{
 				cameraComponent->isDirty = true;
 			}

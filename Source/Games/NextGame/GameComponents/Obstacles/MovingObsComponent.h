@@ -5,6 +5,7 @@
 struct MovingObsComponent : public ECS::Component
 {
 	MovingObsComponent() = default;
+
 	MovingObsComponent(
 		BMath::Vector3 axis,
 		float speed,
@@ -19,10 +20,11 @@ struct MovingObsComponent : public ECS::Component
 		isActive(isActive),
 		dir(dir)
 	{}
-	float dir;
-	bool isActive;
+
 	BMath::Vector3 movementAxis;
 	float movementSpeed;
-	float movementCounter;
 	float maxDistance;
+	float movementCounter;
+	float dir;
+	bool isActive;
 };

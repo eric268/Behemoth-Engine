@@ -8,13 +8,15 @@
 
 namespace Behemoth
 {
+	// TODO:
+	// Find a way to break this function up, too large / unreadable
 	void NarrowCollisionSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		// Dynamic entities are the entities that we are first iterating over to check for collisions
-		for (const auto& [dynamicEntity, dynamicTransform, collisionPairs] : registry.Get<TransformComponent, BroadCollisionPairsComponent>())
+		for (const auto& [dynamicEntityHandle, dynamicTransform, collisionPairs] : registry.Get<TransformComponent, BroadCollisionPairsComponent>())
 		{
 			// Generates a tuple with all narrow colliers ** Some maybe nullptr's so always check if valid first **
-			auto dynamicColliders = GetColliders(registry, dynamicEntity, NarrowColliderTypes{});
+			auto dynamicColliders = GetColliders(registry, dynamicEntityHandle, NarrowColliderTypes{});
 
 			// Hit entities are all entities that collided with the dynamic entity during the broad collision check
 			for (const auto& hitEntityHandle : collisionPairs->collisionIDs)
@@ -43,11 +45,11 @@ namespace Behemoth
  									contactData.physicsMaterial = collider2->physicsMaterial;
  									if (collider2->isTrigger)
  									{
- 										GenerateData<TriggerDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
+ 										GenerateData<TriggerDataComponent>(registry, dynamicEntityHandle, hitEntityHandle, contactData);
  									}
  									else
  									{
- 										GenerateData<CollisionDataComponent>(registry, dynamicEntity, hitEntityHandle, contactData);
+ 										GenerateData<CollisionDataComponent>(registry, dynamicEntityHandle, hitEntityHandle, contactData);
  									}
  
  								}
@@ -57,7 +59,6 @@ namespace Behemoth
 
 					(..., CheckDynamicColliders(dynamicEntityColliders));
 				}, dynamicColliders);
-
 			}
 		}
 	}

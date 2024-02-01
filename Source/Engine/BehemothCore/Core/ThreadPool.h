@@ -1,13 +1,13 @@
 #pragma once
 
+#include "Core/Log.h"
+
 #include <thread>
 #include <mutex>
 #include <condition_variable>
 #include <future>
 #include <stdexcept>
 #include <queue>
-
-#include "Core/Log.h"
 
 namespace Behemoth
 {

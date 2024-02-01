@@ -4,13 +4,13 @@
 
 namespace Behemoth
 {
-	bool BoundingGenerator::GenerateAABBBoundingVolume(const std::vector<VertexData>& verticies, AABBCollider& collider)
+	bool BoundingGenerator::GenerateAABBBoundingVolume(const std::vector<VertexData>& vertices, AABBCollider& collider)
 	{
 		collider.position = BMath::Vector3(0.0f);
 		collider.extents = BMath::Vector3(0.0f);
 
 		float maxDistance = 0.0f;
-		for (const auto& v : verticies)
+		for (const auto& v : vertices)
 		{
 			maxDistance = std::max(maxDistance, v.position.x);
 			maxDistance = std::max(maxDistance, v.position.y);
@@ -26,12 +26,12 @@ namespace Behemoth
 	}
 
 	// Ritter's Algorithm
-	bool BoundingGenerator::GenerateSphereBoundingVolume(const std::vector<VertexData>& verticies, SphereCollider& collider)
+	bool BoundingGenerator::GenerateSphereBoundingVolume(const std::vector<VertexData>& vertices, SphereCollider& collider)
 	{
 		BMath::Vector3 position = BMath::Vector3(0.0f);
 		float radius = 0.0f;
 
-		for (const auto& v : verticies)
+		for (const auto& v : vertices)
 		{
 			float distance = BMath::Vector3::Distance(position, v.position);
 

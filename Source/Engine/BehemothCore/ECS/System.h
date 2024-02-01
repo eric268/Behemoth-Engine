@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Registry.h"
 #include "Core/Stopwatch.h"
 

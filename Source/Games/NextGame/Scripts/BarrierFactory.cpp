@@ -9,7 +9,13 @@ ECS::EntityHandle BarrierFactory::CreateObstacle(
 	const BMath::Quaternion& q,
 	bool isStatic)
 {
-	ECS::EntityHandle obstacleHandle = Behemoth::GameObjectFactory::CreateGameObject(registry, "cube10.obj", "brick.png", "Obstacle", BMath::Vector2(4, 4));
+	ECS::EntityHandle obstacleHandle = Behemoth::GameObjectFactory::CreateGameObject(
+		registry, 
+		"cube10.obj", 
+		"brick.png", 
+		"Obstacle",
+		BMath::Vector2(4, 4));
+
 	registry.AddComponent<Behemoth::ScalingComponent>(obstacleHandle, scale);
 	registry.AddComponent<Behemoth::MoveComponent>(obstacleHandle, location);
 	registry.AddComponent<Behemoth::RotationComponent>(obstacleHandle, q, true);

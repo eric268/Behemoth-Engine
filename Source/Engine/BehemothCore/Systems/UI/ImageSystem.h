@@ -7,12 +7,9 @@ namespace ECS
 
 namespace Behemoth
 {
-	class ImageSystem
+	struct ImageSystem
 	{
-	public:
 		void Run(const float deltaTime, ECS::Registry& registry);
-
-	private:
 	};
 }
 

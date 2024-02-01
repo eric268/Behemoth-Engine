@@ -44,13 +44,13 @@ namespace Behemoth
 		GeneratePrimitives(vertexData, QUAD, meshData.quadVertexCount, meshData.triangleVertexCount);
 	}
 
-	void Mesh::GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVerticies, int vertexOffset)
+	void Mesh::GeneratePrimitives(const std::vector<VertexData>& vertexData, PrimitiveType type, int totalVertices, int vertexOffset)
 	{
 		int numVertices = (type == TRIANGLE) ? 3 : 4;
 
 		const std::string& path = Behemoth::ResourceManager::GetInstance().GetTexturePath(materialData.textureFileName);
 
-		for (int i = vertexOffset; i < totalVerticies + vertexOffset; i += numVertices)
+		for (int i = vertexOffset; i < totalVertices + vertexOffset; i += numVertices)
 		{
 			BMath::Vector4 v[4];
 			BMath::Vector3 n[4];

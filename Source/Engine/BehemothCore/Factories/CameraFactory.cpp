@@ -8,10 +8,10 @@ namespace Behemoth
 {
 	ECS::EntityHandle CameraFactory::CreateCamera(ECS::Registry& registry, bool isMain, const std::string& name)
 	{
-		ECS::EntityHandle entity = registry.CreateEntity(name);
-		registry.AddComponent<CameraComponent>(entity, isMain);
-		registry.AddComponent<VelocityComponent>(entity);
-		registry.AddComponent<TransformComponent>(entity);
-		return entity;
+		ECS::EntityHandle entityHandle = registry.CreateEntity(name);
+		registry.AddComponent<CameraComponent>(entityHandle, isMain);
+		registry.AddComponent<VelocityComponent>(entityHandle);
+		registry.AddComponent<TransformComponent>(entityHandle);
+		return entityHandle;
 	}
 }

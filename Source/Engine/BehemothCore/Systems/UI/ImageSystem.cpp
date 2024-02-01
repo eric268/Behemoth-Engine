@@ -7,7 +7,7 @@ namespace Behemoth
 {
 	void ImageSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, imageComponent] : registry.Get<ImageComponent>())
+		for (const auto& [entityHandle, imageComponent] : registry.Get<ImageComponent>())
 		{
 			if (!imageComponent->isVisible)
 			{

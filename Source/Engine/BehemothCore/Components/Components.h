@@ -51,7 +51,6 @@ namespace Behemoth
 	struct MeshInitializeComponent : public ECS::Component
 	{
 		MeshInitializeComponent(bool initBoundingVolume = true) : initBoundingVolume(initBoundingVolume) {}
-
 		bool initBoundingVolume;
 	};
 

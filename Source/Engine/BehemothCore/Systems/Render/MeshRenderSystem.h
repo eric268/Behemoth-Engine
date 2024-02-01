@@ -1,26 +1,23 @@
 #pragma once
 
 #include "RenderSystem.h"
-#include <tuple>
-#include <vector>
 
 namespace Behemoth
 {
 	struct CameraComponent;
 	struct TransformComponent;
-	class Entity;
+	class Mesh;
 
 	class MeshRenderSystem : public RenderSystem
 	{
 	public:
-		MeshRenderSystem() = default;
 		void Run(const float deltaTime, ECS::Registry& registry) override;
 
 	protected:
 		void ReserveResources(int numPrimitives) override;
 		bool CullBackFace(const BMath::Vector3& cameraLocation, const BMath::Vector3 forwardVec,  const BMath::Vector4 primitiveVerts[]);
-		void AddPrimitiveToRenderer(Primitive& primitive, const int numVerticies, const BMath::Vector4 verticies[], int index);
-		float GetPrimitiveDepth(const int numVerticies, const BMath::Vector4 verticies[]);
+		void AddPrimitiveToRenderer(Primitive& primitive, const int numVertices, const BMath::Vector4 vertices[], int index);
+		float GetPrimitiveDepth(const int numVertices, const BMath::Vector4 vertices[]);
 
 		void ProcessMesh(
 			Mesh& mesh,

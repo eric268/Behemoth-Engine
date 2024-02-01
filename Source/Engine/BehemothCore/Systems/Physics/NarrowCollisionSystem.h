@@ -10,7 +10,6 @@
 #include <type_traits>
 #include <tuple>
 
-
 namespace Behemoth
 {
 	class NarrowCollisionSystem
@@ -19,7 +18,6 @@ namespace Behemoth
 		void Run(const float deltaTime, ECS::Registry& regsitry);
 
 	private:
-
 		template <typename T, typename U>
 		bool IsCollision(TransformComponent* transform1, TransformComponent* transform2, T* collider1, U* collider2, ContactData& data)
 		{
@@ -43,26 +41,25 @@ namespace Behemoth
 		template <typename T>
 		void GenerateData(
 			ECS::Registry& registry,
-			const ECS::EntityHandle& dynamicHandle,
-			const ECS::EntityHandle& hitHandle,
+			const ECS::EntityHandle& dynamicEntityHandle,
+			const ECS::EntityHandle& hitEntityHandle,
 			const ContactData& contactData)
 		{
-			T* data = registry.GetComponent<T>(dynamicHandle);
-			if (!data)
+			T* collisionDataComponent = registry.GetComponent<T>(dynamicEntityHandle);
+			if (!collisionDataComponent)
 			{
-				data = registry.AddComponent<T>(dynamicHandle);
+				collisionDataComponent = registry.AddComponent<T>(dynamicEntityHandle);
 			}
 
-			if (data)
+			if (collisionDataComponent)
 			{
-				BMath::Vector3 hitVelocity{};
+				BMath::Vector3 hitVelocity = BMath::Vector3::Zero();
 
-				if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitHandle))
+				if (VelocityComponent* hitVelocityComponent = registry.GetComponent<VelocityComponent>(hitEntityHandle))
 				{
 					hitVelocity = hitVelocityComponent->velocity;
 				}
-				CollisionData collisionData(contactData, hitHandle, hitVelocity);
-				data->data.push_back(collisionData);
+				collisionDataComponent->data.push_back(CollisionData(contactData, hitEntityHandle, hitVelocity));
 			}
 		}
 		

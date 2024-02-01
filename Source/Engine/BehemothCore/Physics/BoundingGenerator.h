@@ -14,8 +14,8 @@ namespace Behemoth
 {
 	struct BoundingGenerator
 	{
-		static bool GenerateAABBBoundingVolume(const std::vector<VertexData>& verticies, AABBCollider& collider);
-		static bool GenerateSphereBoundingVolume(const std::vector<VertexData>& verticies, SphereCollider& collider);
+		static bool GenerateAABBBoundingVolume(const std::vector<VertexData>& vertices, AABBCollider& collider);
+		static bool GenerateSphereBoundingVolume(const std::vector<VertexData>& vertices, SphereCollider& collider);
 		static bool GenerateRotatedAABB(const AABBCollider& collider, const BMath::Matrix3x3& rotationMatrix, AABBCollider& rotatedCollider);
 	};
 

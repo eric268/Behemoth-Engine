@@ -1,8 +1,9 @@
 #pragma once
 
-#include <vector>
 #include "SparseSet.h"
 #include "Entity.h"
+
+#include <vector>
 
 namespace ECS
 {

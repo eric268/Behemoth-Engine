@@ -21,7 +21,11 @@ namespace Behemoth
 		CheckCollision<RigidBodyComponent>(registry, dynamicEntities, deltaTime);
 	}
 
-	bool BroadCollisionSystem::CheckAABBCollision(ECS::EntityHandle handle, const AABBCollider& collider, std::shared_ptr<BVHNode> root, std::vector<ECS::EntityHandle>& nodeHandles)
+	bool BroadCollisionSystem::CheckAABBCollision(
+		ECS::EntityHandle entityHandle,
+		const AABBCollider& collider,
+		std::shared_ptr<BVHNode> root,
+		std::vector<ECS::EntityHandle>& collidingHandles)
 	{
 		using node = std::shared_ptr<Behemoth::BVHNode>;
 
@@ -33,23 +37,24 @@ namespace Behemoth
 			node currentNode = nodes.top();
 			nodes.pop();
 
-			if (!currentNode || handle == currentNode->entityHandle)
+			if (!currentNode || entityHandle == currentNode->entityHandle)
 			{
 				continue;
 			}
+
 			if (Behemoth::BroadAABBCollision(collider, currentNode->collider))
 			{
 				if (currentNode->IsLeaf())
 				{
-					LOGMESSAGE(General, "Broad Collision");
-					nodeHandles.push_back(currentNode->entityHandle);
-					continue;
+					collidingHandles.push_back(currentNode->entityHandle);
 				}
-
-				nodes.push(currentNode->leftChild);
-				nodes.push(currentNode->rightChild);
+				else
+				{
+					nodes.push(currentNode->leftChild);
+					nodes.push(currentNode->rightChild);
+				}
 			}
 		}
-		return nodeHandles.size();
+		return collidingHandles.size();
 	}
 }

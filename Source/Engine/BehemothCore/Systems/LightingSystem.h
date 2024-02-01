@@ -1,9 +1,11 @@
 #pragma once
 
-#include "ECS/System.h"
 #include "Math/MathCore.h"
 
-#include <vector>
+namespace ECS
+{
+	class Registry;
+}
 
 namespace Behemoth
 {

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "WireframeRenderSystem.h"
+#include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "Misc/CameraHelper.h"
@@ -8,6 +9,7 @@
 #include "Geometry/Line.h"
 #include "Misc/TransformHelper.h"
 #include "Core/Stopwatch.h"
+#include "Geometry/Mesh.h"
 
 namespace Behemoth
 {
@@ -16,7 +18,7 @@ namespace Behemoth
 		auto components = registry.Get<WireframeComponent, TransformComponent>();
 
 		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPosition(registry);
 
 
 		// ** Order of multiplication matters here **
@@ -30,18 +32,18 @@ namespace Behemoth
 
 		ReserveResources(totalPrimitives);
 
-		for (const auto& [entity, wireframeComp, transformComp] : components)
+		for (const auto& [entityHandle, wireframeComp, transformComp] : components)
 		{
 			if (!wireframeComp->isVisible)
 				continue;
 
-			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entity);
+			BoundingVolumeComponent* boundingVolume = registry.GetComponent<BoundingVolumeComponent>(entityHandle);
 			if (boundingVolume && !IsBoundingVolumeInFrustrum(mainCamera, transformComp, boundingVolume))
 			{
 				continue;
 			}
-			const BMath::Matrix4x4 wireframeTranform = GetWireframeTransform(transformComp->worldTransform, transformComp->worldScale, wireframeComp->scale, wireframeComp->allowRotation);
-			ProcessWireframe(wireframeComp->mesh, wireframeTranform, viewProjMatrix, true, wireframeComp->wireframeColor);
+			const BMath::Matrix4x4 wireframeTransform = GetWireframeTransform(transformComp->worldTransform, transformComp->worldScale, wireframeComp->scale, wireframeComp->allowRotation);
+			ProcessWireframe(wireframeComp->mesh, wireframeTransform, viewProjMatrix, true, wireframeComp->wireframeColor);
 		}
 	}
 
@@ -49,53 +51,51 @@ namespace Behemoth
 	{
 		const MeshData& meshData = mesh.meshData;
 
-		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVertices(meshData.modelFileName);
+		const std::vector<VertexData>& vertices = ResourceManager::GetInstance().GetMeshVertices(meshData.modelFileName);
 
-		int numVerticies = 3;
+		int numVertices = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
 			if (vertexIndex >= meshData.triangleVertexCount)
 			{
-				numVerticies = 4;
+				numVertices = 4;
 			}
 
 			Primitive& primitive = mesh.meshPrimitives[i];
 
-			// Only need to update the verticies if matrix dirty
+			// Only need to update the vertices if matrix dirty
 			if (isDirty)
 			{
-				for (int j = 0; j < numVerticies; j++)
+				for (int j = 0; j < numVertices; j++)
 				{
-					primitive.vertices[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].position, 1.0f);
+					primitive.vertices[j] = transformMatrix * BMath::Vector4(vertices[vertexIndex++].position, 1.0f);
 				}
 			}
 			else
 			{
-				vertexIndex += numVerticies;
+				vertexIndex += numVertices;
 			}
-
-			
 
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.vertices, sizeof(BMath::Vector4) * 4);
 
-			ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
+			ProcessVertex(viewProjMatrix, renderVerts, numVertices);
 
-			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
+			if (!IsPrimitiveWithinFrustrum(numVertices, renderVerts))
 			{
 				continue;
 			}
 			
-			AddWireMeshToRenderer(numVerticies, renderVerts, color);
+			AddWireMeshToRenderer(numVertices, renderVerts, color);
 		}
 	}
 
-	void WireframeRenderSystem::AddWireMeshToRenderer(const int numVerticies, const BMath::Vector4 verticies[], BMath::Vector3 color)
+	void WireframeRenderSystem::AddWireMeshToRenderer(const int numVertices, const BMath::Vector4 vertices[], BMath::Vector3 color)
 	{
-		for (int i = 0, j = i + 1; i < numVerticies; i++, j++)
+		for (int i = 0, j = i + 1; i < numVertices; i++, j++)
 		{
-			j = (j >= numVerticies) ? 0 : j;
-			Line line = Line(BMath::Vector4(verticies[i].x, verticies[i].y, verticies[j].x, verticies[j].y), color);
+			j = (j >= numVertices) ? 0 : j;
+			Line line = Line(BMath::Vector4(vertices[i].x, vertices[i].y, vertices[j].x, vertices[j].y), color);
 			Renderer::GetInstance().AddLine(std::move(line));
 		}
 	}

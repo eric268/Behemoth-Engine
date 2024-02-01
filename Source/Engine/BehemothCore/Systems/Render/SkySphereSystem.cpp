@@ -26,9 +26,11 @@ namespace Behemoth
 		{
 			if (!skySphereComp->isInitalized)
 			{
-				InitalizeSphere(skySphereComp);
+				InitializeSphere(skySphereComp);
 			}
-			 FollowCamera(transformComp, cameraTransform->worldPosition);
+
+			FollowCamera(transformComp, cameraTransform->worldPosition);
+			transformComp->isDirty = true;
 
 			BMath::Matrix4x4 viewProjMatrix = cameraComp->projMatrix * cameraComp->viewMatrix;
 
@@ -39,9 +41,9 @@ namespace Behemoth
 		Renderer::GetInstance().FreePrimitiveResourceOverflow();
 	}
 
-	// Since this primitive should only exist once in the scene it is fine to store the verticies directly inside the component
-	// Otherwise the models verticies are stored in the resource manager and loaded for rendering
-	void SkySphereSystem::InitalizeSphere(SkySphereComponent* skySphereComponent)
+	// Since this primitive should only exist once in the scene it is fine to store the vertices directly inside the component
+	// Otherwise the models vertices are stored in the resource manager and loaded for rendering
+	void SkySphereSystem::InitializeSphere(SkySphereComponent* skySphereComponent)
 	{
 		const std::vector<VertexData>& vertexData = ResourceManager::GetInstance().GetMeshVertices(skySphereComponent->mesh.meshData.modelFileName);
 		const MeshData& meshData = ResourceManager::GetInstance().GetMeshData(skySphereComponent->mesh.meshData.modelFileName);
@@ -72,19 +74,18 @@ namespace Behemoth
 	{
 		const MeshData& meshData = skySphereComponent->mesh.meshData;
 
-
 		ReserveResources(meshData.totalPrimitives);
 		int primitiveIndex = 0;
-		int numVerticies = 3;
+		int numVertices = 3;
 
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
 			if (vertexIndex >= meshData.triangleVertexCount)
 			{
-				numVerticies = 4;
+				numVertices = 4;
 				int completeTriangles = meshData.triangleVertexCount / 3;
-				int remainingVerticies = vertexIndex - meshData.triangleVertexCount;
-				int completeQuads = remainingVerticies / 4;
+				int remainingVertices = vertexIndex - meshData.triangleVertexCount;
+				int completeQuads = remainingVertices / 4;
 				primitiveIndex = completeTriangles + completeQuads;
 			}
 			else
@@ -94,17 +95,17 @@ namespace Behemoth
 
 			Primitive& primitive = skySphereComponent->mesh.meshPrimitives[i];
 
-			// Only need to update the verticies if matrix dirty
+			// Only need to update the vertices if matrix dirty
 			if (transformComp->isDirty)
 			{
-				for (int j = 0; j < numVerticies; j++)
+				for (int j = 0; j < numVertices; j++)
 				{
 					primitive.vertices[j] = transformComp->worldTransform * BMath::Vector4(skySphereComponent->vertices[vertexIndex++], 1.0f);
 				}
 			}
 			else
 			{
-				vertexIndex += numVerticies;
+				vertexIndex += numVertices;
 			}
 
 			// We can invert this function result since we are inside the sphere, so primitives pointing in the same direction as the 
@@ -117,14 +118,14 @@ namespace Behemoth
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.vertices, sizeof(BMath::Vector4) * 4);
 
-			ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
+			ProcessVertex(viewProjMatrix, renderVerts, numVertices);
 
-			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
+			if (!IsPrimitiveWithinFrustrum(numVertices, renderVerts))
 			{
 				continue;
 			}
 
-			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, primitiveIndex);
+			AddPrimitiveToRenderer(primitive, numVertices, renderVerts, primitiveIndex);
 			primitiveIndex++;
 		}
 	}
@@ -136,6 +137,5 @@ namespace Behemoth
 		transformComp->worldTransform._41 = cameraPosition.x;
 		transformComp->worldTransform._42 = cameraPosition.y;
 		transformComp->worldTransform._43 = cameraPosition.z;
-		transformComp->isDirty = true;
 	}
 }

@@ -22,22 +22,13 @@ namespace Behemoth
 
 	private:
 		void FollowCamera(TransformComponent* transform, const BMath::Vector3& cameraPosition);
-		void InitalizeSphere(SkySphereComponent* skySphereComponent);
+		void InitializeSphere(SkySphereComponent* skySphereComponent);
 		void ProcessSphere(
 			TransformComponent* transformComp,
 			SkySphereComponent* skySphereComponent,
 			TransformComponent* cameraTransform,
 			const BMath::Matrix4x4& viewProjMatrix,
 			int renderSlotIndex);
-
-		void ProcessPrimitive(
-			TransformComponent* transform,
-			SkySphereComponent* skySphere,
-			TransformComponent* cameraTransform,
-			const BMath::Matrix4x4& viewProjMatrix,
-			int primitiveIndex,
-			int vertexIndex,
-			int numVerticies);
 	};
 
 }

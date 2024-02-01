@@ -1,15 +1,11 @@
 #pragma once
+
 #include "BehemothEngine.h"
+#include "Math/Quaternion.h"
 
 namespace Behemoth
 {
 	class PhysicsMaterial;
-}
-
-namespace BMath
-{
-	template <typename T>
-	struct BQuaternion;
 }
 
 class PlatformFactory

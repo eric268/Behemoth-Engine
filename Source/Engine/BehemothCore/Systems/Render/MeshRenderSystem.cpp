@@ -1,14 +1,18 @@
 #include "pch.h"
 #include "MeshRenderSystem.h"
 #include "Core/Log.h"
+#include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Misc/CameraHelper.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
-#include "ECS/Entity.h"
 #include "Renderer/Renderer.h"
+#include "Geometry/Primitives.h"
 #include "Geometry/MeshLoader.h"
+#include "Geometry/Mesh.h"
 #include "Core/ResourceManager.h"
 #include "Core/ThreadPool.h"
+
 
 namespace Behemoth
 {
@@ -97,30 +101,30 @@ namespace Behemoth
 
 		// Only need to load this if the transform is dirty otherwise the world space locations of the model are still correct from laster render pass
 		// need to find a good way to only include if is dirty
-		const std::vector<VertexData>& verticies = ResourceManager::GetInstance().GetMeshVertices(meshData.modelFileName);
+		const std::vector<VertexData>& vertices = ResourceManager::GetInstance().GetMeshVertices(meshData.modelFileName);
 
-		int numVerticies = 3;
+		int numVertices = 3;
 		for (int i = 0, vertexIndex = 0; i < meshData.totalPrimitives; i++)
 		{
 			// If we have finished rendering all the triangle primitives move to quads
 			if (vertexIndex >= meshData.triangleVertexCount)
 			{
-				numVerticies = 4;
+				numVertices = 4;
 			}
 
 			Primitive& primitive = mesh.meshPrimitives[i];
 
-			// Only need to update the verticies if matrix dirty, otherwise reuse the previous pass' world space vertex data
+			// Only need to update the vertices if matrix dirty, otherwise reuse the previous pass' world space vertex data
 			if (isDirty)
 			{
-				for (int j = 0; j < numVerticies; j++)
+				for (int j = 0; j < numVertices; j++)
 				{
-					primitive.vertices[j] = transformMatrix * BMath::Vector4(verticies[vertexIndex++].position, 1.0f);
+					primitive.vertices[j] = transformMatrix * BMath::Vector4(vertices[vertexIndex++].position, 1.0f);
 				}
 			}
 			else
 			{
-				vertexIndex += numVerticies;
+				vertexIndex += numVertices;
 			}
 
 			// Check if primitive face is in direction of camera or if it can be culled
@@ -130,21 +134,21 @@ namespace Behemoth
 			}
 
 			// Store what will become the NDC coordinates in a separate container
-			// This is so we can use the primtives world space vertex info later in places such as lighting
+			// This is so we can use the primitives world space vertex info later in places such as lighting
 			BMath::Vector4 renderVerts[4];
 			memcpy(renderVerts, primitive.vertices, sizeof(BMath::Vector4) * 4);
 
 			// Multiplies the primitive by the view projection matrix, gets the depth to be used for draw order
-			primitive.depth = ProcessVertex(viewProjMatrix, renderVerts, numVerticies);
+			primitive.depth = ProcessVertex(viewProjMatrix, renderVerts, numVertices);
  
 			// Ensure primitive is inside the view frustum
-			if (!IsPrimitiveWithinFrustrum(numVerticies, renderVerts))
+			if (!IsPrimitiveWithinFrustrum(numVertices, renderVerts))
 			{
 				continue;
 			}
 
 			// Finally add the primitive to the renderer to be drawn
-			AddPrimitiveToRenderer(primitive, numVerticies, renderVerts, renderSlotIndex);
+			AddPrimitiveToRenderer(primitive, numVertices, renderVerts, renderSlotIndex);
 			renderSlotIndex++;
 		}
 	}
@@ -170,9 +174,9 @@ namespace Behemoth
 	}
 
 
-	void MeshRenderSystem::AddPrimitiveToRenderer(Primitive& primitive, const int numVerticies, const BMath::Vector4 vertex[], int renderSlotIndex)
+	void MeshRenderSystem::AddPrimitiveToRenderer(Primitive& primitive, const int numVertices, const BMath::Vector4 vertex[], int renderSlotIndex)
 	{
-		primitive.SetSpriteVertices(numVerticies, vertex);
+		primitive.SetSpriteVertices(numVertices, vertex);
 		Renderer::GetInstance().AddPrimitive(&primitive, renderSlotIndex);
 	}
 
@@ -181,13 +185,13 @@ namespace Behemoth
 		Renderer::GetInstance().ReservePrimitives(numPrimitives);
 	}
 
-	float MeshRenderSystem::GetPrimitiveDepth(const int numVerticies, const BMath::Vector4 vertex[])
+	float MeshRenderSystem::GetPrimitiveDepth(const int numVertices, const BMath::Vector4 vertex[])
 	{
 		float depth = 0.0f;
-		for (int j = 0; j < numVerticies; j++)
+		for (int j = 0; j < numVertices; j++)
 		{
 			depth += vertex[j].z;
 		}
-		return depth / numVerticies;
+		return depth / numVertices;
 	}
 }

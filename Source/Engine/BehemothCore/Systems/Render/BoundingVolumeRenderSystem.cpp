@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BoundingVolumeRenderSystem.h"
+#include "ECS/Registry.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 #include "Misc/CameraHelper.h"
@@ -8,10 +9,25 @@ namespace Behemoth
 {
 	void BoundingVolumeRenderSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto components = registry.Get<BoundingVolumeComponent, TransformComponent>();
+		CameraComponent* mainCamera = nullptr;
+		BMath::Vector3 mainCameraPosition = BMath::Vector3::Zero();
 
-		CameraComponent* mainCamera = CameraHelper::GetMainCamera(registry);
-		BMath::Vector3 mainCameraPosition = CameraHelper::GetMainCameraPostition(registry);
+		for (const auto& [
+			entityHandle,
+				cameraComp,
+				transformComp] : registry.Get<CameraComponent, TransformComponent>())
+		{
+			if (cameraComp->isMain)
+			{
+				mainCamera = cameraComp;
+				mainCameraPosition = transformComp->worldPosition;
+				break;
+			}
+		}
+
+		assert(mainCamera);
+
+		auto components = registry.Get<BoundingVolumeComponent, TransformComponent>();
 
 		BMath::Matrix4x4 viewProjMatrix = mainCamera->projMatrix * mainCamera->viewMatrix;
 

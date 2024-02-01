@@ -1,42 +1,41 @@
 #include "pch.h"
 #include "ViewModeChange.h"
 #include "Components/Components.h"
+#include "GameComponents/Player/PlayerComponent.h"
+#include "GameComponents/Level/LevelViewComponent.h"
 
 bool ViewMode::ToggleViewMode(ECS::Registry& registry, ECS::EntityHandle playerHandle, ECS::EntityHandle levelViewHandle)
 {
-	LevelViewComponent* levelViewComponent = registry.GetComponent<LevelViewComponent>(levelViewHandle);
-	PlayerComponent* playerComponent = registry.GetComponent<PlayerComponent>(playerHandle);
+	LevelViewComponent* levelViewComp = registry.GetComponent<LevelViewComponent>(levelViewHandle);
+	PlayerComponent* playerComp = registry.GetComponent<PlayerComponent>(playerHandle);
 
-	if (!levelViewComponent || !playerComponent)
+	if (!levelViewComp || !playerComp)
 	{
 		LOGMESSAGE(Error, "Null component found while changing view mode");
 		return false;
 	}
 
-	Behemoth::CameraComponent* camera = registry.GetComponent<Behemoth::CameraComponent>(levelViewComponent->attachedCamera);
-	if (camera)
+	if (Behemoth::CameraComponent* levelViewCameraComp = registry.GetComponent<Behemoth::CameraComponent>(levelViewComp->attachedCamera))
 	{
-		camera->isMain = !camera->isMain;
+		levelViewCameraComp->isMain = !levelViewCameraComp->isMain;
 	}
 	else
 	{
 		LOGMESSAGE(Error, "Unable to find level view camera");
 		return false;
 	}
-	levelViewComponent->isActive = !levelViewComponent->isActive;
+	levelViewComp->isActive = !levelViewComp->isActive;
 
-	Behemoth::CameraComponent* playerCamera = registry.GetComponent<Behemoth::CameraComponent>(playerComponent->attachedCamera);
-	if (playerCamera)
+	if (Behemoth::CameraComponent* playerCameraComp = registry.GetComponent<Behemoth::CameraComponent>(playerComp->attachedCamera))
 	{
-		playerCamera->isMain = !playerCamera->isMain;
+		playerCameraComp->isMain = !playerCameraComp->isMain;
 	}
 	else
 	{
 		LOGMESSAGE(Error, "Unable to find level player camera");
 		return false;
 	}
-	playerComponent->isActive = !playerComponent->isActive;
+	playerComp->isActive = !playerComp->isActive;
 	
-
     return true;
 }

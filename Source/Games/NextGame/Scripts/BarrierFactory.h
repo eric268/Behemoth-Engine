@@ -1,4 +1,5 @@
 #pragma once
+
 #include "BehemothEngine.h"
 
 struct BarrierFactory

@@ -15,13 +15,13 @@ struct LevelViewComponent : public ECS::Component
 		float maxVertical,
 		float currentVerticalDistance) 
 		:
-		isActive									(isActive),
-		cameraMoveSpeed								(movementSpeed),
-		minZoomDistance								(minZoomDistance),
-		maxZoomDistance								(maxZoomDistance),
-		currentZoomCounter							(currentZoomCounter),
-		maxVerticalDistance							(maxVertical),
-		currentVerticalDistance						(currentVerticalDistance)
+		isActive(isActive),
+		cameraMoveSpeed(movementSpeed),
+		minZoomDistance(minZoomDistance),
+		maxZoomDistance(maxZoomDistance),
+		currentZoomCounter(currentZoomCounter),
+		maxVerticalDistance(maxVertical),
+		currentVerticalDistance(currentVerticalDistance)
 	{}
 
 	ECS::EntityHandle attachedCamera;

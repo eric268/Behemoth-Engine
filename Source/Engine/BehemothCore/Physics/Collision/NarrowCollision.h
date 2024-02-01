@@ -90,11 +90,11 @@ namespace Behemoth
 	inline bool CheckCollision(const AABBCollider& box1, const SphereCollider& sphere, ContactData& contactData)
 	{
 		bool result = NarrowSphereAABBCollision(sphere, box1, contactData);
-		// Invert the normal since we are colliding from the other way
-// 		if (result)
-// 		{
-// 			contactData.collisionNormal *= -1.0f;
-// 		}
+		// Invert the normal since we are inverting the collision check
+		if (result)
+		{
+			contactData.collisionNormal *= -1.0f;
+		}
 		return result;
 	}
 

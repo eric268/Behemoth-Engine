@@ -1,27 +1,30 @@
 #pragma once
 
-#include "ECS/System.h"
-#include "Geometry/Mesh.h"
+#include "Math/Vector.h"
+#include "Math/Matrix.h"
+
+namespace ECS
+{
+	class Registry;
+}
 
 namespace Behemoth
 {
 	struct CameraComponent;
 	struct TransformComponent;
 	struct BoundingVolumeComponent;
+	class Primitive;
 
 	class RenderSystem
 	{
-	public:
-		RenderSystem() = default;
-
 	protected:
 		virtual void ReserveResources(int numPrimitives) = 0;
 		virtual void Run(const float deltaTime, ECS::Registry& registry) = 0;
 
-		bool IsPrimitiveWithinFrustrum(const int numVerticies, BMath::Vector4 primitiveVerts[]);
+		bool IsPrimitiveWithinFrustrum(const int numVertices, BMath::Vector4 primitiveVerts[]);
 		bool IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* transformComp, const BoundingVolumeComponent* boundingComp);
 
-		void TransformVertex(const Primitive& primitive, const BMath::Matrix4x4& transformMatix, BMath::Vector4 vertex[], const int numVerticies);
-		float ProcessVertex(const BMath::Matrix4x4& viewProjMatrix, BMath::Vector4 verticies[], int numVerticies);
+		void TransformVertex(const Primitive& primitive, const BMath::Matrix4x4& transformMatix, BMath::Vector4 vertex[], const int numVertices);
+		float ProcessVertex(const BMath::Matrix4x4& viewProjMatrix, BMath::Vector4 vertices[], int numVertices);
 	};
 }

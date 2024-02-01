@@ -11,13 +11,13 @@ namespace Behemoth
 	void ScalingSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
 		for (const auto& [
-			entity, 
+			entityHandle, 
 				scalingComp,
 				transformComp] : registry.Get<ScalingComponent, TransformComponent>())
 		{
-			ScaleEntities(registry, scalingComp, transformComp, entity);
+			ScaleEntities(registry, scalingComp, transformComp, entityHandle);
 			transformComp->isDirty = true;
-			registry.RemoveComponent<ScalingComponent>(entity);
+			registry.RemoveComponent<ScalingComponent>(entityHandle);
 		}
 	}
 

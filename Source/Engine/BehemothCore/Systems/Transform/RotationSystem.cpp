@@ -11,14 +11,24 @@ namespace Behemoth
 {
 	void RotationSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		for (const auto& [entity, rotationComp, transformComp] : registry.Get<RotationComponent, TransformComponent>())
+		for (const auto& [entityHandle, rotationComp, transformComp] : registry.Get<RotationComponent, TransformComponent>())
 		{
+			// TODO:
+			// Find a better way to handle parent rotation changes so that this can be removed after a rotation is processed
+			// Currently if a parent entity is rotated and this is removed when a rotation is processed a child may not have a rotation component
+			// need to find better solution
+
+// 			if (BMath::Quaternion::Equals(rotationComp->quat, BMath::Quaternion::Identity()) && rotationComp->isAdditive)
+// 			{
+// 				continue;
+// 			}
+
 			BMath::Matrix4x4 rotationMatrix = BMath::Quaternion::QuaternionToMatrix(rotationComp->quat);
 
 			// Ensure local transform is updated first
 			ApplyRotation(transformComp, rotationMatrix, rotationComp->isAdditive);
-			TransformHelper::UpdateWorldTransform(registry, entity, transformComp);
-			TransformHelper::NotifyChildrenTransformChange(registry, entity);
+			TransformHelper::UpdateWorldTransform(registry, entityHandle, transformComp);
+			TransformHelper::NotifyChildrenTransformChange(registry, entityHandle);
 			transformComp->isDirty = true;
 
 			transformComp->forwardVector = GetForwardVector(transformComp->localTransform);
@@ -31,17 +41,19 @@ namespace Behemoth
 
 			// If this entity has a camera component we need to update the view matrix as well after a rotation
 
-			if (CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entity))
+			if (CameraComponent* cameraComponent = registry.GetComponent<CameraComponent>(entityHandle))
 			{
 				cameraComponent->isDirty = true;
 			}
 
 			// If this entity has a mesh component then we need to update the mesh normals after a rotation
-			if (MeshComponent* meshComp = registry.GetComponent<MeshComponent>(entity))
+			if (MeshComponent* meshComp = registry.GetComponent<MeshComponent>(entityHandle))
 			{
 				RotateMeshNormals(meshComp, rotationMatrix);
 			}
 
+			// TODO:
+			// Eventually would like to remove rotation components after processed
 			// registry.RemoveComponent<RotationComponent>(entity);
 		}
 	}

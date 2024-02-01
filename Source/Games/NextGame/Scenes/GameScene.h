@@ -8,6 +8,7 @@ class GameScene : public Behemoth::Scene
 {
 public:
 	std::string GetHoleResultText(int numStrokes, int par);
+
 	void CheckOutOfBound(ECS::Registry& registry, const ECS::EntityHandle& playerHandle, const ECS::EntityHandle& oobHandle);
 	bool CheckLevelComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle);
 	void OnHoleComplete(ECS::Registry& registry, ECS::EntityHandle& playerHandle, int par);
@@ -21,7 +22,7 @@ protected:
 
 	virtual void Update(const float deltaTime) override;
 	virtual void ConstructEnvironment(ECS::Registry& registry) = 0;
-	ECS::EntityHandle CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale);
+	ECS::EntityHandle CreateGoalCollider(ECS::Registry& registry, BMath::Vector3 offset, BMath::Vector3 scale, bool drawColliders = false);
 
 	ECS::EntityHandle environmentLighting;
 	ECS::EntityHandle skySphere;

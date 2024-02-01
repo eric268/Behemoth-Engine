@@ -2,12 +2,15 @@
 #include "Renderer.h"
 #include "Geometry/Primitives.h"
 #include "Core/Log.h"
-
 #include "NextAPI/App/app.h"
 
 namespace Behemoth
 {
-	Renderer::Renderer() {}
+	Renderer& Renderer::GetInstance()
+	{
+		static Renderer instance;
+		return instance;
+	}
 
 	void Renderer::ReservePrimitives(std::size_t numPrimitives)
 	{

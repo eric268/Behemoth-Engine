@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TransformHelper.h"
 #include "ECS/Registry.h"
+#include "ECS/Entity.h"
 #include "Components/Components.h"
 #include "Core/Log.h"
 

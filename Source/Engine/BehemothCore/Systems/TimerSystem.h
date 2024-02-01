@@ -7,9 +7,8 @@ namespace ECS
 
 namespace Behemoth
 {
-	class TimerSystem
+	struct TimerSystem
 	{
-	public:
 		void Run(const float deltaTime, ECS::Registry& registry);
 	};
 }

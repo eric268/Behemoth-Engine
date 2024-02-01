@@ -7,12 +7,10 @@ namespace ECS
 
 namespace Behemoth
 {
-	class TextSystem
+	struct TextSystem
 	{
 	public:
 		void Run(const float deltaTime, ECS::Registry& registry);
-
-	private:
 	};
 }
 

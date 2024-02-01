@@ -1,29 +1,30 @@
 #include "pch.h"
 #include "RenderSystem.h"
+#include "ECS/Registry.h"
 #include "Geometry/Primitives.h"
 #include "Components/Components.h"
 #include "Components/RenderComponents.h"
 
 namespace Behemoth
 {
-	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVerticies, BMath::Vector4 primitiveVerts[])
+	bool RenderSystem::IsPrimitiveWithinFrustrum(const int numVertices, BMath::Vector4 primitiveVerts[])
 	{
 		// Only want to cull primitives that are entirely outside of view frustum since OpenGL render pipeline will clip
 		// the quads if portions are outside the frustum. Me doing that, potentially creating temporary primitives will
 		// just increase draw calls with is counter intuitive 
-		int numVerticiesOutsideFrustrum = 0;
-		for (int i = 0; i < numVerticies; i++)
+		int numVerticesOutsideFrustrum = 0;
+		for (int i = 0; i < numVertices; i++)
 		{
 			if (primitiveVerts[i].x < -primitiveVerts[i].w ||
 				primitiveVerts[i].x >  primitiveVerts[i].w ||
 				primitiveVerts[i].y < -primitiveVerts[i].w ||
 				primitiveVerts[i].y >  primitiveVerts[i].w ||
-				primitiveVerts[i].z > primitiveVerts[i].w ||
-				primitiveVerts[i].z < 0.0f)
-				numVerticiesOutsideFrustrum++;
+				primitiveVerts[i].z >  primitiveVerts[i].w ||
+				primitiveVerts[i].z < -primitiveVerts[i].w)
+				numVerticesOutsideFrustrum++;
 		}
 
-		return numVerticiesOutsideFrustrum != numVerticies;
+		return numVerticesOutsideFrustrum != numVertices;
 	}
 
 	bool RenderSystem::IsBoundingVolumeInFrustrum(const CameraComponent* cameraComponent, const TransformComponent* entityTransform, const BoundingVolumeComponent* boundingComp)
@@ -41,19 +42,19 @@ namespace Behemoth
 		return true;
 	}
 
-	void RenderSystem::TransformVertex(const Primitive& primitive, const BMath::Matrix4x4& transformMatrix, BMath::Vector4 vertex[], const int numVerticies)
+	void RenderSystem::TransformVertex(const Primitive& primitive, const BMath::Matrix4x4& transformMatrix, BMath::Vector4 vertex[], const int numVertices)
 	{
-		for (int j = 0; j < numVerticies; j++)
+		for (int j = 0; j < numVertices; j++)
 		{
 			vertex[j] = transformMatrix * primitive.vertices[j];
 		}
 	}
 
-	float RenderSystem::ProcessVertex(const BMath::Matrix4x4& viewProjMatrix, BMath::Vector4 vertex[], int numVerticies)
+	float RenderSystem::ProcessVertex(const BMath::Matrix4x4& viewProjMatrix, BMath::Vector4 vertex[], int numVertices)
 	{
 		float depth = 0.0f;
 
-		for (int j = 0; j < numVerticies; j++)
+		for (int j = 0; j < numVertices; j++)
 		{
 			vertex[j] = viewProjMatrix * vertex[j];
 
@@ -68,6 +69,6 @@ namespace Behemoth
 			vertex[j] *= w;
 		}
 
-		return depth /= numVerticies;
+		return depth /= numVertices;
 	}
 }
