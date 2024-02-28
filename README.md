@@ -1,4 +1,4 @@
-# Next2024
+# Behemoth Engine
 
 To build project:
 - Have premake5 installed
