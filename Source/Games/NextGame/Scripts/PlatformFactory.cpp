@@ -18,6 +18,7 @@ ECS::EntityHandle PlatformFactory::CreatePlatform(
 	if (isRotated)
 	{
 		Behemoth::OBBColliderComponent* colliderComp = registry.AddComponent<Behemoth::OBBColliderComponent>(platform, BMath::Vector3(1.0f));
+		registry.AddComponent<Behemoth::WireframeComponent>(platform, "cube.obj");
 		if (colliderComp)
 		{
 			colliderComp->physicsMaterial = physicsMaterial;
@@ -42,12 +43,12 @@ ECS::EntityHandle PlatformFactory::CreateGrassPlatform(
 	const BMath::Quaternion& q,
 	bool isStatic)
 {
-	bool isRotated = BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
+	bool isRotated = !BMath::Quaternion::Equals(q, BMath::Quaternion::Identity());
 
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Grass],
-		"plane5.obj",
+		"cube20.obj",
 		"grass.png",
 		"Grass Platform",
 		BMath::Vector2(8,8),
@@ -80,7 +81,7 @@ ECS::EntityHandle PlatformFactory::CreateRockPlatform(
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Rock],
-		"plane5.obj",
+		"cube10.obj",
 		"asphalt.jpg",
 		"Rock Platform", 
 		BMath::Vector2(10.0,10.0),
@@ -114,7 +115,7 @@ ECS::EntityHandle PlatformFactory::CreateSandPlatform(
 	ECS::EntityHandle platform = CreatePlatform(
 		registry,
 		PhysMat::platformPhysicsMats[PhysMat::Sand],
-		"plane5.obj",
+		"cube10.obj",
 		"sand.jpg",
 		"Sand Platform",
 		BMath::Vector2(5.0, 5.0),

@@ -149,8 +149,8 @@ namespace Behemoth
  			registry.AddComponent<MoveComponent>(entityHandle, nodePtr->collider.position);
  			registry.AddComponent<AABBColliderComponent>(entityHandle, nodePtr->collider.extents);
  
- 			registry.AddComponent<MeshInitializeComponent>(entityHandle);
- 			registry.AddComponent<WireframeComponent>(
+ 			auto meshInit = registry.AddComponent<MeshInitializeComponent>(entityHandle);
+ 			auto wireFrame = registry.AddComponent<WireframeComponent>(
 				entityHandle,
 				"cube.obj",
 				nodePtr->collider.extents,

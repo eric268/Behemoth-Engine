@@ -38,6 +38,7 @@ ECS::EntityHandle BarrierFactory::CreateObstacle(
 	else
 	{
 		registry.AddComponent<Behemoth::RigidBodyComponent>(obstacleHandle);
+		registry.AddComponent<Behemoth::DynamicComponent>(obstacleHandle);
 	}
 
     return obstacleHandle;

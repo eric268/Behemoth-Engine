@@ -19,7 +19,6 @@ namespace Behemoth
 		registry.AddComponent<MeshComponent>(entityHandle, modelFilePath, texturePath, uvScale);
 		registry.AddComponent<MeshInitializeComponent>(entityHandle);
 		registry.AddComponent<TransformComponent>(entityHandle);
-		registry.AddComponent<VelocityComponent>(entityHandle);
 		registry.AddComponent<RotationComponent>(entityHandle);
 
 		return entityHandle;

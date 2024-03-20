@@ -18,7 +18,7 @@ namespace Behemoth
 
 		DynamicEntities  dynamicEntities = registry.Get<RigidBodyComponent, VelocityComponent, TransformComponent, BVHColliderComponent>();
 		CheckCollision<StaticComponent>(registry, dynamicEntities, deltaTime);
-		CheckCollision<VelocityComponent>(registry, dynamicEntities, deltaTime);
+		CheckCollision<DynamicComponent>(registry, dynamicEntities, deltaTime);
 	}
 
 	bool BroadCollisionSystem::CheckAABBCollision(

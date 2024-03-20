@@ -78,12 +78,6 @@ void PCSystem::Fire(ECS::Registry& registry, const ECS::EntityHandle& entityHand
 
 	if (Behemoth::Input::IsKeyDown(pcComp->fireProjectileKC) || Behemoth::Input::IsControllerKeyDown(pcComp->fireProjectileCC))
 	{
-		Behemoth::MeshComponent* arrowMesh = registry.GetComponent<Behemoth::MeshComponent>(playerComp->arrowMeshHandle);
-		if (arrowMesh)
-		{
-			arrowMesh->isVisible = false;
-		}
-
 		Behemoth::TransformComponent* playerTransform = registry.GetComponent<Behemoth::TransformComponent>(playerComp->projectileHandle);
 
 		if (Behemoth::VelocityComponent* velocityComponent = registry.GetComponent<Behemoth::VelocityComponent>(entityHandle))

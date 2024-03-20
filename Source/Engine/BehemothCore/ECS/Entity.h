@@ -32,6 +32,11 @@ namespace ECS
 			ID = (version << 16) | (ID & NULL_IDENTIFIER);
 		}
 
+		inline void SetVersionToNull()
+		{
+			ID = (NULL_VERSION << 16) | (ID & NULL_IDENTIFIER);
+		}
+
 		entity_version GetVersion() const
 		{
 			return ID >> 16;

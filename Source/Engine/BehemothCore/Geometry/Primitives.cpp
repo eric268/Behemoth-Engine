@@ -148,6 +148,7 @@ namespace Behemoth
 		if (!sprite)
 		{
 			LOGMESSAGE(MessageType::Error, "Null primitive attempted to be drawn");
+			return;
 		}
 		sprite->Draw();
 	}
@@ -203,6 +204,12 @@ namespace Behemoth
 
 	void Primitive::SetSpriteUVs(PrimitiveType type, BMath::Vector2 uv[])
 	{
+		if (!sprite)
+		{
+			LOGMESSAGE(MessageType::Error, "Null sprite found");
+			return;
+		}
+
 		for (int i = 0; i < static_cast<int>(type); i++)
 		{
 			sprite->SetUV(i, uv[i].x, uv[i].y);
@@ -211,12 +218,24 @@ namespace Behemoth
 
 	void Primitive::SetLighting(BMath::Vector3 c)
 	{
+		if (!sprite)
+		{
+			LOGMESSAGE(MessageType::Error, "Null sprite found");
+			return;
+		}
+
 		color = c;
 		sprite->SetColor(c.x, c.y, c.z);
 	}
 
 	void Primitive::AddLighting(BMath::Vector3 light)
 	{
+		if (!sprite)
+		{
+			LOGMESSAGE(MessageType::Error, "Null sprite found");
+			return;
+		}
+
 		color += light;
 		sprite->SetColor(color.x, color.y, color.z);
 	}

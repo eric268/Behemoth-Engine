@@ -29,6 +29,11 @@ namespace ECS
 
 		virtual void RemoveComponent(const Entity& e) {}
 
+		virtual entity_identifier GetNext()
+		{
+			return NULL_IDENTIFIER;
+		}
+
 		int typeID;
 	};
 
@@ -48,9 +53,14 @@ namespace ECS
 			SparseSet<T>::RemoveComponent(e);
 		}
 
-		virtual std::vector<Entity>& GetEntities()
+		virtual std::vector<Entity>& GetEntities() override
 		{
 			return SparseSet<T>::dense;
+		}
+
+		virtual entity_identifier GetNext() override
+		{
+			return SparseSet<T>::next;
 		}
 	};
 }

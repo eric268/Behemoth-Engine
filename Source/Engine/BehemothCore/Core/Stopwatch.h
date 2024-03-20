@@ -75,7 +75,7 @@ namespace Behemoth
 		{
 			auto duration = std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - start);
 
-			std::string output = "Duration: " + std::to_string(duration.count()) + UnitOfMeasurment<T>::name();
+			std::string output = "Duration: " + std::to_string(duration.count()) + UnitOfMeasurement<T>::name();;
 			std::cout << std::to_string(duration.count()) << '\n';
 
 			if (outputToLog)

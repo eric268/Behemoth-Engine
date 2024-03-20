@@ -42,7 +42,7 @@ namespace Behemoth
 	class BVHFactory
 	{
 	public:
-		BVHFactory(bool drawDebugColliders = false);
+		BVHFactory(bool drawDebugColliders = true);
 
 		template <typename ...T>
 		std::shared_ptr<BVHNode> OnConstruction(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)
@@ -60,6 +60,12 @@ namespace Behemoth
 		bool drawDebugColliders;
 	
 	private:
+
+		template<typename ...T>
+		constexpr bool ContainsVelocityComponent()
+		{
+			return (... || std::is_same_v<T, VelocityComponent>);
+		}
 
 		template <typename ...T>
 		std::shared_ptr<BVHNode> CreateBVHTree(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)

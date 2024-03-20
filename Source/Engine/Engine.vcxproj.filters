@@ -196,8 +196,14 @@
     <ClInclude Include="BehemothCore\Misc\CameraHelper.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="BehemothCore\Misc\GameObjectHelper.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
     <ClInclude Include="BehemothCore\Misc\TransformHelper.h">
       <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BehemothCore\Physics\BVH.h">
+      <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\Physics\BoundingGenerator.h">
       <Filter>Physics</Filter>
@@ -314,10 +320,6 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BehemothCore\pch.h" />
-    <ClInclude Include="BehemothCore\Physics\BVH.h">
-      <Filter>Physics\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="BehemothCore\Misc\GameObjectHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BehemothCore\Audio\SoundClip.cpp">
@@ -368,8 +370,14 @@
     <ClCompile Include="BehemothCore\Misc\CameraHelper.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="BehemothCore\Misc\GameObjectHelper.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
     <ClCompile Include="BehemothCore\Misc\TransformHelper.cpp">
       <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BehemothCore\Physics\BVH.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\Physics\BoundingGenerator.cpp">
       <Filter>Physics</Filter>
@@ -465,9 +473,5 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BehemothCore\pch.cpp" />
-    <ClCompile Include="BehemothCore\Physics\BVH.cpp">
-      <Filter>Physics\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="BehemothCore\Misc\GameObjectHelper.cpp" />
   </ItemGroup>
 </Project>

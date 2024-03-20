@@ -27,6 +27,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponents\Level\GoalComponent.h">
+      <Filter>GameComponents\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\Level\GoalViewComponent.h">
+      <Filter>GameComponents\Level</Filter>
+    </ClInclude>
     <ClInclude Include="GameComponents\Obstacles\MovingObsComponent.h">
       <Filter>GameComponents\Obstacles</Filter>
     </ClInclude>
@@ -35,6 +41,9 @@
     </ClInclude>
     <ClInclude Include="GameComponents\Player\PlayerComponent.h">
       <Filter>GameComponents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystems\GoalViewSystem.h">
+      <Filter>GameSystems</Filter>
     </ClInclude>
     <ClInclude Include="GameSystems\MovingObsSystem.h">
       <Filter>GameSystems</Filter>
@@ -72,6 +81,9 @@
     <ClInclude Include="Scripts\BarrierFactory.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\GoalViewFactory.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="Scripts\PlatformFactory.h">
       <Filter>Scripts</Filter>
     </ClInclude>
@@ -88,17 +100,13 @@
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="GameComponents\Level\GoalComponent.h">
-      <Filter>GameComponents\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\Debug\DebugScene.h" />
-    <ClInclude Include="GameComponents\Level\GoalViewComponent.h" />
-    <ClInclude Include="GameSystems\GoalViewSystem.h" />
-    <ClInclude Include="Scripts\GoalViewFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\game.cpp">
       <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystems\GoalViewSystem.cpp">
+      <Filter>GameSystems</Filter>
     </ClCompile>
     <ClCompile Include="GameSystems\MovingObsSystem.cpp">
       <Filter>GameSystems</Filter>
@@ -136,6 +144,9 @@
     <ClCompile Include="Scripts\BarrierFactory.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="Scripts\GoalViewFactory.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
     <ClCompile Include="Scripts\PlatformFactory.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
@@ -149,8 +160,5 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Scenes\Debug\DebugScene.cpp" />
-    <ClCompile Include="GameSystems\GoalViewSystem.cpp" />
-    <ClCompile Include="Scripts\GoalViewFactory.cpp" />
   </ItemGroup>
 </Project>

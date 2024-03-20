@@ -5,7 +5,7 @@
 
 namespace Behemoth
 {
-	class PhysicsMaterial;
+	struct PhysicsMaterial;
 }
 
 class PlatformFactory

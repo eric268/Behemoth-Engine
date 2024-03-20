@@ -13,6 +13,9 @@ ECS::EntityHandle PlayerFactory::CreatePlayer(ECS::Registry& registry, const BMa
 	registry.AddComponent<Behemoth::RigidBodyComponent>(playerHandle, false, true);
 	registry.AddComponent<Behemoth::MoveComponent>(playerHandle, spawnLocation);
 	registry.AddComponent<Behemoth::SphereColliderComponent>(playerHandle);
+	registry.AddComponent<Behemoth::TransformComponent>(playerHandle);
+	registry.AddComponent<Behemoth::VelocityComponent>(playerHandle);
+	registry.AddComponent<Behemoth::DynamicComponent>(playerHandle);
 
 	// Create a child component that will handle projectile aiming 
 	const ECS::EntityHandle projectileHandle = registry.CreateEntity("Projectile");

@@ -23,9 +23,9 @@ namespace Behemoth
 		template <typename T>
 		void ReconstructBVH()
 		{
-			if (BVHRootComponent<T>* bvhComp = registry.GetComponent<BVHRootComponent<T>>(staticBVHHandle))
+			if (BVHRootComponent<T>* bvhComp = registry.GetComponent<BVHRootComponent<T>>(dynamicBVHHandle))
 			{
-				bvhComp->rootNode = bvhFactory.OnReconstruction<T>(registry, staticBVHEntities);
+				bvhComp->rootNode = bvhFactory.OnReconstruction<T>(registry, dynamicBVHEntities);
 			}
 		}
 

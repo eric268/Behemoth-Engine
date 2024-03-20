@@ -2,13 +2,13 @@
 
 #include "BehemothEngine.h"
 
-class MainScene : public Behemoth::Scene
+class DemoScene : public Behemoth::Scene
 {
 public:
 	using Super = Behemoth::Scene;
 
-	MainScene();
-	void Initalize() override;
+	DemoScene();
+	void Initialize() override;
 	void OnEvent(Behemoth::Event& e) override;
 	void Update(const float deltaTime) override;
 	void Shutdown() override;
@@ -17,11 +17,9 @@ public:
 private:
 	ECS::EntityHandle mainCameraHandle;
 	ECS::EntityHandle environmentLighting;
-	ECS::EntityHandle pointLight;
-	ECS::EntityHandle skySphere;
+	ECS::EntityHandle skySphereHandle;
 
-	ECS::EntityHandle exampleParentEntity;
-	ECS::EntityHandle exampleChildEntity1;
-	ECS::EntityHandle exampleChildEntity2;
-
+	ECS::EntityHandle parentHandle;
+	ECS::EntityHandle childHandle1;
+	ECS::EntityHandle childHandle2;
 };

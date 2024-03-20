@@ -22,7 +22,7 @@ GameScene::GameScene() : par(0), delayUntilSceneChange(0.0f), changeScene(false)
 
 GameScene::GameScene(ECS::Registry& registry, int p, float delay) : par(p), delayUntilSceneChange(delay), changeScene(false), goalComp(nullptr)
 {
-	CreateOOBEntity(registry);
+	// CreateOOBEntity(registry);
 }
 
 void GameScene::Update(const float deltaTime)

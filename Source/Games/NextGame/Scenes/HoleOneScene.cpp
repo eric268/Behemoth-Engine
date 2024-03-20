@@ -29,9 +29,7 @@ HoleOneScene::HoleOneScene() : GameScene(registry, 2)
 
 	parTextHandle = registry.CreateEntity("Par Text Entity");
 	registry.AddComponent<Behemoth::TextComponent>(parTextHandle, "Par: " + std::to_string(par), BMath::Vector2(0.85f, 0.7f));
-
 	playerHandle = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 10, 18));
-	registry.GetComponent<PlayerComponent>(playerHandle);
 	PlayerScore::ResetScore();
 }
 

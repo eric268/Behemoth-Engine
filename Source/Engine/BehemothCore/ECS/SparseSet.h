@@ -37,6 +37,7 @@ namespace ECS
 			}
 
 			dense[sparse[identifier]].SetName("Deleted");
+			// dense[sparse[identifier]].SetVersionToNull();
 
 			// Use dense identifier to signal the next recycled entity to be reused
 			if (available > 0)
@@ -45,7 +46,7 @@ namespace ECS
 			}
 
 			// Next is used to track the position of the next recycled entity to be used
-			next = sparse[identifier];
+			next = Entity::GetIdentifier(sparse[identifier]);
 
 			// Null version is used to indicate that an ID has been recycled and is therefore not valid
 			// This is important because sparse identifiers are used to track position of entity in dense array so we can't use that.
@@ -98,21 +99,13 @@ namespace ECS
 				return nullptr;
 			}
 
-			if (Contains(entity))
-			{
-				return &components[identifier];
-			}
-
-			return nullptr;
+			return &components[identifier];
 		}
 
 		bool Contains(const Entity& entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
-			std::uint32_t id = Entity::GetIdentifier(sparse[identifier]);
-			std::uint32_t version = Entity::GetVersion(sparse[identifier]);
-			std::size_t val = id + version;
- 			return (identifier < sparse.size() && val < NULL_VERSION);
+ 			return (identifier < sparse.size() && Entity::GetVersion(sparse[identifier]) < NULL_VERSION);
 		}
 
 		size_t size() const
@@ -121,6 +114,7 @@ namespace ECS
 		}
 
 		std::vector<Entity> dense;
+		entity_id next {};
 
 	private:
 		friend class Registry;
@@ -131,7 +125,6 @@ namespace ECS
 		int maxSize;
 		size_t index;
 
-		entity_id next {};
 		std::size_t available{};
 	};
 }

@@ -22,7 +22,7 @@ private:
 	ECS::EntityHandle parTextHandle;
 	ECS::EntityHandle mainBarrierHandles[3];
 	ECS::EntityHandle barrierHandle;
-	ECS::EntityHandle grassPatch1Handle;
+	ECS::EntityHandle leftLongGrassPatchHandles[3];
 	ECS::EntityHandle grassPatch2Handle;
 	ECS::EntityHandle sandPatch2Handle;
 };

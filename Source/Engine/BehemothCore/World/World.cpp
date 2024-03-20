@@ -62,7 +62,7 @@ namespace Behemoth
 
 		// Currently only updating BVH for entities that can move 
 		// Will add another method for static entities for when they are created/destroyed
-		currentScene->ReconstructBVH<VelocityComponent>();
+		currentScene->ReconstructBVH<DynamicComponent>();
 	}
 
 	Scene* World::GetActiveScene()

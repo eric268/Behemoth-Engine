@@ -85,9 +85,9 @@ namespace Behemoth
 		bool parentIsDirty;
 	};
 
-	struct StaticComponent : public ECS::Component
-	{
-	};
+	struct StaticComponent : public ECS::Component{};
+
+	struct DynamicComponent : public ECS::Component {};
 
 	struct MoveComponent : public ECS::Component
 	{

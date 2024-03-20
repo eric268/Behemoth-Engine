@@ -158,7 +158,6 @@
     <ClInclude Include="GameSystems\PlayerFallSystem.h" />
     <ClInclude Include="GameSystems\PlayerHUDSystem.h" />
     <ClInclude Include="GameSystems\PlayerRespawnSystem.h" />
-    <ClInclude Include="Scenes\Debug\DebugScene.h" />
     <ClInclude Include="Scenes\GameOverScene.h" />
     <ClInclude Include="Scenes\GameScene.h" />
     <ClInclude Include="Scenes\HoleOneScene.h" />
@@ -182,7 +181,6 @@
     <ClCompile Include="GameSystems\PlayerFallSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerHUDSystem.cpp" />
     <ClCompile Include="GameSystems\PlayerRespawnSystem.cpp" />
-    <ClCompile Include="Scenes\Debug\DebugScene.cpp" />
     <ClCompile Include="Scenes\GameOverScene.cpp" />
     <ClCompile Include="Scenes\GameScene.cpp" />
     <ClCompile Include="Scenes\HoleOneScene.cpp" />
