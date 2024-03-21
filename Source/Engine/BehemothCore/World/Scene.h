@@ -19,6 +19,22 @@ namespace Behemoth
 
 		void CreateScene();
 		void ConstructBVH();
+
+		inline void ReconstructStaticBVH()
+		{
+			if (BVHRootComponent<StaticComponent>* bvhComp = registry.GetComponent<BVHRootComponent<StaticComponent>>(staticBVHHandle))
+			{
+				bvhComp->rootNode = bvhFactory.OnReconstruction<StaticComponent>(registry, staticBVHEntities);
+			}
+		}
+
+		inline void ReconstructDynamicBVH()
+		{
+			if (BVHRootComponent<DynamicComponent>* bvhComp = registry.GetComponent<BVHRootComponent<DynamicComponent>>(dynamicBVHHandle))
+			{
+				bvhComp->rootNode = bvhFactory.OnReconstruction<DynamicComponent>(registry, dynamicBVHEntities);
+			}
+		}
 		
 		template <typename T>
 		void ReconstructBVH()

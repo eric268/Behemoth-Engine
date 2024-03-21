@@ -45,6 +45,7 @@ namespace ECS
 			Entity entity = GetEntityFromHandle(entityHandle);
 			if (entity.IsValid())
 			{
+				std::cout << "Entity Destroyed ID: " << entity.GetIdentifier() << std::endl;
 				DestroyEntity(entity);
 				return true;
 			}
@@ -233,7 +234,9 @@ namespace ECS
 				componentArray[i]->RemoveComponent(entity);
 			}
 
-			entity.IncrementVersion();
+			entity.SetName("Destroyed");
+			// entity.IncrementVersion();
+
 			auto identifier = entity.GetIdentifier();
 			if (available > 0)
 			{
@@ -248,7 +251,7 @@ namespace ECS
 		entity_id RecycleEntity()
 		{
 			assert(available > 0);
-
+			std::cout << "Entity Recycled ID: " << next << std::endl;
 			std::uint16_t identifier = next;
 			next = entities[next].GetIdentifier();
 			entities[identifier].SetIdentifier(identifier);
@@ -273,11 +276,12 @@ namespace ECS
 		{
 			std::vector<std::tuple<Entity, T*...>> group;
 
-			auto smallestPool = GetSmallestPool<T...>(tuple);
+			auto entityContainer = GetSmallestPool<T...>(tuple)->GetEntities();
 
 			// Iterate over smallest set
-			for (const auto& entity : smallestPool->GetEntities())
+			for (const auto& entity : entityContainer)
 			{
+				auto id = entity.GetIdentifier();
 				// Check if the entity is in all other sets
 				bool isInAllSets = ContainsEntity(tuple, entity);
 

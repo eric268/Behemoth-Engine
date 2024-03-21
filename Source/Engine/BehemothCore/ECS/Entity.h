@@ -29,7 +29,7 @@ namespace ECS
 		inline void IncrementVersion()
 		{
 			entity_version version = (ID >> 16) + 1;
-			ID = (version << 16) | (ID & NULL_IDENTIFIER);
+			ID = (version << 16) | (ID & 0xFFFF);
 		}
 
 		inline void SetVersionToNull()

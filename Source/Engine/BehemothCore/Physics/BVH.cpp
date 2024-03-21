@@ -111,7 +111,7 @@ namespace Behemoth
 			entityHandles.push_back(entityHandle);
 
 			registry.AddComponent<TransformComponent>(entityHandle);
-			registry.AddComponent<MoveComponent>(entityHandle, collider.position);
+			auto move = registry.AddComponent<MoveComponent>(entityHandle, collider.position);
 			registry.AddComponent<AABBColliderComponent>(entityHandle, collider.extents);
 	
 			registry.AddComponent<MeshInitializeComponent>(entityHandle);

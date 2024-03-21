@@ -42,7 +42,7 @@ namespace Behemoth
 	class BVHFactory
 	{
 	public:
-		BVHFactory(bool drawDebugColliders = true);
+		BVHFactory(bool drawDebugColliders = false);
 
 		template <typename ...T>
 		std::shared_ptr<BVHNode> OnConstruction(ECS::Registry& registry, std::vector<ECS::EntityHandle>& entityHandles)

@@ -15,10 +15,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{3E5F536C-AA3E-D207-B356-5DDE1FB53869}</ProjectGuid>
+    <ProjectGuid>{6AD71CAA-D6B6-9B45-DFCE-261C4B2D02A7}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>NextAPI</RootNamespace>
+    <RootNamespace>BVHDemo</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -54,34 +54,35 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\Build\bin\Debug\windows\NextAPI\</OutDir>
-    <IntDir>..\..\Build\obj\Debug\windows\NextAPI\</IntDir>
-    <TargetName>NextAPI</TargetName>
+    <OutDir>..\..\..\Build\bin\Debug\windows\BVHDemo\</OutDir>
+    <IntDir>..\..\..\Build\obj\Debug\windows\BVHDemo\</IntDir>
+    <TargetName>BVHDemo</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\Build\bin\Release\windows\NextAPI\</OutDir>
-    <IntDir>..\..\Build\obj\Release\windows\NextAPI\</IntDir>
-    <TargetName>NextAPI</TargetName>
+    <OutDir>..\..\..\Build\bin\Release\windows\BVHDemo\</OutDir>
+    <IntDir>..\..\..\Build\obj\Release\windows\BVHDemo\</IntDir>
+    <TargetName>BVHDemo</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <OutDir>..\..\Build\bin\Dist\windows\NextAPI\</OutDir>
-    <IntDir>..\..\Build\obj\Dist\windows\NextAPI\</IntDir>
-    <TargetName>NextAPI</TargetName>
+    <OutDir>..\..\..\Build\bin\Dist\windows\BVHDemo\</OutDir>
+    <IntDir>..\..\..\Build\obj\Dist\windows\BVHDemo\</IntDir>
+    <TargetName>BVHDemo</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>glut;.;{wks.location\Resources\Textures\};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Engine\BehemothCore;..\..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -89,16 +90,16 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>freeglut.lib;dxguid.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>glut\lib\x64;Build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>glut;.;{wks.location\Resources\Textures\};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Engine\BehemothCore;..\..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -107,7 +108,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -117,16 +118,16 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>freeglut.lib;dxguid.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>glut\lib\x64;Build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>glut;.;{wks.location\Resources\Textures\};%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Engine\BehemothCore;..\..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -135,7 +136,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -145,36 +146,24 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>freeglut.lib;dxguid.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>glut\lib\x64;Build\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Build\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="App\AppSettings.h" />
-    <ClInclude Include="App\DirectSound.h" />
-    <ClInclude Include="App\SimpleController.h" />
-    <ClInclude Include="App\SimpleSound.h" />
-    <ClInclude Include="App\SimpleSprite.h" />
-    <ClInclude Include="App\app.h" />
-    <ClInclude Include="App\main.h" />
-    <ClInclude Include="App\mydirectsound.h" />
-    <ClInclude Include="glut\include\GL\freeglut.h" />
-    <ClInclude Include="glut\include\GL\freeglut_ext.h" />
-    <ClInclude Include="glut\include\GL\freeglut_std.h" />
-    <ClInclude Include="glut\include\GL\glut.h" />
-    <ClInclude Include="stb_image\stb_image.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Scenes\DemoScene.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="App\DirectSound.cpp" />
-    <ClCompile Include="App\SimpleController.cpp" />
-    <ClCompile Include="App\SimpleSound.cpp" />
-    <ClCompile Include="App\SimpleSprite.cpp" />
-    <ClCompile Include="App\app.cpp" />
-    <ClCompile Include="App\main.cpp" />
-    <ClCompile Include="stb_image\stb_image.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Application\game.cpp" />
+    <ClCompile Include="Scenes\DemoScene.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Engine\Engine.vcxproj">
+      <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

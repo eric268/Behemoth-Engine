@@ -18,7 +18,6 @@ ECS::EntityHandle PlatformFactory::CreatePlatform(
 	if (isRotated)
 	{
 		Behemoth::OBBColliderComponent* colliderComp = registry.AddComponent<Behemoth::OBBColliderComponent>(platform, BMath::Vector3(1.0f));
-		registry.AddComponent<Behemoth::WireframeComponent>(platform, "cube.obj");
 		if (colliderComp)
 		{
 			colliderComp->physicsMaterial = physicsMaterial;
@@ -65,6 +64,7 @@ ECS::EntityHandle PlatformFactory::CreateGrassPlatform(
 	else
 	{
 		registry.AddComponent<Behemoth::RigidBodyComponent>(platform);
+		registry.AddComponent<Behemoth::DynamicComponent>(platform);
 	}
 	return platform;
 }
@@ -98,6 +98,7 @@ ECS::EntityHandle PlatformFactory::CreateRockPlatform(
 	else
 	{
 		registry.AddComponent<Behemoth::RigidBodyComponent>(platform);
+		registry.AddComponent<Behemoth::DynamicComponent>(platform);
 	}
 
 	return platform;
@@ -132,6 +133,7 @@ ECS::EntityHandle PlatformFactory::CreateSandPlatform(
 	else
 	{
 		registry.AddComponent<Behemoth::RigidBodyComponent>(platform);
+		registry.AddComponent<Behemoth::DynamicComponent>(platform);
 	}
 
 	return platform;

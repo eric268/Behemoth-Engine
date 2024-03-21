@@ -36,7 +36,7 @@ namespace ECS
 				return;
 			}
 
-			dense[sparse[identifier]].SetName("Deleted");
+			dense[sparse[identifier]].SetName("Deleted #" + std::to_string(deletedCounter++));
 			// dense[sparse[identifier]].SetVersionToNull();
 
 			// Use dense identifier to signal the next recycled entity to be reused
@@ -45,14 +45,19 @@ namespace ECS
 				dense[sparse[identifier]].SetIdentifier(next);
 			}
 
+			next = sparse[identifier];
+
+
 			// Next is used to track the position of the next recycled entity to be used
-			next = Entity::GetIdentifier(sparse[identifier]);
+
 
 			// Null version is used to indicate that an ID has been recycled and is therefore not valid
 			// This is important because sparse identifiers are used to track position of entity in dense array so we can't use that.
 			// Could use the dense identifier for this but then we would have to use the entity identifier, through the sparse to get dense version
 			// this way we can skip one of those steps
+			// dense[sparse[identifier]].SetVersionToNull();
 			Entity::SetVersion(sparse[identifier], NULL_VERSION);
+
 			available++;
 		}
 
@@ -68,10 +73,21 @@ namespace ECS
 			// Use one of the recycled entities instead of creating a new one
 			if (available > 0 && next != NULL_IDENTIFIER)
 			{
-				entity_identifier identifier = next;
-				sparse[entity.GetIdentifier()] = identifier;
-				next = dense[identifier].GetIdentifier();
-				dense[identifier] = entity;
+				entity_identifier nextIdentifier = next;
+
+				assert(nextIdentifier < dense.size());
+
+				// entity_identifier newID = dense[nextIdentifier].GetIdentifier();
+
+				// assert(newID < dense.size());
+
+				// Entity::SetVersion(sparse[identifier], entity.GetVersion());
+				sparse[entity.GetIdentifier()] = nextIdentifier;//  Entity::GetIdentifier(sparse[nextIdentifier]);
+
+
+
+				next = dense[nextIdentifier].GetIdentifier();
+				dense[nextIdentifier] = entity;
 				available--;
 			}
 			else
@@ -126,5 +142,7 @@ namespace ECS
 		size_t index;
 
 		std::size_t available{};
+
+		int deletedCounter = 0;	
 	};
 }

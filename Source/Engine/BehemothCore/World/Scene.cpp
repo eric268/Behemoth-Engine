@@ -24,8 +24,8 @@ namespace Behemoth
   
 		// Using VelocityComponent as a filter between static and dynamic entities, assumed that if it has a velocity component
 		// then the object can move and therefore the BVH tree needs to be updated more frequently
-		dynamicBVHHandle = registry.CreateEntity("Dynamic BVH");
-		std::shared_ptr<BVHNode> dynamicBVHNode = bvhFactory.OnConstruction<DynamicComponent>(registry, dynamicBVHEntities);
-		registry.AddComponent<BVHRootComponent<DynamicComponent>>(dynamicBVHHandle, dynamicBVHNode);
+ 		dynamicBVHHandle = registry.CreateEntity("Dynamic BVH");
+ 		std::shared_ptr<BVHNode> dynamicBVHNode = bvhFactory.OnConstruction<DynamicComponent>(registry, dynamicBVHEntities);
+ 		registry.AddComponent<BVHRootComponent<DynamicComponent>>(dynamicBVHHandle, dynamicBVHNode);
 	}
 }

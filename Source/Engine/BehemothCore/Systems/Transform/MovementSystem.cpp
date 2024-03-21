@@ -10,7 +10,7 @@ namespace Behemoth
 {
 	void MovementSystem::Run(const float deltaTime, ECS::Registry& registry)
 	{
-		auto components = registry.Get<TransformComponent, MoveComponent>();
+ 		auto components = registry.Get<TransformComponent, MoveComponent>();
 
 		// Need to sort the move components in order before applying move. Parent entities must be moved before their children.
 		// so that the child can properly calculate its world position
@@ -26,6 +26,7 @@ namespace Behemoth
 			// No need to move entity if delta movement is 0 and is not additive
 			if (movementComp->location == BMath::Vector3::Zero() && movementComp->isAdditive)
 			{
+				registry.RemoveComponent<MoveComponent>(entityHandle);
 				continue;
 			}
 
