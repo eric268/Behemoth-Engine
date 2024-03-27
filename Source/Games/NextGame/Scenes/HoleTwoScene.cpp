@@ -93,20 +93,20 @@ void HoleTwoScene::ConstructEnvironment(ECS::Registry& registry)
 
 	leftLongGrassPatchHandles[0] = PlatformFactory::CreateGrassPlatform(
 		registry, 
-		BMath::Vector3(-40, 8, -10),
-		BMath::Vector3(15, 0.3f, 10), 
+		BMath::Vector3(-40, 8, 0),
+		BMath::Vector3(15, 0.3f, 15), 
 		BMath::Quaternion());
 
 	leftLongGrassPatchHandles[1] = PlatformFactory::CreateGrassPlatform(
 		registry,
-		BMath::Vector3(-40, 8, -40),
-		BMath::Vector3(15, 0.3f, 10),
+		BMath::Vector3(-40, 8, -50),
+		BMath::Vector3(15, 0.3f, 15),
 		BMath::Quaternion());
 
 	leftLongGrassPatchHandles[2] = PlatformFactory::CreateGrassPlatform(
 		registry,
-		BMath::Vector3(-40, 8, -70),
-		BMath::Vector3(15, 0.3f, 10),
+		BMath::Vector3(-40, 8, -90),
+		BMath::Vector3(15, 0.3f, 15),
 		BMath::Quaternion());
 
 	grassPatch2Handle = PlatformFactory::CreateGrassPlatform(

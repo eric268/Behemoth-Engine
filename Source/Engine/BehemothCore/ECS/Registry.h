@@ -235,7 +235,7 @@ namespace ECS
 			}
 
 			entity.SetName("Destroyed");
-			// entity.IncrementVersion();
+			entity.IncrementVersion();
 
 			auto identifier = entity.GetIdentifier();
 			if (available > 0)
@@ -281,7 +281,6 @@ namespace ECS
 			// Iterate over smallest set
 			for (const auto& entity : entityContainer)
 			{
-				auto id = entity.GetIdentifier();
 				// Check if the entity is in all other sets
 				bool isInAllSets = ContainsEntity(tuple, entity);
 

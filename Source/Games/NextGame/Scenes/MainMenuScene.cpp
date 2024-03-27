@@ -28,7 +28,6 @@ MainMenuScene::MainMenuScene() : GameScene(registry, 0, 0.0f)
 	CreateInstructionsText(registry);
 	playerHandle = PlayerFactory::CreatePlayer(registry, BMath::Vector3(0, 5, 0));
 	titleTextHandle = registry.CreateEntity("Par Text Entity");
-	registry.AddComponent<Behemoth::TextComponent>(titleTextHandle, "Next Golf!", BMath::Vector2(-0.05f, 0.6f));
 }
 
 void MainMenuScene::Initialize()

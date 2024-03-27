@@ -18,7 +18,7 @@ namespace PhysMat
 	{
 		{ None, Behemoth::PhysicsMaterial(0.0f,0.0f) },
 		{ Sand, Behemoth::PhysicsMaterial(0.01f, 10.0f) },
-		{ Grass, Behemoth::PhysicsMaterial(0.25f, 3.0f) },
+		{ Grass, Behemoth::PhysicsMaterial(0.25f, 4.5f) },
 		{ Rock, Behemoth::PhysicsMaterial(0.7f, 10.0f) }
 	};
 }

@@ -36,20 +36,18 @@ namespace ECS
 				return;
 			}
 
-			dense[sparse[identifier]].SetName("Deleted #" + std::to_string(deletedCounter++));
-			// dense[sparse[identifier]].SetVersionToNull();
+			entity_identifier denseIndex = Entity::GetIdentifier(sparse[identifier]);
+
+			dense[denseIndex].SetName("Destroyed");
 
 			// Use dense identifier to signal the next recycled entity to be reused
 			if (available > 0)
 			{
-				dense[sparse[identifier]].SetIdentifier(next);
+				dense[denseIndex].SetIdentifier(next);
 			}
 
-			next = sparse[identifier];
-
-
 			// Next is used to track the position of the next recycled entity to be used
-
+			next = denseIndex;
 
 			// Null version is used to indicate that an ID has been recycled and is therefore not valid
 			// This is important because sparse identifiers are used to track position of entity in dense array so we can't use that.
@@ -74,17 +72,9 @@ namespace ECS
 			if (available > 0 && next != NULL_IDENTIFIER)
 			{
 				entity_identifier nextIdentifier = next;
-
 				assert(nextIdentifier < dense.size());
-
-				// entity_identifier newID = dense[nextIdentifier].GetIdentifier();
-
-				// assert(newID < dense.size());
-
-				// Entity::SetVersion(sparse[identifier], entity.GetVersion());
-				sparse[entity.GetIdentifier()] = nextIdentifier;//  Entity::GetIdentifier(sparse[nextIdentifier]);
-
-
+				sparse[entity.GetIdentifier()] = nextIdentifier;
+				Entity::SetVersion(sparse[entity.GetIdentifier()], entity.GetVersion());
 
 				next = dense[nextIdentifier].GetIdentifier();
 				dense[nextIdentifier] = entity;
@@ -109,9 +99,9 @@ namespace ECS
 				return nullptr;
 			}
 
-			if (entity.GetVersion() != dense[sparse[identifier]].GetVersion())
+			if (entity.GetVersion() != Entity::GetVersion(sparse[identifier]))
 			{
-				RemoveComponent(entity);
+				// RemoveComponent(entity);
 				return nullptr;
 			}
 
@@ -121,7 +111,10 @@ namespace ECS
 		bool Contains(const Entity& entity)
 		{
 			entity_identifier identifier = entity.GetIdentifier();
- 			return (identifier < sparse.size() && Entity::GetVersion(sparse[identifier]) < NULL_VERSION);
+//  			entity_version version = Entity::GetVersion(sparse[identifier]);
+//   			return (identifier < sparse.size() && version < NULL_VERSION && entity.GetVersion() == version);
+
+			return (identifier < sparse.size()) && (((~NULL_VERSION & entity.GetID()) ^ sparse[identifier]) < NULL_VERSION);
 		}
 
 		size_t size() const
@@ -140,9 +133,6 @@ namespace ECS
 
 		int maxSize;
 		size_t index;
-
 		std::size_t available{};
-
-		int deletedCounter = 0;	
 	};
 }

@@ -6,7 +6,7 @@ newoption
 }
 
 if not _OPTIONS["prj"] and not _OPTIONS["new"] then
-     _OPTIONS["prj"] = "NextGame"
+     _OPTIONS["prj"] = "DemoGame"
 end
 
 workspace (_OPTIONS["prj"])

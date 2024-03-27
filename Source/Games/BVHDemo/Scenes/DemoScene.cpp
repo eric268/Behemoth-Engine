@@ -37,13 +37,13 @@ DemoScene::DemoScene()
 
 void DemoScene::Initialize()
 {
-// 	if (RotationComponent* rotationComponent = registry.GetComponent<RotationComponent>(demoCubes[4]))
-// 	{
-// 		BMath::Quaternion q(DEGREE_TO_RAD(45.0f), BMath::Vector3(0, 0, 1));
-// 		rotationComponent->quat = q;
-// 	}
-// 
-// 	registry.AddComponent<ScalingComponent>(demoCubes[4], BMath::Vector3(2.5));
+	if (RotationComponent* rotationComponent = registry.GetComponent<RotationComponent>(demoCubes[4]))
+	{
+		BMath::Quaternion q(DEGREE_TO_RAD(45.0f), BMath::Vector3(0, 0, 1));
+		rotationComponent->quat = q;
+	}
+
+	registry.AddComponent<ScalingComponent>(demoCubes[4], BMath::Vector3(2.5));
 }
 
 void DemoScene::OnEvent(Event& e)
